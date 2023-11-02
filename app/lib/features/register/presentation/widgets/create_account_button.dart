@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taxialong/core/bloc/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/core/widgets/taxi_along_bottom_navigation.dart';
 
 class CreateAccountButton extends StatelessWidget {
   const CreateAccountButton({
@@ -9,6 +12,7 @@ class CreateAccountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BottomNavigationBloc bottomNavigationBloc = BottomNavigationBloc();
     return Container(
       margin: EdgeInsets.only(
         top: 33.h,
@@ -36,19 +40,14 @@ class CreateAccountButton extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          // if (type == "create_account") {
-          //   Navigator.of(context).push(
-          //     MaterialPageRoute(
-          //       builder: (context) => const CreateAccount(),
-          //     ),
-          //   );
-          // } else {
-          //   Navigator.of(context).push(
-          //     MaterialPageRoute(
-          //       builder: (context) => const PhoneNumberVerification(),
-          //     ),
-          //   );
-          // }
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => BlocProvider<BottomNavigationBloc>.value(
+                value: bottomNavigationBloc,
+                child: const TaxiAlongBottomNavigation(),
+              ),
+            ),
+          );
         },
       ),
     );

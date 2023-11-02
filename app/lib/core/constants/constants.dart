@@ -25,18 +25,37 @@ final List<OnBoardModel> onBoardData = [
     title: "Choose your destination",
     description:
         "Find the perfect ride to take you where you need to go by selecting your drop-off location",
-    image: onboarding_carousel_1,
+    image: onboardingCarousel1,
   ),
   const OnBoardModel(
     title: "Choose your destination",
     description:
         "Find the perfect ride to take you where you need to go by selecting your drop-off location",
-    image: onboarding_carousel_1,
+    image: onboardingCarousel1,
   ),
   const OnBoardModel(
     title: "Choose your destination",
     description:
         "Find the perfect ride to take you where you need to go by selecting your drop-off location",
-    image: onboarding_carousel_1,
+    image: onboardingCarousel1,
   ),
+];
+
+const appSliverExpandedHeightFixture = 178.0;
+
+List<String> busstops = [
+  "Apo Junction",
+  "Area 1 Junction",
+  "Lokogoma Junction",
+  "Garki Junction",
+  "Lugbe Junction",
+  "Wuye Junction",
+  "Jabi Junction",
+  "Asokoro Junction",
+  "Apo Junction",
+  "Area 1 Junction",
+  "Lokogoma Junction",
+  "Garki Junction",
+  "Lugbe Junction",
+  "Wuye Junction",
 ];

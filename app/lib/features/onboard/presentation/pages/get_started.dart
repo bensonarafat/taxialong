@@ -23,7 +23,7 @@ class GetStarted extends StatelessWidget {
                 top: 135.h,
               ),
               child: Image.asset(
-                get_started,
+                getStarted,
                 fit: BoxFit.contain,
                 width: 361.w,
                 height: 201.h,

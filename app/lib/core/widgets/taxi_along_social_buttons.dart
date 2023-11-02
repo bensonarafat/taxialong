@@ -11,7 +11,7 @@ class SocialButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
-          facebook_icon,
+          facebookIcon,
           width: 24.w,
           height: 24.h,
         ),
@@ -19,7 +19,7 @@ class SocialButtons extends StatelessWidget {
           width: 25.w,
         ),
         Image.asset(
-          twitter_icon,
+          twitterIcon,
           width: 24.w,
           height: 24.h,
         ),
@@ -27,7 +27,7 @@ class SocialButtons extends StatelessWidget {
           width: 25.w,
         ),
         Image.asset(
-          google_icon,
+          googleIcon,
           width: 24.w,
           height: 24.h,
         ),
