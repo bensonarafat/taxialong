@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 class EmailField extends StatelessWidget {
@@ -21,9 +22,8 @@ class EmailField extends StatelessWidget {
         children: [
           Text(
             "Email",
-            style: TextStyle(
+            style: GoogleFonts.robotoFlex(
               color: white,
-              fontSize: 14.sp,
               fontWeight: FontWeight.w400,
             ),
           ),

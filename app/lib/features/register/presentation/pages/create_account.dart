@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_email_field.dart';
 import 'package:taxialong/core/widgets/taxi_along_first_name_field.dart';
@@ -43,7 +44,6 @@ class _CreateAccountState extends State<CreateAccount> {
           ),
         ),
       ),
-      backgroundColor: dark,
       body: Stack(
         children: [
           Align(
@@ -58,7 +58,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                   child: Text(
                     "Create an Account",
-                    style: TextStyle(
+                    style: GoogleFonts.robotoFlex(
                       fontWeight: FontWeight.w600,
                       fontSize: 24.sp,
                       color: const Color(
@@ -75,7 +75,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                   child: Text(
                     "Sign up to get started",
-                    style: TextStyle(
+                    style: GoogleFonts.robotoFlex(
                       fontWeight: FontWeight.w400,
                       fontSize: 16.sp,
                       color: const Color(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -15,7 +16,6 @@ class DriverInfo extends StatelessWidget {
     WoltModalSheetPage showDriverInformation(
         BuildContext modalSheetContext, TextTheme textTheme) {
       return WoltModalSheetPage.withSingleChild(
-        backgroundColor: dark,
         hasSabGradient: false,
         isTopBarLayerAlwaysVisible: true,
         child: Padding(
@@ -126,10 +126,9 @@ class DriverWidget extends StatelessWidget {
                           width: double.infinity,
                           child: Text(
                             'Andrew Williams',
-                            style: TextStyle(
+                            style: GoogleFonts.robotoFlex(
                               color: white,
                               fontSize: 14.sp,
-                              fontFamily: 'Roboto Flex',
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -149,7 +148,7 @@ class DriverWidget extends StatelessWidget {
                               width: 32.w,
                               child: Text(
                                 '4.7',
-                                style: TextStyle(
+                                style: GoogleFonts.robotoFlex(
                                   color: white,
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w400,
@@ -170,7 +169,7 @@ class DriverWidget extends StatelessWidget {
                       children: [
                         Text(
                           '10 min. away',
-                          style: TextStyle(
+                          style: GoogleFonts.robotoFlex(
                             color: white,
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
@@ -179,7 +178,7 @@ class DriverWidget extends StatelessWidget {
                         Gap(4.h),
                         Text(
                           '2, 5km',
-                          style: TextStyle(
+                          style: GoogleFonts.robotoFlex(
                             color: white,
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
@@ -225,10 +224,9 @@ class AllDriver extends StatelessWidget {
             children: [
               Text(
                 'Contact Information:',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: secondaryColor,
                   fontSize: 18.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w500,
                   height: 0.06,
                 ),
@@ -236,10 +234,9 @@ class AllDriver extends StatelessWidget {
               Gap(20.h),
               Text(
                 'Phone Number: +234 8123456789',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w400,
                   height: 0.10,
                 ),
@@ -247,10 +244,9 @@ class AllDriver extends StatelessWidget {
               Gap(18.h),
               Text(
                 'Email: andrewwilliams@gmail.com',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w400,
                   height: 0.10,
                 ),
@@ -273,10 +269,9 @@ class AllDriver extends StatelessWidget {
             children: [
               Text(
                 'Vehicle Details:',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: secondaryColor,
                   fontSize: 18.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w500,
                   height: 0.06,
                 ),
@@ -284,10 +279,9 @@ class AllDriver extends StatelessWidget {
               Gap(20.h),
               Text(
                 'Car Model: Toyota Corolla',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w400,
                   height: 0.10,
                 ),
@@ -295,10 +289,9 @@ class AllDriver extends StatelessWidget {
               Gap(18.h),
               Text(
                 'Car Plate Number: ABC 123 XY',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w400,
                   height: 0.10,
                 ),
@@ -306,10 +299,9 @@ class AllDriver extends StatelessWidget {
               Gap(18.h),
               Text(
                 'Car Colour: Yellow',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w400,
                   height: 0.10,
                 ),
@@ -335,10 +327,9 @@ class AllDriver extends StatelessWidget {
             children: [
               Text(
                 'License Information:',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: secondaryColor,
                   fontSize: 18.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w500,
                   height: 0.06,
                 ),
@@ -346,10 +337,9 @@ class AllDriver extends StatelessWidget {
               Gap(20.h),
               Text(
                 "Driver's License Number:NGR-ABC-12345-XYZ",
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w400,
                   height: 0.10,
                 ),
@@ -357,10 +347,9 @@ class AllDriver extends StatelessWidget {
               Gap(18.h),
               Text(
                 'Expiration Date: 31/12/2024',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w400,
                   height: 0.10,
                 ),
@@ -386,10 +375,9 @@ class AllDriver extends StatelessWidget {
             children: [
               Text(
                 'Recent Reviews:',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: secondaryColor,
                   fontSize: 18.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w500,
                   height: 0.06,
                 ),
@@ -397,10 +385,9 @@ class AllDriver extends StatelessWidget {
               Gap(20.h),
               Text(
                 "Passenger: Lucy John Johnson ",
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w400,
                   height: 0.10,
                 ),
@@ -408,10 +395,9 @@ class AllDriver extends StatelessWidget {
               Gap(18.h),
               Text(
                 'Rating: 4.5/5',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w400,
                   height: 0.10,
                 ),
@@ -419,10 +405,9 @@ class AllDriver extends StatelessWidget {
               Gap(18.h),
               Text(
                 'Comment: No Comments',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
-                  fontFamily: 'Roboto Flex',
                   fontWeight: FontWeight.w400,
                   height: 0.10,
                 ),

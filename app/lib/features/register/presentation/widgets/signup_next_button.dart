@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/features/register/presentation/pages/create_account.dart';
 import 'package:taxialong/features/register/presentation/pages/phone_number_verification.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,7 +34,7 @@ class SignUpNextButton extends StatelessWidget {
         ),
         child: Text(
           "Next",
-          style: TextStyle(
+          style: GoogleFonts.robotoFlex(
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
             color: white,

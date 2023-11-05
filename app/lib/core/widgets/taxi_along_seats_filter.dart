@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 class SeatsFilter extends StatelessWidget {
@@ -17,7 +18,7 @@ class SeatsFilter extends StatelessWidget {
           SizedBox(
             child: Text(
               'Seats',
-              style: TextStyle(
+              style: GoogleFonts.robotoFlex(
                 color: secondaryColor,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
@@ -124,7 +125,7 @@ class Seat extends StatelessWidget {
               child: SizedBox(
                 child: Text(
                   name,
-                  style: TextStyle(
+                  style: GoogleFonts.robotoFlex(
                     color: white,
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w400,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -70,10 +71,9 @@ class BusStopsFlexibleSpace extends StatelessWidget {
                               Gap(8.w),
                               Text(
                                 'Berger  Junction',
-                                style: TextStyle(
+                                style: GoogleFonts.robotoFlex(
                                   color: white,
                                   fontSize: 16.sp,
-                                  fontFamily: 'Roboto Flex',
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),

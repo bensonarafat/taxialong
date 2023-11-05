@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
@@ -25,7 +26,7 @@ class DriverCar extends StatelessWidget {
             children: [
               Text(
                 'ABC 123 XY',
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w600,
@@ -58,7 +59,7 @@ class DriverCar extends StatelessWidget {
               children: [
                 Text(
                   'Class 4 Taxi',
-                  style: TextStyle(
+                  style: GoogleFonts.robotoFlex(
                     color: white,
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w600,

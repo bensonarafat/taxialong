@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/features/bus_stops/presentation/pages/bus_stops.dart';
 import 'package:taxialong/features/taxi_classes/presentation/pages/taxi_classes.dart';
@@ -45,7 +46,7 @@ class TaxiAlongBusStops extends StatelessWidget {
           children: [
             Text(
               "${index + 1}",
-              style: TextStyle(
+              style: GoogleFonts.robotoFlex(
                 color: white,
                 fontWeight: FontWeight.w600,
                 fontSize: 20.sp,
@@ -54,7 +55,7 @@ class TaxiAlongBusStops extends StatelessWidget {
             Gap(4.w),
             Text(
               busstops[index],
-              style: TextStyle(
+              style: GoogleFonts.robotoFlex(
                 color: white,
                 fontWeight: FontWeight.w400,
                 fontSize: 14.sp,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
@@ -44,10 +45,9 @@ class WalletTopUp extends StatelessWidget {
                           width: double.infinity,
                           child: Text(
                             'Tony',
-                            style: TextStyle(
+                            style: GoogleFonts.robotoFlex(
                               color: white,
                               fontSize: 12.sp,
-                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w500,
                               height: 0.12.h,
                               letterSpacing: 0.20,
@@ -59,10 +59,9 @@ class WalletTopUp extends StatelessWidget {
                           width: double.infinity,
                           child: Text(
                             'Today at 02:45 pm',
-                            style: TextStyle(
+                            style: GoogleFonts.robotoFlex(
                               color: const Color(0xFF5A5A5A),
                               fontSize: 10.sp,
-                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w400,
                               height: 0,
                               letterSpacing: 0.20.sp,
@@ -78,10 +77,9 @@ class WalletTopUp extends StatelessWidget {
                       child: Text(
                         '₦2000.00',
                         textAlign: TextAlign.right,
-                        style: TextStyle(
+                        style: GoogleFonts.robotoFlex(
                           color: white,
                           fontSize: 14.sp,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           height: 0.10,
                           letterSpacing: 0.20,

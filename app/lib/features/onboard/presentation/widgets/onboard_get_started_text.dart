@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,7 +18,7 @@ class OnboardGetStartedText extends StatelessWidget {
         children: [
           Text(
             "Get Started",
-            style: TextStyle(
+            style: GoogleFonts.robotoFlex(
               fontSize: 24.sp,
               fontWeight: FontWeight.w600,
               color: white,
@@ -26,7 +27,7 @@ class OnboardGetStartedText extends StatelessWidget {
           Text(
             "Choose your comfort level and enjoy a personalized, stress-free ride.",
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: GoogleFonts.robotoFlex(
               fontSize: 16.sp,
               fontWeight: FontWeight.w400,
               color: white,

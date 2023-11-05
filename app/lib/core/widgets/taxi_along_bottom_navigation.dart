@@ -73,7 +73,6 @@ class TaxiAlongBottomNavigation extends StatelessWidget {
               child: TaxiAlongDrawer(),
             ),
             bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: dark,
               elevation: 1,
               type: BottomNavigationBarType.fixed,
               items: bottomNavItems,

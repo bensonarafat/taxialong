@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/features/register/presentation/pages/signup.dart';
@@ -26,7 +27,7 @@ class DontHaveAnAccount extends StatelessWidget {
           children: [
             Text(
               "Don't have an account?",
-              style: TextStyle(
+              style: GoogleFonts.robotoFlex(
                 fontWeight: FontWeight.w400,
                 fontSize: 16.sp,
                 color: white,
@@ -37,7 +38,7 @@ class DontHaveAnAccount extends StatelessWidget {
             ),
             Text(
               "Create Account",
-              style: TextStyle(
+              style: GoogleFonts.robotoFlex(
                 fontWeight: FontWeight.w400,
                 fontSize: 16.sp,
                 color: primaryColor,

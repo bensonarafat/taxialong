@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 class ClassFilter extends StatelessWidget {
@@ -19,7 +20,7 @@ class ClassFilter extends StatelessWidget {
             width: 58.w,
             child: Text(
               'Class',
-              style: TextStyle(
+              style: GoogleFonts.robotoFlex(
                 color: secondaryColor,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
@@ -118,7 +119,7 @@ class TClass extends StatelessWidget {
               child: SizedBox(
                 child: Text(
                   name,
-                  style: TextStyle(
+                  style: GoogleFonts.robotoFlex(
                     color: white,
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w400,

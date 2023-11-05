@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,7 +15,7 @@ class OrText extends StatelessWidget {
       ),
       child: Text(
         "Or".toUpperCase(),
-        style: TextStyle(
+        style: GoogleFonts.robotoFlex(
           fontWeight: FontWeight.w600,
           fontSize: 16.sp,
           color: white,

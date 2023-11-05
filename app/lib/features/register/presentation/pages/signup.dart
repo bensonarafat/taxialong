@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_phone_input.dart';
 import 'package:taxialong/features/register/presentation/widgets/already_have_account.dart';
@@ -22,7 +23,6 @@ class SignUp extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: dark,
       body: Stack(
         children: [
           Align(
@@ -39,7 +39,7 @@ class SignUp extends StatelessWidget {
                       ),
                       child: Text(
                         "Weclome to Taxi Along!",
-                        style: TextStyle(
+                        style: GoogleFonts.robotoFlex(
                           fontWeight: FontWeight.w600,
                           fontSize: 24.sp,
                           color: const Color(
@@ -56,7 +56,7 @@ class SignUp extends StatelessWidget {
                       ),
                       child: Text(
                         "Enter mobile number to get started",
-                        style: TextStyle(
+                        style: GoogleFonts.robotoFlex(
                           fontWeight: FontWeight.w400,
                           fontSize: 16.sp,
                           color: const Color(
@@ -94,7 +94,7 @@ class SignUp extends StatelessWidget {
                             flex: 7,
                             child: Text(
                               "By signing up confirm that you agree to our Terms of use and Privacy Policy",
-                              style: TextStyle(
+                              style: GoogleFonts.robotoFlex(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w400,
                                 color: white,

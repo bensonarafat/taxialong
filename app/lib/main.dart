@@ -23,10 +23,11 @@ class TaxiAlong extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return const MaterialApp(
+        return MaterialApp(
+          theme: ThemeData.dark(),
           title: 'Taxi Along',
           debugShowCheckedModeBanner: false,
-          home: Onboarding(),
+          home: const Onboarding(),
         );
       },
     );

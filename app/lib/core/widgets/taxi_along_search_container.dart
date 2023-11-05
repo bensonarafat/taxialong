@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,7 +29,7 @@ class SearchContainer extends StatelessWidget {
           ),
           Text(
             "Search for a route",
-            style: TextStyle(
+            style: GoogleFonts.robotoFlex(
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
               color: const Color(0xffA0A2A9),

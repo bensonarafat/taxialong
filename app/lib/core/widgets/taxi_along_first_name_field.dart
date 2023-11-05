@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 class FirstNameField extends StatelessWidget {
@@ -21,7 +22,7 @@ class FirstNameField extends StatelessWidget {
         children: [
           Text(
             "First Name",
-            style: TextStyle(
+            style: GoogleFonts.robotoFlex(
               color: white,
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
@@ -48,7 +49,7 @@ class FirstNameField extends StatelessWidget {
                   ),
                 ),
                 counterText: '',
-                hintStyle: TextStyle(
+                hintStyle: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 20.0.sp,
                 ),

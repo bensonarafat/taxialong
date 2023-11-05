@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 class SignUpOTPInput extends StatelessWidget {
@@ -35,7 +36,7 @@ class SignUpOTPInput extends StatelessWidget {
             ),
           ),
           counterText: '',
-          hintStyle: TextStyle(color: white, fontSize: 20.0.sp),
+          hintStyle: GoogleFonts.robotoFlex(color: white, fontSize: 20.0.sp),
         ),
         onChanged: (value) {
           if (value.length == 1) {

@@ -29,6 +29,8 @@ dependencies:
   flutter_svg: ^2.0.9
   gap: ^3.0.1
   wolt_modal_sheet: ^0.1.4
+  google_maps_flutter: ^2.5.0
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -46,8 +48,4 @@ flutter:
     - assets/images/svg/
     - assets/images/gif/
 
-  fonts:
-    - family: RobotoFlex
-      fonts:
-        - asset: assets/fonts/RobotoFlex/RobotoFlex-Regular.ttf
-  #Poppins
+  # fonts:

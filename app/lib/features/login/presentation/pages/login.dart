@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_or_text.dart';
 import 'package:taxialong/core/widgets/taxi_along_phone_input.dart';
@@ -29,7 +30,6 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
-      backgroundColor: dark,
       body: Stack(
         children: [
           Align(
@@ -44,7 +44,7 @@ class _LoginState extends State<Login> {
                   ),
                   child: Text(
                     "Welcome back",
-                    style: TextStyle(
+                    style: GoogleFonts.robotoFlex(
                       fontWeight: FontWeight.w600,
                       fontSize: 24.sp,
                       color: const Color(
@@ -61,7 +61,7 @@ class _LoginState extends State<Login> {
                   ),
                   child: Text(
                     "Login to continue",
-                    style: TextStyle(
+                    style: GoogleFonts.robotoFlex(
                       fontWeight: FontWeight.w400,
                       fontSize: 16.sp,
                       color: const Color(
@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
                     children: [
                       Text(
                         "Enter Phone Number",
-                        style: TextStyle(
+                        style: GoogleFonts.robotoFlex(
                           fontWeight: FontWeight.w400,
                           fontSize: 14.sp,
                           color: white,

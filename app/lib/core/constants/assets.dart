@@ -12,6 +12,9 @@ const getStarted = "assets/images/get_started.png";
 const facebookIcon = "assets/images/icons/facebook.png";
 const twitterIcon = "assets/images/icons/twitter.png";
 const googleIcon = "assets/images/icons/google.png";
+const whatsappIcon = "assets/images/icons/whatsapp.png";
+const instagramIcon = "assets/images/icons/instagram.png";
+const copyLinkIcon = "assets/images/icons/copy_link.png";
 
 //bottom navigation icons
 const homeActiveIcon = "assets/images/icons/home_active.png";
@@ -36,7 +39,7 @@ const topup = "assets/images/icons/top_up.png";
 
 const withdrawal = "assets/images/icons/withdrawal.png";
 
-const notificationBell = "assets/images/icons/notification_bell.gif";
+const notificationBell = "assets/images/gif/notification_bell.gif";
 
 const busStop = "assets/images/icons/bus_stop.png";
 
@@ -55,3 +58,65 @@ const unavailableSeat = "assets/images/unavailable_seat.png";
 const selectedSeat = "assets/images/selected_seat.png";
 
 const driverWheels = "assets/images/driver_wheels.png";
+
+const user = "assets/images/user.png";
+
+const darkModeIcon = "assets/images/dark_mode.png";
+
+const carSVG = "assets/images/svg/car.svg";
+
+const profileSVG = "assets/images/svg/profile.svg";
+
+const paymentSVG = "assets/images/svg/payment.svg";
+
+const notificationSVG = "assets/images/svg/notification.svg";
+
+const referralSVG = "assets/images/svg/referral.svg";
+
+const truckdriverSVG = "assets/images/svg/truckdriver.svg";
+
+const helpSVG = "assets/images/svg/help.svg";
+
+const settingsSVG = "assets/images/svg/settings.svg";
+
+const aboutSVG = "assets/images/svg/about.svg";
+
+const logoutSVG = "assets/images/svg/logout.svg";
+
+const cashSVG = "assets/images/svg/cash.svg";
+
+const cameraSVG = "assets/images/svg/camera.svg";
+
+const referralPNG = "assets/images/referral.png";
+
+const policy = "assets/images/svg/policy.svg";
+
+const thumbsUp = "assets/images/svg/thumbs_up.svg";
+
+const starBorder = "assets/images/svg/star_border.svg";
+
+const notificationIcon = "assets/images/svg/notification_icon.svg";
+
+const globe = "assets/images/svg/globe.svg";
+
+const toggleOn = "assets/images/svg/toggle_on.svg";
+const toggleOff = "assets/images/svg/toggle_off.svg";
+
+const manageDocuments = "assets/images/svg/manage_documents.svg";
+
+const taxiDriver = "assets/images/taxi_driver.png";
+
+const photoGallery = "assets/images/svg/photo_gallery.svg";
+
+const photoCamera = "assets/images/svg/photo_camera.svg";
+const documentsCheck = "assets/images/svg/document_check.svg";
+const menu = "assets/images/svg/menu.svg";
+
+const phoneSVG = "assets/images/svg/phone.svg";
+const chatSVG = "assets/images/svg/chat.svg";
+
+const carSeat = "assets/images/svg/car_seat.svg";
+
+const idCard = "assets/images/id_card.png";
+
+const enableLocation = "assets/images/enable_location.png";

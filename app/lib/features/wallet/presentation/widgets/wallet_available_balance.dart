@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
@@ -38,7 +39,7 @@ class WalletAvailableBalance extends StatelessWidget {
                       width: 111.w,
                       child: Text(
                         "₦500.00",
-                        style: TextStyle(
+                        style: GoogleFonts.robotoFlex(
                           color: white,
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w700,
@@ -54,7 +55,7 @@ class WalletAvailableBalance extends StatelessWidget {
           Gap(8.h),
           Text(
             "Available Balance",
-            style: TextStyle(
+            style: GoogleFonts.robotoFlex(
               fontSize: 14.sp,
               color: white,
               fontWeight: FontWeight.w400,
@@ -80,7 +81,7 @@ class WalletAvailableBalance extends StatelessWidget {
               onPressed: () {},
               child: Text(
                 "Fund wallet",
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   color: white,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,

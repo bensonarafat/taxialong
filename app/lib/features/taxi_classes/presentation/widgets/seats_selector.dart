@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
@@ -52,10 +53,9 @@ class SeatsSelector extends StatelessWidget {
                               child: Text(
                                 'Selected',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: GoogleFonts.robotoFlex(
                                   color: white,
                                   fontSize: 14.sp,
-                                  fontFamily: 'Roboto Flex',
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -80,7 +80,7 @@ class SeatsSelector extends StatelessWidget {
                               child: Text(
                                 'Available',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: GoogleFonts.robotoFlex(
                                   color: white,
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
@@ -107,10 +107,9 @@ class SeatsSelector extends StatelessWidget {
                               child: Text(
                                 'Unavailable',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: GoogleFonts.robotoFlex(
                                   color: white,
                                   fontSize: 14.sp,
-                                  fontFamily: 'Roboto Flex',
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -223,10 +222,9 @@ class SeatsSelector extends StatelessWidget {
               children: [
                 Text(
                   'Continue',
-                  style: TextStyle(
+                  style: GoogleFonts.robotoFlex(
                     color: white,
                     fontSize: 14.sp,
-                    fontFamily: 'Roboto Flex',
                     fontWeight: FontWeight.w600,
                     height: 0.10,
                   ),

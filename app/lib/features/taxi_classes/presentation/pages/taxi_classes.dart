@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/features/taxi_classes/presentation/widgets/class_ride.dart';
@@ -24,13 +25,11 @@ class TaxiClasses extends StatelessWidget {
     ];
     return Scaffold(
       key: key,
-      backgroundColor: dark,
       body: CustomScrollView(slivers: [
         SliverAppBar(
           automaticallyImplyLeading: false,
           pinned: true,
           elevation: 0,
-          backgroundColor: dark,
           expandedHeight: 186.h,
           forceElevated: true,
           flexibleSpace: const TaxiClassFlexibleSpace(),
@@ -55,7 +54,7 @@ class TaxiClasses extends StatelessWidget {
                       child: SizedBox(
                         child: Text(
                           'Available Rides',
-                          style: TextStyle(
+                          style: GoogleFonts.robotoFlex(
                             color: white,
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w700,

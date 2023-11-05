@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,17 +13,20 @@ class RecentStops extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> key = GlobalKey();
     return Scaffold(
-      backgroundColor: dark,
       key: key,
       appBar: AppBar(
-        backgroundColor: dark,
         elevation: 0,
         title: Image.asset(logodark),
         centerTitle: true,
-        leading: Image.asset(
-          menudark,
-          width: 24.w,
-          height: 20.62.h,
+        leading: GestureDetector(
+          onTap: () {
+            // Scaffold.of(context).openDrawer();
+          },
+          child: Image.asset(
+            menudark,
+            width: 24.w,
+            height: 20.62.h,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -35,7 +39,7 @@ class RecentStops extends StatelessWidget {
               ),
               child: Text(
                 "Recent Stops",
-                style: TextStyle(
+                style: GoogleFonts.robotoFlex(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w600,
                   color: white,
@@ -58,7 +62,7 @@ class RecentStops extends StatelessWidget {
                         Gap(8.w),
                         Text(
                           "Add Route",
-                          style: TextStyle(
+                          style: GoogleFonts.robotoFlex(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w700,
                             color: white,
@@ -82,7 +86,7 @@ class RecentStops extends StatelessWidget {
                         Gap(8.w),
                         Text(
                           "Add Stop",
-                          style: TextStyle(
+                          style: GoogleFonts.robotoFlex(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w700,
                             color: white,

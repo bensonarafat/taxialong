@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_bus_stop.dart';
@@ -29,13 +30,11 @@ class BusStop extends StatelessWidget {
     ];
     return Scaffold(
       key: key,
-      backgroundColor: dark,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             automaticallyImplyLeading: false,
             pinned: true,
-            backgroundColor: dark,
             expandedHeight: 74.h,
             forceElevated: true,
             flexibleSpace: const BusStopsFlexibleSpace(),
@@ -71,7 +70,7 @@ class BusStop extends StatelessWidget {
                           child: Text(
                             areas[index],
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: GoogleFonts.robotoFlex(
                               color: white,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
@@ -100,7 +99,7 @@ class BusStop extends StatelessWidget {
                         child: SizedBox(
                           child: Text(
                             'Bus stops along Apo axis',
-                            style: TextStyle(
+                            style: GoogleFonts.robotoFlex(
                               color: white,
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w400,

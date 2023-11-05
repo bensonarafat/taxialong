@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:onboarding_slider_flutter/onboarding_slider_flutter.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/utils/colors.dart';
@@ -29,12 +30,12 @@ class _OnboardingState extends State<Onboarding> {
         onBoardData: onBoardData,
         imageWidth: 320.0.w,
         imageHeight: 320.0.h,
-        titleStyles: TextStyle(
+        titleStyles: GoogleFonts.robotoFlex(
           color: const Color(0xffFDFDFD),
           fontSize: 24.sp,
           fontWeight: FontWeight.w600,
         ),
-        descriptionStyles: TextStyle(
+        descriptionStyles: GoogleFonts.robotoFlex(
           fontSize: 16.sp,
           color: white,
           fontWeight: FontWeight.w400,

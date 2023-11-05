@@ -16,62 +16,49 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      showEnableLocation(context);
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> key = GlobalKey();
-
-    @override
-    void initState() {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        onAlertButtonsPressed(context);
-      });
-
-      super.initState();
-    }
-
-    return Scaffold(
-      key: key,
-      backgroundColor: dark,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            pinned: true,
-            floating: true,
-            backgroundColor: dark,
-            expandedHeight: appSliverExpandedHeightFixture.h,
-            forceElevated: true,
-            flexibleSpace: const HomeFlexibleSpace(),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Container(
-                  padding: EdgeInsets.all(
-                    16.w,
-                  ),
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: busstops.length,
-                    itemBuilder: (_, index) {
-                      return TaxiAlongBusStops(
-                        busstops: busstops,
-                        index: index,
-                        type: "home",
-                      );
-                    },
-                  ),
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          automaticallyImplyLeading: false,
+          pinned: true,
+          floating: true,
+          expandedHeight: appSliverExpandedHeightFixture.h,
+          forceElevated: true,
+          flexibleSpace: const HomeFlexibleSpace(),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              Container(
+                padding: EdgeInsets.all(
+                  16.w,
                 ),
-              ],
-            ),
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: busstops.length,
+                  itemBuilder: (_, index) {
+                    return TaxiAlongBusStops(
+                      busstops: busstops,
+                      index: index,
+                      type: "home",
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

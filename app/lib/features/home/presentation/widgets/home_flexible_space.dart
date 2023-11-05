@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
@@ -37,16 +38,25 @@ class HomeFlexibleSpace extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 16.w,
-                          ),
-                          child: Image.asset(
-                            menudark,
-                            width: 24.w,
-                            height: 20.62.h,
-                          ),
-                        ),
+                        Builder(builder: (context) {
+                          return Builder(builder: (context) {
+                            return GestureDetector(
+                              onTap: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  left: 16.w,
+                                ),
+                                child: Image.asset(
+                                  menudark,
+                                  width: 24.w,
+                                  height: 20.62.h,
+                                ),
+                              ),
+                            );
+                          });
+                        }),
                         Gap(16.w),
                         const SearchContainer(),
                         Gap(8.w),
@@ -71,7 +81,7 @@ class HomeFlexibleSpace extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Routes",
-                      style: TextStyle(
+                      style: GoogleFonts.robotoFlex(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
                         color: white,

@@ -14,7 +14,6 @@ class GetStarted extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: dark,
       body: SafeArea(
         child: Column(
           children: [

@@ -1,4 +1,5 @@
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,7 +58,7 @@ class ClassRide extends StatelessWidget {
                                 width: double.infinity,
                                 child: Text(
                                   'Class 2 ',
-                                  style: TextStyle(
+                                  style: GoogleFonts.robotoFlex(
                                     color: white,
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w700,
@@ -69,7 +70,7 @@ class ClassRide extends StatelessWidget {
                                 width: double.infinity,
                                 child: Text(
                                   'N100 - N500',
-                                  style: TextStyle(
+                                  style: GoogleFonts.robotoFlex(
                                     color: white,
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w400,
@@ -80,7 +81,7 @@ class ClassRide extends StatelessWidget {
                               Text(
                                 '2m away',
                                 textAlign: TextAlign.right,
-                                style: TextStyle(
+                                style: GoogleFonts.robotoFlex(
                                   color: const Color(0xFFA0A2A9),
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w300,
@@ -123,7 +124,7 @@ class ClassRide extends StatelessWidget {
                         children: [
                           Text(
                             'Book Now',
-                            style: TextStyle(
+                            style: GoogleFonts.robotoFlex(
                               color: white,
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w600,

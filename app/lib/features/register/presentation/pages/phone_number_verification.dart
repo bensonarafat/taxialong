@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/features/register/presentation/widgets/signup_next_button.dart';
 import 'package:taxialong/features/register/presentation/widgets/signup_otp_input.dart';
@@ -40,7 +41,6 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
           ),
         ),
       ),
-      backgroundColor: dark,
       body: Stack(
         children: [
           Align(
@@ -58,7 +58,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                       ),
                       child: Text(
                         "Verification",
-                        style: TextStyle(
+                        style: GoogleFonts.robotoFlex(
                           fontWeight: FontWeight.w600,
                           fontSize: 24.sp,
                           color: const Color(
@@ -75,7 +75,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                       ),
                       child: Text(
                         "Verify Mobile Number",
-                        style: TextStyle(
+                        style: GoogleFonts.robotoFlex(
                           fontWeight: FontWeight.w400,
                           fontSize: 16.sp,
                           color: const Color(
@@ -111,7 +111,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                         ),
                         child: Text(
                           "Didn’t receive code?",
-                          style: TextStyle(
+                          style: GoogleFonts.robotoFlex(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
                             color: white,
@@ -127,7 +127,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                           children: [
                             Text(
                               "Resend code in ",
-                              style: TextStyle(
+                              style: GoogleFonts.robotoFlex(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w700,
                                 color: white,
@@ -135,7 +135,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                             ),
                             Text(
                               "01:32",
-                              style: TextStyle(
+                              style: GoogleFonts.robotoFlex(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w700,
                                 color: primaryColor,

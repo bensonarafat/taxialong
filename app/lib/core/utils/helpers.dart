@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:math' as math;
 
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:taxialong/core/constants/assets.dart';
+import 'package:taxialong/core/utils/colors.dart';
 
 double getCollapseOpacity(context) {
   final settings =
@@ -15,33 +19,96 @@ double getCollapseOpacity(context) {
   return opacity;
 }
 
-// Alert with multiple and custom buttons
-onAlertButtonsPressed(context) {
-  Alert(
+showEnableLocation(context) {
+  return Alert(
     context: context,
-    type: AlertType.warning,
-    title: "RFLUTTER ALERT",
-    desc: "Flutter is more awesome with RFlutter Alert.",
+    style: AlertStyle(
+      buttonsDirection: ButtonsDirection.column,
+      isCloseButton: false,
+      titleStyle: GoogleFonts.robotoFlex(
+        color: white,
+        fontSize: 24.sp,
+        fontWeight: FontWeight.w500,
+      ),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.r),
+        side: const BorderSide(
+          color: Color(0xFF121212),
+        ),
+      ),
+      descStyle: GoogleFonts.robotoFlex(
+        color: white,
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w400,
+      ),
+    ),
+    image: Image.asset(
+      enableLocation,
+      width: 97.w,
+      height: 97.h,
+    ),
+    title: "Enable your location",
+    desc:
+        "Turn On your location to allow “Taxi Along” to Determine Your Location",
     buttons: [
       DialogButton(
-        onPressed: () => Navigator.pop(context),
-        color: const Color.fromRGBO(0, 179, 134, 1.0),
-        child: const Text(
-          "FLAT",
-          style: TextStyle(color: Colors.white, fontSize: 18),
+        color: Colors.transparent,
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: Container(
+          width: 305.w,
+          height: 54.h,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+          decoration: ShapeDecoration(
+            color: primaryColor,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Use current location',
+                style: GoogleFonts.robotoFlex(
+                  color: white,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       DialogButton(
-        onPressed: () => Navigator.pop(context),
-        gradient: const LinearGradient(colors: [
-          Color.fromRGBO(116, 116, 191, 1.0),
-          Color.fromRGBO(52, 138, 199, 1.0),
-        ]),
-        child: const Text(
-          "GRADIENT",
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
-      )
+          color: Colors.transparent,
+          onPressed: () => Navigator.pop(context),
+          child: Container(
+            width: 305.w,
+            height: 54.h,
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Skip for now',
+                  style: GoogleFonts.robotoFlex(
+                    color: white,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ))
     ],
   ).show();
 }

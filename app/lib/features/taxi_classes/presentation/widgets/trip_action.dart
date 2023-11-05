@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/features/taxi_classes/presentation/widgets/payment_methods.dart';
 import 'package:taxialong/features/taxi_classes/presentation/widgets/seats_selector.dart';
@@ -16,14 +17,13 @@ class TripAction extends StatelessWidget {
     WoltModalSheetPage selectSeatPreference(
         BuildContext modalSheetContext, TextTheme textTheme) {
       return WoltModalSheetPage.withSingleChild(
-        backgroundColor: dark,
         hasSabGradient: false,
         isTopBarLayerAlwaysVisible: true,
         topBarTitle: SizedBox(
           child: Text(
             'Select Seat (s)',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: GoogleFonts.robotoFlex(
               color: white,
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
@@ -37,17 +37,15 @@ class TripAction extends StatelessWidget {
     WoltModalSheetPage paymentMethodBottomSheet(
         BuildContext modalSheetContext, TextTheme textTheme) {
       return WoltModalSheetPage.withSingleChild(
-        backgroundColor: dark,
         hasSabGradient: false,
         isTopBarLayerAlwaysVisible: true,
         topBarTitle: SizedBox(
           child: Text(
             'Choose a Payment Method',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: GoogleFonts.robotoFlex(
               color: white,
               fontSize: 18.sp,
-              fontFamily: 'Roboto Flex',
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -102,7 +100,7 @@ class TripAction extends StatelessWidget {
                   child: SizedBox(
                     child: Text(
                       'Select seat preference',
-                      style: TextStyle(
+                      style: GoogleFonts.robotoFlex(
                         color: secondaryColor,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
@@ -123,7 +121,7 @@ class TripAction extends StatelessWidget {
                 child: SizedBox(
                   child: Text(
                     'Cash',
-                    style: TextStyle(
+                    style: GoogleFonts.robotoFlex(
                       color: white,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w400,
@@ -174,10 +172,9 @@ class TripAction extends StatelessWidget {
                 child: SizedBox(
                   child: Text(
                     'Fare',
-                    style: TextStyle(
+                    style: GoogleFonts.robotoFlex(
                       color: white,
                       fontSize: 16.sp,
-                      fontFamily: 'Roboto Flex',
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -189,10 +186,9 @@ class TripAction extends StatelessWidget {
                   child: Text(
                     'N150',
                     textAlign: TextAlign.right,
-                    style: TextStyle(
+                    style: GoogleFonts.robotoFlex(
                       color: white,
                       fontSize: 14.sp,
-                      fontFamily: 'Roboto Flex',
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -204,10 +200,9 @@ class TripAction extends StatelessWidget {
           SizedBox(
             child: Text(
               'Promo code',
-              style: TextStyle(
+              style: GoogleFonts.robotoFlex(
                 color: const Color(0xFFA0A2A9),
                 fontSize: 16.sp,
-                fontFamily: 'Roboto Flex',
                 fontWeight: FontWeight.w400,
               ),
             ),
