@@ -16,21 +16,20 @@ class PhoneNumberInput extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         border: Border.all(
-          color: white,
+          color:
+              Theme.of(context).brightness == Brightness.light ? dark : white,
         ),
         borderRadius: BorderRadius.circular(4),
       ),
       width: 358.w,
       child: InternationalPhoneNumberInput(
-        inputDecoration: const InputDecoration(
+        inputDecoration: InputDecoration(
           hintText: "",
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
-          hintStyle: TextStyle(
-            color: white,
-          ),
+          hintStyle: Theme.of(context).textTheme.titleMedium,
         ),
         onInputChanged: (PhoneNumber number) {},
         onInputValidated: (bool value) {},
@@ -39,14 +38,14 @@ class PhoneNumberInput extends StatelessWidget {
         ),
         ignoreBlank: false,
         autoValidateMode: AutovalidateMode.disabled,
-        selectorTextStyle: const TextStyle(
-          color: Colors.white,
-        ),
+        selectorTextStyle: Theme.of(context).textTheme.titleMedium,
         initialValue: number,
         textFieldController: controller,
         formatInput: true,
-        keyboardType:
-            const TextInputType.numberWithOptions(signed: true, decimal: true),
+        keyboardType: const TextInputType.numberWithOptions(
+          signed: true,
+          decimal: true,
+        ),
         inputBorder: InputBorder.none,
         onSaved: (PhoneNumber number) {},
       ),

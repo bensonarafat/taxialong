@@ -27,11 +27,7 @@ class DontHaveAnAccount extends StatelessWidget {
           children: [
             Text(
               "Don't have an account?",
-              style: GoogleFonts.robotoFlex(
-                fontWeight: FontWeight.w400,
-                fontSize: 16.sp,
-                color: white,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             SizedBox(
               width: 5.w,

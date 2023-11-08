@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
@@ -15,17 +16,15 @@ class RecentStops extends StatelessWidget {
     return Scaffold(
       key: key,
       appBar: AppBar(
-        elevation: 0,
         title: Image.asset(logodark),
         centerTitle: true,
         leading: GestureDetector(
-          onTap: () {
-            // Scaffold.of(context).openDrawer();
-          },
-          child: Image.asset(
-            menudark,
-            width: 24.w,
+          onTap: () {},
+          child: SvgPicture.asset(
+            menu,
+            width: 23.w,
             height: 20.62.h,
+            theme: const SvgTheme(),
           ),
         ),
       ),

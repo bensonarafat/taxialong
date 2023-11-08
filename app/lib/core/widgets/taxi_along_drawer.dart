@@ -131,11 +131,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                     },
                     title: Text(
                       'Ride History',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(carSVG),
                   ),
@@ -149,11 +145,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                     },
                     title: Text(
                       'Profile',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(profileSVG),
                   ),
@@ -161,11 +153,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                   ListTile(
                     title: Text(
                       'Wallet',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(paymentSVG),
                   ),
@@ -177,11 +165,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                     },
                     title: Text(
                       'Notifications',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(notificationSVG),
                   ),
@@ -193,11 +177,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                     },
                     title: Text(
                       'Referral',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(referralSVG),
                   ),
@@ -209,11 +189,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                     },
                     title: Text(
                       'Manage Documents',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(manageDocuments),
                   ),
@@ -224,11 +200,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                     },
                     title: Text(
                       'Become a Driver',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(truckdriverSVG),
                   ),
@@ -240,11 +212,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                     },
                     title: Text(
                       'Help',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(helpSVG),
                   ),
@@ -256,11 +224,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                     },
                     title: Text(
                       'Settings',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(settingsSVG),
                   ),
@@ -272,11 +236,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                     },
                     title: Text(
                       'About',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(aboutSVG),
                   ),

@@ -27,11 +27,7 @@ class AlreadyHaveAnAccount extends StatelessWidget {
           children: [
             Text(
               "Already have an account?",
-              style: GoogleFonts.robotoFlex(
-                fontWeight: FontWeight.w400,
-                fontSize: 16.sp,
-                color: white,
-              ),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             SizedBox(
               width: 5.w,

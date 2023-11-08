@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:taxialong/core/utils/colors.dart';
 
 class FirstNameField extends StatelessWidget {
   final TextEditingController firstnameController;
@@ -22,11 +20,7 @@ class FirstNameField extends StatelessWidget {
         children: [
           Text(
             "First Name",
-            style: GoogleFonts.robotoFlex(
-              color: white,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-            ),
+            style: Theme.of(context).textTheme.titleSmall,
           ),
           SizedBox(height: 4.h),
           SizedBox(
@@ -34,25 +28,8 @@ class FirstNameField extends StatelessWidget {
             height: 44.h,
             child: TextFormField(
               controller: firstnameController,
-              decoration: InputDecoration(
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: primaryColor),
-                ),
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: white,
-                  ),
-                ),
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: white,
-                  ),
-                ),
+              decoration: const InputDecoration(
                 counterText: '',
-                hintStyle: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 20.0.sp,
-                ),
               ),
             ),
           ),

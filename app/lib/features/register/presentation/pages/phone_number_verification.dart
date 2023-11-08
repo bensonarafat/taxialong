@@ -31,13 +31,14 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.chevron_left,
-            weight: 24.sp,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: IconTheme(
+            data: Theme.of(context).iconTheme,
+            child: Icon(
+              Icons.chevron_left,
+              weight: 24.sp,
+            ),
           ),
         ),
       ),
@@ -58,13 +59,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                       ),
                       child: Text(
                         "Verification",
-                        style: GoogleFonts.robotoFlex(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 24.sp,
-                          color: const Color(
-                            0xfff3f3f3,
-                          ),
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
                     Container(
@@ -75,13 +70,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                       ),
                       child: Text(
                         "Verify Mobile Number",
-                        style: GoogleFonts.robotoFlex(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16.sp,
-                          color: const Color(
-                            0xfff3f3f3,
-                          ),
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
                   ],
@@ -111,11 +100,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                         ),
                         child: Text(
                           "Didn’t receive code?",
-                          style: GoogleFonts.robotoFlex(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: white,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ),
                       Container(
@@ -127,11 +112,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                           children: [
                             Text(
                               "Resend code in ",
-                              style: GoogleFonts.robotoFlex(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w700,
-                                color: white,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
                             Text(
                               "01:32",

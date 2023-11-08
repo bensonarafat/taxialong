@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_email_field.dart';
 import 'package:taxialong/core/widgets/taxi_along_first_name_field.dart';
 import 'package:taxialong/core/widgets/taxi_along_last_name_field.dart';
@@ -34,13 +32,14 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.chevron_left,
-            weight: 24.sp,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: IconTheme(
+            data: Theme.of(context).iconTheme,
+            child: Icon(
+              Icons.chevron_left,
+              weight: 24.sp,
+            ),
           ),
         ),
       ),
@@ -58,13 +57,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                   child: Text(
                     "Create an Account",
-                    style: GoogleFonts.robotoFlex(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 24.sp,
-                      color: const Color(
-                        0xfff3f3f3,
-                      ),
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
                 Container(
@@ -75,13 +68,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                   child: Text(
                     "Sign up to get started",
-                    style: GoogleFonts.robotoFlex(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                      color: const Color(
-                        0xfff3f3f3,
-                      ),
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
                 Container(

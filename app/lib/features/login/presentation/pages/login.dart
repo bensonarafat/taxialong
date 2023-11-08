@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_or_text.dart';
 import 'package:taxialong/core/widgets/taxi_along_phone_input.dart';
 import 'package:taxialong/core/widgets/taxi_along_social_buttons.dart';
@@ -20,13 +18,14 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.chevron_left,
-            weight: 24.sp,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: IconTheme(
+            data: Theme.of(context).iconTheme,
+            child: Icon(
+              Icons.chevron_left,
+              weight: 24.sp,
+            ),
           ),
         ),
       ),
@@ -44,13 +43,7 @@ class _LoginState extends State<Login> {
                   ),
                   child: Text(
                     "Welcome back",
-                    style: GoogleFonts.robotoFlex(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 24.sp,
-                      color: const Color(
-                        0xfff3f3f3,
-                      ),
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
                 Container(
@@ -61,13 +54,7 @@ class _LoginState extends State<Login> {
                   ),
                   child: Text(
                     "Login to continue",
-                    style: GoogleFonts.robotoFlex(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                      color: const Color(
-                        0xfff3f3f3,
-                      ),
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
                 Container(
@@ -82,11 +69,7 @@ class _LoginState extends State<Login> {
                     children: [
                       Text(
                         "Enter Phone Number",
-                        style: GoogleFonts.robotoFlex(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.sp,
-                          color: white,
-                        ),
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                       SizedBox(
                         height: 4.h,

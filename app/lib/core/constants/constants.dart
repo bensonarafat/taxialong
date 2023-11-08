@@ -28,16 +28,16 @@ final List<OnBoardModel> onBoardData = [
     image: onboardingCarousel1,
   ),
   const OnBoardModel(
-    title: "Choose your destination",
+    title: "Choose your level of comfort",
     description:
-        "Find the perfect ride to take you where you need to go by selecting your drop-off location",
-    image: onboardingCarousel1,
+        "Select your preferred ride type and enjoy a personalized, stress-free ride that matches your comfort level.",
+    image: onboardingCarousel2,
   ),
   const OnBoardModel(
-    title: "Choose your destination",
+    title: "Enjoy Your ride",
     description:
-        "Find the perfect ride to take you where you need to go by selecting your drop-off location",
-    image: onboardingCarousel1,
+        "Sit back and relax while your driver takes you to your destination. With features like live tracking and in-app communication, you can enjoy a worry-free ride.",
+    image: onboardingCarousel3,
   ),
 ];
 

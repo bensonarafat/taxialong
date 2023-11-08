@@ -2,59 +2,141 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:taxialong/config/theme/appbar_theme.dart';
+import 'package:taxialong/config/theme/text_theme.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
-ThemeData lighttheme = ThemeData(
-  useMaterial3: true,
-  primaryColor: primaryColor,
-);
-// dark theme
+class AppTheme {
+  AppTheme._();
 
-ThemeData darktheme = ThemeData(
-  useMaterial3: true,
-  primaryColor: primaryColor,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: primaryColor,
-    brightness: Brightness.dark,
-  ),
-  textTheme: TextTheme(
-    displayLarge: GoogleFonts.robotoFlex(
-      fontSize: 36.sp,
-      color: white,
-      fontWeight: FontWeight.w600,
-    ),
-    displayMedium: GoogleFonts.robotoFlex(),
-    displaySmall: GoogleFonts.robotoFlex(),
-    headlineLarge: GoogleFonts.robotoFlex(),
-    headlineMedium: GoogleFonts.robotoFlex(),
-    headlineSmall: GoogleFonts.robotoFlex(),
-    titleLarge: GoogleFonts.robotoFlex(),
-    titleMedium: GoogleFonts.robotoFlex(),
-    titleSmall: GoogleFonts.robotoFlex(),
-    bodyLarge: GoogleFonts.robotoFlex(),
-    bodyMedium: GoogleFonts.robotoFlex(),
-    bodySmall: GoogleFonts.robotoFlex(),
-    labelLarge: GoogleFonts.robotoFlex(),
-    labelMedium: GoogleFonts.robotoFlex(),
-    labelSmall: GoogleFonts.robotoFlex(),
-
-    // button
-  ),
-  outlinedButtonTheme: OutlinedButtonThemeData(
-    style: OutlinedButton.styleFrom(
-      backgroundColor: primaryColor,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: primaryColor,
-          width: 1.w,
-        ),
-        borderRadius: BorderRadius.circular(
-          12.r,
+  static ThemeData lightTheme() {
+    return ThemeData(
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: lightBackgroundColor,
+      useMaterial3: true,
+      primaryColor: primaryColor,
+      textTheme: AppTextTheme.lightTextTheme(),
+      appBarTheme: AppAppBarTheme.lightAppBarTheme(),
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.all<Color>(white),
+        side: BorderSide(color: primaryColor, width: 2.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.r),
         ),
       ),
-    ),
-  ),
-  buttonTheme: ButtonThemeData(
-    buttonColor: primaryColor,
-  ),
-);
+      inputDecorationTheme: InputDecorationTheme(
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: primaryColor),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xffCECECE),
+          ),
+        ),
+        border: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xffCECECE),
+          ),
+        ),
+        hintStyle: GoogleFonts.robotoFlex().copyWith(
+          color: dark,
+          fontSize: 22.sp,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      drawerTheme: const DrawerThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
+        backgroundColor: white,
+      ),
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: GoogleFonts.robotoFlex().copyWith(
+          color: dark,
+          fontSize: 22.sp,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      iconTheme: const IconThemeData(
+        color: dark,
+      ),
+    );
+  }
+
+  // dark theme
+  static ThemeData darkTheme() {
+    return ThemeData(
+      brightness: Brightness.dark,
+      useMaterial3: true,
+      primaryColor: primaryColor,
+      scaffoldBackgroundColor: darkBackgroundColor,
+      textTheme: AppTextTheme.darkTextTheme(),
+      appBarTheme: AppAppBarTheme.darkAppBarTheme(),
+      iconTheme: const IconThemeData(
+        color: white,
+      ),
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.all<Color>(dark),
+        side: BorderSide(color: primaryColor, width: 2.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.r),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: primaryColor),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: white,
+          ),
+        ),
+        border: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: white,
+          ),
+        ),
+        hintStyle: GoogleFonts.robotoFlex().copyWith(
+          color: white,
+          fontSize: 22.sp,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      drawerTheme: const DrawerThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
+        backgroundColor: dark,
+      ),
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: GoogleFonts.robotoFlex().copyWith(
+          color: white,
+          fontSize: 22.sp,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      //
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: primaryColor,
+        brightness: Brightness.dark,
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: primaryColor,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: primaryColor,
+              width: 1.w,
+            ),
+            borderRadius: BorderRadius.circular(
+              12.r,
+            ),
+          ),
+        ),
+      ),
+      buttonTheme: const ButtonThemeData(
+        buttonColor: primaryColor,
+      ),
+    );
+  }
+}

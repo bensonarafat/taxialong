@@ -12,18 +12,9 @@ class Rating extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text(
+        title: const Text(
           'Ratings',
-          textAlign: TextAlign.center,
-          style: GoogleFonts.robotoFlex(
-            color: white,
-            fontSize: 24.sp,
-            fontWeight: FontWeight.w600,
-          ),
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Padding(

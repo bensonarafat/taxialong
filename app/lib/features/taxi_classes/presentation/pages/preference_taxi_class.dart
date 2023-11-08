@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/features/taxi_classes/presentation/widgets/confirm_ride_button.dart';
 import 'package:taxialong/features/taxi_classes/presentation/widgets/driver_car.dart';
 import 'package:taxialong/features/taxi_classes/presentation/widgets/driver_info.dart';
@@ -13,10 +12,7 @@ class PreferenceTaxiClass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 16.h),

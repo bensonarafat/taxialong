@@ -4,6 +4,8 @@
 
 //onboarding
 const onboardingCarousel1 = "assets/images/onboarding_carousel_1.png";
+const onboardingCarousel2 = "assets/images/onboarding_carousel_2.png";
+const onboardingCarousel3 = "assets/images/onboarding_carousel_3.png";
 
 //get started
 const getStarted = "assets/images/get_started.png";

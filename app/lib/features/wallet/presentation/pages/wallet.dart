@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
@@ -19,20 +20,19 @@ class Wallet extends StatelessWidget {
     return Scaffold(
       key: key,
       appBar: AppBar(
-        elevation: 0,
         title: const SearchContainer(),
-        centerTitle: true,
         actions: [
-          Image.asset(belldark),
+          SvgPicture.asset(notificationSVG),
         ],
         leading: GestureDetector(
           onTap: () {
             // Scaffold.of(context).openDrawer();
           },
-          child: Image.asset(
-            menudark,
+          child: SvgPicture.asset(
+            menu,
             width: 24.w,
             height: 20.62.h,
+            theme: const SvgTheme(),
           ),
         ),
       ),

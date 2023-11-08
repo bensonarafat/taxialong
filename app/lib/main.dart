@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taxialong/config/theme/theme.dart';
 import 'features/onboard/presentation/pages/onboarding.dart';
 
 Future<void> main() async {
@@ -24,7 +25,9 @@ class TaxiAlong extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) {
         return MaterialApp(
-          theme: ThemeData.dark(),
+          themeMode: ThemeMode.system,
+          theme: AppTheme.lightTheme(),
+          darkTheme: AppTheme.darkTheme(),
           title: 'Taxi Along',
           debugShowCheckedModeBanner: false,
           home: const Onboarding(),

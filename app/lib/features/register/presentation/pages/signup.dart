@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_phone_input.dart';
 import 'package:taxialong/features/register/presentation/widgets/already_have_account.dart';
@@ -13,13 +12,14 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.chevron_left,
-            weight: 24.sp,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: IconTheme(
+            data: Theme.of(context).iconTheme,
+            child: Icon(
+              Icons.chevron_left,
+              weight: 24.sp,
+            ),
           ),
         ),
       ),
@@ -39,13 +39,7 @@ class SignUp extends StatelessWidget {
                       ),
                       child: Text(
                         "Weclome to Taxi Along!",
-                        style: GoogleFonts.robotoFlex(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 24.sp,
-                          color: const Color(
-                            0xfff3f3f3,
-                          ),
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
                     Container(
@@ -56,13 +50,7 @@ class SignUp extends StatelessWidget {
                       ),
                       child: Text(
                         "Enter mobile number to get started",
-                        style: GoogleFonts.robotoFlex(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16.sp,
-                          color: const Color(
-                            0xfff3f3f3,
-                          ),
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
                   ],
@@ -80,13 +68,8 @@ class SignUp extends StatelessWidget {
                           Expanded(
                             flex: 1,
                             child: Checkbox(
-                              value: true,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                side: const BorderSide(
-                                  color: white,
-                                ),
-                              ),
+                              activeColor: primaryColor,
+                              value: false,
                               onChanged: (v) {},
                             ),
                           ),
@@ -94,11 +77,7 @@ class SignUp extends StatelessWidget {
                             flex: 7,
                             child: Text(
                               "By signing up confirm that you agree to our Terms of use and Privacy Policy",
-                              style: GoogleFonts.robotoFlex(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w400,
-                                color: white,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                         ],

@@ -16,23 +16,18 @@ class UploadDocuments2 extends StatelessWidget {
     return Scaffold(
       key: key,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'My Document',
-          textAlign: TextAlign.center,
-          style: GoogleFonts.robotoFlex(
-            color: white,
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w600,
-          ),
         ),
-        elevation: 0,
         leading: GestureDetector(
           onTap: () {
             Navigator.of(context).pop();
           },
-          child: const Icon(
-            Icons.keyboard_arrow_left,
-            color: white,
+          child: IconTheme(
+            data: Theme.of(context).iconTheme,
+            child: const Icon(
+              Icons.keyboard_arrow_left,
+            ),
           ),
         ),
       ),

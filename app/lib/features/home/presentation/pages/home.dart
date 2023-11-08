@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:taxialong/core/constants/constants.dart';
-import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/home/presentation/widgets/home_flexible_space.dart';
@@ -27,6 +26,7 @@ class _HomeState extends State<Home> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
+          elevation: 0,
           automaticallyImplyLeading: false,
           pinned: true,
           floating: true,

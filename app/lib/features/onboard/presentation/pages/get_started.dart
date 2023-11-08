@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:taxialong/core/constants/assets.dart';
-import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/widgets/taxi_along_or_text.dart';
 import 'package:taxialong/core/widgets/taxi_along_social_buttons.dart';
