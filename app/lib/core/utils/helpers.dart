@@ -25,22 +25,14 @@ showEnableLocation(context) {
     style: AlertStyle(
       buttonsDirection: ButtonsDirection.column,
       isCloseButton: false,
-      titleStyle: GoogleFonts.robotoFlex(
-        color: white,
-        fontSize: 24.sp,
-        fontWeight: FontWeight.w500,
-      ),
+      titleStyle: Theme.of(context).textTheme.headlineSmall!,
       alertBorder: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.r),
         side: const BorderSide(
           color: Color(0xFF121212),
         ),
       ),
-      descStyle: GoogleFonts.robotoFlex(
-        color: white,
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w400,
-      ),
+      descStyle: Theme.of(context).textTheme.bodyMedium!,
     ),
     image: Image.asset(
       enableLocation,
@@ -100,11 +92,7 @@ showEnableLocation(context) {
               children: [
                 Text(
                   'Skip for now',
-                  style: GoogleFonts.robotoFlex(
-                    color: white,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ],
             ),

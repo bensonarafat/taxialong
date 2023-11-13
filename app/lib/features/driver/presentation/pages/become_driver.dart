@@ -40,11 +40,7 @@ class BecomeDriver extends StatelessWidget {
               Gap(36.h),
               Text(
                 'Become a Driver',
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               Gap(8.h),
               SizedBox(
@@ -53,11 +49,7 @@ class BecomeDriver extends StatelessWidget {
                 child: Text(
                   "Thank you for your interest in becoming a driver for our taxi service. To get started and receive ride requests, we'll need you to upload some essential documents for verification. This step ensures the safety and reliability of our service.",
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.robotoFlex(
-                    color: white,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
               Gap(56.h),

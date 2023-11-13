@@ -36,65 +36,71 @@ class Settings extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 ListTile(
-                  leading: SvgPicture.asset(notificationIcon),
+                  leading: SvgPicture.asset(
+                    notificationIcon,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).brightness == Brightness.dark
+                          ? white
+                          : dark,
+                      BlendMode.srcATop,
+                    ),
+                  ),
                   trailing: SvgPicture.asset(toggleOn),
                   subtitle: Text(
                     'Currently On',
-                    style: GoogleFonts.robotoFlex(
-                      color: white,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   title: Text(
                     'Notifications',
-                    style: GoogleFonts.robotoFlex(
-                      color: white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                 ),
 
                 //
 
                 ListTile(
-                  leading: SvgPicture.asset(globe),
+                  leading: SvgPicture.asset(
+                    globe,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).brightness == Brightness.dark
+                          ? white
+                          : dark,
+                      BlendMode.srcATop,
+                    ),
+                  ),
                   subtitle: Text(
                     'EN (UK)',
-                    style: GoogleFonts.robotoFlex(
-                      color: white,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   title: Text(
                     'Language',
-                    style: GoogleFonts.robotoFlex(
-                      color: white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                 ),
 
                 ListTile(
-                  leading: SvgPicture.asset(starBorder),
+                  leading: SvgPicture.asset(
+                    starBorder,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).brightness == Brightness.dark
+                          ? white
+                          : dark,
+                      BlendMode.srcATop,
+                    ),
+                  ),
                   subtitle: Text(
                     'Rate us',
-                    style: GoogleFonts.robotoFlex(
-                      color: white,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   title: Text(
                     'Enjoying the app?',
-                    style: GoogleFonts.robotoFlex(
-                      color: white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                 ),
               ],

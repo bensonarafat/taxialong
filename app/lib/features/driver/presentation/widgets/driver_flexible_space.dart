@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
+import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 
 class DriverFlexibleSpace extends StatefulWidget {
@@ -54,7 +55,15 @@ class _DriverFlexibleSpaceState extends State<DriverFlexibleSpace> {
                         padding: EdgeInsets.only(top: 2.h, bottom: 1.38.w),
                         clipBehavior: Clip.antiAlias,
                         decoration: const BoxDecoration(),
-                        child: SvgPicture.asset(menu),
+                        child: SvgPicture.asset(
+                          menu,
+                          colorFilter: ColorFilter.mode(
+                            Theme.of(context).brightness == Brightness.dark
+                                ? white
+                                : dark,
+                            BlendMode.srcIn,
+                          ),
+                        ),
                       ),
                     ),
                     Gap(278.w),

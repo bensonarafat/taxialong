@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_bus_stop.dart';
@@ -33,6 +32,9 @@ class BusStop extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            shadowColor: Theme.of(context).shadowColor,
+            surfaceTintColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).colorScheme.background,
             automaticallyImplyLeading: false,
             pinned: true,
             expandedHeight: 74.h,
@@ -61,7 +63,9 @@ class BusStop extends StatelessWidget {
                         decoration: ShapeDecoration(
                           color: index == 0
                               ? primaryColor
-                              : const Color(0x19DADADA),
+                              : Theme.of(context).brightness == Brightness.dark
+                                  ? const Color(0x19DADADA)
+                                  : const Color.fromARGB(24, 113, 112, 112),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.r),
                           ),
@@ -70,11 +74,18 @@ class BusStop extends StatelessWidget {
                           child: Text(
                             areas[index],
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.robotoFlex(
-                              color: white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  fontSize: 16.sp,
+                                  color: index == 0
+                                      ? white
+                                      : Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? white
+                                          : dark,
+                                ),
                           ),
                         ),
                       );
@@ -99,11 +110,10 @@ class BusStop extends StatelessWidget {
                         child: SizedBox(
                           child: Text(
                             'Bus stops along Apo axis',
-                            style: GoogleFonts.robotoFlex(
-                              color: white,
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(fontSize: 20.sp),
                           ),
                         ),
                       ),

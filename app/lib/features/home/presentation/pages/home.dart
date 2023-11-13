@@ -26,6 +26,9 @@ class _HomeState extends State<Home> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
+          shadowColor: Theme.of(context).shadowColor,
+          surfaceTintColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.background,
           elevation: 0,
           automaticallyImplyLeading: false,
           pinned: true,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 class ClassFilter extends StatelessWidget {
@@ -10,7 +9,6 @@ class ClassFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 192.h,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -20,16 +18,17 @@ class ClassFilter extends StatelessWidget {
             width: 58.w,
             child: Text(
               'Class',
-              style: GoogleFonts.robotoFlex(
-                color: secondaryColor,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? secondaryColor
+                        : dark,
+                  ),
             ),
           ),
           Gap(8.h),
           SizedBox(
-            height: 164.h,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -89,18 +88,12 @@ class TClass extends StatelessWidget {
       child: Container(
         height: 44.h,
         padding: EdgeInsets.all(10.w),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(width: 1.w),
-          ),
-        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Radio(
-              fillColor: MaterialStateProperty.all<Color>(white),
               value: 1,
               groupValue: 1,
               onChanged: (v) {},
@@ -119,11 +112,7 @@ class TClass extends StatelessWidget {
               child: SizedBox(
                 child: Text(
                   name,
-                  style: GoogleFonts.robotoFlex(
-                    color: white,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
             ),

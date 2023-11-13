@@ -22,11 +22,12 @@ class RecentRequest extends StatelessWidget {
             children: [
               Container(
                 width: 350.w,
-                height: 313.h,
                 margin: EdgeInsets.only(bottom: 16.h),
                 padding: EdgeInsets.all(16.w),
                 decoration: ShapeDecoration(
-                  color: const Color(0xFF121212),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? const Color(0xFF121212)
+                      : const Color(0xFFFAFAFA),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                       width: 1.w,
@@ -66,11 +67,12 @@ class RecentRequest extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Lucy Edwin',
-                                    style: GoogleFonts.robotoFlex(
-                                      color: white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          fontSize: 16.sp,
+                                        ),
                                   ),
                                   Gap(4.h),
                                   Row(
@@ -88,11 +90,9 @@ class RecentRequest extends StatelessWidget {
                                         children: [
                                           Text(
                                             'Class 4',
-                                            style: GoogleFonts.robotoFlex(
-                                              color: white,
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w400,
-                                            ),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
                                           ),
                                         ],
                                       ),
@@ -124,14 +124,10 @@ class RecentRequest extends StatelessWidget {
                                   Row(
                                     children: [
                                       SvgPicture.asset(carSeat),
-                                      Text(
-                                        '1 Seat',
-                                        style: GoogleFonts.robotoFlex(
-                                          color: white,
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
+                                      Text('1 Seat',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium)
                                     ],
                                   ),
                                 ],
@@ -167,23 +163,11 @@ class RecentRequest extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Kabusa Junction',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
+                            Text('Kabusa Junction',
+                                style: Theme.of(context).textTheme.bodyMedium),
                             Gap(12.h),
-                            Text(
-                              'Lokogoma Junction',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            )
+                            Text('Lokogoma Junction',
+                                style: Theme.of(context).textTheme.bodyMedium)
                           ],
                         )
                       ],
@@ -203,14 +187,13 @@ class RecentRequest extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Text(
-                              'Price',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            )
+                            Text('Price',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ))
                           ],
                         ),
                         Row(
@@ -219,48 +202,12 @@ class RecentRequest extends StatelessWidget {
                             Gap(4.w),
                             Text(
                               'Cash',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
                           ],
                         ),
                       ],
                     ),
-                    Gap(16.h),
-                    Container(
-                      width: 318.w,
-                      height: 42.h,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-                      decoration: ShapeDecoration(
-                        color: primaryColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              child: Text(
-                                'Accepted',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),

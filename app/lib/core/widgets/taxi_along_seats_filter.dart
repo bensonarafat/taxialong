@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 class SeatsFilter extends StatelessWidget {
@@ -18,11 +17,13 @@ class SeatsFilter extends StatelessWidget {
           SizedBox(
             child: Text(
               'Seats',
-              style: GoogleFonts.robotoFlex(
-                color: secondaryColor,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? secondaryColor
+                        : dark,
+                  ),
             ),
           ),
           Gap(8.h),
@@ -104,18 +105,12 @@ class Seat extends StatelessWidget {
     return Expanded(
       child: Container(
         padding: EdgeInsets.all(10.w),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(width: 1.w),
-          ),
-        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Radio(
-              fillColor: MaterialStateProperty.all<Color>(white),
               value: 1,
               groupValue: 1,
               onChanged: (v) {},
@@ -125,11 +120,7 @@ class Seat extends StatelessWidget {
               child: SizedBox(
                 child: Text(
                   name,
-                  style: GoogleFonts.robotoFlex(
-                    color: white,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
             ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
@@ -39,11 +38,11 @@ class WalletAvailableBalance extends StatelessWidget {
                       width: 111.w,
                       child: Text(
                         "₦500.00",
-                        style: GoogleFonts.robotoFlex(
-                          color: white,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
                       ),
                     ),
                     Image.asset(eye),
@@ -55,11 +54,9 @@ class WalletAvailableBalance extends StatelessWidget {
           Gap(8.h),
           Text(
             "Available Balance",
-            style: GoogleFonts.robotoFlex(
-              fontSize: 14.sp,
-              color: white,
-              fontWeight: FontWeight.w400,
-            ),
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  fontWeight: FontWeight.w400,
+                ),
           ),
           Gap(16.h),
           Container(
@@ -81,11 +78,10 @@ class WalletAvailableBalance extends StatelessWidget {
               onPressed: () {},
               child: Text(
                 "Fund wallet",
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: white,
+                    ),
               ),
             ),
           ),

@@ -60,6 +60,20 @@ class AppTheme {
       iconTheme: const IconThemeData(
         color: dark,
       ),
+      unselectedWidgetColor: dark,
+      shadowColor: white,
+      //
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: primaryColor,
+        brightness: Brightness.light,
+        background: white,
+      ),
+      radioTheme: RadioThemeData(
+        fillColor: MaterialStateProperty.all<Color>(dark),
+      ),
+      cardTheme: const CardTheme(
+        color: white,
+      ),
     );
   }
 
@@ -115,10 +129,22 @@ class AppTheme {
           fontWeight: FontWeight.w400,
         ),
       ),
+
+      unselectedWidgetColor: white,
+      shadowColor: dark,
+
       //
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         brightness: Brightness.dark,
+        background: dark,
+      ),
+
+      radioTheme: RadioThemeData(
+        fillColor: MaterialStateProperty.all<Color>(white),
+      ),
+      cardTheme: const CardTheme(
+        color: dark,
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(

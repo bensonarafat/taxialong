@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:taxialong/core/constants/assets.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_route.dart';
 import 'package:taxialong/features/taxi_classes/presentation/widgets/sort_bottom_sheet.dart';
@@ -37,7 +39,9 @@ class TaxiClassFlexibleSpace extends StatelessWidget {
                           EdgeInsets.symmetric(horizontal: 4.h, vertical: 3.w),
                       clipBehavior: Clip.antiAlias,
                       decoration: ShapeDecoration(
-                        color: const Color(0x19DADADA),
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0x19DADADA)
+                            : const Color.fromARGB(24, 93, 92, 92),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(100),
                         ),
@@ -48,9 +52,8 @@ class TaxiClassFlexibleSpace extends StatelessWidget {
                             enableDrag: true,
                             context: context,
                             pageListBuilder: (modalSheetContext) {
-                              final textTheme = Theme.of(context).textTheme;
                               return [
-                                sortBottomSheet(modalSheetContext, textTheme),
+                                sortBottomSheet(modalSheetContext),
                               ];
                             },
                             modalTypeBuilder: (context) {
@@ -64,11 +67,18 @@ class TaxiClassFlexibleSpace extends StatelessWidget {
                             maxDialogWidth: 560.w,
                             minDialogWidth: 400.w,
                             minPageHeight: 0.0,
-                            maxPageHeight: 0.9.h,
                           );
                         },
                         child: Center(
-                          child: Image.asset(sort),
+                          child: SvgPicture.asset(
+                            sortSVG,
+                            colorFilter: ColorFilter.mode(
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? white
+                                  : dark,
+                              BlendMode.srcIn,
+                            ),
+                          ),
                         ),
                       ),
                     )

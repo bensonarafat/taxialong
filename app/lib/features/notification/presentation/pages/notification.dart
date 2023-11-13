@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
-import 'package:taxialong/core/utils/colors.dart';
 
 class TaxiAlongNotification extends StatelessWidget {
   const TaxiAlongNotification({super.key});
@@ -45,11 +43,9 @@ class TaxiAlongNotification extends StatelessWidget {
             Gap(16.h),
             Text(
               'No Notifications Available',
-              style: GoogleFonts.robotoFlex(
-                color: white,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
             )
           ],
         ),

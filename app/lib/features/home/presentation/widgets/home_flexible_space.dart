@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_search_container.dart';
+import 'package:taxialong/features/notification/presentation/pages/notification.dart';
 
 class HomeFlexibleSpace extends StatelessWidget {
   const HomeFlexibleSpace({super.key});
@@ -48,10 +49,15 @@ class HomeFlexibleSpace extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                   left: 16.w,
                                 ),
-                                child: Image.asset(
-                                  menudark,
-                                  width: 24.w,
-                                  height: 20.62.h,
+                                child: SvgPicture.asset(
+                                  menu,
+                                  colorFilter: ColorFilter.mode(
+                                    Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? white
+                                        : dark,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                               ),
                             );
@@ -60,14 +66,24 @@ class HomeFlexibleSpace extends StatelessWidget {
                         Gap(16.w),
                         const SearchContainer(),
                         Gap(8.w),
-                        Container(
-                          margin: EdgeInsets.only(
-                            right: 16.w,
-                          ),
-                          child: Image.asset(
-                            belldark,
-                            height: 26.h,
-                            width: 26.w,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const TaxiAlongNotification()));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              right: 16.w,
+                            ),
+                            child: SvgPicture.asset(
+                              notificationSVG,
+                              colorFilter: ColorFilter.mode(
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? white
+                                    : dark,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -80,12 +96,10 @@ class HomeFlexibleSpace extends StatelessWidget {
                     ),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Routes",
-                      style: GoogleFonts.robotoFlex(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w700,
-                        color: white,
-                      ),
+                      "Terminals",
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ),
                 ],

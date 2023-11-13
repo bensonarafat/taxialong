@@ -36,9 +36,12 @@ class _DriverHomeState extends State<DriverHome> {
       ),
       body: CustomScrollView(slivers: [
         SliverAppBar(
+          shadowColor: Theme.of(context).shadowColor,
+          surfaceTintColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.background,
           elevation: 0,
           automaticallyImplyLeading: false,
-          pinned: true,
+          pinned: false,
           floating: true,
           expandedHeight: 100.h,
           forceElevated: true,
@@ -48,7 +51,11 @@ class _DriverHomeState extends State<DriverHome> {
           delegate: SliverChildListDelegate(
             [
               Container(
-                padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                padding: EdgeInsets.only(
+                  left: 16.w,
+                  right: 16.w,
+                  top: 16.h,
+                ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,11 +88,7 @@ class _DriverHomeState extends State<DriverHome> {
                           children: [
                             Text(
                               'Hi Andrew Williams',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             Gap(2.h),
                             Row(
@@ -103,11 +106,7 @@ class _DriverHomeState extends State<DriverHome> {
                                 Gap(8.w),
                                 Text(
                                   'Kabusa Junction',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: white,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
                             ),
@@ -121,10 +120,8 @@ class _DriverHomeState extends State<DriverHome> {
                           enableDrag: true,
                           context: context,
                           pageListBuilder: (modalSheetContext) {
-                            final textTheme = Theme.of(context).textTheme;
                             return [
-                              sortClassBottomSheet(
-                                  modalSheetContext, textTheme),
+                              sortClassBottomSheet(modalSheetContext),
                             ];
                           },
                           modalTypeBuilder: (context) {
@@ -138,7 +135,6 @@ class _DriverHomeState extends State<DriverHome> {
                           maxDialogWidth: 560.w,
                           minDialogWidth: 400.w,
                           minPageHeight: 0.0,
-                          maxPageHeight: 0.9.h,
                         );
                       },
                       child: Container(
@@ -209,11 +205,13 @@ class _DriverHomeState extends State<DriverHome> {
                             Text(
                               'N 20,000',
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                             ),
                             Gap(4.h),
                             Text(
@@ -256,11 +254,13 @@ class _DriverHomeState extends State<DriverHome> {
                               child: Text(
                                 '126',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .copyWith(
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                             ),
                             Gap(4.h),
@@ -302,11 +302,13 @@ class _DriverHomeState extends State<DriverHome> {
                             Text(
                               '5',
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                             ),
                             Gap(4.h),
                             Text(
@@ -328,61 +330,65 @@ class _DriverHomeState extends State<DriverHome> {
               Gap(24.h),
               const DriverMap(),
               Gap(16.h),
-              Container(
-                padding: EdgeInsets.only(
-                  left: 16.w,
-                  right: 16.w,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        status ? "New Request" : 'Recent Request',
-                        style: GoogleFonts.robotoFlex(
-                          color: white,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w400,
-                        ),
+              !status
+                  ? Container(
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
                       ),
-                    ),
-                    Gap(20.w),
-                    SizedBox(
-                      width: 99.w,
-                      height: 21.h,
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'View ',
-                              style: GoogleFonts.robotoFlex(
-                                color: const Color(0xFF717171),
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Recent Request',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                             ),
-                            TextSpan(
-                              text: 'all',
-                              style: GoogleFonts.robotoFlex(
-                                color: const Color(0xFF717171),
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
+                          ),
+                          Gap(20.w),
+                          SizedBox(
+                            width: 99.w,
+                            height: 21.h,
+                            child: Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'View ',
+                                    style: GoogleFonts.robotoFlex(
+                                      color: const Color(0xFF717171),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'all',
+                                    style: GoogleFonts.robotoFlex(
+                                      color: const Color(0xFF717171),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
                               ),
+                              textAlign: TextAlign.right,
                             ),
-                          ],
-                        ),
-                        textAlign: TextAlign.right,
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Gap(16.h),
+                    )
+                  : Container(),
+              !status ? Gap(16.h) : Container(),
 
               //
-              status ? const NewRequest() : const RecentRequest(),
+              status ? const DriverTrips() : const RecentRequest(),
             ],
           ),
         ),

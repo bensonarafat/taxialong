@@ -4,7 +4,10 @@ import 'package:taxialong/core/constants/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/features/taxi_classes/presentation/pages/preference_taxi_class.dart';
+import 'package:taxialong/features/taxi_classes/presentation/widgets/cash_widget.dart';
+import 'package:taxialong/features/taxi_classes/presentation/widgets/confirm_ride_button.dart';
+import 'package:taxialong/features/taxi_classes/presentation/widgets/seats_selector.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ClassRide extends StatelessWidget {
   const ClassRide({
@@ -13,6 +16,33 @@ class ClassRide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WoltModalSheetPage selectSeatPreference(BuildContext modalSheetContext) {
+      return WoltModalSheetPage.withSingleChild(
+        hasSabGradient: false,
+        isTopBarLayerAlwaysVisible: true,
+        topBarTitle: SizedBox(
+          child: Text(
+            'Select Seat (s)',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+        ),
+        child: Column(
+          children: [
+            const SeatsSelector(),
+            Gap(16.h),
+            const CashWidget(),
+            Gap(16.h),
+            const ConfirmRideButton(),
+            Gap(150.h),
+          ],
+        ),
+      );
+    }
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       child: Column(
@@ -41,7 +71,7 @@ class ClassRide extends StatelessWidget {
                 Gap(18.w),
                 Expanded(
                   child: SizedBox(
-                    height: 68.h,
+                    height: 80.h,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -58,34 +88,44 @@ class ClassRide extends StatelessWidget {
                                 width: double.infinity,
                                 child: Text(
                                   'Class 2 ',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                 ),
                               ),
                               Gap(4.w),
                               SizedBox(
                                 width: double.infinity,
                                 child: Text(
-                                  'N100 - N500',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: white,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                  'N100',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                 ),
                               ),
                               Gap(4.h),
                               Text(
-                                '2m away',
+                                'Cash',
                                 textAlign: TextAlign.right,
-                                style: GoogleFonts.robotoFlex(
-                                  color: const Color(0xFFA0A2A9),
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w300,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? const Color(0xFFA0A2A9)
+                                          : dark,
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w300,
+                                    ),
                               ),
                             ],
                           ),
@@ -110,11 +150,25 @@ class ClassRide extends StatelessWidget {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PreferenceTaxiClass(),
-                          ),
+                        WoltModalSheet.show<void>(
+                          enableDrag: true,
+                          context: context,
+                          pageListBuilder: (modalSheetContext) {
+                            return [
+                              selectSeatPreference(modalSheetContext),
+                            ];
+                          },
+                          modalTypeBuilder: (context) {
+                            final size = MediaQuery.of(context).size.width;
+                            if (size < 768.0) {
+                              return WoltModalType.bottomSheet;
+                            } else {
+                              return WoltModalType.dialog;
+                            }
+                          },
+                          maxDialogWidth: 560.w,
+                          minDialogWidth: 400.w,
+                          minPageHeight: 0.0,
                         );
                       },
                       child: Row(
@@ -123,7 +177,7 @@ class ClassRide extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Book Now',
+                            'Book Ride',
                             style: GoogleFonts.robotoFlex(
                               color: white,
                               fontSize: 14.sp,

@@ -12,6 +12,7 @@ class Rating extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         title: const Text(
           'Ratings',
         ),
@@ -30,7 +31,9 @@ class Rating extends StatelessWidget {
               bottom: 16.h,
             ),
             decoration: ShapeDecoration(
-              color: const Color(0xFF1D1D1D),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF1D1D1D)
+                  : white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.r),
               ),
@@ -71,21 +74,13 @@ class Rating extends StatelessWidget {
                     Text(
                       'Andrew Williams',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     Gap(7.h),
                     Text(
                       ' ABC12345',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],
                 ),
@@ -98,21 +93,13 @@ class Rating extends StatelessWidget {
                     Text(
                       'How was your trip?',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     Gap(12.h),
                     Text(
                       'Your feedback will help improve driving experience',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],
                 ),
@@ -136,24 +123,8 @@ class Rating extends StatelessWidget {
                   minLines: 1,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: primaryColor),
-                    ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: white,
-                      ),
-                    ),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: white,
-                      ),
-                    ),
                     hintText: "Additional comments.",
-                    hintStyle: GoogleFonts.robotoFlex(
-                      color: white,
-                      fontSize: 16.0.sp,
-                    ),
+                    hintStyle: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
                 Gap(32.h),

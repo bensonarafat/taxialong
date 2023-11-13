@@ -80,7 +80,7 @@ class _BottomSheetViewContentState extends State<BottomSheetViewContent> {
     return SizedBox(
       height: mediaHeight.h,
       child: Card(
-        elevation: 12.0,
+        elevation: 5.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(24.r),
@@ -119,7 +119,9 @@ class CustomDraggingHandle extends StatelessWidget {
       height: 5.h,
       width: 30.w,
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey[200]
+            : Colors.grey,
         borderRadius: BorderRadius.circular(16.r),
       ),
     );

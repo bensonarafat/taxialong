@@ -63,11 +63,9 @@ class HelpCenter extends StatelessWidget {
                     children: [
                       Text(
                         'Lucy',
-                        style: GoogleFonts.robotoFlex(
-                          color: white,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              fontSize: 20.sp,
+                            ),
                       ),
                       Gap(4.h),
                       Row(
@@ -77,20 +75,18 @@ class HelpCenter extends StatelessWidget {
                         children: [
                           Text(
                             '2023-01-01 ',
-                            style: GoogleFonts.robotoFlex(
-                              color: white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
                           ),
                           Gap(5.w),
                           Text(
                             '09: 41: 22',
-                            style: GoogleFonts.robotoFlex(
-                              color: white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
                           ),
                         ],
                       ),
@@ -101,11 +97,15 @@ class HelpCenter extends StatelessWidget {
               Gap(16.h),
               Container(
                 width: double.infinity,
-                height: 52.h,
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(width: 0.50.w, color: white),
+                    bottom: BorderSide(
+                      width: 0.50.w,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? white
+                          : const Color(0xFFDEE2E5),
+                    ),
                   ),
                 ),
                 child: Column(
@@ -115,21 +115,11 @@ class HelpCenter extends StatelessWidget {
                   children: [
                     Text(
                       'Subject',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                     Gap(6.h),
-                    Text(
-                      'add subject',
-                      style: GoogleFonts.robotoFlex(
-                        color: const Color(0x7FA0A2A9),
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Text('add subject',
+                        style: Theme.of(context).textTheme.titleMedium),
                   ],
                 ),
               ),
@@ -145,12 +135,18 @@ class HelpCenter extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 358,
-                        height: 52,
+                        width: 358.w,
+                        height: 52.h,
                         padding: EdgeInsets.symmetric(horizontal: 16.w),
                         decoration: BoxDecoration(
                           border: Border(
-                            bottom: BorderSide(width: 0.50.w, color: white),
+                            bottom: BorderSide(
+                              width: 0.50.w,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? white
+                                  : const Color(0xFFDEE2E5),
+                            ),
                           ),
                         ),
                         child: Column(
@@ -160,11 +156,7 @@ class HelpCenter extends StatelessWidget {
                           children: [
                             Text(
                               'Priority',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             Row(
                               mainAxisSize: MainAxisSize.min,
@@ -182,11 +174,12 @@ class HelpCenter extends StatelessWidget {
                                 Gap(8.w),
                                 Text(
                                   'Normal',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                 ),
                               ],
                             ),
@@ -206,20 +199,9 @@ class HelpCenter extends StatelessWidget {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color(0x19DADADA),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: primaryColor),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color(0x19DADADA),
-                    ),
-                  ),
                   border: const OutlineInputBorder(),
                   hintText: "Type message here....",
-                  hintStyle: GoogleFonts.robotoFlex(
-                    color: white,
-                    fontSize: 16.0.sp,
-                  ),
+                  hintStyle: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
               Gap(4.h),

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchContainer extends StatelessWidget {
@@ -22,18 +20,18 @@ class SearchContainer extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.search,
-            color: white,
-            size: 29.sp,
+          IconTheme(
+            data: Theme.of(context).iconTheme,
+            child: Icon(
+              Icons.search,
+              size: 29.sp,
+            ),
           ),
           Text(
             "Search for a route",
-            style: GoogleFonts.robotoFlex(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-              color: const Color(0xffA0A2A9),
-            ),
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: const Color(0xffA0A2A9),
+                ),
           ),
         ],
       ),

@@ -8,8 +8,7 @@ import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/features/documents/presentation/widgets/cancel_action_button.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-WoltModalSheetPage uploadDocumentBottomSheet(
-    BuildContext modalSheetContext, TextTheme textTheme) {
+WoltModalSheetPage uploadDocumentBottomSheet(BuildContext modalSheetContext) {
   return WoltModalSheetPage.withSingleChild(
     topBarTitle: Text(
       'Select upload option',

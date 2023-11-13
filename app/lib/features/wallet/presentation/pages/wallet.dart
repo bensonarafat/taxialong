@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/widgets/taxi_along_search_container.dart';
 import 'package:taxialong/features/wallet/presentation/widgets/wallet_available_balance.dart';
 import 'package:taxialong/features/wallet/presentation/widgets/wallet_bonus_balance.dart';
+import 'package:taxialong/core/widgets/taxi_along_wallet_payment_method.dart';
 import 'package:taxialong/features/wallet/presentation/widgets/wallet_topup.dart';
 import 'package:taxialong/features/wallet/presentation/widgets/wallet_withdrawal.dart';
 
@@ -22,17 +23,32 @@ class Wallet extends StatelessWidget {
       appBar: AppBar(
         title: const SearchContainer(),
         actions: [
-          SvgPicture.asset(notificationSVG),
+          Padding(
+            padding: EdgeInsets.only(right: 16.w),
+            child: SvgPicture.asset(
+              notificationSVG,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).brightness == Brightness.dark ? white : dark,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
         ],
-        leading: GestureDetector(
-          onTap: () {
-            // Scaffold.of(context).openDrawer();
-          },
-          child: SvgPicture.asset(
-            menu,
-            width: 24.w,
-            height: 20.62.h,
-            theme: const SvgTheme(),
+        leading: Padding(
+          padding: EdgeInsets.only(left: 16.w, right: 16.w),
+          child: GestureDetector(
+            onTap: () {
+              // Scaffold.of(context).openDrawer();
+            },
+            child: SvgPicture.asset(
+              menu,
+              width: 24.w,
+              height: 24.h,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).brightness == Brightness.dark ? white : dark,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
         ),
       ),
@@ -56,16 +72,18 @@ class Wallet extends StatelessWidget {
                 ),
               ),
               Gap(16.h),
+              const WalletPaymentMethod(),
+              Gap(16.h),
               Row(
                 children: [
                   Expanded(
                     child: Text(
                       "Transections",
-                      style: GoogleFonts.robotoFlex(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: white,
-                      ),
+                      style:
+                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
                     ),
                   ),
                   Expanded(
@@ -82,6 +100,7 @@ class Wallet extends StatelessWidget {
                   Gap(16.h),
                 ],
               ),
+              Gap(16.h),
               const WalletTopUp(),
               Gap(8.h),
               const WalletWithdrawal(),

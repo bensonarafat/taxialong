@@ -53,13 +53,13 @@ const taxiCar = "assets/images/taxi_car.png";
 
 const driver = "assets/images/driver.png";
 
-const availableSeat = "assets/images/available_seat.png";
+const unavailableSeat = "assets/images/svg/unavailable_seat.svg";
 
-const unavailableSeat = "assets/images/unavailable_seat.png";
+const availableSeat = "assets/images/svg/available_seat.svg";
 
-const selectedSeat = "assets/images/selected_seat.png";
+const selectedSeat = "assets/images/svg/select_seat.svg";
 
-const driverWheels = "assets/images/driver_wheels.png";
+const driverWheels = "assets/images/svg/driverWheels.svg";
 
 const user = "assets/images/user.png";
 
@@ -122,3 +122,9 @@ const carSeat = "assets/images/svg/car_seat.svg";
 const idCard = "assets/images/id_card.png";
 
 const enableLocation = "assets/images/enable_location.png";
+
+const homeSVG = "assets/images/svg/home.svg";
+
+const walletSVG = "assets/images/svg/wallet.svg";
+
+const sortSVG = "assets/images/svg/sort.svg";

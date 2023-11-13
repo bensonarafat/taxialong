@@ -38,7 +38,9 @@ class TripHistory extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(top: 16.h),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF121212),
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFF121212)
+                        : white,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8.r),
                       topRight: Radius.circular(8.r),
@@ -66,7 +68,10 @@ class TripHistory extends StatelessWidget {
                             height: 28.h,
                             padding: EdgeInsets.all(4.r),
                             decoration: ShapeDecoration(
-                              color: white,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? white
+                                  : dark,
                               shape: RoundedRectangleBorder(
                                 side: BorderSide(width: 1.w, color: white),
                                 borderRadius: BorderRadius.circular(4.r),
@@ -80,7 +85,10 @@ class TripHistory extends StatelessWidget {
                                 Text(
                                   'Completed',
                                   style: GoogleFonts.robotoFlex(
-                                    color: const Color(0xFF18C160),
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? successColor
+                                        : white,
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -90,15 +98,14 @@ class TripHistory extends StatelessWidget {
                           ),
                           Expanded(
                             child: SizedBox(
-                              child: Text(
-                                '02/05/2022',
-                                textAlign: TextAlign.right,
-                                style: GoogleFonts.robotoFlex(
-                                  color: const Color(0xFF868686),
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
+                              child: Text('02/05/2022',
+                                  textAlign: TextAlign.right,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(
+                                        fontSize: 16.sp,
+                                      )),
                             ),
                           ),
                         ],
@@ -118,20 +125,12 @@ class TripHistory extends StatelessWidget {
                             children: [
                               Text(
                                 'Kabusa Junction',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
                               Gap(14.h),
                               Text(
                                 'Lokogoma Junction',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall,
                               )
                             ],
                           ),
@@ -155,11 +154,12 @@ class TripHistory extends StatelessWidget {
                               ),
                               Text(
                                 'Price',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
                               )
                             ],
                           ),
@@ -171,7 +171,10 @@ class TripHistory extends StatelessWidget {
                                 padding: EdgeInsets.all(4.r),
                                 clipBehavior: Clip.antiAlias,
                                 decoration: ShapeDecoration(
-                                  color: const Color(0x19DADADA),
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? const Color(0x19DADADA)
+                                      : dark,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8)),
                                 ),
@@ -179,16 +182,24 @@ class TripHistory extends StatelessWidget {
                                   cashSVG,
                                   width: 32.w,
                                   height: 32.h,
+                                  colorFilter: ColorFilter.mode(
+                                    Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? primaryColor
+                                        : white,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                               ),
                               Gap(4.h),
                               Text(
                                 'Cash',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                    ),
                               )
                             ],
                           ),

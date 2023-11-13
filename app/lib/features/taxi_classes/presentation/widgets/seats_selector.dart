@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
@@ -17,7 +17,7 @@ class SeatsSelector extends StatelessWidget {
         16.0.w,
         16.0.h,
         16.0.w,
-        150.0.h,
+        16.0.h,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -53,15 +53,17 @@ class SeatsSelector extends StatelessWidget {
                               child: Text(
                                 'Selected',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                             ),
                             Gap(8.h),
-                            Image.asset(
+                            SvgPicture.asset(
                               selectedSeat,
                               width: 48.w,
                               height: 48.h,
@@ -80,15 +82,17 @@ class SeatsSelector extends StatelessWidget {
                               child: Text(
                                 'Available',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                             ),
                             Gap(8.h),
-                            Image.asset(
+                            SvgPicture.asset(
                               availableSeat,
                               width: 48.w,
                               height: 48.h,
@@ -107,15 +111,17 @@ class SeatsSelector extends StatelessWidget {
                               child: Text(
                                 'Unavailable',
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                             ),
                             Gap(8.h),
-                            Image.asset(
+                            SvgPicture.asset(
                               unavailableSeat,
                               width: 48.w,
                               height: 48.h,
@@ -138,13 +144,19 @@ class SeatsSelector extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset(
+                      SvgPicture.asset(
                         driverWheels,
                         width: 48.w,
                         height: 48.h,
+                        colorFilter: ColorFilter.mode(
+                          Theme.of(context).brightness == Brightness.dark
+                              ? white
+                              : dark,
+                          BlendMode.srcIn,
+                        ),
                       ),
                       Gap(200.w),
-                      Image.asset(
+                      SvgPicture.asset(
                         unavailableSeat,
                         width: 48.w,
                         height: 48.h,
@@ -157,19 +169,19 @@ class SeatsSelector extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset(
+                      SvgPicture.asset(
                         unavailableSeat,
                         width: 48.w,
                         height: 48.h,
                       ),
                       Gap(78.w),
-                      Image.asset(
-                        unavailableSeat,
+                      SvgPicture.asset(
+                        selectedSeat,
                         width: 48.w,
                         height: 48.h,
                       ),
                       Gap(78.w),
-                      Image.asset(
+                      SvgPicture.asset(
                         unavailableSeat,
                         width: 48.w,
                         height: 48.h,
@@ -182,19 +194,19 @@ class SeatsSelector extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset(
+                      SvgPicture.asset(
                         unavailableSeat,
                         width: 48.w,
                         height: 48.h,
                       ),
                       Gap(78.w),
-                      Image.asset(
-                        unavailableSeat,
+                      SvgPicture.asset(
+                        selectedSeat,
                         width: 48.w,
                         height: 48.h,
                       ),
                       Gap(78.w),
-                      Image.asset(
+                      SvgPicture.asset(
                         unavailableSeat,
                         width: 48.w,
                         height: 48.h,
@@ -204,33 +216,6 @@ class SeatsSelector extends StatelessWidget {
                 ],
               ),
             ],
-          ),
-          Gap(48.h),
-          Container(
-            width: double.infinity,
-            height: 52.h,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-            decoration: ShapeDecoration(
-              color: primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Continue',
-                  style: GoogleFonts.robotoFlex(
-                    color: white,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    height: 0.10,
-                  ),
-                ),
-              ],
-            ),
           ),
         ],
       ),

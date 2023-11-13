@@ -78,7 +78,6 @@ class TaxiAlongBottomNavigation extends StatelessWidget {
               items: bottomNavItems,
               currentIndex: state.index,
               selectedItemColor: primaryColor,
-              unselectedItemColor: white,
               selectedFontSize: 14.sp,
               unselectedFontSize: 14.sp,
               showSelectedLabels: true,

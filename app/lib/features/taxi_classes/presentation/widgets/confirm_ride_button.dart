@@ -13,19 +13,13 @@ class ConfirmRideButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        // pop out sheet
+        Navigator.of(context).pop();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Trip()));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              width: 1.w,
-              color: const Color(0xFF333333),
-            ),
-          ),
-        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +43,7 @@ class ConfirmRideButton extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Confirm Ride',
+                    'Confirm',
                     style: GoogleFonts.robotoFlex(
                       color: white,
                       fontSize: 14.sp,

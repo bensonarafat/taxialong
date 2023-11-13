@@ -51,7 +51,7 @@ class PrivacyPage extends StatelessWidget {
                     Text(
                       'This is a dummy copy, it is not meant to be read. it has been placed here solely to demonstrate the look and feel of of finished typeset text. Only for show. He who searches for meaning here will be solely disappointed. These words are here to provide the reader with a basic impression of how actual text will appear in its final presentation. Think of them merely as actors on a Paper stage. in a performance devoid of content yet rich in form. That being the case there is really no point in your continuing to read them.',
                       style: GoogleFonts.robotoFlex(
-                        color: white,
+                        color: const Color(0xFF6E6E6E),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                       ),
@@ -60,7 +60,7 @@ class PrivacyPage extends StatelessWidget {
                     Text(
                       'This is a dummy copy, it is not meant to be read. it has been placed here solely to demonstrate the look and feel of of finished typeset text. Only for show. He who searches for meaning here will be solely disappointed. These words are here to provide the reader with a basic impression of how actual text will appear in its final presentation. Think of them merely as actors on a Paper stage. in a performance devoid of content yet rich in form. That being the case there is really no point in your continuing to read them.',
                       style: GoogleFonts.robotoFlex(
-                        color: white,
+                        color: const Color(0xFF6E6E6E),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                       ),

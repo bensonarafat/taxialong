@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
-import 'package:taxialong/core/utils/colors.dart';
 
 class TaxiAlongRoute extends StatelessWidget {
   const TaxiAlongRoute({super.key});
@@ -39,20 +37,12 @@ class TaxiAlongRoute extends StatelessWidget {
             children: [
               Text(
                 "Berger Junction",
-                style: GoogleFonts.robotoFlex(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14.sp,
-                  color: white,
-                ),
+                style: Theme.of(context).textTheme.titleSmall,
               ),
               Gap(8.h),
               Text(
                 "Apo Junction",
-                style: GoogleFonts.robotoFlex(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14.sp,
-                  color: white,
-                ),
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ],
           )

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,13 +17,19 @@ class RecentStops extends StatelessWidget {
       appBar: AppBar(
         title: Image.asset(logodark),
         centerTitle: true,
-        leading: GestureDetector(
-          onTap: () {},
-          child: SvgPicture.asset(
-            menu,
-            width: 23.w,
-            height: 20.62.h,
-            theme: const SvgTheme(),
+        leading: Padding(
+          padding: EdgeInsets.only(left: 16.w, right: 16.w),
+          child: GestureDetector(
+            onTap: () {},
+            child: SvgPicture.asset(
+              menu,
+              width: 24.w,
+              height: 24.h,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).brightness == Brightness.dark ? white : dark,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
         ),
       ),
@@ -38,11 +43,10 @@ class RecentStops extends StatelessWidget {
               ),
               child: Text(
                 "Recent Stops",
-                style: GoogleFonts.robotoFlex(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w600,
-                  color: white,
-                ),
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ),
             const TaxiAlongRoute(),
@@ -61,11 +65,11 @@ class RecentStops extends StatelessWidget {
                         Gap(8.w),
                         Text(
                           "Add Route",
-                          style: GoogleFonts.robotoFlex(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w700,
-                            color: white,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.titleSmall!.copyWith(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                         ),
                       ],
                     ),
@@ -85,11 +89,11 @@ class RecentStops extends StatelessWidget {
                         Gap(8.w),
                         Text(
                           "Add Stop",
-                          style: GoogleFonts.robotoFlex(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w700,
-                            color: white,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.titleSmall!.copyWith(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                         ),
                       ],
                     ),

@@ -87,7 +87,9 @@ class AboutPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(thumbsUp),
+                            SvgPicture.asset(
+                              thumbsUp,
+                            ),
                             Gap(8.w),
                             Expanded(
                               child: Column(
@@ -97,11 +99,12 @@ class AboutPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Like us on Facebook',
-                                    style: GoogleFonts.robotoFlex(
-                                      color: white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -123,14 +126,17 @@ class AboutPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
-                              width: 27.w,
+                              width: 30.w,
                               height: 25.h,
                               padding: EdgeInsets.all(4.r),
                               decoration: ShapeDecoration(
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide(
                                     width: 1.50.w,
-                                    color: white,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? white
+                                        : dark,
                                   ),
                                   borderRadius: BorderRadius.circular(4.r),
                                 ),
@@ -142,11 +148,13 @@ class AboutPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     'T&C',
-                                    style: GoogleFonts.robotoFlex(
-                                      color: white,
-                                      fontSize: 8.sp,
-                                      fontWeight: FontWeight.w900,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall!
+                                        .copyWith(
+                                          fontSize: 8.sp,
+                                          fontWeight: FontWeight.w900,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -160,11 +168,12 @@ class AboutPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Terms and Condition',
-                                    style: GoogleFonts.robotoFlex(
-                                      color: white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -185,7 +194,15 @@ class AboutPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(policy),
+                            SvgPicture.asset(
+                              policy,
+                              colorFilter: ColorFilter.mode(
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? white
+                                    : dark,
+                                BlendMode.srcATop,
+                              ),
+                            ),
                             Gap(8.w),
                             Expanded(
                               child: Column(
@@ -195,11 +212,12 @@ class AboutPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Privacy Policy',
-                                    style: GoogleFonts.robotoFlex(
-                                      color: white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                   ),
                                 ],
                               ),

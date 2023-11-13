@@ -135,22 +135,18 @@ class Profile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Full Name',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
+                              Text('Full Name',
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
                               Gap(4.h),
                               Text(
                                 'Andrew Williams',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      fontSize: 16.sp,
+                                    ),
                               ),
                             ],
                           ),
@@ -201,22 +197,18 @@ class Profile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Phone Number',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
+                              Text('Phone Number',
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
                               Gap(4.h),
                               Text(
                                 '+234 - 08123456789',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      fontSize: 16.sp,
+                                    ),
                               ),
                             ],
                           ),
@@ -268,20 +260,17 @@ class Profile extends StatelessWidget {
                             children: [
                               Text(
                                 'Email',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
                               Gap(4.h),
                               Text(
                                 'andrew@gmail.com',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      fontSize: 16.sp,
+                                    ),
                               ),
                             ],
                           ),
@@ -333,11 +322,7 @@ class Profile extends StatelessWidget {
                             children: [
                               Text(
                                 'Password',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
                               Gap(4.h),
                               Expanded(
@@ -352,90 +337,120 @@ class Profile extends StatelessWidget {
                                       Container(
                                         width: 8.w,
                                         height: 8.h,
-                                        decoration: const ShapeDecoration(
-                                          color: white,
-                                          shape: OvalBorder(),
+                                        decoration: ShapeDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? white
+                                              : dark,
+                                          shape: const OvalBorder(),
                                         ),
                                       ),
                                       Gap(4.w),
                                       Container(
                                         width: 8.w,
                                         height: 8.h,
-                                        decoration: const ShapeDecoration(
-                                          color: white,
-                                          shape: OvalBorder(),
+                                        decoration: ShapeDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? white
+                                              : dark,
+                                          shape: const OvalBorder(),
                                         ),
                                       ),
                                       Gap(4.w),
                                       Container(
                                         width: 8.w,
                                         height: 8.h,
-                                        decoration: const ShapeDecoration(
-                                          color: white,
-                                          shape: OvalBorder(),
+                                        decoration: ShapeDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? white
+                                              : dark,
+                                          shape: const OvalBorder(),
                                         ),
                                       ),
                                       const SizedBox(width: 4),
                                       Container(
                                         width: 8.w,
                                         height: 8.h,
-                                        decoration: const ShapeDecoration(
-                                          color: white,
-                                          shape: OvalBorder(),
+                                        decoration: ShapeDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? white
+                                              : dark,
+                                          shape: const OvalBorder(),
                                         ),
                                       ),
                                       Gap(4.w),
                                       Container(
                                         width: 8.w,
                                         height: 8.h,
-                                        decoration: const ShapeDecoration(
-                                          color: white,
-                                          shape: OvalBorder(),
+                                        decoration: ShapeDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? white
+                                              : dark,
+                                          shape: const OvalBorder(),
                                         ),
                                       ),
                                       Gap(4.w),
                                       Container(
                                         width: 8.w,
                                         height: 8.h,
-                                        decoration: const ShapeDecoration(
-                                          color: white,
-                                          shape: OvalBorder(),
+                                        decoration: ShapeDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? white
+                                              : dark,
+                                          shape: const OvalBorder(),
                                         ),
                                       ),
                                       Gap(4.w),
                                       Container(
                                         width: 8.w,
                                         height: 8.h,
-                                        decoration: const ShapeDecoration(
-                                          color: white,
-                                          shape: OvalBorder(),
+                                        decoration: ShapeDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? white
+                                              : dark,
+                                          shape: const OvalBorder(),
                                         ),
                                       ),
                                       Gap(4.w),
                                       Container(
                                         width: 8.w,
                                         height: 8.h,
-                                        decoration: const ShapeDecoration(
-                                          color: white,
-                                          shape: OvalBorder(),
+                                        decoration: ShapeDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? white
+                                              : dark,
+                                          shape: const OvalBorder(),
                                         ),
                                       ),
                                       Gap(4.w),
                                       Container(
                                         width: 8.w,
                                         height: 8.h,
-                                        decoration: const ShapeDecoration(
-                                          color: white,
-                                          shape: OvalBorder(),
+                                        decoration: ShapeDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? white
+                                              : dark,
+                                          shape: const OvalBorder(),
                                         ),
                                       ),
                                       const SizedBox(width: 4),
                                       Container(
                                         width: 8.w,
                                         height: 8.h,
-                                        decoration: const ShapeDecoration(
-                                          color: white,
-                                          shape: OvalBorder(),
+                                        decoration: ShapeDecoration(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? white
+                                              : dark,
+                                          shape: const OvalBorder(),
                                         ),
                                       ),
                                     ],

@@ -35,7 +35,12 @@ class TaxiAlongDrawer extends StatelessWidget {
                 padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(width: 0.50.w, color: white),
+                    bottom: BorderSide(
+                      width: 0.50.w,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? white
+                          : dark,
+                    ),
                   ),
                 ),
                 height: 222.h,
@@ -67,7 +72,9 @@ class TaxiAlongDrawer extends StatelessWidget {
                             ),
                             shape: RoundedRectangleBorder(
                               side: BorderSide(
-                                  width: 1.w, color: const Color(0xFFA0A2A9)),
+                                width: 1.w,
+                                color: const Color(0xFFA0A2A9),
+                              ),
                               borderRadius: BorderRadius.circular(100.r),
                             ),
                           ),
@@ -81,11 +88,12 @@ class TaxiAlongDrawer extends StatelessWidget {
                             Text(
                               'Lucy Edwin',
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(
+                                    fontSize: 20.sp,
+                                  ),
                             ),
                             Gap(8.h),
                             Row(
@@ -93,20 +101,21 @@ class TaxiAlongDrawer extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.star,
-                                  color: Colors.yellow,
-                                  size: 24,
+                                  color: const Color(0xffFEDA15),
+                                  size: 24.w,
                                 ),
                                 Gap(8.h),
                                 Text(
                                   '5.0',
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.robotoFlex(
-                                    color: white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall!
+                                      .copyWith(
+                                        fontSize: 16.sp,
+                                      ),
                                 ),
                               ],
                             ),
@@ -133,7 +142,15 @@ class TaxiAlongDrawer extends StatelessWidget {
                       'Ride History',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
-                    leading: SvgPicture.asset(carSVG),
+                    leading: SvgPicture.asset(
+                      carSVG,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
 
                   //
@@ -147,7 +164,15 @@ class TaxiAlongDrawer extends StatelessWidget {
                       'Profile',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
-                    leading: SvgPicture.asset(profileSVG),
+                    leading: SvgPicture.asset(
+                      profileSVG,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
 
                   ListTile(
@@ -155,7 +180,15 @@ class TaxiAlongDrawer extends StatelessWidget {
                       'Wallet',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
-                    leading: SvgPicture.asset(paymentSVG),
+                    leading: SvgPicture.asset(
+                      paymentSVG,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
 
                   ListTile(
@@ -167,7 +200,15 @@ class TaxiAlongDrawer extends StatelessWidget {
                       'Notifications',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
-                    leading: SvgPicture.asset(notificationSVG),
+                    leading: SvgPicture.asset(
+                      notificationSVG,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
 
                   ListTile(
@@ -179,7 +220,15 @@ class TaxiAlongDrawer extends StatelessWidget {
                       'Referral',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
-                    leading: SvgPicture.asset(referralSVG),
+                    leading: SvgPicture.asset(
+                      referralSVG,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
 
                   ListTile(
@@ -191,7 +240,15 @@ class TaxiAlongDrawer extends StatelessWidget {
                       'Manage Documents',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
-                    leading: SvgPicture.asset(manageDocuments),
+                    leading: SvgPicture.asset(
+                      manageDocuments,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
                   ListTile(
                     onTap: () {
@@ -202,7 +259,15 @@ class TaxiAlongDrawer extends StatelessWidget {
                       'Become a Driver',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
-                    leading: SvgPicture.asset(truckdriverSVG),
+                    leading: SvgPicture.asset(
+                      truckdriverSVG,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
 
                   ListTile(
@@ -214,7 +279,15 @@ class TaxiAlongDrawer extends StatelessWidget {
                       'Help',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
-                    leading: SvgPicture.asset(helpSVG),
+                    leading: SvgPicture.asset(
+                      helpSVG,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
 
                   ListTile(
@@ -226,7 +299,15 @@ class TaxiAlongDrawer extends StatelessWidget {
                       'Settings',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
-                    leading: SvgPicture.asset(settingsSVG),
+                    leading: SvgPicture.asset(
+                      settingsSVG,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
 
                   ListTile(
@@ -238,7 +319,15 @@ class TaxiAlongDrawer extends StatelessWidget {
                       'About',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
-                    leading: SvgPicture.asset(aboutSVG),
+                    leading: SvgPicture.asset(
+                      aboutSVG,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
 
                   ListTile(

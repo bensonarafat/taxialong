@@ -62,19 +62,20 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  Container(
+                    padding: EdgeInsets.only(left: 16.w),
                     child: Text(
                       'You have been connected to your driver',
-                      style: GoogleFonts.robotoFlex(
-                        color: white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                   Gap(3.h),
                   Container(
-                    padding: EdgeInsets.all(8.w),
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      bottom: 8.h,
+                      top: 8.h,
+                    ),
                     decoration: ShapeDecoration(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.r)),
@@ -87,11 +88,7 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                         Text(
                           'ABC12345',
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.robotoFlex(
-                            color: white,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
                     ),
@@ -140,33 +137,21 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                               SizedBox(
                                 child: Text(
                                   'Andrew Williams',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),
                               const SizedBox(height: 3),
                               SizedBox(
                                 child: Text(
                                   'Driver ID: 012345',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),
-                              const SizedBox(height: 3),
+                              Gap(3.h),
                               SizedBox(
                                 child: Text(
                                   'Plate number: ABC12345',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: white,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),
                             ],
@@ -229,11 +214,9 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
               alignment: Alignment.centerRight,
               child: Text(
                 'Change',
-                style: GoogleFonts.robotoFlex(
-                  color: const Color(0xFFA5A5A5),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontSize: 14.sp,
+                    ),
               ),
             ),
             Gap(16.h),
@@ -243,69 +226,38 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                 right: 16.w,
               ),
               child: Container(
+                width: double.infinity,
                 padding: EdgeInsets.all(8.w),
                 decoration: ShapeDecoration(
-                  color: const Color(0x19DADADA),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? const Color(0x19DADADA)
+                      : const Color.fromARGB(24, 96, 95, 95),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 46.w,
-                            height: 46.h,
-                            decoration: const ShapeDecoration(
-                              color: white,
-                              shape: OvalBorder(),
-                            ),
-                            child: const Icon(
-                              Icons.payments,
-                              color: primaryColor,
-                            ),
-                          ),
-                          Gap(16.w),
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Cash',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                Gap(4.h),
-                                Text(
-                                  'Change Payment method',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: const Color(0xFFA0A2A9),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                    Container(
+                      width: 46.w,
+                      height: 46.h,
+                      decoration: const ShapeDecoration(
+                        color: white,
+                        shape: OvalBorder(),
+                      ),
+                      child: const Icon(
+                        Icons.payments,
+                        color: primaryColor,
                       ),
                     ),
-                    Gap(73.w),
-                    const Icon(
-                      Icons.keyboard_arrow_right,
-                      color: white,
+                    Gap(16.w),
+                    Text(
+                      'Cash',
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ],
                 ),
@@ -334,17 +286,14 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                       ),
                       Text(
                         'Price',
-                        style: GoogleFonts.robotoFlex(
-                          color: white,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ],
                   ),
                   Container(
-                    width: 110.w,
-                    height: 43.h,
+                    width: 120.w,
+                    height: 50.h,
+                    alignment: Alignment.center,
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
                     decoration: ShapeDecoration(
@@ -353,24 +302,13 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            child: Text(
-                              'Cancel Ride',
-                              style: GoogleFonts.robotoFlex(
-                                color: primaryColor,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      'Cancel Ride',
+                      style: GoogleFonts.robotoFlex(
+                        color: primaryColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   )
                 ],

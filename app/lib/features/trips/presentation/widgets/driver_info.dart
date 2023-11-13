@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -13,8 +12,7 @@ class DriverInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WoltModalSheetPage showDriverInformation(
-        BuildContext modalSheetContext, TextTheme textTheme) {
+    WoltModalSheetPage showDriverInformation(BuildContext modalSheetContext) {
       return WoltModalSheetPage.withSingleChild(
         hasSabGradient: false,
         isTopBarLayerAlwaysVisible: true,
@@ -31,6 +29,12 @@ class DriverInfo extends StatelessWidget {
     }
 
     return Container(
+      decoration: ShapeDecoration(
+        color: const Color(0x19DADADA),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
       margin: EdgeInsets.only(
         left: 16.w,
         right: 16.w,
@@ -41,9 +45,8 @@ class DriverInfo extends StatelessWidget {
             enableDrag: true,
             context: context,
             pageListBuilder: (modalSheetContext) {
-              final textTheme = Theme.of(context).textTheme;
               return [
-                showDriverInformation(modalSheetContext, textTheme),
+                showDriverInformation(modalSheetContext),
               ];
             },
             modalTypeBuilder: (context) {
@@ -57,7 +60,6 @@ class DriverInfo extends StatelessWidget {
             maxDialogWidth: 560.w,
             minDialogWidth: 400.w,
             minPageHeight: 0.0,
-            maxPageHeight: 0.9.h,
           );
         },
         child: const DriverWidget(),
@@ -78,7 +80,10 @@ class DriverWidget extends StatelessWidget {
       decoration: ShapeDecoration(
         color: const Color(0x19DADADA),
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1.w, color: const Color(0xFF333333)),
+          side: BorderSide(
+            width: 1.w,
+            color: const Color(0xFF333333),
+          ),
           borderRadius: BorderRadius.circular(8.r),
         ),
       ),
@@ -126,11 +131,7 @@ class DriverWidget extends StatelessWidget {
                           width: double.infinity,
                           child: Text(
                             'Andrew Williams',
-                            style: GoogleFonts.robotoFlex(
-                              color: white,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
                         Gap(4.h),
@@ -148,11 +149,7 @@ class DriverWidget extends StatelessWidget {
                               width: 32.w,
                               child: Text(
                                 '4.7',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                           ],
@@ -169,20 +166,12 @@ class DriverWidget extends StatelessWidget {
                       children: [
                         Text(
                           '10 min. away',
-                          style: GoogleFonts.robotoFlex(
-                            color: white,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Gap(4.h),
                         Text(
                           '2, 5km',
-                          style: GoogleFonts.robotoFlex(
-                            color: white,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -224,32 +213,20 @@ class AllDriver extends StatelessWidget {
             children: [
               Text(
                 'Contact Information:',
-                style: GoogleFonts.robotoFlex(
-                  color: secondaryColor,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  height: 0.06,
-                ),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               Gap(20.h),
               Text(
                 'Phone Number: +234 8123456789',
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               Gap(18.h),
               Text(
                 'Email: andrewwilliams@gmail.com',
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           ),
@@ -269,42 +246,25 @@ class AllDriver extends StatelessWidget {
             children: [
               Text(
                 'Vehicle Details:',
-                style: GoogleFonts.robotoFlex(
-                  color: secondaryColor,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  height: 0.06,
-                ),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               Gap(20.h),
               Text(
                 'Car Model: Toyota Corolla',
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               Gap(18.h),
               Text(
                 'Car Plate Number: ABC 123 XY',
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               Gap(18.h),
               Text(
                 'Car Colour: Yellow',
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           ),
@@ -327,32 +287,20 @@ class AllDriver extends StatelessWidget {
             children: [
               Text(
                 'License Information:',
-                style: GoogleFonts.robotoFlex(
-                  color: secondaryColor,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  height: 0.06,
-                ),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               Gap(20.h),
               Text(
                 "Driver's License Number:NGR-ABC-12345-XYZ",
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               Gap(18.h),
               Text(
                 'Expiration Date: 31/12/2024',
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           ),
@@ -375,42 +323,25 @@ class AllDriver extends StatelessWidget {
             children: [
               Text(
                 'Recent Reviews:',
-                style: GoogleFonts.robotoFlex(
-                  color: secondaryColor,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  height: 0.06,
-                ),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               Gap(20.h),
               Text(
                 "Passenger: Lucy John Johnson ",
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               Gap(18.h),
               Text(
                 'Rating: 4.5/5',
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               Gap(18.h),
               Text(
                 'Comment: No Comments',
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  height: 0.10,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           ),

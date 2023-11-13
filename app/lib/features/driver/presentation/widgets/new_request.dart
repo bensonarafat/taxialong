@@ -7,13 +7,133 @@ import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/features/chat/presentation/pages/chat.dart';
 
-class NewRequest extends StatelessWidget {
-  const NewRequest({super.key});
+class DriverTrips extends StatelessWidget {
+  const DriverTrips({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? const Color(0xFF121212)
+                : const Color(0xFFFAFAFA),
+            border: Border(
+              top: BorderSide(
+                width: 1.w,
+                color: const Color(0xFFCECECE),
+              ),
+              bottom: BorderSide(
+                width: 1.w,
+                color: const Color(0xFFCECECE),
+              ),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Ongoing...',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              Gap(3.h),
+              Container(
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'ABC12345',
+                      textAlign: TextAlign.center,
+                      style:
+                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                fontSize: 20.sp,
+                              ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Gap(16.h),
+        Container(
+          padding: EdgeInsets.only(
+            left: 16.w,
+            right: 16.w,
+          ),
+          child: Row(
+            children: [
+              Image.asset(driver),
+              Gap(35.w),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Andrew Williams',
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontSize: 16.sp,
+                        ),
+                  ),
+                  Gap(3.h),
+                  Text(
+                    'Driver ID: 012345',
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontSize: 16.sp,
+                        ),
+                  ),
+                  Gap(3.h),
+                  Text(
+                    'Plate number: ABC12345',
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontSize: 16.sp,
+                        ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Gap(16.h),
+        Container(
+          padding: EdgeInsets.only(
+            left: 16.w,
+            right: 16.w,
+          ),
+          child: Row(
+            children: [
+              Image.asset(
+                routes,
+                width: 17.w,
+                height: 63.h,
+              ),
+              Gap(9.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Kabusa Junction',
+                      style: Theme.of(context).textTheme.bodyMedium),
+                  Gap(12.h),
+                  Text('Lokogoma Junction',
+                      style: Theme.of(context).textTheme.bodyMedium)
+                ],
+              )
+            ],
+          ),
+        ),
+        Gap(16.h),
         for (int i = 0; i < 5; i++)
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -22,11 +142,12 @@ class NewRequest extends StatelessWidget {
             children: [
               Container(
                 width: 350.w,
-                height: 313.h,
                 margin: EdgeInsets.only(bottom: 16.h),
                 padding: EdgeInsets.all(16.w),
                 decoration: ShapeDecoration(
-                  color: const Color(0xFF121212),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? const Color(0xFF121212)
+                      : const Color(0xFFFAFAFA),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                       width: 1.w,
@@ -66,11 +187,12 @@ class NewRequest extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Lucy Edwin',
-                                    style: GoogleFonts.robotoFlex(
-                                      color: white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          fontSize: 16.sp,
+                                        ),
                                   ),
                                   Gap(4.h),
                                   Row(
@@ -88,11 +210,9 @@ class NewRequest extends StatelessWidget {
                                         children: [
                                           Text(
                                             'Class 4',
-                                            style: GoogleFonts.robotoFlex(
-                                              color: white,
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w400,
-                                            ),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
                                           ),
                                         ],
                                       ),
@@ -124,14 +244,10 @@ class NewRequest extends StatelessWidget {
                                   Row(
                                     children: [
                                       SvgPicture.asset(carSeat),
-                                      Text(
-                                        '1 Seat',
-                                        style: GoogleFonts.robotoFlex(
-                                          color: white,
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
+                                      Text('1 Seat',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium)
                                     ],
                                   ),
                                 ],
@@ -167,23 +283,11 @@ class NewRequest extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Kabusa Junction',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
+                            Text('Kabusa Junction',
+                                style: Theme.of(context).textTheme.bodyMedium),
                             Gap(12.h),
-                            Text(
-                              'Lokogoma Junction',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            )
+                            Text('Lokogoma Junction',
+                                style: Theme.of(context).textTheme.bodyMedium)
                           ],
                         )
                       ],
@@ -203,14 +307,13 @@ class NewRequest extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Text(
-                              'Price',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            )
+                            Text('Price',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ))
                           ],
                         ),
                         Row(
@@ -230,92 +333,13 @@ class NewRequest extends StatelessWidget {
                             Gap(4.w),
                             Text(
                               'Cash',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
                           ],
                         ),
                       ],
                     ),
                     Gap(16.h),
-                    SizedBox(
-                      width: 318.w,
-                      height: 42.h,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 128.w,
-                            height: 42.h,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16.w, vertical: 4.h),
-                            decoration: ShapeDecoration(
-                              color: primaryColor,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.r)),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: SizedBox(
-                                    child: Text(
-                                      'Accept',
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.robotoFlex(
-                                        color: white,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: 128.w,
-                            height: 42.h,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16.w, vertical: 4.h),
-                            decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                side:
-                                    BorderSide(width: 1.w, color: primaryColor),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: SizedBox(
-                                    child: Text(
-                                      'Decline',
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.robotoFlex(
-                                        color: primaryColor,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),

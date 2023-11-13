@@ -44,10 +44,8 @@ class UploadDocuments extends StatelessWidget {
                         enableDrag: true,
                         context: context,
                         pageListBuilder: (modalSheetContext) {
-                          final textTheme = Theme.of(context).textTheme;
                           return [
-                            uploadDocumentBottomSheet(
-                                modalSheetContext, textTheme),
+                            uploadDocumentBottomSheet(modalSheetContext),
                           ];
                         },
                         modalTypeBuilder: (context) {
@@ -61,15 +59,15 @@ class UploadDocuments extends StatelessWidget {
                         maxDialogWidth: 560.w,
                         minDialogWidth: 400.w,
                         minPageHeight: 0.0,
-                        maxPageHeight: 0.9.h,
                       );
                     },
                     child: Container(
                       width: 358.w,
-                      height: 85.h,
                       padding: EdgeInsets.all(16.w),
                       decoration: ShapeDecoration(
-                        color: const Color(0xFF121212),
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFF121212)
+                            : const Color(0x4CDADADA),
                         shape: RoundedRectangleBorder(
                           side: BorderSide(
                               width: 1.w, color: const Color(0xFF77787B)),
@@ -97,11 +95,7 @@ class UploadDocuments extends StatelessWidget {
                               children: [
                                 Text(
                                   'Drivers Licence',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                                 Gap(4.h),
                                 Text(
@@ -137,10 +131,11 @@ class UploadDocuments extends StatelessWidget {
                   Gap(16.h),
                   Container(
                     width: 358.w,
-                    height: 85.h,
                     padding: EdgeInsets.all(16.w),
                     decoration: ShapeDecoration(
-                      color: const Color(0xFF121212),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF121212)
+                          : const Color(0x4CDADADA),
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
                             width: 1.w, color: const Color(0xFF77787B)),
@@ -168,11 +163,7 @@ class UploadDocuments extends StatelessWidget {
                             children: [
                               Text(
                                 'National ID Card',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               Gap(4.h),
                               Text(
@@ -207,10 +198,11 @@ class UploadDocuments extends StatelessWidget {
                   Gap(16.h),
                   Container(
                     width: 358.w,
-                    height: 85.h,
                     padding: EdgeInsets.all(16.w),
                     decoration: ShapeDecoration(
-                      color: const Color(0xFF121212),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF121212)
+                          : const Color(0x4CDADADA),
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
                             width: 1.w, color: const Color(0xFF77787B)),
@@ -238,11 +230,7 @@ class UploadDocuments extends StatelessWidget {
                             children: [
                               Text(
                                 'Vehicle Registration',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               Gap(4.h),
                               Text(
@@ -259,7 +247,6 @@ class UploadDocuments extends StatelessWidget {
                         Gap(34.w),
                         Container(
                           width: 40.w,
-                          height: 40.h,
                           decoration: ShapeDecoration(
                             color: primaryColor,
                             shape: RoundedRectangleBorder(
@@ -277,10 +264,11 @@ class UploadDocuments extends StatelessWidget {
                   Gap(16.h),
                   Container(
                     width: 358.w,
-                    height: 85.h,
                     padding: EdgeInsets.all(16.w),
                     decoration: ShapeDecoration(
-                      color: const Color(0xFF121212),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF121212)
+                          : const Color(0x4CDADADA),
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
                             width: 1.w, color: const Color(0xFF77787B)),
@@ -308,11 +296,7 @@ class UploadDocuments extends StatelessWidget {
                             children: [
                               Text(
                                 'Insurance',
-                                style: GoogleFonts.robotoFlex(
-                                  color: white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               Gap(4.h),
                               Text(
@@ -329,7 +313,6 @@ class UploadDocuments extends StatelessWidget {
                         Gap(34.w),
                         Container(
                           width: 40.w,
-                          height: 40.h,
                           decoration: ShapeDecoration(
                             color: primaryColor,
                             shape: RoundedRectangleBorder(

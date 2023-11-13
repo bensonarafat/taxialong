@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/features/trips/presentation/widgets/driver_info.dart';
 import 'package:taxialong/features/trips/presentation/pages/trip.dart';
 
 class ConnectingDriverContent extends StatefulWidget {
@@ -42,21 +42,14 @@ class _ConnectingDriverContentState extends State<ConnectingDriverContent> {
                       SizedBox(
                         child: Text(
                           'Getting connected to your driver',
-                          style: GoogleFonts.robotoFlex(
-                            color: white,
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
                       Gap(3.h),
                       SizedBox(
                         child: Text(
                           'You are welcome to ride with Taxi Along.',
-                          style: GoogleFonts.robotoFlex(
-                            color: white,
-                            fontSize: 16.sp,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                     ],
@@ -76,78 +69,12 @@ class _ConnectingDriverContentState extends State<ConnectingDriverContent> {
               ),
             ),
             Gap(24.h),
-            Container(
-              padding: EdgeInsets.all(16.w),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 48.w,
-                    height: 48.h,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: ShapeDecoration(
-                      image: const DecorationImage(
-                        image: AssetImage(driver),
-                        fit: BoxFit.fill,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                    ),
-                  ),
-                  Gap(35.w),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          child: Text(
-                            'Andrew Williams',
-                            style: GoogleFonts.robotoFlex(
-                              color: white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        Gap(3.h),
-                        SizedBox(
-                          child: Text(
-                            'Driver ID: 012345',
-                            style: GoogleFonts.robotoFlex(
-                              color: white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                        Gap(3.h),
-                        SizedBox(
-                          child: Text(
-                            'Plate number: ABC12345',
-                            style: GoogleFonts.robotoFlex(
-                              color: white,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const DriverInfo(),
             Gap(8.h),
             Container(
               width: 390.w,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               decoration: BoxDecoration(
-                color: const Color(0xFF121212),
                 border: Border(
                   top: BorderSide(width: 1.w, color: const Color(0xFFA0A2A9)),
                 ),
