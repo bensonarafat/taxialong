@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "648889443689",
+    "project_id": "taxialong-85451",
+    "storage_bucket": "taxialong-85451.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648889443689:android:6ec2a3848baa30298bc9f8",
+        "android_client_info": {
+          "package_name": "com.bemotechnologies.taxialong.taxialong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648889443689-c1ka74j38bsd76nkb6c54t57qej4qjea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bemotechnologies.taxialong.taxialong",
+            "certificate_hash": "0e111efac8b7fa50f59b1cd3f39e285cd8f6fcbb"
+          }
+        },
+        {
+          "client_id": "648889443689-o185tf6eg0v2r54ob76ijv0nvkom80as.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs0UsAjCayZ9qGmVVsOlBjpsKY4yIpXaM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648889443689-o185tf6eg0v2r54ob76ijv0nvkom80as.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "648889443689-grnpn9uqes9voguk87rdjcgpavqg79mo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bemotechnologies.taxialong.taxialong"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
