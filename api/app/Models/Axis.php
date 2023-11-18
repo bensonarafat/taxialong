@@ -9,11 +9,12 @@ class Axis extends Model
 {
     use HasFactory;
 
-    protected $table = 'axes';
+    protected $table = 'axis';
 
     protected $fillable = [
-        'driver_id',
-        'from',
-        'to',
+        'point_a',
+        'point_b',
+        'bus_stop_id',
+        'sequence',
     ];
 }

@@ -30,6 +30,6 @@ Route::group(['middleware' => 'api'], function () {
 
     //terminals
     Route::group(["prefix" => "terminal"], function(){
-        Route::get("/", [TerminalController::class, "terminals"]);
+        Route::post("/", [TerminalController::class, "terminals"]);
     });
 });

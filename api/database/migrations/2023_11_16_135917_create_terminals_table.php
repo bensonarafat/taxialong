@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('terminals', function (Blueprint $table) {
             $table->id();
+            $table->string("name");
+            $table->double("latitude", 10, 8);
+            $table->double("longitude", 10, 8);
             $table->timestamps();
         });
     }

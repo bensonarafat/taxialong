@@ -19,7 +19,6 @@ class BusStopFactory extends Factory
     public function definition(): array
     {
         return [
-            'terminal_id' => 1,
             'latitude' => $this->faker->randomFloat(6, 8.98820, 9.06623),
             'longitude' => $this->faker->randomFloat(6, 7.39454, 7.45479),
             'name' => $this->faker->unique()->word,

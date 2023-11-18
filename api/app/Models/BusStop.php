@@ -16,6 +16,5 @@ class BusStop extends Model
         'latitude',
         'longitude',
         'name',
-        'terminal_id'
     ];
 }
