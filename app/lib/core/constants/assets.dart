@@ -17,6 +17,7 @@ const googleIcon = "assets/images/icons/google.png";
 const whatsappIcon = "assets/images/icons/whatsapp.png";
 const instagramIcon = "assets/images/icons/instagram.png";
 const copyLinkIcon = "assets/images/icons/copy_link.png";
+const appleIcon = "assets/images/svg/apple.svg";
 
 //bottom navigation icons
 const homeActiveIcon = "assets/images/icons/home_active.png";

@@ -37,4 +37,7 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAPH5El5R_KCKFtJW7TOjwiyom5TaEG9f0"/>
     </application>
+    <queries>
+        <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
+    </queries>
 </manifest>

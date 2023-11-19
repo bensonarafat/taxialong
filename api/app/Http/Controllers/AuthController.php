@@ -8,8 +8,6 @@ use App\Models\User;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -21,7 +19,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'opt', 'createAccount']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'opt', 'createAccount', 'oAuth']]);
     }
 
 
@@ -48,6 +46,27 @@ class AuthController extends Controller
                 "response" => "Accepted",
                 "message" => "OTP sent",
                 "data" => $opt,
+            ]);
+        }
+    }
+
+    public function oAuth(Request $request){
+        $exists = User::where("email", $request->email)->exists();
+        if($exists){
+            $user = User::where('email', $request->email)->first();
+            if (! $token = auth()->attempt(["email" => $user->email, "password" => $user->telephone])) {
+                return response()->json([
+                    'status'=> false,
+                    'response' => 'Unauthorized',
+                    'message'=> "Email is unauthorized",
+                ]);
+            }
+            return $this->respondWithToken($token);
+        }else{
+            return response()->json([
+                "status" => false,
+                "response" => "Notfound",
+                "message" => "Account do not exists please register email first",
             ]);
         }
     }
