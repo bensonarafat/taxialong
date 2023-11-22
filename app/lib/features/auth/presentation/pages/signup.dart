@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_phone_input.dart';
-import 'package:taxialong/features/register/presentation/widgets/already_have_account.dart';
-import 'package:taxialong/features/register/presentation/widgets/signup_next_button.dart';
+import 'package:taxialong/features/auth/presentation/widgets/already_have_account.dart';
+import 'package:taxialong/features/auth/presentation/widgets/signup_next_button.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taxialong/features/register/presentation/pages/signup.dart';
 
 class DontHaveAnAccount extends StatelessWidget {
   const DontHaveAnAccount({super.key});
@@ -14,14 +14,7 @@ class DontHaveAnAccount extends StatelessWidget {
         bottom: 21.h,
       ),
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const SignUp(),
-            ),
-          );
-        },
+        onTap: () => context.goNamed("/sign-up"),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

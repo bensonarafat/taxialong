@@ -19,7 +19,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'opt', 'createAccount', 'oAuth']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'opt', 'createAccount', 'oAuth', 'logout']]);
     }
 
 
@@ -77,7 +77,7 @@ class AuthController extends Controller
             return response()->json([
                 "status" => true,
                 "response" => "OK",
-                "message" => "UUID not found",
+                "message" => "UUID found",
                 "data" => $request->all(),
             ]);
         }else{

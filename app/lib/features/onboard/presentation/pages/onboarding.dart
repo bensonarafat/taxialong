@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onboarding_slider_flutter/onboarding_slider_flutter.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taxialong/features/onboard/presentation/pages/get_started.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
@@ -44,32 +44,25 @@ class _OnboardingState extends State<Onboarding> {
           width: 358.w,
           height: 42.h,
           child: TextButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  primaryColor,
                 ),
               ),
-              backgroundColor: MaterialStateProperty.all<Color>(
-                primaryColor,
+              child: const Text(
+                "Get Started",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Color(
+                      0xfffdfdfd,
+                    )),
               ),
-            ),
-            child: const Text(
-              "Get Started",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Color(
-                    0xfffdfdfd,
-                  )),
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const GetStarted(),
-                ),
-              );
-            },
-          ),
+              onPressed: () => context.pushReplacementNamed("/getstarted")),
         ),
         decoration: const BoxDecoration(gradient: onboardGradiant),
         pageIndicatorStyle: PageIndicatorStyle(

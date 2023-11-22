@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/widgets/taxi_along_or_text.dart';
 import 'package:taxialong/core/widgets/taxi_along_phone_input.dart';
 import 'package:taxialong/core/widgets/taxi_along_social_buttons.dart';
-import 'package:taxialong/features/login/presentation/widgets/dont_have_an_account.dart';
-import 'package:taxialong/features/login/presentation/widgets/login_account_button.dart';
+import 'package:taxialong/features/auth/presentation/widgets/dont_have_an_account.dart';
+import 'package:taxialong/features/auth/presentation/widgets/login_account_button.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -19,7 +20,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () => context.pop(),
           child: IconTheme(
             data: Theme.of(context).iconTheme,
             child: Icon(

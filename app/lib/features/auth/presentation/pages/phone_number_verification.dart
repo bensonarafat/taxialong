@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/features/register/presentation/widgets/signup_next_button.dart';
-import 'package:taxialong/features/register/presentation/widgets/signup_otp_input.dart';
+import 'package:taxialong/features/auth/presentation/widgets/signup_next_button.dart';
+import 'package:taxialong/features/auth/presentation/widgets/signup_otp_input.dart';
 
 class PhoneNumberVerification extends StatefulWidget {
   const PhoneNumberVerification({super.key});

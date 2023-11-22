@@ -6,6 +6,8 @@ import 'package:taxialong/core/constants/assets.dart';
 /// App Constants
 ///
 
+const endpoint = "http://taxialong.com/api/";
+
 const LinearGradient onboardGradiant = LinearGradient(
   begin: Alignment.topCenter,
   end: Alignment.bottomCenter,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taxialong/features/register/presentation/pages/signup.dart';
 
 class OnboardSignUpButton extends StatelessWidget {
   const OnboardSignUpButton({super.key});
@@ -36,13 +36,7 @@ class OnboardSignUpButton extends StatelessWidget {
             color: white,
           ),
         ),
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const SignUp(),
-            ),
-          );
-        },
+        onPressed: () => context.goNamed("/sign-up"),
       ),
     );
   }

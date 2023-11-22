@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/widgets/taxi_along_email_field.dart';
 import 'package:taxialong/core/widgets/taxi_along_first_name_field.dart';
 import 'package:taxialong/core/widgets/taxi_along_last_name_field.dart';
 import 'package:taxialong/core/widgets/taxi_along_or_text.dart';
 import 'package:taxialong/core/widgets/taxi_along_social_buttons.dart';
-import 'package:taxialong/features/register/presentation/widgets/already_have_account.dart';
-import 'package:taxialong/features/register/presentation/widgets/create_account_button.dart';
+import 'package:taxialong/features/auth/presentation/widgets/already_have_account.dart';
+import 'package:taxialong/features/auth/presentation/widgets/create_account_button.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -33,7 +34,7 @@ class _CreateAccountState extends State<CreateAccount> {
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () => context.pop(),
           child: IconTheme(
             data: Theme.of(context).iconTheme,
             child: Icon(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taxialong/features/login/presentation/pages/login.dart';
 
 class OnBoardLoginButton extends StatelessWidget {
   const OnBoardLoginButton({super.key});
@@ -35,13 +35,7 @@ class OnBoardLoginButton extends StatelessWidget {
             color: primaryColor,
           ),
         ),
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const Login(),
-            ),
-          );
-        },
+        onPressed: () => context.goNamed("/login"),
       ),
     );
   }
