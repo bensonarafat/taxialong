@@ -36,7 +36,7 @@ class OnboardSignUpButton extends StatelessWidget {
             color: white,
           ),
         ),
-        onPressed: () => context.goNamed("/sign-up"),
+        onPressed: () => context.push("/sign-up"),
       ),
     );
   }

@@ -9,6 +9,7 @@ use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
@@ -19,36 +20,9 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'opt', 'createAccount', 'oAuth', 'logout']]);
+        $this->middleware('auth:api', ['except' => ['login', 'otp', 'createAccount', 'oAuth', 'logout', 'telephone']]);
     }
 
-
-    public function register(Request $request){
-        $exists = User::where('telephone', $request->telephone)->exists();
-        // account already exist
-        if($exists){
-            return response()->json([
-                "status" => false,
-                "response" => "found",
-                "message" => "Account already exists",
-            ] );
-        }else{
-            // OTP SMS API
-            $opt = OTP::create([
-                'otp' => mt_rand(1111, 9999),
-                'telephone' => $request->telephone,
-                'uuid' => Uuid::generate()->string,
-                'expires' =>  Carbon::now()->addMinutes(30), // Add 5 minties
-            ]);
-
-            return response()->json([
-                "status" => true,
-                "response" => "Accepted",
-                "message" => "OTP sent",
-                "data" => $opt,
-            ]);
-        }
-    }
 
     public function oAuth(Request $request){
         $exists = User::where("email", $request->email)->exists();
@@ -71,24 +45,42 @@ class AuthController extends Controller
         }
     }
 
-    public function opt(Request $request){
+    public function otp(Request $request){
         $exists =  OTP::where(['otp' => $request->otp, "uuid" => $request->uuid])->exists();
         if($exists){
-            return response()->json([
-                "status" => true,
-                "response" => "OK",
-                "message" => "UUID found",
-                "data" => $request->all(),
-            ]);
+            if(!$this->verifyToken($request->pin_id, $request->pin)) return response()->json(["status" => false, "response" => "NoContent", "mesage" => "Could not verify OTP"]);
+            //check if its a old user then login the user
+            if($request->type == "old"){
+                return $this->loginUser($request->telephone);
+            }else{
+                // else send the user a message
+                return response()->json([
+                    "status" => true,
+                    "response" => "OTP",
+                    "message" => "OTP verified",
+                    "data" => $request->all(),
+                ]);
+            }
         }else{
             return response()->json([
                 "status" => false,
                 "response" => "NotFound",
-                "message" => "UUID not found"
+                "message" => "OTP not found"
             ]);
         }
     }
 
+    private function loginUser($telephone){
+        $user = User::where("telephone", $telephone)->first();
+        if (!$token = auth()->attempt(["email" => $user->email, "password" => $user->telephone])) {
+            return response()->json([
+                'status'=> false,
+                'response' => 'Unauthorized',
+                'message'=> "User is unauthorized",
+            ]);
+        }
+        return $this->respondWithToken($token);
+    }
 
     public function createAccount(Request $request){
         if(OTP::where("uuid", $request->uuid)->exists()){
@@ -117,14 +109,7 @@ class AuthController extends Controller
                         "telephone"=> $request->telephone,
                         "password" => Hash::make($request->telephone),
                     ]);
-                    if (!$token = auth()->attempt(["email" => $request->email, "password" => $request->telephone])) {
-                        return response()->json([
-                            'status'=> false,
-                            'response' => 'Unauthorized',
-                            'message'=> "Email is unauthorized",
-                        ]);
-                    }
-                    return $this->respondWithToken($token);
+                    return $this->loginUser($request->telephone, false,);
                 }
             }
         }else{
@@ -136,35 +121,10 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function login(Request $request)
-    {
-
-        $exists = User::where('telephone', $request->telephone)->exists();
-        if($exists){
-            $user = User::where('telephone', $request->telephone)->first();
-            if (! $token = auth()->attempt(["email" => $user->email, "password" => $request->telephone])) {
-                return response()->json([
-                    'status'=> false,
-                    'response' => 'Unauthorized',
-                    'message'=> "Email is unauthorized",
-                ]);
-            }
-            return $this->respondWithToken($token);
-        }else{
-            return response()->json([
-                "status" => false,
-                "response" => "NotFound",
-                "message" => "Phone number not register!"
-            ] );
-        }
-
+    public function telephone(Request $request){
+        $exists = User::where('telephone', $request->telephone)->exists(); // check if exist, so the user wont create an account again
+        return $this->sendToken($request->telephone, $exists);
     }
-
     /**
      * Get the authenticated User.
      *
@@ -216,6 +176,7 @@ class AuthController extends Controller
             'response' => 'OK',
             'access_token' => $token,
             'token_type' => 'bearer',
+            'message'=> "Login",
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
@@ -225,6 +186,57 @@ class AuthController extends Controller
             "status" => false,
             "response" => 'NoContent',
             'messag'=> $message,
+        ]);
+    }
+
+    // verify Token
+    private function verifyToken($pinId, $pin,){
+         $response = Http::post("https://api.ng.termii.com/api/sms/otp/verify", [
+            "api" => "TLZIkb6uWLscKCseoQYrVhciWejur54gpqtF5FuAM8F8zzF1ey5lY8kssnwceR",
+            "pin_id" => $pinId,
+            "pin" => $pin,
+        ]);
+        if(!$response->successful()) return false; //
+        $data = $response->json();
+        if($data['verified'] != "True") return false; //
+        return true;
+    }
+
+    // send Token
+    private function sendToken($telephone, $exists){
+        //delete otp for user phone number
+        OTP::where("telephone", $telephone)->delete();
+        $pin = mt_rand(1111, 9999);
+
+        $response = Http::post('https://api.ng.termii.com/api/sms/otp/send', [
+            "api_key" => "TLZIkb6uWLscKCseoQYrVhciWejur54gpqtF5FuAM8F8zzF1ey5lY8kssnwceR",
+            "message_type" => "NUMERIC",
+            "to" => $telephone,
+            "from" => 'N-Alert',
+            "channel" => "dnd",
+            "pin_time_to_live" => 15,
+            "pin_length" => 4,
+            "pin_placeholder" => "< $pin >",
+            "message_text" => "TaxiAlong confirmation code is < $pin >. Valid for 15 minutes, one-tome use only.",
+            "pin_type" => "NUMERIC"
+        ]);
+
+        if(!$response->successful()) return response()->json(["status" => false, "response" => "NoContent", "mesage" => "Error, sending OTP"]);
+        $data = $response->json();
+        if($data["smsStatus"] != 'Message Sent') return response()->json(["status" => false, "response" => "NoContent", "mesage" => "Error, sending OTP"]);
+        $opt = OTP::create([
+            'otp' => $pin,
+            'telephone' => $telephone,
+            'uuid' => Uuid::generate()->string,
+            'expires' =>  Carbon::now()->addMinutes(15), //  15 minties
+            'pin_id' => $data['pinId']
+        ]);
+        return response()->json([
+            "status" => true,
+            "response" => "Accepted",
+            "message" => "OTP sent",
+            "type" => $exists ? "old" : "new", // exists
+            "data" => $opt,
         ]);
     }
 }

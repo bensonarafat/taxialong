@@ -14,7 +14,7 @@ class AlreadyHaveAnAccount extends StatelessWidget {
         bottom: 21.h,
       ),
       child: GestureDetector(
-        onTap: () => context.goNamed("/login"),
+        onTap: () => context.push("/login"),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

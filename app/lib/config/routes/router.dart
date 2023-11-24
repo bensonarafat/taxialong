@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/bloc/bottom_navigation/bottom_navigation_bloc.dart';
-import 'package:taxialong/core/constants/routes.dart';
 import 'package:taxialong/core/widgets/taxi_along_bottom_navigation.dart';
+import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
+import 'package:taxialong/features/auth/domain/entities/telephone_entity.dart';
 import 'package:taxialong/features/auth/presentation/pages/create_account.dart';
 import 'package:taxialong/features/auth/presentation/pages/login.dart';
 import 'package:taxialong/features/auth/presentation/pages/phone_number_verification.dart';
@@ -17,23 +18,28 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
+      name: "home",
       builder: (context, state) => const Onboarding(),
     ),
     GoRoute(
-      path: getStarted,
+      path: "/getstarted",
+      name: "getStarted",
       builder: (context, state) => const GetStarted(),
     ),
     GoRoute(
-      path: login,
+      path: "/login",
+      name: "login",
       builder: (context, state) => const Login(),
     ),
     GoRoute(
-      path: signUp,
+      path: '/sign-up',
+      name: "signUp",
       builder: (context, state) => const SignUp(),
     ),
     // navigations
     GoRoute(
-      path: nav,
+      path: '/nav',
+      name: "nav",
       builder: (context, state) => BlocProvider<BottomNavigationBloc>.value(
         value: bottomNavigationBloc,
         child: const TaxiAlongBottomNavigation(),
@@ -42,15 +48,21 @@ final GoRouter router = GoRouter(
     // navigations
 
     GoRoute(
-      path: createAccount,
-      builder: (context, state) => const CreateAccount(),
+      path: '/create-account',
+      name: "createAccount",
+      builder: (context, state) => CreateAccount(
+        otp: state.extra as OTPEntity,
+      ),
     ),
     GoRoute(
-      path: verifyOTP,
-      builder: (context, state) => const PhoneNumberVerification(),
+      path: '/verify-otp',
+      name: 'verifyOTP',
+      builder: (context, state) =>
+          PhoneNumberVerification(otp: state.extra as TelephoneEntity),
     ),
     GoRoute(
-      path: profile,
+      path: '/profile',
+      name: 'profile',
       builder: (context, state) => const Profile(),
     ),
   ],

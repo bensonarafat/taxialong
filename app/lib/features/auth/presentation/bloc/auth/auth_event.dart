@@ -9,43 +9,57 @@ abstract class AuthEvent extends Equatable {
 class CheckLoginEvent extends AuthEvent {}
 
 class LogoutEvent extends AuthEvent {
-  final LogoutEntity logoutEntity;
-
-  LogoutEvent({required this.logoutEntity});
+  LogoutEvent();
 
   @override
-  List<Object> get props => [logoutEntity];
+  List<Object> get props => [];
 }
 
 class LoginEvent extends AuthEvent {
-  final LoginEntity loginEntity;
+  final String telephone;
 
-  LoginEvent({required this.loginEntity});
+  LoginEvent({required this.telephone});
 
   @override
-  List<Object> get props => [loginEntity];
+  List<Object> get props => [telephone];
 }
 
 class RegisterEvent extends AuthEvent {
-  final RegisterEntity registerEntity;
-  RegisterEvent({required this.registerEntity});
+  final String telephone;
+  RegisterEvent({required this.telephone});
   @override
-  List<Object> get props => [registerEntity];
+  List<Object> get props => [telephone];
 }
 
 class VerifyOTPEvent extends AuthEvent {
-  final OTPEntity otpEntity;
-  VerifyOTPEvent({required this.otpEntity});
+  final String otp;
+  final String telephone;
+  final String uuid;
+  VerifyOTPEvent({
+    required this.otp,
+    required this.telephone,
+    required this.uuid,
+  });
 
   @override
-  List<Object> get props => [otpEntity];
+  List<Object> get props => [otp];
 }
 
 class CreateAccountEvent extends AuthEvent {
-  final LoginEntity loginEntity;
+  final String firstname;
+  final String lastname;
+  final String email;
+  final String telephone;
+  final String uuid;
 
-  CreateAccountEvent({required this.loginEntity});
+  CreateAccountEvent({
+    required this.firstname,
+    required this.lastname,
+    required this.email,
+    required this.uuid,
+    required this.telephone,
+  });
 
   @override
-  List<Object> get props => [loginEntity];
+  List<Object> get props => [firstname, lastname, email, uuid, telephone];
 }

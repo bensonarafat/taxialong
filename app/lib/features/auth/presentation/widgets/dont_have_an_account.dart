@@ -14,7 +14,7 @@ class DontHaveAnAccount extends StatelessWidget {
         bottom: 21.h,
       ),
       child: GestureDetector(
-        onTap: () => context.goNamed("/sign-up"),
+        onTap: () => context.push("/sign-up"),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

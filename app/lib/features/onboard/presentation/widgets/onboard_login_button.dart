@@ -35,7 +35,7 @@ class OnBoardLoginButton extends StatelessWidget {
             color: primaryColor,
           ),
         ),
-        onPressed: () => context.goNamed("/login"),
+        onPressed: () => context.push("/login"),
       ),
     );
   }

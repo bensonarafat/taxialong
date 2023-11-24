@@ -1,20 +1,22 @@
-import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
+import 'package:taxialong/features/auth/domain/entities/telephone_entity.dart';
 
-class VerifyOTPModel extends OTPEntity {
-  VerifyOTPModel({
+class TelephoneModel extends TelephoneEntity {
+  TelephoneModel({
     required super.otp,
-    required super.uuid,
     required super.telephone,
+    required super.uuid,
+    required super.expires,
     required super.message,
     required super.status,
   });
 
-  factory VerifyOTPModel.fromJson(Map<String, dynamic> json) {
+  factory TelephoneModel.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic>? data = json['data'];
-    return VerifyOTPModel(
+    return TelephoneModel(
       otp: data == null ? '' : data['otp'],
-      uuid: data == null ? '' : data['uuid'],
       telephone: data == null ? '' : data['telephone'],
+      uuid: data == null ? '' : data['uuid'],
+      expires: data == null ? '' : data['expires'],
       message: json['message'],
       status: json['status'],
     );

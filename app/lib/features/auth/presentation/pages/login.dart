@@ -15,6 +15,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool checked = false;
+  String? phoneNumber;
+  void userNumberFunc(String? number) {
+    phoneNumber = number;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,11 +81,15 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         height: 4.h,
                       ),
-                      const PhoneNumberInput(),
+                      PhoneNumberInput(userNumberFunc: userNumberFunc),
                     ],
                   ),
                 ),
-                const Center(child: LoginAccountButton()),
+                Center(
+                  child: LoginAccountButton(
+                    telephone: phoneNumber,
+                  ),
+                ),
                 const Center(child: OrText()),
                 const SocialButtons(),
                 Container(

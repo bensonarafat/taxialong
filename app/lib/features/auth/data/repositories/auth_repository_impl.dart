@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:taxialong/core/connection/network_info.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:taxialong/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:taxialong/features/auth/data/models/login_model_model.dart';
+import 'package:taxialong/features/auth/data/models/auth_model.dart';
 import 'package:taxialong/features/auth/data/models/logout_model.dart';
-import 'package:taxialong/features/auth/data/models/register_model.dart';
+import 'package:taxialong/features/auth/data/models/telephone_model.dart';
 import 'package:taxialong/features/auth/data/models/verify_otp_model.dart';
 import 'package:taxialong/features/auth/domain/repositories/auth_repository.dart';
 
@@ -21,11 +22,18 @@ class AuthRepositoryImpl implements AuthRepository {
   });
 
   @override
-  Future<Either<Failure, LoginModel>> createAccount({required params}) async {
+  Future<Either<Failure, AuthModel>> createAccount({required params}) async {
     if (await networkInfo.isConnected) {
       try {
-        LoginModel createAccountModel =
+        AuthModel createAccountModel =
             await remoteDataSource.createAccount(params: params);
+        // if status true store Bear token
+        if (createAccountModel.status) {
+          const storage = FlutterSecureStorage();
+          await storage.write(key: 'jwt', value: createAccountModel.token);
+        } else {
+          return Left(ServerFailure(message: 'There is a server Error!'));
+        }
         return Right(createAccountModel);
       } catch (_) {
         return Left(ServerFailure(message: 'There is a server Error!'));
@@ -37,11 +45,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, RegisterModel>> register({required params}) async {
+  Future<Either<Failure, TelephoneModel>> telephone({required params}) async {
     if (await networkInfo.isConnected) {
       try {
-        RegisterModel registerModel =
-            await remoteDataSource.register(params: params);
+        TelephoneModel registerModel =
+            await remoteDataSource.telephone(params: params);
         return Right(registerModel);
       } catch (_) {
         return Left(ServerFailure(message: 'There is a server failure!'));

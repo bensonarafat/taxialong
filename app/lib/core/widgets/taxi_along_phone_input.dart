@@ -3,13 +3,29 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
-class PhoneNumberInput extends StatelessWidget {
-  const PhoneNumberInput({super.key});
+class PhoneNumberInput extends StatefulWidget {
+  final Function userNumberFunc;
+  const PhoneNumberInput({
+    super.key,
+    required this.userNumberFunc,
+  });
 
   @override
+  State<PhoneNumberInput> createState() => _PhoneNumberInputState();
+}
+
+class _PhoneNumberInputState extends State<PhoneNumberInput> {
+  void updateTelephone(String? number) {
+    setState(() {
+      widget.userNumberFunc(number);
+    });
+  }
+
+  String? phoneNumber;
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
     PhoneNumber number = PhoneNumber(isoCode: 'NG');
+
     return Container(
       padding: EdgeInsets.all(
         5.w,
@@ -29,18 +45,19 @@ class PhoneNumberInput extends StatelessWidget {
           enabledBorder: InputBorder.none,
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
-          hintStyle: Theme.of(context).textTheme.titleMedium,
+          hintStyle: Theme.of(context).textTheme.bodyLarge,
         ),
-        onInputChanged: (PhoneNumber number) {},
+        onInputChanged: (PhoneNumber number) {
+          updateTelephone(number.phoneNumber);
+        },
         onInputValidated: (bool value) {},
         selectorConfig: const SelectorConfig(
           selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
         ),
         ignoreBlank: false,
         autoValidateMode: AutovalidateMode.disabled,
-        selectorTextStyle: Theme.of(context).textTheme.titleMedium,
+        selectorTextStyle: Theme.of(context).textTheme.bodyLarge,
         initialValue: number,
-        textFieldController: controller,
         formatInput: true,
         keyboardType: const TextInputType.numberWithOptions(
           signed: true,

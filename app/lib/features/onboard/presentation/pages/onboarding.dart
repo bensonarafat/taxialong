@@ -44,25 +44,26 @@ class _OnboardingState extends State<Onboarding> {
           width: 358.w,
           height: 42.h,
           child: TextButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  primaryColor,
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text(
-                "Get Started",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Color(
-                      0xfffdfdfd,
-                    )),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                primaryColor,
               ),
-              onPressed: () => context.pushReplacementNamed("/getstarted")),
+            ),
+            child: const Text(
+              "Get Started",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Color(
+                    0xfffdfdfd,
+                  )),
+            ),
+            onPressed: () => context.pushReplacement("/getstarted"),
+          ),
         ),
         decoration: const BoxDecoration(gradient: onboardGradiant),
         pageIndicatorStyle: PageIndicatorStyle(

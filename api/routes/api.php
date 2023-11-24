@@ -14,10 +14,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'api'], function () {
     //auth
     Route::group(["prefix" => "auth"], function() {
-        Route::post("login", [AuthController::class, "login"]);
-        Route::post('register', [AuthController::class, "register"]);
+        Route::post("telephone", [AuthController::class, "telephone"]);
+        Route::post('otp', [AuthController::class, "otp"]);
         Route::post("o-auth", [AuthController::class, "oAuth"]);
-        Route::post('opt', [AuthController::class, "opt"]);
         Route::post('create-account', [AuthController::class, "createAccount"]);
         Route::get('logout', [AuthController::class, "logout"]);
         Route::get('refresh', [AuthController::class, "refresh"]);

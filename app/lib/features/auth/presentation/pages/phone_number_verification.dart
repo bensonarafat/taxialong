@@ -1,12 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:taxialong/core/utils/colors.dart';
+import 'package:go_router/go_router.dart';
+import 'package:taxialong/features/auth/domain/entities/telephone_entity.dart';
+import 'package:taxialong/features/auth/presentation/bloc/countdown/countdown_cubit.dart';
+import 'package:taxialong/features/auth/presentation/widgets/otp_count_down.dart';
 import 'package:taxialong/features/auth/presentation/widgets/signup_next_button.dart';
 import 'package:taxialong/features/auth/presentation/widgets/signup_otp_input.dart';
 
 class PhoneNumberVerification extends StatefulWidget {
-  const PhoneNumberVerification({super.key});
+  final TelephoneEntity otp;
+  const PhoneNumberVerification({
+    super.key,
+    required this.otp,
+  });
 
   @override
   State<PhoneNumberVerification> createState() =>
@@ -18,6 +27,9 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   final TextEditingController _fieldTwo = TextEditingController();
   final TextEditingController _fieldThree = TextEditingController();
   final TextEditingController _fieldFour = TextEditingController();
+
+  late StreamController<String> streamController;
+
   @override
   void dispose() {
     _fieldOne.dispose();
@@ -32,7 +44,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () => context.pop(),
           child: IconTheme(
             data: Theme.of(context).iconTheme,
             child: Icon(
@@ -42,97 +54,109 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: 8.h,
-                        left: 16.w,
-                      ),
-                      child: Text(
-                        "Verification",
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: 8.h,
-                        bottom: 16.h,
-                        left: 16.w,
-                      ),
-                      child: Text(
-                        "Verify Mobile Number",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    right: 16.w,
-                    left: 16.w,
-                  ),
-                  child: Column(
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => CountDownCubit(const Duration(minutes: 15)),
+          ),
+        ],
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SignUpOTPInput(_fieldOne, true),
-                          SizedBox(width: 38.w),
-                          SignUpOTPInput(_fieldTwo, false),
-                          SizedBox(width: 38.w),
-                          SignUpOTPInput(_fieldThree, false),
-                          SizedBox(width: 38.w),
-                          SignUpOTPInput(_fieldFour, false)
-                        ],
-                      ),
                       Container(
                         margin: EdgeInsets.only(
-                          top: 32.h,
+                          top: 8.h,
+                          left: 16.w,
                         ),
                         child: Text(
-                          "Didn’t receive code?",
-                          style: Theme.of(context).textTheme.titleSmall,
+                          "Verification",
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(
                           top: 8.h,
+                          bottom: 16.h,
+                          left: 16.w,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Resend code in ",
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                            Text(
-                              "01:32",
-                              style: GoogleFonts.robotoFlex(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w700,
-                                color: primaryColor,
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          "Verify Mobile Number",
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
-                      const SignUpNextButton(type: "create_account"),
                     ],
                   ),
-                ),
-              ],
+                  Container(
+                    margin: EdgeInsets.only(
+                      right: 16.w,
+                      left: 16.w,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SignUpOTPInput(_fieldOne, true),
+                            SizedBox(width: 38.w),
+                            SignUpOTPInput(_fieldTwo, false),
+                            SizedBox(width: 38.w),
+                            SignUpOTPInput(_fieldThree, false),
+                            SizedBox(width: 38.w),
+                            SignUpOTPInput(_fieldFour, false)
+                          ],
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 32.h,
+                          ),
+                          child: Text(
+                            "Didn't receive code?",
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 8.h,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Resend code in ",
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              OTPCountDown(
+                                telephone: widget.otp.telephone,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SignUpNextButton(
+                          type: "otp",
+                          uuid: widget.otp.uuid,
+                          telephone: widget.otp.telephone,
+                          otps: {
+                            "fieldOne": _fieldOne.text,
+                            "fieldTwo": _fieldTwo.text,
+                            "fieldThree": _fieldThree.text,
+                            "fieldFour": _fieldFour.text,
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

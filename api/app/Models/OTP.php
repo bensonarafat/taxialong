@@ -15,6 +15,7 @@ class OTP extends Model
         'otp',
         'telephone',
         'uuid',
+        'pin_id',
         'expires'
     ];
 

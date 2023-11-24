@@ -10,13 +10,43 @@ class AuthInitial extends AuthState {}
 
 class AuthLoadingState extends AuthState {}
 
-class LoginState extends AuthState {}
+class LoginState extends AuthState {
+  final TelephoneEntity telephoneEntity;
+  LoginState({
+    required this.telephoneEntity,
+  });
 
-class RegisterState extends AuthState {}
+  @override
+  List<Object> get props => [telephoneEntity];
+}
 
-class VerifyOTPState extends AuthState {}
+class RegisterState extends AuthState {
+  final TelephoneEntity telephoneEntity;
 
-class CreateAccountState extends AuthState {}
+  RegisterState({
+    required this.telephoneEntity,
+  });
+
+  @override
+  List<Object> get props => [telephoneEntity];
+}
+
+class VerifyOTPState extends AuthState {
+  final OTPEntity otpEntity;
+
+  VerifyOTPState({required this.otpEntity});
+
+  @override
+  List<Object> get props => [otpEntity];
+}
+
+class CreateAccountState extends AuthState {
+  final AuthEntity authEntity;
+
+  CreateAccountState({required this.authEntity});
+  @override
+  List<Object> get props => [authEntity];
+}
 
 class LogoutState extends AuthState {}
 

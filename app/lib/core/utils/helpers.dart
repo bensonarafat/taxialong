@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:math' as math;
 
@@ -99,4 +100,23 @@ showEnableLocation(context) {
           ))
     ],
   ).show();
+}
+
+String formatDuration(Duration duration) {
+  String twoDigits(int n) {
+    if (n >= 10) return "$n";
+    return "0$n";
+  }
+
+  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+  String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+
+  return "$twoDigitMinutes:$twoDigitSeconds";
+}
+
+void toast(String msg) {
+  Fluttertoast.showToast(
+    msg: msg,
+    toastLength: Toast.LENGTH_LONG,
+  );
 }

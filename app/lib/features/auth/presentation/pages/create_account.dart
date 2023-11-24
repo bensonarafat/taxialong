@@ -6,11 +6,16 @@ import 'package:taxialong/core/widgets/taxi_along_first_name_field.dart';
 import 'package:taxialong/core/widgets/taxi_along_last_name_field.dart';
 import 'package:taxialong/core/widgets/taxi_along_or_text.dart';
 import 'package:taxialong/core/widgets/taxi_along_social_buttons.dart';
+import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
 import 'package:taxialong/features/auth/presentation/widgets/already_have_account.dart';
 import 'package:taxialong/features/auth/presentation/widgets/create_account_button.dart';
 
 class CreateAccount extends StatefulWidget {
-  const CreateAccount({super.key});
+  final OTPEntity otp;
+  const CreateAccount({
+    super.key,
+    required this.otp,
+  });
 
   @override
   State<CreateAccount> createState() => _CreateAccountState();
@@ -96,7 +101,14 @@ class _CreateAccountState extends State<CreateAccount> {
                     emailController: emailController,
                   ),
                 ),
-                const Center(child: CreateAccountButton()),
+                Center(
+                  child: CreateAccountButton(
+                    otp: widget.otp,
+                    firstname: firstnameController.text,
+                    lastname: lastnameController.text,
+                    email: emailController.text,
+                  ),
+                ),
                 const Center(child: OrText()),
                 const SocialButtons(),
                 Container(
