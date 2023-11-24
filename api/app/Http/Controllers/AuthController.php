@@ -20,7 +20,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'otp', 'createAccount', 'oAuth', 'logout', 'telephone']]);
+        $this->middleware('auth:api', ['except' => ['login', 'otpLogin', 'otpRegister', 'createAccount', 'oAuth', 'logout', 'telephone']]);
     }
 
 
@@ -45,22 +45,11 @@ class AuthController extends Controller
         }
     }
 
-    public function otp(Request $request){
+
+    public function otpLogin(Request $request){
         $exists =  OTP::where(['otp' => $request->otp, "uuid" => $request->uuid])->exists();
         if($exists){
-            if(!$this->verifyToken($request->pin_id, $request->pin)) return response()->json(["status" => false, "response" => "NoContent", "mesage" => "Could not verify OTP"]);
-            //check if its a old user then login the user
-            if($request->type == "old"){
-                return $this->loginUser($request->telephone);
-            }else{
-                // else send the user a message
-                return response()->json([
-                    "status" => true,
-                    "response" => "OTP",
-                    "message" => "OTP verified",
-                    "data" => $request->all(),
-                ]);
-            }
+            return $this->loginUser($request->telephone);
         }else{
             return response()->json([
                 "status" => false,
@@ -69,6 +58,25 @@ class AuthController extends Controller
             ]);
         }
     }
+
+    public function otpRegister(Request $request){
+        $exists =  OTP::where(['otp' => $request->otp, "uuid" => $request->uuid])->exists();
+        if($exists){
+            return response()->json([
+                "status" => true,
+                "response" => "OTP",
+                "message" => "OTP verified",
+                "data" => $request->all(),
+            ]);
+        }else{
+            return response()->json([
+                "status" => false,
+                "response" => "NotFound",
+                "message" => "OTP not found"
+            ]);
+        }
+    }
+
 
     private function loginUser($telephone){
         $user = User::where("telephone", $telephone)->first();
@@ -189,47 +197,35 @@ class AuthController extends Controller
         ]);
     }
 
-    // verify Token
-    private function verifyToken($pinId, $pin,){
-         $response = Http::post("https://api.ng.termii.com/api/sms/otp/verify", [
-            "api" => "TLZIkb6uWLscKCseoQYrVhciWejur54gpqtF5FuAM8F8zzF1ey5lY8kssnwceR",
-            "pin_id" => $pinId,
-            "pin" => $pin,
-        ]);
-        if(!$response->successful()) return false; //
-        $data = $response->json();
-        if($data['verified'] != "True") return false; //
-        return true;
-    }
-
     // send Token
     private function sendToken($telephone, $exists){
         //delete otp for user phone number
         OTP::where("telephone", $telephone)->delete();
         $pin = mt_rand(1111, 9999);
 
-        $response = Http::post('https://api.ng.termii.com/api/sms/otp/send', [
-            "api_key" => "TLZIkb6uWLscKCseoQYrVhciWejur54gpqtF5FuAM8F8zzF1ey5lY8kssnwceR",
-            "message_type" => "NUMERIC",
-            "to" => $telephone,
-            "from" => 'N-Alert',
-            "channel" => "dnd",
-            "pin_time_to_live" => 15,
-            "pin_length" => 4,
-            "pin_placeholder" => "< $pin >",
-            "message_text" => "TaxiAlong confirmation code is < $pin >. Valid for 15 minutes, one-tome use only.",
-            "pin_type" => "NUMERIC"
-        ]);
+        // $response = Http::post('https://api.ng.termii.com/api/sms/otp/send', [
+        //     "api_key" => "TLZIkb6uWLscKCseoQYrVhciWejur54gpqtF5FuAM8F8zzF1ey5lY8kssnwceR",
+        //     "message_type" => "NUMERIC",
+        //     "to" => $telephone,
+        //     "from" => 'N-Alert',
+        //     "channel" => "dnd",
+        //     "pin_time_to_live" => 15,
+        //     "pin_length" => 4,
+        //     "pin_placeholder" => "< $pin >",
+        //     "message_text" => "TaxiAlong confirmation code is < $pin >. Valid for 15 minutes, one-tome use only.",
+        //     "pin_type" => "NUMERIC"
+        // ]);
 
-        if(!$response->successful()) return response()->json(["status" => false, "response" => "NoContent", "mesage" => "Error, sending OTP"]);
-        $data = $response->json();
-        if($data["smsStatus"] != 'Message Sent') return response()->json(["status" => false, "response" => "NoContent", "mesage" => "Error, sending OTP"]);
+        // if(!$response->successful()) return response()->json(["status" => false, "response" => "NoContent", "mesage" => "Error, sending OTP"]);
+        // $data = $response->json();
+        // if($data["smsStatus"] != 'Message Sent') return response()->json(["status" => false, "response" => "NoContent", "mesage" => "Error, sending OTP"]);
+
         $opt = OTP::create([
             'otp' => $pin,
             'telephone' => $telephone,
             'uuid' => Uuid::generate()->string,
             'expires' =>  Carbon::now()->addMinutes(15), //  15 minties
-            'pin_id' => $data['pinId']
+            'pin_id' => $pin
         ]);
         return response()->json([
             "status" => true,

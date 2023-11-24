@@ -15,7 +15,8 @@ Route::group(['middleware' => 'api'], function () {
     //auth
     Route::group(["prefix" => "auth"], function() {
         Route::post("telephone", [AuthController::class, "telephone"]);
-        Route::post('otp', [AuthController::class, "otp"]);
+        Route::post('otp-login', [AuthController::class, "otpLogin"]);
+        Route::post('otp-register', [AuthController::class, "otpRegister"]);
         Route::post("o-auth", [AuthController::class, "oAuth"]);
         Route::post('create-account', [AuthController::class, "createAccount"]);
         Route::get('logout', [AuthController::class, "logout"]);
