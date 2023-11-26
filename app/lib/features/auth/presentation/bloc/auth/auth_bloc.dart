@@ -36,15 +36,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(failureOrLogout.fold(
             (failure) => ErrorAuthState(message: _mapFailureToMessage(failure)),
             (r) => UnAuthenticatedState()));
-      } else if (event is RegisterEvent) {
+      } else if (event is PhoneNumberEvent) {
         emit(AuthLoadingState());
-        final failureOrRegisterEvent = await telephoneUseCase(
+        final failureOrPhoneNumberEvent = await telephoneUseCase(
           TelephoneParams(
             telephone: event.telephone,
           ),
         );
 
-        emit(failureOrRegisterEvent.fold(
+        emit(failureOrPhoneNumberEvent.fold(
             (failure) => ErrorAuthState(message: _mapFailureToMessage(failure)),
             (telephoneEntity) =>
                 PhoneNumberState(telephoneEntity: telephoneEntity)));

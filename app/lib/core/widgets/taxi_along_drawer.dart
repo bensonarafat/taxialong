@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/about/presentation/pages/about.dart';
+import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:taxialong/features/documents/presentation/pages/documents.dart';
 import 'package:taxialong/features/driver/presentation/pages/become_driver.dart';
 import 'package:taxialong/features/help_center/presentation/pages/help_center.dart';
@@ -330,16 +334,30 @@ class TaxiAlongDrawer extends StatelessWidget {
                     ),
                   ),
 
-                  ListTile(
-                    title: Text(
-                      'Logout',
-                      style: GoogleFonts.robotoFlex(
-                        color: primaryColor,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
+                  BlocListener<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is UnAuthenticatedState) {
+                        context.go("/getstarted");
+                      }
+                      //error
+                      if (state is ErrorAuthState) {
+                        toast(state.message);
+                      }
+                    },
+                    child: ListTile(
+                      onTap: () {
+                        context.read<AuthBloc>().add(LogoutEvent());
+                      },
+                      title: Text(
+                        'Logout',
+                        style: GoogleFonts.robotoFlex(
+                          color: primaryColor,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
+                      leading: SvgPicture.asset(logoutSVG),
                     ),
-                    leading: SvgPicture.asset(logoutSVG),
                   ),
                 ],
               )

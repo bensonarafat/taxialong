@@ -9,6 +9,7 @@ class AppAppBarTheme {
       centerTitle: true,
       backgroundColor: lightBackgroundColor,
       elevation: 0,
+      scrolledUnderElevation: 0,
       titleTextStyle: GoogleFonts.robotoFlex(
         color: dark,
         fontSize: 20.sp,
@@ -25,6 +26,7 @@ class AppAppBarTheme {
       centerTitle: true,
       backgroundColor: darkBackgroundColor,
       elevation: 0,
+      scrolledUnderElevation: 0,
       titleTextStyle: GoogleFonts.robotoFlex(
         color: white,
         fontSize: 20.sp,

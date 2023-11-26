@@ -49,78 +49,80 @@ class _CreateAccountState extends State<CreateAccount> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 8.h,
-                    left: 16.w,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 8.h,
+                      left: 16.w,
+                    ),
+                    child: Text(
+                      "Create an Account",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
                   ),
-                  child: Text(
-                    "Create an Account",
-                    style: Theme.of(context).textTheme.headlineSmall,
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 8.h,
+                      bottom: 16.h,
+                      left: 16.w,
+                    ),
+                    child: Text(
+                      "Sign up to get started",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 8.h,
-                    bottom: 16.h,
-                    left: 16.w,
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 48.h,
+                    ),
+                    child: FirstNameField(
+                      firstnameController: firstnameController,
+                    ),
                   ),
-                  child: Text(
-                    "Sign up to get started",
-                    style: Theme.of(context).textTheme.titleMedium,
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 8.h,
+                    ),
+                    child: LastNameField(
+                      lastnameController: lastnameController,
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 48.h,
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 8.h,
+                    ),
+                    child: EmailField(
+                      emailController: emailController,
+                    ),
                   ),
-                  child: FirstNameField(
-                    firstnameController: firstnameController,
+                  Center(
+                    child: CreateAccountButton(
+                      otp: widget.otp,
+                      firstname: firstnameController.text,
+                      lastname: lastnameController.text,
+                      email: emailController.text,
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 8.h,
+                  const Center(child: OrText()),
+                  const SocialButtons(),
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 21.h,
+                    ),
+                    child: const AlreadyHaveAnAccount(),
                   ),
-                  child: LastNameField(
-                    lastnameController: lastnameController,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 8.h,
-                  ),
-                  child: EmailField(
-                    emailController: emailController,
-                  ),
-                ),
-                Center(
-                  child: CreateAccountButton(
-                    otp: widget.otp,
-                    firstname: firstnameController.text,
-                    lastname: lastnameController.text,
-                    email: emailController.text,
-                  ),
-                ),
-                const Center(child: OrText()),
-                const SocialButtons(),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 21.h,
-                  ),
-                  child: const AlreadyHaveAnAccount(),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

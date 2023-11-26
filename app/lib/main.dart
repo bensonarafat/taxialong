@@ -37,20 +37,22 @@ class TaxiAlong extends StatelessWidget {
         BlocProvider<AuthBloc>(
             create: (_) => getIt<AuthBloc>()..add(CheckLoginEvent())),
       ],
-      child: ScreenUtilInit(
-        designSize: const Size(390, 844),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (_, child) {
-          return MaterialApp.router(
-            themeMode: ThemeMode.system,
-            theme: AppTheme.lightTheme(),
-            darkTheme: AppTheme.darkTheme(),
-            title: 'Taxi Along',
-            debugShowCheckedModeBanner: false,
-            routerConfig: router,
-          );
-        },
+      child: AuthStreamScope(
+        child: ScreenUtilInit(
+          designSize: const Size(390, 844),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (_, child) {
+            return MaterialApp.router(
+              themeMode: ThemeMode.system,
+              theme: AppTheme.lightTheme(),
+              darkTheme: AppTheme.darkTheme(),
+              title: 'Taxi Along',
+              debugShowCheckedModeBanner: false,
+              routerConfig: router,
+            );
+          },
+        ),
       ),
     );
   }

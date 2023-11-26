@@ -78,7 +78,6 @@ class _SignUpState extends State<SignUp> {
                     PhoneNextButton(
                       telephone: phoneNumber,
                       checked: checked,
-                      auth: "signup",
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 16.h),

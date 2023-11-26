@@ -15,7 +15,6 @@ class PhoneNextButton extends StatelessWidget {
   final String? uuid;
   final Map<String, dynamic>? otps;
   final String? handler;
-  final String auth;
   const PhoneNextButton({
     super.key,
     required this.telephone,
@@ -23,7 +22,6 @@ class PhoneNextButton extends StatelessWidget {
     this.otps,
     this.uuid,
     this.handler,
-    required this.auth,
   });
 
   @override
@@ -61,18 +59,9 @@ class PhoneNextButton extends StatelessWidget {
             onPressed: () {
               if (checked == true) {
                 if (telephone != null && telephone != '+234') {
-                  //sigup event
-                  if (auth == 'signup') {
-                    context
-                        .read<AuthBloc>()
-                        .add(RegisterEvent(telephone: telephone!));
-                  }
-                  //login event
-                  if (auth == 'login') {
-                    context
-                        .read<AuthBloc>()
-                        .add(LoginEvent(telephone: telephone!));
-                  }
+                  context
+                      .read<AuthBloc>()
+                      .add(PhoneNumberEvent(telephone: telephone!));
                 } else {
                   toast("Provide your telephone number");
                 }

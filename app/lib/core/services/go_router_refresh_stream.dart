@@ -20,7 +20,7 @@ class GoRouterRefereshStream extends ChangeNotifier {
         );
   }
 
-  // bool isSignedIn() => getIt.get<AuthBloc>().state.user != null;
+  bool isSignedIn() => getIt.get<AuthBloc>().state != null;
 
   @override
   void dispose() {

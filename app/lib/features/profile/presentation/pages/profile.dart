@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/features/profile/presentation/widgets/profile_logout.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -485,39 +486,7 @@ class Profile extends StatelessWidget {
                     ],
                   ),
                   Gap(143.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        logoutSVG,
-                        colorFilter: const ColorFilter.mode(
-                            Color(0xffFAFAFA), BlendMode.srcIn),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 8.w, vertical: 4.h),
-                        decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Sign Out',
-                              style: GoogleFonts.robotoFlex(
-                                color: white,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                  const ProfileLogout(),
                   Gap(37.h),
                 ],
               ),

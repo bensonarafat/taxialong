@@ -93,7 +93,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     var url = Uri.parse("${endpoint}auth/logout");
     var response = await client.get(url, headers: headers);
     if (response.statusCode == 200) {
-      return LogoutModel.fromJson(response.body.data);
+      var data = json.decode(response.body);
+      return LogoutModel.fromJson(data);
     } else {
       throw ServerException();
     }

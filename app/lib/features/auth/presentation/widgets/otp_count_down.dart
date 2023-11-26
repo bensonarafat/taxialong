@@ -37,7 +37,9 @@ class OTPCountDown extends StatelessWidget {
             // restart the countdown
             context.read<CountDownCubit>().restartCountDown();
             // resend the otp again
-            context.read<AuthBloc>().add(RegisterEvent(telephone: telephone!));
+            context
+                .read<AuthBloc>()
+                .add(PhoneNumberEvent(telephone: telephone!));
           },
           child: Row(
             children: [

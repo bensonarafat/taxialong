@@ -17,6 +17,7 @@ import 'package:http/http.dart' as http;
 final GetIt getIt = GetIt.instance;
 
 Future<void> setupLocator() async {
+  //auth
   getIt.registerFactory<AuthBloc>(
     () => AuthBloc(
       createAccountUserCase: getIt(),

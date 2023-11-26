@@ -49,7 +49,9 @@ class LoginAccountButton extends StatelessWidget {
                   ),
             onPressed: () {
               if (telephone != null) {
-                context.read<AuthBloc>().add(LoginEvent(telephone: telephone!));
+                context
+                    .read<AuthBloc>()
+                    .add(PhoneNumberEvent(telephone: telephone!));
                 context.push("/otp");
               } else {
                 toast("Provide your telephone number");

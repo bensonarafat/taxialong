@@ -15,18 +15,11 @@ class LogoutEvent extends AuthEvent {
   List<Object> get props => [];
 }
 
-class LoginEvent extends AuthEvent {
+class PhoneNumberEvent extends AuthEvent {
   final String telephone;
 
-  LoginEvent({required this.telephone});
+  PhoneNumberEvent({required this.telephone});
 
-  @override
-  List<Object> get props => [telephone];
-}
-
-class RegisterEvent extends AuthEvent {
-  final String telephone;
-  RegisterEvent({required this.telephone});
   @override
   List<Object> get props => [telephone];
 }

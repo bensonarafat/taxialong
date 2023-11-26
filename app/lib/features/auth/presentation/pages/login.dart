@@ -15,10 +15,11 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool checked = false;
   String? phoneNumber;
   void userNumberFunc(String? number) {
-    phoneNumber = number;
+    setState(() {
+      phoneNumber = number;
+    });
   }
 
   @override
@@ -88,7 +89,6 @@ class _LoginState extends State<Login> {
                 Center(
                   child: PhoneNextButton(
                     telephone: phoneNumber,
-                    auth: "login",
                   ),
                 ),
                 const Center(child: OrText()),

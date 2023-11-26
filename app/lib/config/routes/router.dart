@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/bloc/bottom_navigation/bottom_navigation_bloc.dart';
+import 'package:taxialong/core/services/go_router_refresh_stream.dart';
 import 'package:taxialong/core/widgets/taxi_along_bottom_navigation.dart';
 import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
 import 'package:taxialong/features/auth/domain/entities/telephone_entity.dart';
@@ -67,11 +68,9 @@ final GoRouter router = GoRouter(
     ),
   ],
   redirect: (context, state) {
-    // calling `of` method creates a dependency of AuthStreamScope. It will make go_router to reparse
     // current route if AuthStream has new sign-in information.
-    // final bool loggedIn = AuthStreamScope.of(context).isSignedIn();
-
-    // implement your redirection logic here
+    final bool loggedIn = AuthStreamScope.of(context).isSignedIn();
+    if (loggedIn) {}
 
     return null; // no need to redirect
   },
