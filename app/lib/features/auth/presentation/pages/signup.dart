@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_phone_input.dart';
 import 'package:taxialong/features/auth/presentation/widgets/already_have_account.dart';
-import 'package:taxialong/features/auth/presentation/widgets/signup_next_button.dart';
+import 'package:taxialong/features/auth/presentation/widgets/phone_next_button.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -15,10 +15,12 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   String? phoneNumber;
-  bool checked = false;
+  bool checked = true;
 
   void userNumberFunc(String? number) {
-    phoneNumber = number;
+    setState(() {
+      phoneNumber = number;
+    });
   }
 
   @override
@@ -73,10 +75,10 @@ class _SignUpState extends State<SignUp> {
                     // phone number widget
                     PhoneNumberInput(userNumberFunc: userNumberFunc),
                     // phone number widget
-                    SignUpNextButton(
+                    PhoneNextButton(
                       telephone: phoneNumber,
-                      type: 'create_account',
                       checked: checked,
+                      auth: "signup",
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 16.h),

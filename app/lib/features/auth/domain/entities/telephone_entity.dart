@@ -5,6 +5,7 @@ class TelephoneEntity {
   final String expires;
   final String message;
   final bool status;
+  final String handler;
 
   TelephoneEntity({
     required this.otp,
@@ -13,5 +14,6 @@ class TelephoneEntity {
     required this.expires,
     required this.message,
     required this.status,
+    required this.handler,
   });
 }

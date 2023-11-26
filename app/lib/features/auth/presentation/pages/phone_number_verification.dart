@@ -139,9 +139,9 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                           ),
                         ),
                         SignUpNextButton(
-                          type: "otp",
                           uuid: widget.otp.uuid,
                           telephone: widget.otp.telephone,
+                          handler: widget.otp.handler,
                           otps: {
                             "fieldOne": _fieldOne.text,
                             "fieldTwo": _fieldTwo.text,

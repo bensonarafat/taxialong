@@ -47,6 +47,7 @@ class AuthController extends Controller
 
 
     public function otpLogin(Request $request){
+        if($request->handler == 'new' ) return $this->otpRegister($request);
         $exists =  OTP::where(['otp' => $request->otp, "uuid" => $request->uuid])->exists();
         if($exists){
             return $this->loginUser($request->telephone);
@@ -60,6 +61,7 @@ class AuthController extends Controller
     }
 
     public function otpRegister(Request $request){
+        if($request->handler == 'old' ) return $this->otpLogin($request);
         $exists =  OTP::where(['otp' => $request->otp, "uuid" => $request->uuid])->exists();
         if($exists){
             return response()->json([
@@ -117,7 +119,7 @@ class AuthController extends Controller
                         "telephone"=> $request->telephone,
                         "password" => Hash::make($request->telephone),
                     ]);
-                    return $this->loginUser($request->telephone, false,);
+                    return $this->loginUser($request->telephone);
                 }
             }
         }else{
@@ -231,7 +233,7 @@ class AuthController extends Controller
             "status" => true,
             "response" => "Accepted",
             "message" => "OTP sent",
-            "type" => $exists ? "old" : "new", // exists
+            "handler" => $exists ? "old" : "new", // exists
             "data" => $opt,
         ]);
     }

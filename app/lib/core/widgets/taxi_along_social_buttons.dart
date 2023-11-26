@@ -3,8 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 class SocialButtons extends StatefulWidget {
@@ -26,30 +24,30 @@ class _SocialButtonsState extends State<SocialButtons> {
     try {
       GoogleSignInAccount? response = await googleSignIn.signIn();
       if (response != null) {
-        String email = response.email;
+        // String email = response.email;
       }
     } catch (_) {}
   }
 
   Future<void> handleAppleSignIn() async {
-    final credential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-    );
-    print(credential);
+    // final credential = await SignInWithApple.getAppleIDCredential(
+    //   scopes: [
+    //     AppleIDAuthorizationScopes.email,
+    //     AppleIDAuthorizationScopes.fullName,
+    //   ],
+    // );
+    // print(credential);
   }
 
   Future<void> handleFacebookSignIn() async {
-    final LoginResult result = await FacebookAuth.instance.login();
-    if (result.status == LoginStatus.success) {
-      // you are logged
-      final AccessToken accessToken = result.accessToken!;
-    } else {
-      print(result.status);
-      print(result.message);
-    }
+    // final LoginResult result = await FacebookAuth.instance.login();
+    // if (result.status == LoginStatus.success) {
+    //   // you are logged
+    //   final AccessToken accessToken = result.accessToken!;
+    // } else {
+    //   print(result.status);
+    //   print(result.message);
+    // }
   }
 
   @override

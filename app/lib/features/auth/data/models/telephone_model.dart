@@ -8,6 +8,7 @@ class TelephoneModel extends TelephoneEntity {
     required super.expires,
     required super.message,
     required super.status,
+    required super.handler,
   });
 
   factory TelephoneModel.fromJson(Map<String, dynamic> json) {
@@ -19,6 +20,7 @@ class TelephoneModel extends TelephoneEntity {
       expires: data == null ? '' : data['expires'],
       message: json['message'],
       status: json['status'],
+      handler: json['handler'],
     );
   }
 

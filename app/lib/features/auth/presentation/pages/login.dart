@@ -5,7 +5,7 @@ import 'package:taxialong/core/widgets/taxi_along_or_text.dart';
 import 'package:taxialong/core/widgets/taxi_along_phone_input.dart';
 import 'package:taxialong/core/widgets/taxi_along_social_buttons.dart';
 import 'package:taxialong/features/auth/presentation/widgets/dont_have_an_account.dart';
-import 'package:taxialong/features/auth/presentation/widgets/login_account_button.dart';
+import 'package:taxialong/features/auth/presentation/widgets/phone_next_button.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -86,8 +86,9 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 Center(
-                  child: LoginAccountButton(
+                  child: PhoneNextButton(
                     telephone: phoneNumber,
+                    auth: "login",
                   ),
                 ),
                 const Center(child: OrText()),

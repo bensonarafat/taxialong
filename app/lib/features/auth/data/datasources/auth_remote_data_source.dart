@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
+import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/auth/data/models/auth_model.dart';
 import 'package:taxialong/features/auth/data/models/logout_model.dart';
 import 'package:taxialong/features/auth/data/models/telephone_model.dart';
@@ -12,12 +13,17 @@ abstract class AuthRemoteDataSource {
   Future<TelephoneModel> telephone({required params});
   Future<VerifyOTPModel> verifyOTP({required params});
   Future<LogoutModel> logout();
+  Future<AuthModel> authUser({required params});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final dynamic client;
+  final SecureStorage secureStorage;
 
-  AuthRemoteDataSourceImpl({required this.client});
+  AuthRemoteDataSourceImpl({
+    required this.client,
+    required this.secureStorage,
+  });
 
   @override
   Future<AuthModel> createAccount({required params}) async {
@@ -58,13 +64,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<VerifyOTPModel> verifyOTP({required params}) async {
-    var url = Uri.parse("${endpoint}auth/otp");
+    var url = Uri.parse("${endpoint}auth/otp-login");
     var response = await client.post(
       url,
       body: {
         "otp": params.otp,
         "uuid": params.uuid,
         "telephone": params.telephone,
+        "handler": params.handler,
       },
     );
 
@@ -78,7 +85,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<LogoutModel> logout() async {
-    String token = '';
+    final token = await secureStorage.getToken();
+    if (token == null) throw ServerException();
     var headers = {
       'Authorization': 'Bearer $token',
     };
@@ -86,6 +94,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     var response = await client.get(url, headers: headers);
     if (response.statusCode == 200) {
       return LogoutModel.fromJson(response.body.data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<AuthModel> authUser({required params}) async {
+    var url = Uri.parse("${endpoint}auth/otp-login");
+    var response = await client.post(
+      url,
+      body: {
+        "telephone": params.telephone,
+        "uuid": params.uuid,
+        "otp": params.otp,
+        "handler": params.handler,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return AuthModel.fromJson(data);
     } else {
       throw ServerException();
     }

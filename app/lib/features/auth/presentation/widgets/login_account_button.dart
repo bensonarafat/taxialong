@@ -17,45 +17,47 @@ class LoginAccountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      return Container(
-        margin: EdgeInsets.only(
-          top: 33.h,
-        ),
-        width: 358.w,
-        height: 52.h,
-        child: TextButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-                side: const BorderSide(
-                  color: primaryColor,
-                ),
-              ),
-            ),
-            backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return Container(
+          margin: EdgeInsets.only(
+            top: 33.h,
           ),
-          child: state is AuthLoadingState
-              ? const TaxiAlongLoading()
-              : Text(
-                  "Login",
-                  style: GoogleFonts.robotoFlex(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: white,
+          width: 358.w,
+          height: 52.h,
+          child: TextButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                  side: const BorderSide(
+                    color: primaryColor,
                   ),
                 ),
-          onPressed: () {
-            if (telephone != null) {
-              context.read<AuthBloc>().add(LoginEvent(telephone: telephone!));
-              context.push("/otp");
-            } else {
-              toast("Provide your telephone number");
-            }
-          },
-        ),
-      );
-    });
+              ),
+              backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+            ),
+            child: state is AuthLoadingState
+                ? const TaxiAlongLoading()
+                : Text(
+                    "Login",
+                    style: GoogleFonts.robotoFlex(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: white,
+                    ),
+                  ),
+            onPressed: () {
+              if (telephone != null) {
+                context.read<AuthBloc>().add(LoginEvent(telephone: telephone!));
+                context.push("/otp");
+              } else {
+                toast("Provide your telephone number");
+              }
+            },
+          ),
+        );
+      },
+    );
   }
 }

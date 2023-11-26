@@ -6,23 +6,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_loading.dart';
-import 'package:taxialong/features/auth/domain/entities/auth_entity.dart';
-import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
+import 'package:taxialong/features/auth/domain/entities/telephone_entity.dart';
 import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 
-class SignUpNextButton extends StatelessWidget {
+class PhoneNextButton extends StatelessWidget {
   final String? telephone;
-  final bool? checked;
+  final bool checked;
   final String? uuid;
   final Map<String, dynamic>? otps;
   final String? handler;
-  const SignUpNextButton({
+  final String auth;
+  const PhoneNextButton({
     super.key,
     required this.telephone,
-    this.checked,
+    this.checked = true,
     this.otps,
     this.uuid,
     this.handler,
+    required this.auth,
   });
 
   @override
@@ -58,57 +59,50 @@ class SignUpNextButton extends StatelessWidget {
                     ),
                   ),
             onPressed: () {
-              String otp = otps!.values.join();
-              if (otp.isNotEmpty) {
-                if (telephone != null || uuid != null) {
-                  context.read<AuthBloc>().add(VerifyOTPEvent(
-                        otp: otp,
-                        telephone: telephone!,
-                        uuid: uuid!,
-                        handler: handler!,
-                      ));
+              if (checked == true) {
+                if (telephone != null && telephone != '+234') {
+                  //sigup event
+                  if (auth == 'signup') {
+                    context
+                        .read<AuthBloc>()
+                        .add(RegisterEvent(telephone: telephone!));
+                  }
+                  //login event
+                  if (auth == 'login') {
+                    context
+                        .read<AuthBloc>()
+                        .add(LoginEvent(telephone: telephone!));
+                  }
                 } else {
-                  toast("There was been an error");
+                  toast("Provide your telephone number");
                 }
               } else {
-                toast("Enter your verification code sent to your mobile");
+                toast("You need to agree to our terms of use");
               }
             },
           ),
         );
       },
+      // listener
       listener: (context, state) {
-        // error state
+        //error
         if (state is ErrorAuthState) {
           String message = state.message;
 
           toast(message);
         }
-
-        // auth state
-        if (state is LoginState) {
-          AuthEntity authEntity = state.authEntity;
-          if (authEntity.status) {
-            context.go(
-              "/nav",
-              extra: authEntity,
-            );
-          }
-
-          toast(authEntity.message);
-        }
-
-        // verify state
-        if (state is VerifyOTPState) {
-          OTPEntity otpEntity = state.otpEntity;
-          if (otpEntity.status) {
+        // nav
+        if (state is PhoneNumberState) {
+          TelephoneEntity telephoneEntity =
+              state.telephoneEntity; // verify your OTP
+          if (telephoneEntity.status) {
             context.push(
-              "/create-account",
-              extra: otpEntity,
+              "/verify-otp",
+              extra: telephoneEntity,
             );
           }
 
-          toast(otpEntity.message);
+          toast(telephoneEntity.message);
         }
       },
     );

@@ -9,5 +9,6 @@ abstract class AuthRepository {
   Future<Either<Failure, OTPEntity>> verifyOTP({required params});
   Future<Either<Failure, TelephoneEntity>> telephone({required params});
   Future<Either<Failure, AuthEntity>> createAccount({required params});
+  Future<Either<Failure, AuthEntity>> authUser({required params});
   Future<Either<Failure, LogoutEntity>> logout();
 }

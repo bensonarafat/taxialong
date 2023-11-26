@@ -25,65 +25,75 @@ class CreateAccountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      return Container(
-        margin: EdgeInsets.only(
-          top: 33.h,
-        ),
-        width: 358.w,
-        height: 52.h,
-        child: TextButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-                side: const BorderSide(
-                  color: primaryColor,
-                ),
-              ),
-            ),
-            backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+    return BlocConsumer<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return Container(
+          margin: EdgeInsets.only(
+            top: 33.h,
           ),
-          child: state is AuthLoadingState
-              ? const TaxiAlongLoading()
-              : Text(
-                  "Create Account",
-                  style: GoogleFonts.robotoFlex(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: white,
+          width: 358.w,
+          height: 52.h,
+          child: TextButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                  side: const BorderSide(
+                    color: primaryColor,
                   ),
                 ),
-          onPressed: () {
-            if (firstname == "" || lastname == "" || email == "") {
-              toast("You must fill all the field");
-            } else {
-              if (otp.status) {
-                context.read<AuthBloc>().add(
-                      CreateAccountEvent(
-                        firstname: firstname,
-                        lastname: lastname,
-                        email: email,
-                        telephone: otp.telephone,
-                        uuid: otp.uuid,
-                      ),
-                    );
-                if (state is CreateAccountState) {
-                  AuthEntity authEntity = state.authEntity;
-                  if (authEntity.status) {
-                    // navigate to the home/nav page
-                    context.go("/nav");
-                  } else {
-                    toast(authEntity.message);
-                  }
-                }
-              } else {
+              ),
+              backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+            ),
+            child: state is AuthLoadingState
+                ? const TaxiAlongLoading()
+                : Text(
+                    "Create Account",
+                    style: GoogleFonts.robotoFlex(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: white,
+                    ),
+                  ),
+            onPressed: () {
+              if (firstname == "" || lastname == "" || email == "") {
                 toast("You must fill all the field");
+              } else {
+                if (otp.status) {
+                  context.read<AuthBloc>().add(
+                        CreateAccountEvent(
+                          firstname: firstname,
+                          lastname: lastname,
+                          email: email,
+                          telephone: otp.telephone,
+                          uuid: otp.uuid,
+                        ),
+                      );
+                } else {
+                  toast("You must fill all the field");
+                }
               }
-            }
-          },
-        ),
-      );
-    });
+            },
+          ),
+        );
+      },
+      listener: (context, state) {
+        //error
+        if (state is ErrorAuthState) {
+          String message = state.message;
+
+          toast(message);
+        }
+        if (state is CreateAccountState) {
+          AuthEntity authEntity = state.authEntity;
+          if (authEntity.status) {
+            // navigate to the home/nav page
+            context.go("/nav");
+          } else {
+            toast(authEntity.message);
+          }
+        }
+      },
+    );
   }
 }

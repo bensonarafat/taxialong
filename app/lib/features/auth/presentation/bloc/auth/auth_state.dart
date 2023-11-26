@@ -11,19 +11,19 @@ class AuthInitial extends AuthState {}
 class AuthLoadingState extends AuthState {}
 
 class LoginState extends AuthState {
-  final TelephoneEntity telephoneEntity;
+  final AuthEntity authEntity;
   LoginState({
-    required this.telephoneEntity,
+    required this.authEntity,
   });
 
   @override
-  List<Object> get props => [telephoneEntity];
+  List<Object> get props => [authEntity];
 }
 
-class RegisterState extends AuthState {
+class PhoneNumberState extends AuthState {
   final TelephoneEntity telephoneEntity;
 
-  RegisterState({
+  PhoneNumberState({
     required this.telephoneEntity,
   });
 

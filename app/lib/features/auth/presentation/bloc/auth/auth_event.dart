@@ -35,14 +35,21 @@ class VerifyOTPEvent extends AuthEvent {
   final String otp;
   final String telephone;
   final String uuid;
+  final String handler;
   VerifyOTPEvent({
     required this.otp,
     required this.telephone,
     required this.uuid,
+    required this.handler,
   });
 
   @override
-  List<Object> get props => [otp];
+  List<Object> get props => [
+        otp,
+        telephone,
+        uuid,
+        handler,
+      ];
 }
 
 class CreateAccountEvent extends AuthEvent {

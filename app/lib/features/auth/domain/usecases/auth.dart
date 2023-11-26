@@ -2,38 +2,36 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/core/usecases/usecase.dart';
-import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
+import 'package:taxialong/features/auth/domain/entities/auth_entity.dart';
 import 'package:taxialong/features/auth/domain/repositories/auth_repository.dart';
 
-class VerifyOTPUserCase implements UseCase<OTPEntity, VerifyOTPParams> {
+class AuthUseCase implements UseCase<AuthEntity, AuthParams> {
   final AuthRepository repository;
 
-  VerifyOTPUserCase({required this.repository});
+  AuthUseCase({required this.repository});
 
   @override
-  Future<Either<Failure, OTPEntity>> call(VerifyOTPParams params) async {
-    return await repository.verifyOTP(params: params);
+  Future<Either<Failure, AuthEntity>> call(AuthParams params) {
+    return repository.authUser(params: params);
   }
 }
 
-class VerifyOTPParams extends Equatable {
-  final String otp;
+class AuthParams extends Equatable {
   final String telephone;
   final String uuid;
+  final String otp;
   final String handler;
-
-  const VerifyOTPParams({
-    required this.otp,
+  const AuthParams({
     required this.telephone,
     required this.uuid,
+    required this.otp,
     required this.handler,
   });
-
   @override
   List<Object?> get props => [
-        otp,
-        uuid,
         telephone,
+        uuid,
+        otp,
         handler,
       ];
 }

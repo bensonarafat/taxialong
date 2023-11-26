@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 
 class LastNameField extends StatelessWidget {
   final TextEditingController lastnameController;
@@ -22,10 +23,10 @@ class LastNameField extends StatelessWidget {
             "Last Name",
             style: Theme.of(context).textTheme.titleSmall,
           ),
-          SizedBox(height: 4.h),
+          Gap(4.h),
           SizedBox(
             width: 358.w,
-            height: 44.h,
+            height: 60.h,
             child: TextFormField(
               controller: lastnameController,
               decoration: const InputDecoration(
