@@ -69,8 +69,8 @@ final GoRouter router = GoRouter(
   ],
   redirect: (context, state) {
     // current route if AuthStream has new sign-in information.
-    final bool loggedIn = AuthStreamScope.of(context).isSignedIn();
-    if (loggedIn) {}
+    // final bool loggedIn = AuthStreamScope.of(context).isSignedIn();
+    // if (loggedIn) {}
 
     return null; // no need to redirect
   },

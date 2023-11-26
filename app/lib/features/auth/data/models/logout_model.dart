@@ -5,7 +5,6 @@ class LogoutModel extends LogoutEntity {
       {required super.status, required super.response, required super.message});
 
   factory LogoutModel.fromJson(Map<String, dynamic> json) {
-    print("JSON $json");
     return LogoutModel(
       status: json['status'],
       response: json['response'],
