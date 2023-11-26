@@ -41,4 +41,5 @@ jobs:
         server: ${{ secrets.SERVER }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
+        local-dir: './api/'
         server-dir: ./public_html/
