@@ -14,10 +14,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./app
     steps:
       - uses: actions/checkout@v3
-
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
@@ -27,9 +28,6 @@ jobs:
           flutter-version: '3.13.6'
           channel: 'stable'
       - run: flutter --version
-      
-      - name: Change directory to the 'app' folder
-        run: cd app
         
       - name: Install dependencies
         run: flutter pub get
@@ -47,6 +45,3 @@ jobs:
       # want to change this to 'flutter test'.
       - name: Run tests
         run: flutter test
-
-      - name: Change directory back to the root
-        run: cd ..
