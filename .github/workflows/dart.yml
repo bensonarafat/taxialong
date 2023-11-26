@@ -47,3 +47,6 @@ jobs:
       # want to change this to 'flutter test'.
       - name: Run tests
         run: flutter test
+
+      - name: Change directory back to the root
+        run: cd ..
