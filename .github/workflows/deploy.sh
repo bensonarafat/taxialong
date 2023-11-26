@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Change to the project directory. 
-cd ~/api
+cd ~/public_html
 
 # Pull the latest changes from the git repository
 git pull origin main
