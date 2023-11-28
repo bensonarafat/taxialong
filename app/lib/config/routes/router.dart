@@ -67,10 +67,29 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const Profile(),
     ),
   ],
-  redirect: (context, state) {
+  redirect: (context, state) async {
+    // const storage = FlutterSecureStorage();
+    // Future<bool> isLoggedIn() async {
+    //   String? authToken = await storage.read(key: 'jwt');
+    //   return authToken != null && authToken.isNotEmpty;
+    // }
+
     // current route if AuthStream has new sign-in information.
     // final bool loggedIn = AuthStreamScope.of(context).isSignedIn();
-    // if (loggedIn) {}
+    // final bool loggingIn = state.matchedLocation == '/login' ||
+    //     state.matchedLocation == 'getstarted';
+
+    // bool token = await isLoggedIn();
+    // print(">>> $loggedIn >> $loggingIn >> $token");
+    // if (!loggedIn) {
+    //   return '/getstarted';
+    // }
+
+    // if the user is logged in but still on the login page, send them to
+    // the home page
+    // if (loggingIn) {
+    //   return '/nav';
+    // }
 
     return null; // no need to redirect
   },

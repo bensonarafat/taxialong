@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/features/auth/domain/entities/auth_entity.dart';
 import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
@@ -15,6 +16,8 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final storage = const FlutterSecureStorage();
+
   final CreateAccountUserCase createAccountUserCase;
   final TelephoneUseCase telephoneUseCase;
   final VerifyOTPUserCase verifyOTPUserCase;
@@ -27,17 +30,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.verifyOTPUserCase,
     required this.logoutUseCase,
     required this.authUseCase,
-  }) : super(AuthInitial()) {
+  }) : super(const AuthInitial()) {
     on<AuthEvent>((AuthEvent event, Emitter<AuthState> emit) async {
       if (event is CheckLoginEvent) {
+        bool isLogin = await isLoggedIn();
+        emit(AuthenticatedState(isLogin));
       } else if (event is LogoutEvent) {
-        emit(AuthLoadingState());
+        emit(const AuthLoadingState());
         final failureOrLogout = await logoutUseCase(LogoutParams());
         emit(failureOrLogout.fold(
             (failure) => ErrorAuthState(message: _mapFailureToMessage(failure)),
-            (r) => UnAuthenticatedState()));
+            (r) => const AuthenticatedState(false)));
       } else if (event is PhoneNumberEvent) {
-        emit(AuthLoadingState());
+        emit(const AuthLoadingState());
         final failureOrPhoneNumberEvent = await telephoneUseCase(
           TelephoneParams(
             telephone: event.telephone,
@@ -49,7 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             (telephoneEntity) =>
                 PhoneNumberState(telephoneEntity: telephoneEntity)));
       } else if (event is VerifyOTPEvent) {
-        emit(AuthLoadingState());
+        emit(const AuthLoadingState());
         // if its a new user
         if (event.handler == "new") {
           final failureOrVerifyOtp = await verifyOTPUserCase(VerifyOTPParams(
@@ -75,7 +80,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               (authEntity) => LoginState(authEntity: authEntity)));
         }
       } else if (event is CreateAccountEvent) {
-        emit(AuthLoadingState());
+        emit(const AuthLoadingState());
         final failureOrCreateAccount = await createAccountUserCase(
           CreateAccountParams(
             firstname: event.firstname,
@@ -103,5 +108,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       default:
         return "Unexpected Error , Please try again later .";
     }
+  }
+
+  Future<bool> isLoggedIn() async {
+    String? authToken = await storage.read(key: 'jwt');
+    return authToken != null && authToken.isNotEmpty;
   }
 }

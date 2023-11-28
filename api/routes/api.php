@@ -31,6 +31,6 @@ Route::group(['middleware' => 'api'], function () {
 
     //terminals
     Route::group(["prefix" => "terminal"], function(){
-        Route::post("/", [TerminalController::class, "terminals"]);
+        Route::post("/axis", [TerminalController::class, "axis"]);
     });
 });

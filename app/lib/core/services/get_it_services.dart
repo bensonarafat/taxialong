@@ -13,6 +13,11 @@ import 'package:taxialong/features/auth/domain/usecases/logout.dart';
 import 'package:taxialong/features/auth/domain/usecases/verify_otp.dart';
 import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:taxialong/features/home/data/datasources/home_remote_data_source.dart';
+import 'package:taxialong/features/home/data/repositories/home_repository.dart';
+import 'package:taxialong/features/home/domain/repositories/home_repository.dart';
+import 'package:taxialong/features/home/domain/usecases/get_axis.dart';
+import 'package:taxialong/features/home/presentation/bloc/home/home_bloc.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -67,4 +72,29 @@ Future<void> setupLocator() async {
   getIt.registerLazySingleton<Connectivity>(() => Connectivity());
   //storage
   getIt.registerLazySingleton<SecureStorage>(() => SecureStorage());
+
+  // home instance
+
+  getIt.registerFactory<HomeBloc>(() => HomeBloc(axisUseCase: getIt()));
+
+  //usecase
+  getIt.registerLazySingleton<GetAxisUseCase>(
+      () => GetAxisUseCase(repository: getIt()));
+
+  //repository
+  getIt.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(
+      networkInfo: getIt(),
+      remoteDataSource: getIt(),
+      localDataSource: getIt(),
+    ),
+  );
+
+  //remove data source
+  getIt.registerLazySingleton<HomeRemoteDataSource>(
+    () => HomeRemoteDataSourceImp(client: client, secureStorage: getIt()),
+  );
+  getIt.registerLazySingleton<HomeRemoteDataSource>(
+    () => HomeRemoteDataSourceImp(client: client, secureStorage: getIt()),
+  );
 }

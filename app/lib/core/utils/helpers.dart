@@ -3,9 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:math' as math;
-
+import 'package:geolocator/geolocator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:taxialong/core/constants/assets.dart';
+import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 double getCollapseOpacity(context) {
@@ -20,69 +21,52 @@ double getCollapseOpacity(context) {
   return opacity;
 }
 
-showEnableLocation(context) {
-  return Alert(
-    context: context,
-    style: AlertStyle(
-      buttonsDirection: ButtonsDirection.column,
-      isCloseButton: false,
-      titleStyle: Theme.of(context).textTheme.headlineSmall!,
-      alertBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.r),
-        side: const BorderSide(
-          color: Color(0xFF121212),
-        ),
-      ),
-      descStyle: Theme.of(context).textTheme.bodyMedium!,
-    ),
-    image: Image.asset(
-      enableLocation,
-      width: 97.w,
-      height: 97.h,
-    ),
-    title: "Enable your location",
-    desc:
-        "Turn On your location to allow “Taxi Along” to Determine Your Location",
-    buttons: [
-      DialogButton(
-        color: Colors.transparent,
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        child: Container(
-          width: 305.w,
-          height: 54.h,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-          decoration: ShapeDecoration(
-            color: primaryColor,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r)),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Use current location',
-                style: GoogleFonts.robotoFlex(
-                  color: white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
+Future<bool> locationEnabled() async {
+  return await Geolocator.isLocationServiceEnabled();
+}
+
+showEnableLocation(context) async {
+  //check if location is enabled
+  if (await locationEnabled()) {
+    return;
+  } else {
+    // if this pop has already happend dont show it again
+    if (await LocalStorage().getEnableLocation()) return;
+    return Alert(
+      context: context,
+      style: AlertStyle(
+        buttonsDirection: ButtonsDirection.column,
+        isCloseButton: false,
+        titleStyle: Theme.of(context).textTheme.headlineSmall!,
+        alertBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          side: const BorderSide(
+            color: Color(0xFF121212),
           ),
         ),
+        descStyle: Theme.of(context).textTheme.bodyMedium!,
       ),
-      DialogButton(
+      image: Image.asset(
+        enableLocation,
+        width: 97.w,
+        height: 97.h,
+      ),
+      title: "Enable your location",
+      desc:
+          "Turn On your location to allow “Taxi Along” to Determine Your Location",
+      buttons: [
+        DialogButton(
           color: Colors.transparent,
-          onPressed: () => Navigator.pop(context),
+          onPressed: () async {
+            await enableGeoLocation();
+            context.pop();
+          },
           child: Container(
             width: 305.w,
             height: 54.h,
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
             decoration: ShapeDecoration(
+              color: primaryColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r)),
             ),
@@ -92,14 +76,47 @@ showEnableLocation(context) {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Skip for now',
-                  style: Theme.of(context).textTheme.titleSmall,
+                  'Use current location',
+                  style: GoogleFonts.robotoFlex(
+                    color: white,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
-          ))
-    ],
-  ).show();
+          ),
+        ),
+        DialogButton(
+            color: Colors.transparent,
+            onPressed: () => context.pop(),
+            child: Container(
+              width: 305.w,
+              height: 54.h,
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.r)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Skip for now',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ],
+              ),
+            ))
+      ],
+    ).show();
+  }
+}
+
+Future<void> enableGeoLocation() async {
+  return await Future(() => null);
 }
 
 String formatDuration(Duration duration) {
