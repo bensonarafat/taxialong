@@ -11,14 +11,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => 'api'], function () {
+Route::group(['middleware' => 'auth:api'], function () {
     //auth
     Route::group(["prefix" => "auth"], function() {
-        Route::post("telephone", [AuthController::class, "telephone"]);
-        Route::post('otp-login', [AuthController::class, "otpLogin"]);
-        Route::post('otp-register', [AuthController::class, "otpRegister"]);
-        Route::post("o-auth", [AuthController::class, "oAuth"]);
-        Route::post('create-account', [AuthController::class, "createAccount"]);
+        Route::post("telephone", [AuthController::class, "telephone"])->withoutMiddleware("auth:api");
+        Route::post('otp-login', [AuthController::class, "otpLogin"])->withoutMiddleware("auth:api");
+        Route::post('otp-register', [AuthController::class, "otpRegister"])->withoutMiddleware("auth:api");
+        Route::post("o-auth", [AuthController::class, "oAuth"])->withoutMiddleware("auth:api");
+        Route::post('create-account', [AuthController::class, "createAccount"])->withoutMiddleware("auth:api");
         Route::get('logout', [AuthController::class, "logout"]);
         Route::get('refresh', [AuthController::class, "refresh"]);
         Route::get('me', [AuthController::class, "me"]);

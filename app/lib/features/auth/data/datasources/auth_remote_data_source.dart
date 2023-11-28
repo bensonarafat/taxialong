@@ -27,6 +27,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<AuthModel> createAccount({required params}) async {
+    var headers = {
+      'Accept': 'application/json',
+    };
     var url = Uri.parse("${endpoint}auth/create-account");
     var response = await client.post(
       url,
@@ -37,6 +40,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         "email": params.email,
         "uuid": params.uuid,
       },
+      headers: headers,
     );
 
     if (response.statusCode == 200) {
@@ -49,10 +53,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<TelephoneModel> telephone({required params}) async {
+    var headers = {
+      'Accept': 'application/json',
+    };
     var url = Uri.parse("${endpoint}auth/telephone");
     var response = await client.post(
       url,
       body: {"telephone": params.telephone},
+      headers: headers,
     );
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
@@ -64,6 +72,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<VerifyOTPModel> verifyOTP({required params}) async {
+    var headers = {
+      'Accept': 'application/json',
+    };
     var url = Uri.parse("${endpoint}auth/otp-login");
     var response = await client.post(
       url,
@@ -73,6 +84,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         "telephone": params.telephone,
         "handler": params.handler,
       },
+      headers: headers,
     );
 
     if (response.statusCode == 200) {
@@ -89,6 +101,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (token == null) throw ServerException();
     var headers = {
       'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
     };
     var url = Uri.parse("${endpoint}auth/logout");
     var response = await client.get(url, headers: headers);
@@ -102,6 +115,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<AuthModel> authUser({required params}) async {
+    var headers = {
+      'Accept': 'application/json',
+    };
     var url = Uri.parse("${endpoint}auth/otp-login");
     var response = await client.post(
       url,
@@ -111,6 +127,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         "otp": params.otp,
         "handler": params.handler,
       },
+      headers: headers,
     );
 
     if (response.statusCode == 200) {

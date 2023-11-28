@@ -13,16 +13,6 @@ use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login', 'otpLogin', 'otpRegister', 'createAccount', 'oAuth', 'logout', 'telephone']]);
-    }
-
 
     public function oAuth(Request $request){
         $exists = User::where("email", $request->email)->exists();

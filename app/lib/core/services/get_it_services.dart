@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxialong/core/connection/network_info.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/auth/data/datasources/auth_local_data_source.dart';
@@ -13,6 +14,7 @@ import 'package:taxialong/features/auth/domain/usecases/logout.dart';
 import 'package:taxialong/features/auth/domain/usecases/verify_otp.dart';
 import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:taxialong/features/home/data/datasources/home_local_data_source.dart';
 import 'package:taxialong/features/home/data/datasources/home_remote_data_source.dart';
 import 'package:taxialong/features/home/data/repositories/home_repository.dart';
 import 'package:taxialong/features/home/domain/repositories/home_repository.dart';
@@ -94,7 +96,9 @@ Future<void> setupLocator() async {
   getIt.registerLazySingleton<HomeRemoteDataSource>(
     () => HomeRemoteDataSourceImp(client: client, secureStorage: getIt()),
   );
-  getIt.registerLazySingleton<HomeRemoteDataSource>(
-    () => HomeRemoteDataSourceImp(client: client, secureStorage: getIt()),
+
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton<HomeLocalDataSource>(
+    () => HomeLocalDataSourceImpl(sharedPreferences: sharedPreferences),
   );
 }

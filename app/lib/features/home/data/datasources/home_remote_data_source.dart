@@ -21,14 +21,17 @@ class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
     if (token == null) throw ServerException();
     var headers = {
       'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
     };
     var url = Uri.parse("${endpoint}terminal/axis");
-    var response = await client.post(url,
-        body: {
-          "latitude": params.latitude,
-          "longitude": params.longitude,
-        },
-        headers: headers);
+    var response = await client.post(
+      url,
+      body: {
+        "latitude": params.latitude,
+        "longitude": params.longitude,
+      },
+      headers: headers,
+    );
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
