@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
+import 'package:taxialong/core/widgets/taxi_along_error_page.dart';
 import 'package:taxialong/core/widgets/taxi_along_loading.dart';
 import 'package:taxialong/features/home/domain/entities/axis_entity.dart';
 import 'package:taxialong/features/home/presentation/bloc/home/home_bloc.dart';
@@ -69,7 +70,7 @@ class _HomeState extends State<Home> {
                       );
                     } else if (state is HomeErrorState) {
                       // Error page
-                      return const Text("Error");
+                      return const TaxiAlongErrorPage();
                     } else if (state is HomeLoadedState) {
                       List<AxisEntity> terminals = state.axisEntity;
                       return Container(
@@ -90,7 +91,7 @@ class _HomeState extends State<Home> {
                         ),
                       );
                     } else {
-                      return const Text("Error");
+                      return const TaxiAlongErrorPage();
                     }
                   },
                 ),

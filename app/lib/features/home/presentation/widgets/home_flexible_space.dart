@@ -46,7 +46,7 @@ class HomeFlexibleSpace extends StatelessWidget {
                                 Scaffold.of(context).openDrawer();
                               },
                               child: Container(
-                                margin: EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                   left: 16.w,
                                 ),
                                 child: SvgPicture.asset(

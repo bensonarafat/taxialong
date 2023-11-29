@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:taxialong/core/constants/constants.dart';
+import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/core/widgets/taxi_along_bus_stop.dart';
+import 'package:taxialong/core/utils/helpers.dart';
+import 'package:taxialong/core/widgets/taxi_along_error_page.dart';
+import 'package:taxialong/core/widgets/taxi_along_loading.dart';
+import 'package:taxialong/features/bus_stops/domain/entities/axis_entity.dart'
+    as busstop;
+import 'package:taxialong/features/bus_stops/presentation/widgets/bus_stop_name.dart';
 import 'package:taxialong/features/bus_stops/presentation/bloc/busstop/bus_stop_bloc.dart';
 import 'package:taxialong/features/bus_stops/presentation/widgets/bus_stops_flexible_space.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taxialong/features/home/domain/entities/axis_entity.dart';
+import 'package:taxialong/features/home/domain/entities/axis_entity.dart'
+    as home;
 
 class BusStop extends StatefulWidget {
   final Map<String, dynamic> params;
@@ -17,7 +23,7 @@ class BusStop extends StatefulWidget {
 }
 
 class _BusStopState extends State<BusStop> {
-  late List<AxisEntity> terminals;
+  late List<home.AxisEntity> terminals;
   late int index;
   late String axis;
   int selected = 0;
@@ -36,7 +42,13 @@ class _BusStopState extends State<BusStop> {
     final GlobalKey<ScaffoldState> key = GlobalKey();
 
     return BlocProvider(
-      create: (context) => BusStopBloc(),
+      create: (context) => getIt<BusStopBloc>()
+        ..add(
+          BusStopFetchEvent(
+            pointa: terminals[index].pointa,
+            pointb: terminals[index].pointb,
+          ),
+        ),
       child: Scaffold(
         key: key,
         body: CustomScrollView(
@@ -72,6 +84,12 @@ class _BusStopState extends State<BusStop> {
                               axis =
                                   "${terminals[selected].terminala.name} along ${terminals[selected].terminalb.name}";
                             });
+                            context.read<BusStopBloc>().add(
+                                  BusStopFetchEvent(
+                                    pointa: terminals[selected].pointa,
+                                    pointb: terminals[selected].pointb,
+                                  ),
+                                );
                           },
                           child: Container(
                             height: 42.h,
@@ -143,32 +161,48 @@ class _BusStopState extends State<BusStop> {
                   ),
 
                   BlocConsumer<BusStopBloc, BusStopState>(
-                    listener: (context, state) {},
+                    listener: (context, state) {
+                      if (state is BusStopErrorState) {
+                        toast(state.message);
+                      }
+                    },
                     builder: (context, state) {
-                      return Container(
-                        decoration: const BoxDecoration(
-                          border: Border(
-                              top: BorderSide(
-                            color: Color(0xff333333),
-                          )),
-                        ),
-                        padding: EdgeInsets.all(
-                          16.w,
-                        ),
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: busstops.length,
-                          itemBuilder: (_, index) {
-                            return TaxiAlongBusStops(
-                              busstops: busstops,
-                              index: index,
-                              type: "taxi_classes",
-                            );
-                          },
-                        ),
-                      );
+                      if (state is BusStopLoadingState) {
+                        return TaxiAlongLoading(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? white
+                              : dark,
+                        );
+                      } else if (state is BusStopErrorState) {
+                        return const TaxiAlongErrorPage();
+                      } else if (state is BusStopLoadedState) {
+                        List<busstop.AxisEntity> busstops = state.busstops;
+                        return Container(
+                          decoration: const BoxDecoration(
+                            border: Border(
+                                top: BorderSide(
+                              color: Color(0xff333333),
+                            )),
+                          ),
+                          padding: EdgeInsets.all(
+                            16.w,
+                          ),
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: busstops.length,
+                            itemBuilder: (_, index) {
+                              return BusStopsName(
+                                busstops: busstops[index],
+                                index: index,
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        return const TaxiAlongErrorPage();
+                      }
                     },
                   ),
                 ],

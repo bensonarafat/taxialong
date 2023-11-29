@@ -136,7 +136,68 @@ class Profile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Full Name',
+                              Text('First Name',
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
+                              Gap(4.h),
+                              Text(
+                                'Andrew Williams',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      fontSize: 16.sp,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Gap(16.w),
+                      Container(
+                        width: 38.50.w,
+                        height: 37.81.h,
+                        padding: EdgeInsets.only(
+                          top: 7.h,
+                          left: 7.w,
+                          right: 7.50.w,
+                          bottom: 6.81.h,
+                        ),
+                        clipBehavior: Clip.antiAlias,
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100.r),
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.edit,
+                          color: Color(0xffA0A2A9),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Gap(16.h),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 53,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                  width: 0.50.w,
+                                  color: const Color(0xFFA0A2A9)),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Last Name',
                                   style:
                                       Theme.of(context).textTheme.titleSmall),
                               Gap(4.h),
@@ -291,191 +352,6 @@ class Profile extends StatelessWidget {
                         decoration: ShapeDecoration(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100),
-                          ),
-                        ),
-                        child: const Icon(
-                          Icons.edit,
-                          color: Color(0xffA0A2A9),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Gap(16.h),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 53.h,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 0.50.w,
-                                  color: const Color(0xFFA0A2A9)),
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Password',
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                              Gap(4.h),
-                              Expanded(
-                                child: SizedBox(
-                                  width: 127.75.w,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 8.w,
-                                        height: 8.h,
-                                        decoration: ShapeDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
-                                          shape: const OvalBorder(),
-                                        ),
-                                      ),
-                                      Gap(4.w),
-                                      Container(
-                                        width: 8.w,
-                                        height: 8.h,
-                                        decoration: ShapeDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
-                                          shape: const OvalBorder(),
-                                        ),
-                                      ),
-                                      Gap(4.w),
-                                      Container(
-                                        width: 8.w,
-                                        height: 8.h,
-                                        decoration: ShapeDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
-                                          shape: const OvalBorder(),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Container(
-                                        width: 8.w,
-                                        height: 8.h,
-                                        decoration: ShapeDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
-                                          shape: const OvalBorder(),
-                                        ),
-                                      ),
-                                      Gap(4.w),
-                                      Container(
-                                        width: 8.w,
-                                        height: 8.h,
-                                        decoration: ShapeDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
-                                          shape: const OvalBorder(),
-                                        ),
-                                      ),
-                                      Gap(4.w),
-                                      Container(
-                                        width: 8.w,
-                                        height: 8.h,
-                                        decoration: ShapeDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
-                                          shape: const OvalBorder(),
-                                        ),
-                                      ),
-                                      Gap(4.w),
-                                      Container(
-                                        width: 8.w,
-                                        height: 8.h,
-                                        decoration: ShapeDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
-                                          shape: const OvalBorder(),
-                                        ),
-                                      ),
-                                      Gap(4.w),
-                                      Container(
-                                        width: 8.w,
-                                        height: 8.h,
-                                        decoration: ShapeDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
-                                          shape: const OvalBorder(),
-                                        ),
-                                      ),
-                                      Gap(4.w),
-                                      Container(
-                                        width: 8.w,
-                                        height: 8.h,
-                                        decoration: ShapeDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
-                                          shape: const OvalBorder(),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Container(
-                                        width: 8.w,
-                                        height: 8.h,
-                                        decoration: ShapeDecoration(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
-                                          shape: const OvalBorder(),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Gap(16.w),
-                      Container(
-                        width: 38.50.w,
-                        height: 37.81.h,
-                        padding: EdgeInsets.only(
-                          top: 7.h,
-                          left: 7.w,
-                          right: 7.50.w,
-                          bottom: 6.81.h,
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100.r),
                           ),
                         ),
                         child: const Icon(

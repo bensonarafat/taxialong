@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taxialong/features/bus_stops/domain/entities/axis_entity.dart';
 import 'package:taxialong/features/taxi_classes/presentation/widgets/class_ride.dart';
 import 'package:taxialong/features/taxi_classes/presentation/widgets/taxi_class_flexible_space.dart';
 
 class TaxiClasses extends StatelessWidget {
-  const TaxiClasses({super.key});
+  final AxisEntity busstops;
+  const TaxiClasses({
+    super.key,
+    required this.busstops,
+  });
 
   @override
   Widget build(BuildContext context) {
