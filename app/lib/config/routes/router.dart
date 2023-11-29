@@ -9,10 +9,12 @@ import 'package:taxialong/features/auth/presentation/pages/create_account.dart';
 import 'package:taxialong/features/auth/presentation/pages/login.dart';
 import 'package:taxialong/features/auth/presentation/pages/phone_number_verification.dart';
 import 'package:taxialong/features/auth/presentation/pages/signup.dart';
+import 'package:taxialong/features/bus_stops/domain/entities/axis_entity.dart';
 import 'package:taxialong/features/bus_stops/presentation/pages/bus_stops.dart';
 import 'package:taxialong/features/onboard/presentation/pages/get_started.dart';
 import 'package:taxialong/features/onboard/presentation/pages/onboarding.dart';
 import 'package:taxialong/features/profile/presentation/pages/profile.dart';
+import 'package:taxialong/features/taxi_classes/presentation/pages/taxi_classes.dart';
 
 final BottomNavigationBloc bottomNavigationBloc = BottomNavigationBloc();
 final GoRouter router = GoRouter(
@@ -72,6 +74,13 @@ final GoRouter router = GoRouter(
       name: 'busStop',
       builder: (context, state) => BusStop(
         params: state.extra as Map<String, dynamic>,
+      ),
+    ),
+    GoRoute(
+      path: '/taxi-classes',
+      name: 'taxiClasses',
+      builder: (context, state) => TaxiClasses(
+        busstops: state.extra as AxisEntity,
       ),
     ),
   ],

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\TerminalController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,12 +27,22 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //account
     Route::group(["prefix" => "account"], function() {
-        Route::put("/update-profile/{field}", [AccountController::class,"updateProfile"]);
+        Route::post("/upload-image", [AccountController::class, "uploadImage"]);
+        Route::put("/update-profile", [AccountController::class,"updateProfile"]);
     });
 
     //terminals
     Route::group(["prefix" => "terminal"], function(){
         Route::post("/axis", [TerminalController::class, "axis"]);
         Route::post("/bus-stops", [TerminalController::class, "busStops"]);
+    });
+
+    // driver
+    Route::group(["prefix" => "driver"], function() {
+
+        // documents
+        Route::group(["prefix" => "document"], function(){
+            Route::post("/upload", [DocumentController::class, "upload"]);
+        });
     });
 });
