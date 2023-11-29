@@ -24,6 +24,7 @@ import 'package:taxialong/features/home/data/datasources/home_remote_data_source
 import 'package:taxialong/features/home/data/repositories/home_repository.dart';
 import 'package:taxialong/features/home/domain/repositories/home_repository.dart';
 import 'package:taxialong/features/home/domain/usecases/get_axis.dart';
+import 'package:taxialong/features/home/domain/usecases/get_cache.dart';
 import 'package:taxialong/features/home/presentation/bloc/home/home_bloc.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -89,12 +90,16 @@ Future<void> setupLocator() async {
  */
 
   // home instance
-  getIt.registerFactory<HomeBloc>(() => HomeBloc(axisUseCase: getIt()));
+  getIt.registerFactory<HomeBloc>(() => HomeBloc(
+        axisUseCase: getIt(),
+        axisCachedUseCase: getIt(),
+      ));
 
   //usecase
   getIt.registerLazySingleton<GetAxisUseCase>(
       () => GetAxisUseCase(repository: getIt()));
-
+  getIt.registerLazySingleton<GetAxisCachedUseCase>(
+      () => GetAxisCachedUseCase(repository: getIt()));
   //repository
   getIt.registerLazySingleton<HomeRepository>(
     () => HomeRepositoryImpl(
