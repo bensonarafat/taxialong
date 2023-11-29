@@ -53,15 +53,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<TelephoneModel> telephone({required params}) async {
-    var headers = {
-      'Accept': 'application/json',
-    };
     var url = Uri.parse("${endpoint}auth/telephone");
     var response = await client.post(
       url,
       body: {"telephone": params.telephone},
-      headers: headers,
     );
+
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return TelephoneModel.fromJson(data);

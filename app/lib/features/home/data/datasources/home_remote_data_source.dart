@@ -6,7 +6,7 @@ import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/home/data/models/axis_model.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<AxisModel> getAxis({required params});
+  Future<List<AxisModel>> getAxis({required params});
 }
 
 class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
@@ -16,7 +16,7 @@ class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
   HomeRemoteDataSourceImp({required this.client, required this.secureStorage});
 
   @override
-  Future<AxisModel> getAxis({required params}) async {
+  Future<List<AxisModel>> getAxis({required params}) async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
     var headers = {
@@ -24,18 +24,30 @@ class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
       'Accept': 'application/json',
     };
     var url = Uri.parse("${endpoint}terminal/axis");
-    var response = await client.post(
-      url,
-      body: {
-        "latitude": params.latitude,
-        "longitude": params.longitude,
-      },
-      headers: headers,
-    );
+    // ignore: prefer_typing_uninitialized_variables
+    late final response;
+    if (params.latitude == null || params.longitude == null) {
+      response = await client.post(
+        url,
+        headers: headers,
+      );
+    } else {
+      response = await client.post(
+        url,
+        body: {
+          "latitude": params.latitude,
+          "longitude": params.longitude,
+        },
+        headers: headers,
+      );
+    }
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      return AxisModel.fromJson(data);
+      List<dynamic> jsonresponse = data['data'];
+      List<AxisModel> list =
+          jsonresponse.map((item) => AxisModel.fromJson(item)).toList();
+      return list;
     } else {
       throw ServerException();
     }

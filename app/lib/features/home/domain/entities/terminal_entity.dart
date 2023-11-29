@@ -1,8 +1,8 @@
 class TerminalEntity {
   final int id;
   final String name;
-  final double latitude;
-  final double longitude;
+  final String latitude;
+  final String longitude;
 
   TerminalEntity({
     required this.id,

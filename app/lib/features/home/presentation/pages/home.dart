@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
+import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_loading.dart';
+import 'package:taxialong/features/home/domain/entities/axis_entity.dart';
 import 'package:taxialong/features/home/presentation/bloc/home/home_bloc.dart';
+import 'package:taxialong/features/home/presentation/widgets/home_bus_stops.dart';
 import 'package:taxialong/features/home/presentation/widgets/home_flexible_space.dart';
-import 'package:taxialong/core/widgets/taxi_along_bus_stop.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -30,11 +32,8 @@ class _HomeState extends State<Home> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(
-          create: (BuildContext context) => getIt<HomeBloc>()
-            ..add(FetchHomeTerminals(
-              latitude: null,
-              longitude: null,
-            )),
+          create: (BuildContext context) =>
+              getIt<HomeBloc>()..add(FetchHomeTerminalsEvent()),
         ),
       ],
       child: CustomScrollView(
@@ -55,13 +54,24 @@ class _HomeState extends State<Home> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                BlocBuilder<HomeBloc, HomeState>(
+                BlocConsumer<HomeBloc, HomeState>(
+                  listener: (context, state) {
+                    if (state is HomeErrorState) {
+                      toast(state.message);
+                    }
+                  },
                   builder: (context, state) {
                     if (state is HomeLoadingState) {
-                      return const TaxiAlongLoading();
+                      return TaxiAlongLoading(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : dark,
+                      );
                     } else if (state is HomeErrorState) {
+                      // Error page
                       return const Text("Error");
                     } else if (state is HomeLoadedState) {
+                      List<AxisEntity> terminals = state.axisEntity;
                       return Container(
                         padding: EdgeInsets.all(
                           16.w,
@@ -70,12 +80,11 @@ class _HomeState extends State<Home> {
                           padding: EdgeInsets.zero,
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: busstops.length,
+                          itemCount: terminals.length,
                           itemBuilder: (_, index) {
-                            return TaxiAlongBusStops(
-                              busstops: busstops,
+                            return HomeTerminals(
+                              terminals: terminals,
                               index: index,
-                              type: "home",
                             );
                           },
                         ),

@@ -9,6 +9,7 @@ import 'package:taxialong/features/auth/presentation/pages/create_account.dart';
 import 'package:taxialong/features/auth/presentation/pages/login.dart';
 import 'package:taxialong/features/auth/presentation/pages/phone_number_verification.dart';
 import 'package:taxialong/features/auth/presentation/pages/signup.dart';
+import 'package:taxialong/features/bus_stops/presentation/pages/bus_stops.dart';
 import 'package:taxialong/features/onboard/presentation/pages/get_started.dart';
 import 'package:taxialong/features/onboard/presentation/pages/onboarding.dart';
 import 'package:taxialong/features/profile/presentation/pages/profile.dart';
@@ -65,6 +66,13 @@ final GoRouter router = GoRouter(
       path: '/profile',
       name: 'profile',
       builder: (context, state) => const Profile(),
+    ),
+    GoRoute(
+      path: '/bus-stop',
+      name: 'busStop',
+      builder: (context, state) => BusStop(
+        params: state.extra as Map<String, dynamic>,
+      ),
     ),
   ],
   redirect: (context, state) async {

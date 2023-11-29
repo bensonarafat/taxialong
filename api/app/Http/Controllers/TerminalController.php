@@ -105,4 +105,15 @@ class TerminalController extends Controller
     }
 
 
+    /**
+     * Bustops
+     */
+    public function busStops(Request $request) {
+        $axis = Axis::where(["point_a" => $request->pointa, "point_b" => $request->pointb])->orWhere(["point_b" => $request->pointa, "point_a" => $request->pointb])->with(['busStop'])->get();
+        return response()->json([
+            "status" => true,
+            "message" => "Bus stop fetched",
+            "data" => $axis,
+        ]);
+    }
 }

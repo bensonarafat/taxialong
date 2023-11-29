@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:taxialong/features/home/domain/entities/axis_entity.dart';
 
-import 'package:taxialong/features/taxi_classes/presentation/pages/taxi_classes.dart';
-
-class TaxiAlongBusStops extends StatelessWidget {
-  final List<String> busstops;
+class HomeTerminals extends StatelessWidget {
+  final List<AxisEntity> terminals;
   final int index;
-  final String type;
-  const TaxiAlongBusStops({
+  const HomeTerminals({
     super.key,
-    required this.busstops,
+    required this.terminals,
     required this.index,
-    required this.type,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        if (type == 'taxi_classes') {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => const TaxiClasses()));
-        }
-      },
+      onTap: () => context.push(
+        "/bus-stop",
+        extra: {"index": index, 'terminals': terminals},
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.dark
@@ -49,7 +45,7 @@ class TaxiAlongBusStops extends StatelessWidget {
             ),
             Gap(4.w),
             Text(
-              busstops[index],
+              "${terminals[index].terminala.name} along ${terminals[index].terminalb.name}",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],

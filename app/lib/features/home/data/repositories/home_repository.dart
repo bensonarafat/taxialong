@@ -18,12 +18,14 @@ class HomeRepositoryImpl implements HomeRepository {
   });
 
   @override
-  Future<Either<Failure, AxisModel>> getAxis({required params}) async {
-    if (!await networkInfo.isConnected) {
+  Future<Either<Failure, List<AxisModel>>> getAxis({required params}) async {
+    if (await networkInfo.isConnected) {
       try {
-        AxisModel axisModel = await remoteDataSource.getAxis(params: params);
+        List<AxisModel> axisModel =
+            await remoteDataSource.getAxis(params: params);
 
         localDataSource.cacheAxis(axisModel);
+
         return Right(axisModel);
       } on ServerException {
         return Left(ServerFailure(message: "There is a server failure"));

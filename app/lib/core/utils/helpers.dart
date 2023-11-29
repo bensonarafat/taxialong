@@ -8,6 +8,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/features/home/presentation/bloc/home/home_bloc.dart';
 
 double getCollapseOpacity(context) {
   final settings =
@@ -25,26 +26,36 @@ Future<bool> locationEnabled() async {
   return await Geolocator.isLocationServiceEnabled();
 }
 
-showEnableLocation(context) async {
+showEnableLocation(_) async {
+  LocalStorage localStorage = LocalStorage();
+  bool? islocationSet = await localStorage.getEnableLocation();
   //check if location is enabled
-  if (await locationEnabled()) {
+  if (islocationSet != null) {
+    Position? position = await enableGeoLocation();
+    if (position != null) {
+      // subscribe to
+      _.read<HomeBloc>().add(UpdateTerminalEvent(
+          latitude: position.latitude.toString(),
+          longitude: position.longitude.toString()));
+      localStorage.setGeoLocation();
+    }
     return;
   } else {
     // if this pop has already happend dont show it again
-    if (await LocalStorage().getEnableLocation()) return;
+    if (await locationEnabled()) return;
     return Alert(
-      context: context,
+      context: _,
       style: AlertStyle(
         buttonsDirection: ButtonsDirection.column,
         isCloseButton: false,
-        titleStyle: Theme.of(context).textTheme.headlineSmall!,
+        titleStyle: Theme.of(_).textTheme.headlineSmall!,
         alertBorder: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.r),
           side: const BorderSide(
             color: Color(0xFF121212),
           ),
         ),
-        descStyle: Theme.of(context).textTheme.bodyMedium!,
+        descStyle: Theme.of(_).textTheme.bodyMedium!,
       ),
       image: Image.asset(
         enableLocation,
@@ -58,8 +69,15 @@ showEnableLocation(context) async {
         DialogButton(
           color: Colors.transparent,
           onPressed: () async {
-            await enableGeoLocation();
-            context.pop();
+            Position? position = await enableGeoLocation();
+            if (position != null) {
+              // subscribe to
+              _.read<HomeBloc>().add(UpdateTerminalEvent(
+                  latitude: position.latitude.toString(),
+                  longitude: position.longitude.toString()));
+              localStorage.setGeoLocation();
+            }
+            Navigator.of(_).pop();
           },
           child: Container(
             width: 305.w,
@@ -89,7 +107,7 @@ showEnableLocation(context) async {
         ),
         DialogButton(
             color: Colors.transparent,
-            onPressed: () => context.pop(),
+            onPressed: () => Navigator.of(_).pop(),
             child: Container(
               width: 305.w,
               height: 54.h,
@@ -105,7 +123,7 @@ showEnableLocation(context) async {
                 children: [
                   Text(
                     'Skip for now',
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(_).textTheme.titleSmall,
                   ),
                 ],
               ),
@@ -115,8 +133,23 @@ showEnableLocation(context) async {
   }
 }
 
-Future<void> enableGeoLocation() async {
-  return await Future(() => null);
+Future<Position?> enableGeoLocation() async {
+  LocationPermission permission;
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      toast('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    // Permissions are denied forever, handle appropriately.
+    toast(
+        'Location permissions are permanently denied, we cannot request permissions.');
+    return await Geolocator.getCurrentPosition();
+  }
+  return null;
 }
 
 String formatDuration(Duration duration) {

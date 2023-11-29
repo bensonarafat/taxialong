@@ -32,5 +32,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     //terminals
     Route::group(["prefix" => "terminal"], function(){
         Route::post("/axis", [TerminalController::class, "axis"]);
+        Route::post("/bus-stops", [TerminalController::class, "busStops"]);
     });
 });

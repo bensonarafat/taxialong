@@ -9,7 +9,7 @@ class HomeLoadingState extends HomeState {
 }
 
 class HomeLoadedState extends HomeState {
-  final AxisEntity axisEntity;
+  final List<AxisEntity> axisEntity;
 
   HomeLoadedState({required this.axisEntity});
   @override

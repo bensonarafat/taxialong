@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 
 class BusStopsFlexibleSpace extends StatelessWidget {
-  const BusStopsFlexibleSpace({super.key});
+  final String axis;
+  const BusStopsFlexibleSpace({super.key, required this.axis});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class BusStopsFlexibleSpace extends StatelessWidget {
                               ),
                               Gap(8.w),
                               Text(
-                                'Berger  Junction',
+                                axis,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium!
