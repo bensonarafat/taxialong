@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/bloc/bottom_navigation/bottom_navigation_bloc.dart';
-// import 'package:taxialong/core/services/go_router_refresh_stream.dart';
 import 'package:taxialong/core/widgets/taxi_along_bottom_navigation.dart';
+import 'package:taxialong/features/about/presentation/pages/about.dart';
 import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
 import 'package:taxialong/features/auth/domain/entities/telephone_entity.dart';
 import 'package:taxialong/features/auth/presentation/pages/create_account.dart';
@@ -11,10 +11,17 @@ import 'package:taxialong/features/auth/presentation/pages/phone_number_verifica
 import 'package:taxialong/features/auth/presentation/pages/signup.dart';
 import 'package:taxialong/features/bus_stops/domain/entities/axis_entity.dart';
 import 'package:taxialong/features/bus_stops/presentation/pages/bus_stops.dart';
+import 'package:taxialong/features/documents/presentation/pages/documents.dart';
+import 'package:taxialong/features/driver/presentation/pages/become_driver.dart';
+import 'package:taxialong/features/help_center/presentation/pages/help_center.dart';
+import 'package:taxialong/features/notification/presentation/pages/notification.dart';
 import 'package:taxialong/features/onboard/presentation/pages/get_started.dart';
 import 'package:taxialong/features/onboard/presentation/pages/onboarding.dart';
 import 'package:taxialong/features/profile/presentation/pages/profile.dart';
+import 'package:taxialong/features/referral/presentation/pages/referral.dart';
+import 'package:taxialong/features/settings/presentation/pages/settings.dart';
 import 'package:taxialong/features/taxi_classes/presentation/pages/taxi_classes.dart';
+import 'package:taxialong/features/trip_history/presentation/pages/trip_history.dart';
 
 final BottomNavigationBloc bottomNavigationBloc = BottomNavigationBloc();
 final GoRouter router = GoRouter(
@@ -82,6 +89,53 @@ final GoRouter router = GoRouter(
       builder: (context, state) => TaxiClasses(
         busstops: state.extra as AxisEntity,
       ),
+    ),
+
+    GoRoute(
+      path: "/ride-history",
+      name: "rideHistory",
+      builder: (context, state) => const TripHistory(),
+    ),
+
+    GoRoute(
+      path: "/notification",
+      name: "notification",
+      builder: (context, state) => const TaxiAlongNotification(),
+    ),
+    GoRoute(
+      path: "/referral",
+      name: "referral",
+      builder: (context, state) => const Referral(),
+    ),
+
+    GoRoute(
+      path: "/documents",
+      name: "documents",
+      builder: (context, state) => const Documents(),
+    ),
+
+    GoRoute(
+      path: "/become-driver",
+      name: "becomeDriver",
+      builder: (context, state) => const BecomeDriver(),
+    ),
+
+    GoRoute(
+      path: "/help-center",
+      name: "helpCenter",
+      builder: (context, state) => const HelpCenter(),
+    ),
+
+    GoRoute(
+      path: "/settings",
+      name: "settings",
+      builder: (context, state) => const Settings(),
+    ),
+
+    GoRoute(
+      path: "/about",
+      name: "about",
+      builder: (context, state) => const AboutPage(),
     ),
   ],
   redirect: (context, state) async {

@@ -24,7 +24,14 @@ import 'package:taxialong/features/home/data/datasources/home_remote_data_source
 import 'package:taxialong/features/home/data/repositories/home_repository.dart';
 import 'package:taxialong/features/home/domain/repositories/home_repository.dart';
 import 'package:taxialong/features/home/domain/usecases/get_axis.dart';
+import 'package:taxialong/features/home/domain/usecases/get_cache.dart';
 import 'package:taxialong/features/home/presentation/bloc/home/home_bloc.dart';
+import 'package:taxialong/features/profile/data/datasources/profile_remote_data_source.dart';
+import 'package:taxialong/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:taxialong/features/profile/domain/repositories/profile_repository.dart';
+import 'package:taxialong/features/profile/domain/usecases/update_profile_image_usecase.dart';
+import 'package:taxialong/features/profile/domain/usecases/update_profile_usecase.dart';
+import 'package:taxialong/features/profile/presentation/bloc/profile/profile_bloc.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -89,12 +96,16 @@ Future<void> setupLocator() async {
  */
 
   // home instance
-  getIt.registerFactory<HomeBloc>(() => HomeBloc(axisUseCase: getIt()));
+  getIt.registerFactory<HomeBloc>(() => HomeBloc(
+        axisUseCase: getIt(),
+        axisCachedUseCase: getIt(),
+      ));
 
   //usecase
   getIt.registerLazySingleton<GetAxisUseCase>(
       () => GetAxisUseCase(repository: getIt()));
-
+  getIt.registerLazySingleton<GetAxisCachedUseCase>(
+      () => GetAxisCachedUseCase(repository: getIt()));
   //repository
   getIt.registerLazySingleton<HomeRepository>(
     () => HomeRepositoryImpl(
@@ -136,5 +147,30 @@ Future<void> setupLocator() async {
   //remote data source
   getIt.registerLazySingleton<BusStopRemoteDataSource>(
     () => BusStopRemoteDataSourceImpl(client: client, secureStorage: getIt()),
+  );
+
+  // Profile ------------------------------------------------------------------
+  // profile instance
+  getIt.registerFactory<ProfileBloc>(() => ProfileBloc(
+        updateProfileUseCase: getIt(),
+        updateProfileImageUseCase: getIt(),
+      ));
+  //usecase
+  getIt.registerLazySingleton<UpdateProfileUseCase>(
+      () => UpdateProfileUseCase(repository: getIt()));
+  getIt.registerLazySingleton<UpdateProfileImageUseCase>(
+      () => UpdateProfileImageUseCase(repository: getIt()));
+  //repository
+  getIt.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(
+      networkInfo: getIt(),
+      remoteDataSource: getIt(),
+      secureStorage: getIt(),
+    ),
+  );
+
+  //remote data source
+  getIt.registerLazySingleton<ProfileRemoteDataSource>(
+    () => ProfileRemoteDataSourceImpl(client: client, secureStorage: getIt()),
   );
 }

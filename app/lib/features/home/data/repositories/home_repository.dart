@@ -40,4 +40,10 @@ class HomeRepositoryImpl implements HomeRepository {
       }
     }
   }
+
+  @override
+  Future<Either<Failure, List<AxisModel>>> getAxisCached() async {
+    final localAxis = await localDataSource.getLastCacheAxis();
+    return Right(localAxis);
+  }
 }

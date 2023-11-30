@@ -6,21 +6,49 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
+import 'package:taxialong/core/constants/constants.dart';
+import 'package:taxialong/core/services/local_storage.dart';
+import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
-import 'package:taxialong/features/about/presentation/pages/about.dart';
+import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
+import 'package:taxialong/features/auth/data/models/user_model.dart';
 import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
-import 'package:taxialong/features/documents/presentation/pages/documents.dart';
-import 'package:taxialong/features/driver/presentation/pages/become_driver.dart';
-import 'package:taxialong/features/help_center/presentation/pages/help_center.dart';
-import 'package:taxialong/features/notification/presentation/pages/notification.dart';
-import 'package:taxialong/features/profile/presentation/pages/profile.dart';
-import 'package:taxialong/features/referral/presentation/pages/referral.dart';
-import 'package:taxialong/features/settings/presentation/pages/settings.dart';
-import 'package:taxialong/features/trip_history/presentation/pages/trip_history.dart';
 
-class TaxiAlongDrawer extends StatelessWidget {
+class TaxiAlongDrawer extends StatefulWidget {
   const TaxiAlongDrawer({super.key});
+
+  @override
+  State<TaxiAlongDrawer> createState() => _TaxiAlongDrawerState();
+}
+
+class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
+  LocalStorage localStorage = LocalStorage();
+  SecureStorage secureStorage = SecureStorage();
+  bool driverMode = false;
+
+  String username = "";
+  String avatar = imageplaceholder;
+  int rating = 0;
+  @override
+  void initState() {
+    _getUserMode();
+    _getUserData();
+    super.initState();
+  }
+
+  _getUserMode() async {
+    driverMode = await localStorage.getDriverMode();
+  }
+
+  _getUserData() async {
+    UserModel? usermodel = await secureStorage.getUserData();
+    setState(() {
+      username = "${usermodel?.firstname} ${usermodel?.lastname}";
+      avatar = "${usermodel?.avatar}";
+      rating = usermodel == null ? 0 : int.parse(usermodel.rating);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,22 +93,16 @@ class TaxiAlongDrawer extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                          width: 52.w,
-                          height: 52.h,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            image: const DecorationImage(
-                              image: AssetImage(user),
-                              fit: BoxFit.fill,
+                        TaxiAlongCachedNetworkImage(
+                          path: avatar,
+                          width: 52,
+                          height: 52,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: 1.w,
+                              color: const Color(0xFFA0A2A9),
                             ),
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                width: 1.w,
-                                color: const Color(0xFFA0A2A9),
-                              ),
-                              borderRadius: BorderRadius.circular(100.r),
-                            ),
+                            borderRadius: BorderRadius.circular(100.r),
                           ),
                         ),
                         Gap(8.h),
@@ -90,7 +112,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              'Lucy Edwin',
+                              username,
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
@@ -112,7 +134,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                                 ),
                                 Gap(8.h),
                                 Text(
-                                  '5.0',
+                                  '$rating.0',
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context)
                                       .textTheme
@@ -138,10 +160,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                 shrinkWrap: true,
                 children: [
                   ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const TripHistory()));
-                    },
+                    onTap: () => context.push('/ride-history'),
                     title: Text(
                       'Ride History',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
@@ -160,10 +179,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                   //
 
                   ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const Profile()));
-                    },
+                    onTap: () => context.push("/profile"),
                     title: Text(
                       'Profile',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
@@ -178,48 +194,47 @@ class TaxiAlongDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
+                  driverMode
+                      ? ListTile(
+                          title: Text(
+                            'Wallet',
+                            style:
+                                Theme.of(context).listTileTheme.titleTextStyle,
+                          ),
+                          leading: SvgPicture.asset(
+                            paymentSVG,
+                            colorFilter: ColorFilter.mode(
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? white
+                                  : dark,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        )
+                      : Container(),
+
+                  driverMode
+                      ? ListTile(
+                          onTap: () => context.push("/notification"),
+                          title: Text(
+                            'Notifications',
+                            style:
+                                Theme.of(context).listTileTheme.titleTextStyle,
+                          ),
+                          leading: SvgPicture.asset(
+                            notificationSVG,
+                            colorFilter: ColorFilter.mode(
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? white
+                                  : dark,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        )
+                      : Container(),
 
                   ListTile(
-                    title: Text(
-                      'Wallet',
-                      style: Theme.of(context).listTileTheme.titleTextStyle,
-                    ),
-                    leading: SvgPicture.asset(
-                      paymentSVG,
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).brightness == Brightness.dark
-                            ? white
-                            : dark,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-
-                  ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const TaxiAlongNotification()));
-                    },
-                    title: Text(
-                      'Notifications',
-                      style: Theme.of(context).listTileTheme.titleTextStyle,
-                    ),
-                    leading: SvgPicture.asset(
-                      notificationSVG,
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).brightness == Brightness.dark
-                            ? white
-                            : dark,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-
-                  ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const Referral()));
-                    },
+                    onTap: () => context.push("/referral"),
                     title: Text(
                       'Referral',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
@@ -235,30 +250,27 @@ class TaxiAlongDrawer extends StatelessWidget {
                     ),
                   ),
 
+                  driverMode
+                      ? ListTile(
+                          onTap: () => context.push("/documents"),
+                          title: Text(
+                            'Manage Documents',
+                            style:
+                                Theme.of(context).listTileTheme.titleTextStyle,
+                          ),
+                          leading: SvgPicture.asset(
+                            manageDocuments,
+                            colorFilter: ColorFilter.mode(
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? white
+                                  : dark,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        )
+                      : Container(),
                   ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const Documents()));
-                    },
-                    title: Text(
-                      'Manage Documents',
-                      style: Theme.of(context).listTileTheme.titleTextStyle,
-                    ),
-                    leading: SvgPicture.asset(
-                      manageDocuments,
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).brightness == Brightness.dark
-                            ? white
-                            : dark,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const BecomeDriver()));
-                    },
+                    onTap: () => context.push("/become-driver"),
                     title: Text(
                       'Become a Driver',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
@@ -275,10 +287,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                   ),
 
                   ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const HelpCenter()));
-                    },
+                    onTap: () => context.push("/help-center"),
                     title: Text(
                       'Help',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
@@ -295,10 +304,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                   ),
 
                   ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const Settings()));
-                    },
+                    onTap: () => context.push("/settings"),
                     title: Text(
                       'Settings',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
@@ -315,10 +321,7 @@ class TaxiAlongDrawer extends StatelessWidget {
                   ),
 
                   ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const AboutPage()));
-                    },
+                    onTap: () => context.push("/about"),
                     title: Text(
                       'About',
                       style: Theme.of(context).listTileTheme.titleTextStyle,

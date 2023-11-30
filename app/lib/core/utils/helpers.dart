@@ -170,3 +170,17 @@ void toast(String msg) {
     toastLength: Toast.LENGTH_LONG,
   );
 }
+
+String extractPhoneNumber(String fullNumber) {
+  // Define the country code for Nigeria
+  const String nigeriaCountryCode = '+234';
+
+  // Check if the number starts with the Nigeria country code
+  if (fullNumber.startsWith(nigeriaCountryCode)) {
+    // Extract the phone number without the country code
+    return fullNumber.substring(nigeriaCountryCode.length);
+  } else {
+    // The input is not a Nigeria phone number with a country code
+    return '080';
+  }
+}

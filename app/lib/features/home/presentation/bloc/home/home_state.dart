@@ -8,6 +8,14 @@ class HomeLoadingState extends HomeState {
   List<Object?> get props => [];
 }
 
+class HomeLoadCacheState extends HomeState {
+  final List<AxisEntity> axisEntity;
+
+  HomeLoadCacheState({required this.axisEntity});
+  @override
+  List<Object?> get props => [axisEntity];
+}
+
 class HomeLoadedState extends HomeState {
   final List<AxisEntity> axisEntity;
 

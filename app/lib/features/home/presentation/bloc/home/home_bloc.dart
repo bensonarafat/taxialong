@@ -7,20 +7,36 @@ import 'package:geolocator/geolocator.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/features/home/domain/entities/axis_entity.dart';
 import 'package:taxialong/features/home/domain/usecases/get_axis.dart';
+import 'package:taxialong/features/home/domain/usecases/get_cache.dart';
 
 part 'home_state.dart';
 part 'home_event.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetAxisUseCase axisUseCase;
+  final GetAxisCachedUseCase axisCachedUseCase;
   late StreamSubscription<Position> positionStream;
 
-  HomeBloc({required this.axisUseCase}) : super(HomeLoadingState()) {
+  HomeBloc({
+    required this.axisUseCase,
+    required this.axisCachedUseCase,
+  }) : super(HomeLoadingState()) {
     on<HomeEvent>((event, emit) async {
       mapStartLocationUpdateToState();
       if (event is FetchHomeTerminalsEvent) {
         emit(HomeLoadingState());
 
+        // cache data
+        final failureOrFetchTerminalEventCached = await axisCachedUseCase(true);
+        // make sure the right contain data
+        if (failureOrFetchTerminalEventCached.isRight()) {
+          emit(failureOrFetchTerminalEventCached.fold(
+              (failure) =>
+                  HomeErrorState(message: _mapFailureToMessage(failure)),
+              (axisEntity) => HomeLoadedState(axisEntity: axisEntity)));
+        }
+
+        // ---------------------------
         final failureOrFetchTerminalsEvent = await axisUseCase(
           const PositionParams(latitude: null, longitude: null),
         );
