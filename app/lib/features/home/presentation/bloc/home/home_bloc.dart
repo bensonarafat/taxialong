@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +27,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(HomeLoadingState());
 
         // cache data
-        Either<Failure, List<AxisEntity>> failureOrFetchTerminalEventCached =
-            await axisCachedUseCase(true);
+        final failureOrFetchTerminalEventCached = await axisCachedUseCase(true);
         // make sure the right contain data
-        if (failureOrFetchTerminalEventCached.isRight() &&
-            failureOrFetchTerminalEventCached.getOrElse(() => []).isNotEmpty) {
+        if (failureOrFetchTerminalEventCached.isRight()) {
           emit(failureOrFetchTerminalEventCached.fold(
               (failure) =>
                   HomeErrorState(message: _mapFailureToMessage(failure)),

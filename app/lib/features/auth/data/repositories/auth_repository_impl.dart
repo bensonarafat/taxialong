@@ -7,6 +7,7 @@ import 'package:taxialong/features/auth/data/datasources/auth_remote_data_source
 import 'package:taxialong/features/auth/data/models/auth_model.dart';
 import 'package:taxialong/features/auth/data/models/logout_model.dart';
 import 'package:taxialong/features/auth/data/models/telephone_model.dart';
+import 'package:taxialong/features/auth/data/models/user_model.dart';
 import 'package:taxialong/features/auth/data/models/verify_otp_model.dart';
 import 'package:taxialong/features/auth/domain/entities/auth_entity.dart';
 import 'package:taxialong/features/auth/domain/repositories/auth_repository.dart';
@@ -32,6 +33,9 @@ class AuthRepositoryImpl implements AuthRepository {
         // if status true store Bear token
         if (authModel.status) {
           secureStorage.saveToken(authModel.token);
+          // get data and save to device
+          UserModel userModel = await remoteDataSource.getUserData();
+          secureStorage.saveUserData(userModel);
         } else {
           return Left(ServerFailure(message: 'There is a server Error!'));
         }
@@ -84,7 +88,8 @@ class AuthRepositoryImpl implements AuthRepository {
         LogoutModel logoutModel = await remoteDataSource.logout();
         // remove token
         secureStorage.deleteToken();
-
+        //remove user
+        secureStorage.deleteUser();
         return Right(logoutModel);
       } catch (_) {
         return Left(ServerFailure(message: "There is a server failure"));
@@ -103,6 +108,9 @@ class AuthRepositoryImpl implements AuthRepository {
         // if status true store Bear token
         if (authModel.status) {
           secureStorage.saveToken(authModel.token);
+          // get data and save to device
+          UserModel userModel = await remoteDataSource.getUserData();
+          secureStorage.saveUserData(userModel);
         } else {
           return Left(ServerFailure(message: 'There is a server Error!'));
         }

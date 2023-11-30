@@ -8,6 +8,8 @@ import 'package:taxialong/core/constants/assets.dart';
 
 const endpoint = "http://taxialong.com/api/";
 
+const imageplaceholder =
+    "https://res.cloudinary.com/dxlgnxlzt/image/upload/v1701358353/default/y3uwlifaijlubtpvzeso.png";
 const LinearGradient onboardGradiant = LinearGradient(
   begin: Alignment.topCenter,
   end: Alignment.bottomCenter,
