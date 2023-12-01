@@ -6,6 +6,7 @@ import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_loading.dart';
 import 'package:taxialong/features/profile/domain/entities/profile_entity.dart';
+import 'package:taxialong/features/profile/domain/entities/profile_photo_entity.dart';
 import 'package:taxialong/features/profile/presentation/bloc/profile/profile_bloc.dart';
 
 class UpdateProfileButton extends StatelessWidget {
@@ -30,6 +31,11 @@ class UpdateProfileButton extends StatelessWidget {
         }
         if (state is ProfileUpdateState) {
           ProfileEntity profileEntity = state.profileEntity;
+          toast(profileEntity.message);
+        }
+
+        if (state is ProfilePhotoUpdateState) {
+          ProfilePhototEntity profileEntity = state.photoEntity;
           toast(profileEntity.message);
         }
       },

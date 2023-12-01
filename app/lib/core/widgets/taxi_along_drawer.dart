@@ -30,6 +30,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
   String username = "";
   String avatar = imageplaceholder;
   int rating = 0;
+  String role = 'rider';
   @override
   void initState() {
     _getUserMode();
@@ -47,6 +48,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
       username = "${usermodel?.firstname} ${usermodel?.lastname}";
       avatar = "${usermodel?.avatar}";
       rating = usermodel == null ? 0 : int.parse(usermodel.rating);
+      role = usermodel == null ? 'rider' : 'driver';
     });
   }
 
@@ -269,22 +271,26 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                           ),
                         )
                       : Container(),
-                  ListTile(
-                    onTap: () => context.push("/become-driver"),
-                    title: Text(
-                      'Become a Driver',
-                      style: Theme.of(context).listTileTheme.titleTextStyle,
-                    ),
-                    leading: SvgPicture.asset(
-                      truckdriverSVG,
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).brightness == Brightness.dark
-                            ? white
-                            : dark,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
+
+                  role == 'rider'
+                      ? ListTile(
+                          onTap: () => context.push("/become-driver"),
+                          title: Text(
+                            'Become a Driver',
+                            style:
+                                Theme.of(context).listTileTheme.titleTextStyle,
+                          ),
+                          leading: SvgPicture.asset(
+                            truckdriverSVG,
+                            colorFilter: ColorFilter.mode(
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? white
+                                  : dark,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        )
+                      : Container(),
 
                   ListTile(
                     onTap: () => context.push("/help-center"),

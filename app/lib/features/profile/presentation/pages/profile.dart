@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,6 +43,7 @@ class _ProfileState extends State<Profile> {
   String email = "";
   int rating = 0;
   String avatar = imageplaceholder;
+  File? userAvatar;
 
   String? phoneNumber;
   void userNumberFunc(String? number) {
@@ -72,32 +75,37 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-  openImagePicker() async {
+  Future<XFile?> openImagePicker() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        userAvatar = File(image.path);
+      });
+    }
     return image;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Profile',
-        ),
-        leading: GestureDetector(
-          onTap: () => context.pop(),
-          child: IconTheme(
-            data: Theme.of(context).iconTheme,
-            child: const Icon(
-              Icons.keyboard_arrow_left,
+    return BlocProvider<ProfileBloc>(
+      create: (BuildContext context) => getIt<ProfileBloc>(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Profile',
+          ),
+          leading: GestureDetector(
+            onTap: () => context.pop(),
+            child: IconTheme(
+              data: Theme.of(context).iconTheme,
+              child: const Icon(
+                Icons.keyboard_arrow_left,
+              ),
             ),
           ),
         ),
-      ),
-      body: BlocProvider(
-        create: (BuildContext context) => getIt<ProfileBloc>(),
-        child: SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             children: [
               Gap(32.h),
@@ -110,42 +118,62 @@ class _ProfileState extends State<Profile> {
                       Positioned(
                         left: 7.w,
                         top: 7.h,
-                        child: TaxiAlongCachedNetworkImage(
-                          path: avatar,
-                          width: 129,
-                          height: 131,
-                          shape: const OvalBorder(),
-                        ),
-                      ),
-                      Positioned(
-                        left: 80.w,
-                        top: 80.h,
-                        child: GestureDetector(
-                          onTap: () {
-                            XFile? image = openImagePicker();
-                            if (image != null) {
-                              context.read<ProfileBloc>().add(
-                                    ProfileUpdateImageEvent(path: image.path),
-                                  );
-                            }
-                          },
-                          child: SizedBox(
-                            width: 60.w,
-                            height: 60.h,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 11.w,
-                                  top: 12.37.h,
-                                  child: SvgPicture.asset(
-                                    cameraSVG,
-                                  ),
+                        child: userAvatar != null
+                            ? Container(
+                                width: 129.w,
+                                height: 131.h,
+                                decoration: ShapeDecoration(
+                                  shape: const OvalBorder(),
+                                  image: DecorationImage(
+                                      image: FileImage(userAvatar!),
+                                      fit: BoxFit.fill),
                                 ),
-                              ],
+                              )
+                            : TaxiAlongCachedNetworkImage(
+                                path: avatar,
+                                width: 129,
+                                height: 131,
+                                shape: const OvalBorder(),
+                              ),
+                      ),
+                      Builder(builder: (context) {
+                        return Positioned(
+                          left: 80.w,
+                          top: 80.h,
+                          child: GestureDetector(
+                            onTap: () {
+                              openImagePicker().then((value) {
+                                if (value != null) {
+                                  context.read<ProfileBloc>().add(
+                                        ProfileUpdateImageEvent(
+                                          path: value.path,
+                                        ),
+                                      );
+                                } else {
+                                  setState(() {
+                                    userAvatar = null;
+                                  });
+                                }
+                              });
+                            },
+                            child: SizedBox(
+                              width: 60.w,
+                              height: 60.h,
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    left: 11.w,
+                                    top: 12.37.h,
+                                    child: SvgPicture.asset(
+                                      cameraSVG,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     ],
                   ),
                 ),

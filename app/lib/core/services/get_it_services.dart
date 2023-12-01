@@ -19,6 +19,11 @@ import 'package:taxialong/features/bus_stops/data/repositories/bus_stop_reposito
 import 'package:taxialong/features/bus_stops/domain/repositories/bus_stop_repository.dart';
 import 'package:taxialong/features/bus_stops/domain/usecases/get_bus_stop_usecase.dart';
 import 'package:taxialong/features/bus_stops/presentation/bloc/busstop/bus_stop_bloc.dart';
+import 'package:taxialong/features/documents/data/datasources/document_remote_data_source.dart';
+import 'package:taxialong/features/documents/data/repositories/document_repository_impl.dart';
+import 'package:taxialong/features/documents/domain/repositories/document_repository.dart';
+import 'package:taxialong/features/documents/domain/usecases/document_upload_usecase.dart';
+import 'package:taxialong/features/documents/presentation/bloc/document_bloc.dart';
 import 'package:taxialong/features/home/data/datasources/home_local_data_source.dart';
 import 'package:taxialong/features/home/data/datasources/home_remote_data_source.dart';
 import 'package:taxialong/features/home/data/repositories/home_repository.dart';
@@ -172,5 +177,28 @@ Future<void> setupLocator() async {
   //remote data source
   getIt.registerLazySingleton<ProfileRemoteDataSource>(
     () => ProfileRemoteDataSourceImpl(client: client, secureStorage: getIt()),
+  );
+
+  /**
+ * -----------------------------------------------------------------------------------------------------------
+ */
+  // documents instance
+  getIt.registerFactory<DocumentBloc>(
+      () => DocumentBloc(documentUploadUseCase: getIt()));
+  //usecase
+  getIt.registerLazySingleton<DocumentUploadUseCase>(
+      () => DocumentUploadUseCase(repository: getIt()));
+
+  //repository
+  getIt.registerLazySingleton<DocumentRepository>(
+    () => DocumentRepositoryImpl(
+      networkInfo: getIt(),
+      remoteDataSource: getIt(),
+    ),
+  );
+
+  //remote data source
+  getIt.registerLazySingleton<DocumentRemoteDataSource>(
+    () => DocumentRemoteDataSourceImpl(client: client, secureStorage: getIt()),
   );
 }
