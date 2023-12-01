@@ -11,3 +11,8 @@ class DocumentUploadEvent extends DocumentEvent {
   @override
   List<Object?> get props => [type, path];
 }
+
+class DocumentUploadCompleteEvent extends DocumentEvent {
+  @override
+  List<Object?> get props => [];
+}

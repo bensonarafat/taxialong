@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxialong/core/connection/network_info.dart';
+import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:taxialong/features/auth/data/datasources/auth_remote_data_source.dart';
@@ -22,6 +23,7 @@ import 'package:taxialong/features/bus_stops/presentation/bloc/busstop/bus_stop_
 import 'package:taxialong/features/documents/data/datasources/document_remote_data_source.dart';
 import 'package:taxialong/features/documents/data/repositories/document_repository_impl.dart';
 import 'package:taxialong/features/documents/domain/repositories/document_repository.dart';
+import 'package:taxialong/features/documents/domain/usecases/document_complete_usecase.dart';
 import 'package:taxialong/features/documents/domain/usecases/document_upload_usecase.dart';
 import 'package:taxialong/features/documents/presentation/bloc/document_bloc.dart';
 import 'package:taxialong/features/home/data/datasources/home_local_data_source.dart';
@@ -183,22 +185,26 @@ Future<void> setupLocator() async {
  * -----------------------------------------------------------------------------------------------------------
  */
   // documents instance
-  getIt.registerFactory<DocumentBloc>(
-      () => DocumentBloc(documentUploadUseCase: getIt()));
+  getIt.registerFactory<DocumentBloc>(() => DocumentBloc(
+      documentUploadUseCase: getIt(), documentCompleteUsecase: getIt()));
   //usecase
   getIt.registerLazySingleton<DocumentUploadUseCase>(
       () => DocumentUploadUseCase(repository: getIt()));
-
+  getIt.registerLazySingleton<DocumentCompleteUsecase>(
+      () => DocumentCompleteUsecase(repository: getIt()));
   //repository
   getIt.registerLazySingleton<DocumentRepository>(
     () => DocumentRepositoryImpl(
       networkInfo: getIt(),
       remoteDataSource: getIt(),
+      localStorage: getIt(),
     ),
   );
-
   //remote data source
   getIt.registerLazySingleton<DocumentRemoteDataSource>(
     () => DocumentRemoteDataSourceImpl(client: client, secureStorage: getIt()),
   );
+
+  //local storage
+  getIt.registerLazySingleton<LocalStorage>(() => LocalStorage());
 }

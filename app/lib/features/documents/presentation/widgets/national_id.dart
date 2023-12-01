@@ -9,8 +9,8 @@ import 'package:taxialong/features/documents/presentation/bloc/document_bloc.dar
 import 'package:taxialong/features/documents/presentation/widgets/upload_bottom_sheet.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-class Insurance extends StatelessWidget {
-  const Insurance({
+class NationalId extends StatelessWidget {
+  const NationalId({
     super.key,
   });
 
@@ -24,7 +24,7 @@ class Insurance extends StatelessWidget {
           pageListBuilder: (modalSheetContext) {
             return [
               uploadDocumentBottomSheet(
-                  modalSheetContext, context, "insurance"),
+                  modalSheetContext, context, "national_id"),
             ];
           },
           modalTypeBuilder: (context) {
@@ -72,12 +72,12 @@ class Insurance extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Insurance',
+                    'National ID Card',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Gap(4.h),
                   Text(
-                    'Upload Insurance documents',
+                    'Upload national Id',
                     style: GoogleFonts.robotoFlex(
                       color: const Color(0xFFA0A2A9),
                       fontSize: 14.sp,
@@ -90,7 +90,7 @@ class Insurance extends StatelessWidget {
             Gap(34.w),
             BlocBuilder<DocumentBloc, DocumentState>(
               builder: (context, state) {
-                if (state is InsuranceLoadingState) {
+                if (state is NationalIdLoadingState) {
                   return Container(
                     width: 40.w,
                     height: 40.h,
@@ -102,7 +102,7 @@ class Insurance extends StatelessWidget {
                     ),
                     child: const TaxiAlongLoading(),
                   );
-                } else if (state is InsuranceLoadedState) {
+                } else if (state is NationalIdLoadedState) {
                   return Container(
                     width: 40.w,
                     height: 40.h,
