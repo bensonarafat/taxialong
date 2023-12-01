@@ -15,18 +15,23 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
   }) : super(DocumentInitialState()) {
     on<DocumentEvent>((event, emit) async {
       if (event is DocumentUploadEvent) {
-        emit(DocumentLoadingState());
-        final failureOrUploadDocument =
-            await documentUploadUseCase(DocumentParams(
-          file: event.path,
-          type: event.type,
-        ));
+        if (event.type == "driver_licence") {
+          emit(DriverLicenceLoadingState());
+          emit(DriverLicenceLoadedState());
+        } else {
+          emit(DocumentLoadingState());
+          final failureOrUploadDocument =
+              await documentUploadUseCase(DocumentParams(
+            file: event.path,
+            type: event.type,
+          ));
 
-        emit(failureOrUploadDocument.fold(
-            (failure) =>
-                DocumentErrorState(message: _mapFailureToMessage(failure)),
-            (documentEntity) =>
-                DocumentUploadedState(documentEntity: documentEntity)));
+          emit(failureOrUploadDocument.fold(
+              (failure) =>
+                  DocumentErrorState(message: _mapFailureToMessage(failure)),
+              (documentEntity) =>
+                  DocumentUploadedState(documentEntity: documentEntity)));
+        }
       }
     });
   }

@@ -8,6 +8,16 @@ class DocumentLoadingState extends DocumentState {
   List<Object?> get props => [];
 }
 
+class DriverLicenceLoadingState extends DocumentState {
+  @override
+  List<Object?> get props => [];
+}
+
+class DriverLicenceLoadedState extends DocumentState {
+  @override
+  List<Object?> get props => [];
+}
+
 class DocumentInitialState extends DocumentState {
   @override
   List<Object?> get props => [];

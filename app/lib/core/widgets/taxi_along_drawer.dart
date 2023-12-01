@@ -48,7 +48,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
       username = "${usermodel?.firstname} ${usermodel?.lastname}";
       avatar = "${usermodel?.avatar}";
       rating = usermodel == null ? 0 : int.parse(usermodel.rating);
-      role = usermodel == null ? 'rider' : 'driver';
+      role = usermodel == null ? 'rider' : usermodel.role;
     });
   }
 

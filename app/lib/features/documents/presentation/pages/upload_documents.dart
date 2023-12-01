@@ -7,15 +7,17 @@ import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/features/documents/presentation/bloc/document_bloc.dart';
 import 'package:taxialong/features/documents/presentation/pages/upload_documents2.dart';
-import 'package:taxialong/features/documents/presentation/widgets/upload_bottom_sheet.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:taxialong/features/documents/presentation/widgets/driver_licence.dart';
+import 'package:taxialong/features/documents/presentation/widgets/insurance.dart';
+import 'package:taxialong/features/documents/presentation/widgets/upload_national_id.dart';
+import 'package:taxialong/features/documents/presentation/widgets/vehicle_registration.dart';
 
 class UploadDocuments extends StatelessWidget {
   const UploadDocuments({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<DocumentBloc>(
       create: (_) => getIt<DocumentBloc>(),
       child: Scaffold(
         key: key,
@@ -43,301 +45,18 @@ class UploadDocuments extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Column(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        WoltModalSheet.show<void>(
-                          enableDrag: true,
-                          context: context,
-                          pageListBuilder: (modalSheetContext) {
-                            return [
-                              uploadDocumentBottomSheet(modalSheetContext),
-                            ];
-                          },
-                          modalTypeBuilder: (context) {
-                            final size = MediaQuery.of(context).size.width;
-                            if (size < 768.0) {
-                              return WoltModalType.bottomSheet;
-                            } else {
-                              return WoltModalType.dialog;
-                            }
-                          },
-                          maxDialogWidth: 560.w,
-                          minDialogWidth: 400.w,
-                          minPageHeight: 0.0,
-                        );
-                      },
-                      child: Container(
-                        width: 358.w,
-                        padding: EdgeInsets.all(16.w),
-                        decoration: ShapeDecoration(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? const Color(0xFF121212)
-                              : const Color(0x4CDADADA),
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                width: 1.w, color: const Color(0xFF77787B)),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          shadows: [
-                            BoxShadow(
-                              color: const Color(0x0C000000),
-                              blurRadius: 8.r,
-                              offset: const Offset(0, 4),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Drivers Licence',
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                  Gap(4.h),
-                                  Text(
-                                    'Upload drivers licence',
-                                    style: GoogleFonts.robotoFlex(
-                                      color: const Color(0xFFA0A2A9),
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Gap(34.w),
-                            Container(
-                              width: 40.w,
-                              height: 40.h,
-                              decoration: ShapeDecoration(
-                                color: primaryColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.r),
-                                ),
-                              ),
-                              child: const Icon(
-                                Icons.upload_file_rounded,
-                                color: white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    const DriversLicence(),
                     Gap(16.h),
-                    Container(
-                      width: 358.w,
-                      padding: EdgeInsets.all(16.w),
-                      decoration: ShapeDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? const Color(0xFF121212)
-                            : const Color(0x4CDADADA),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              width: 1.w, color: const Color(0xFF77787B)),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        shadows: [
-                          BoxShadow(
-                            color: const Color(0x0C000000),
-                            blurRadius: 8.r,
-                            offset: const Offset(0, 4),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'National ID Card',
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                                Gap(4.h),
-                                Text(
-                                  'Upload national Id',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: const Color(0xFFA0A2A9),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Gap(34.w),
-                          Container(
-                            width: 40.w,
-                            height: 40.h,
-                            decoration: ShapeDecoration(
-                              color: primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.r),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.upload_file_rounded,
-                              color: white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    const UploadNationalId(),
                     Gap(16.h),
-                    Container(
-                      width: 358.w,
-                      padding: EdgeInsets.all(16.w),
-                      decoration: ShapeDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? const Color(0xFF121212)
-                            : const Color(0x4CDADADA),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              width: 1.w, color: const Color(0xFF77787B)),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        shadows: [
-                          BoxShadow(
-                            color: const Color(0x0C000000),
-                            blurRadius: 8.r,
-                            offset: const Offset(0, 4),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Vehicle Registration',
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                                Gap(4.h),
-                                Text(
-                                  'Upload vehicle registration',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: const Color(0xFFA0A2A9),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Gap(34.w),
-                          Container(
-                            width: 40.w,
-                            decoration: ShapeDecoration(
-                              color: primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.r),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.upload_file_rounded,
-                              color: white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    const VehicleRegistration(),
                     Gap(16.h),
-                    Container(
-                      width: 358.w,
-                      padding: EdgeInsets.all(16.w),
-                      decoration: ShapeDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? const Color(0xFF121212)
-                            : const Color(0x4CDADADA),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                              width: 1.w, color: const Color(0xFF77787B)),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        shadows: [
-                          BoxShadow(
-                            color: const Color(0x0C000000),
-                            blurRadius: 8.r,
-                            offset: const Offset(0, 4),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Insurance',
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                                Gap(4.h),
-                                Text(
-                                  'Upload Insurance documents',
-                                  style: GoogleFonts.robotoFlex(
-                                    color: const Color(0xFFA0A2A9),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Gap(34.w),
-                          Container(
-                            width: 40.w,
-                            decoration: ShapeDecoration(
-                              color: primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.r),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.upload_file_rounded,
-                              color: white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    const Insurance(),
                     Gap(16.h),
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        '* These field are required',
+                        'All documents are required',
                         style: GoogleFonts.robotoFlex(
                           color: const Color(0xFFE81313),
                           fontSize: 14.sp,
