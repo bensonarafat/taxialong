@@ -12,7 +12,9 @@ import 'package:taxialong/features/auth/presentation/pages/signup.dart';
 import 'package:taxialong/features/bus_stops/domain/entities/axis_entity.dart';
 import 'package:taxialong/features/bus_stops/presentation/pages/bus_stops.dart';
 import 'package:taxialong/features/documents/presentation/pages/documents.dart';
+import 'package:taxialong/features/documents/presentation/pages/upload_documents.dart';
 import 'package:taxialong/features/driver/presentation/pages/become_driver.dart';
+import 'package:taxialong/features/driver/presentation/pages/home.dart';
 import 'package:taxialong/features/help_center/presentation/pages/help_center.dart';
 import 'package:taxialong/features/notification/presentation/pages/notification.dart';
 import 'package:taxialong/features/onboard/presentation/pages/get_started.dart';
@@ -136,6 +138,17 @@ final GoRouter router = GoRouter(
       path: "/about",
       name: "about",
       builder: (context, state) => const AboutPage(),
+    ),
+
+    GoRoute(
+      path: "/upload-document",
+      name: "uploadDocument",
+      builder: (context, state) => const UploadDocuments(),
+    ),
+    GoRoute(
+      path: "/driver-home",
+      name: "driverHome",
+      builder: (context, state) => const DriverHome(),
     ),
   ],
   redirect: (context, state) async {

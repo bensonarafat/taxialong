@@ -6,6 +6,7 @@ class UserModel {
   final String avatar;
   final String rating;
   final String verified;
+  final String role;
 
   UserModel({
     required this.firstname,
@@ -15,6 +16,7 @@ class UserModel {
     required this.avatar,
     required this.rating,
     required this.verified,
+    required this.role,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class UserModel {
       avatar: json['avatar'],
       rating: json['rating'],
       verified: json['verified'],
+      role: json['role'],
     );
   }
 
@@ -38,6 +41,7 @@ class UserModel {
       "avatar": avatar,
       "rating": rating,
       "verified": verified,
+      "role": role,
     };
   }
 }

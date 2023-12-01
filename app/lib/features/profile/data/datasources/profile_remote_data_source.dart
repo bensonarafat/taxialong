@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
@@ -73,19 +73,27 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   @override
   Future<ProfilePhotoModel> updateProfilePhoto(params) async {
-    var headers = {'Accept': 'application/json'};
-    var request = client.MultipartRequest(
+    final token = await secureStorage.getToken();
+    if (token == null) throw ServerException();
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    var url = Uri.parse('${endpoint}account/upload-image');
+    var request = http.MultipartRequest(
       'POST',
-      Uri.parse('${endpoint}account/upload-image'),
+      url,
     );
 
     request.files.add(
-      await client.MultipartFile.fromPath('file', params.path),
+      await http.MultipartFile.fromPath('file', params.path),
     );
     request.headers.addAll(headers);
-    var response = await request.send();
+    var response = await http.Response.fromStream(await request.send());
+
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
+
       return ProfilePhotoModel.fromJson(data);
     } else {
       throw ServerException();

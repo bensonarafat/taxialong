@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/features/documents/presentation/pages/upload_documents.dart';
-import 'package:taxialong/features/driver/presentation/pages/home.dart';
 
 class BecomeDriver extends StatelessWidget {
   const BecomeDriver({super.key});
@@ -16,9 +15,7 @@ class BecomeDriver extends StatelessWidget {
       key: key,
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
+          onTap: () => context.pop(),
           child: IconTheme(
             data: Theme.of(context).iconTheme,
             child: const Icon(
@@ -60,10 +57,7 @@ class BecomeDriver extends StatelessWidget {
                 children: [
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const UploadDocuments()));
-                      },
+                      onTap: () => context.push("/upload-document"),
                       child: Container(
                         height: 42.h,
                         padding: EdgeInsets.symmetric(
@@ -94,10 +88,7 @@ class BecomeDriver extends StatelessWidget {
                   Gap(32.w),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const DriverHome()));
-                      },
+                      onTap: () => context.push("/driver-home"),
                       child: Container(
                         height: 42.h,
                         padding: EdgeInsets.symmetric(

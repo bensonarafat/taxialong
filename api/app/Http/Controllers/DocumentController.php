@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\User;
 use App\Models\Document;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
@@ -32,6 +33,25 @@ class DocumentController extends Controller
             return response()->json(["status" => true, "message" => "Document Uploaded", "data" => $document ]);
         } catch (Exception $e) {
             return response()->json(["status" => false, "message" => "Oops, there was an error"]);
+        }
+    }
+
+    public function complete(){
+        $count = Document::where("user_id", auth()->user()->id)->count();
+        if($count == 4){
+            //update user role to driver
+            User::whereId(auth()->user()->id)->update([
+                "role" => "driver",
+            ]);
+            return response()->json([
+                "status" => true,
+                "message" => "All documents recieved"
+            ]);
+        }else{
+            return response()->json([
+                "status" => false,
+                "message" => "Oops, there was an error!"
+            ]);
         }
     }
 }

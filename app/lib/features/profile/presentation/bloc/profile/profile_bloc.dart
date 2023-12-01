@@ -40,6 +40,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             path: event.path,
           ),
         );
+
         emit(failureOrCreateAccount.fold(
             (failure) =>
                 ProfileErrorState(message: _mapFailureToMessage(failure)),

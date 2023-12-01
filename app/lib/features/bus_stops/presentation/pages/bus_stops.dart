@@ -41,7 +41,7 @@ class _BusStopState extends State<BusStop> {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> key = GlobalKey();
 
-    return BlocProvider(
+    return BlocProvider<BusStopBloc>(
       create: (context) => getIt<BusStopBloc>()
         ..add(
           BusStopFetchEvent(
