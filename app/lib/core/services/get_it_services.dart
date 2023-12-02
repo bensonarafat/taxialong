@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxialong/core/connection/network_info.dart';
+import 'package:taxialong/core/datasources/remote_user_data_source.dart';
 import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/auth/data/datasources/auth_local_data_source.dart';
@@ -77,6 +78,7 @@ Future<void> setupLocator() async {
       localDataSource: getIt(),
       remoteDataSource: getIt(),
       secureStorage: getIt(),
+      userDataSource: getIt(),
     ),
   );
 
@@ -173,6 +175,7 @@ Future<void> setupLocator() async {
       networkInfo: getIt(),
       remoteDataSource: getIt(),
       secureStorage: getIt(),
+      userDataSource: getIt(),
     ),
   );
 
@@ -198,11 +201,18 @@ Future<void> setupLocator() async {
       networkInfo: getIt(),
       remoteDataSource: getIt(),
       localStorage: getIt(),
+      userDataSource: getIt(),
+      secureStorage: getIt(),
     ),
   );
   //remote data source
   getIt.registerLazySingleton<DocumentRemoteDataSource>(
     () => DocumentRemoteDataSourceImpl(client: client, secureStorage: getIt()),
+  );
+
+  //user data source
+  getIt.registerLazySingleton<UserDataSource>(
+    () => UserDataSource(client: client, secureStorage: getIt()),
   );
 
   //local storage

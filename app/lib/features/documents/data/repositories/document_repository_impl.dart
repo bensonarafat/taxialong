@@ -1,7 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:taxialong/core/connection/network_info.dart';
+import 'package:taxialong/core/datasources/remote_user_data_source.dart';
 import 'package:taxialong/core/error/failure.dart';
+import 'package:taxialong/core/models/user_model.dart';
 import 'package:taxialong/core/services/local_storage.dart';
+import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/documents/data/datasources/document_remote_data_source.dart';
 import 'package:taxialong/features/documents/data/models/complete_model.dart';
 import 'package:taxialong/features/documents/data/models/document_model.dart';
@@ -11,10 +14,14 @@ class DocumentRepositoryImpl implements DocumentRepository {
   final NetworkInfo networkInfo;
   final DocumentRemoteDataSource remoteDataSource;
   final LocalStorage localStorage;
+  final UserDataSource userDataSource;
+  SecureStorage secureStorage;
   DocumentRepositoryImpl({
     required this.networkInfo,
     required this.remoteDataSource,
     required this.localStorage,
+    required this.userDataSource,
+    required this.secureStorage,
   });
 
   @override
@@ -43,6 +50,9 @@ class DocumentRepositoryImpl implements DocumentRepository {
         // switch user view to driver here if there is a sucess message
         if (completeModel.status) {
           localStorage.setDriverMode();
+          // get updated data
+          UserModel userModel = await userDataSource.getUserData();
+          secureStorage.saveUserData(userModel);
         }
         return Right(completeModel);
       } catch (_) {

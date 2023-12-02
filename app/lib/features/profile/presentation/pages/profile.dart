@@ -14,7 +14,7 @@ import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
-import 'package:taxialong/features/auth/data/models/user_model.dart';
+import 'package:taxialong/core/models/user_model.dart';
 import 'package:taxialong/features/profile/presentation/bloc/profile/profile_bloc.dart';
 import 'package:taxialong/features/profile/presentation/widgets/profile_email.dart';
 import 'package:taxialong/features/profile/presentation/widgets/profile_first_name.dart';

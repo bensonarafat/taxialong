@@ -3,14 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
-import 'package:taxialong/features/auth/data/models/user_model.dart';
 import 'package:taxialong/features/profile/data/models/profile_model.dart';
 import 'package:taxialong/features/profile/data/models/profile_photo_model.dart';
 import 'package:taxialong/features/profile/domain/usecases/update_profile_usecase.dart';
 
 abstract class ProfileRemoteDataSource {
   Future<ProfileModel> updateProfile(ProfileParams params);
-  Future<UserModel> getUserData();
   Future<ProfilePhotoModel> updateProfilePhoto(params);
 }
 
@@ -45,27 +43,6 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return ProfileModel.fromJson(data);
-    } else {
-      throw ServerException();
-    }
-  }
-
-  @override
-  Future<UserModel> getUserData() async {
-    final token = await secureStorage.getToken();
-    if (token == null) throw ServerException();
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    };
-    var url = Uri.parse("${endpoint}auth/me");
-    var response = await client.get(
-      url,
-      headers: headers,
-    );
-    if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return UserModel.fromJson(data);
     } else {
       throw ServerException();
     }

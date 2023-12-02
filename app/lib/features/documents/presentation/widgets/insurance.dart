@@ -89,6 +89,10 @@ class Insurance extends StatelessWidget {
             ),
             Gap(34.w),
             BlocBuilder<DocumentBloc, DocumentState>(
+              buildWhen: (previousState, state) {
+                return state is InsuranceLoadingState ||
+                    state is InsuranceLoadedState;
+              },
               builder: (context, state) {
                 if (state is InsuranceLoadingState) {
                   return Container(

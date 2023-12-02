@@ -72,17 +72,17 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
                   DocumentErrorState(message: _mapFailureToMessage(failure)),
               (documentEntity) => VehicleRegistrationLoadedState(
                   documentEntity: documentEntity)));
-        } else if (event is DocumentUploadCompleteEvent) {
-          emit(DocumentLoadingState());
-          final failureOrUploadDocument =
-              await documentCompleteUsecase(CompleteParams());
-
-          emit(failureOrUploadDocument.fold(
-              (failure) =>
-                  DocumentErrorState(message: _mapFailureToMessage(failure)),
-              (documentEntity) =>
-                  DocumentUploadedState(documentEntity: documentEntity)));
         }
+      } else if (event is DocumentUploadCompleteEvent) {
+        emit(DocumentLoadingState());
+        final failureOrUploadDocument =
+            await documentCompleteUsecase(CompleteParams());
+
+        emit(failureOrUploadDocument.fold(
+            (failure) =>
+                DocumentErrorState(message: _mapFailureToMessage(failure)),
+            (documentEntity) =>
+                DocumentUploadedState(documentEntity: documentEntity)));
       }
     });
   }

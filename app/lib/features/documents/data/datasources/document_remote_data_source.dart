@@ -56,11 +56,12 @@ class DocumentRemoteDataSourceImpl implements DocumentRemoteDataSource {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',
     };
-    var url = Uri.parse("${endpoint}document/complete");
+    var url = Uri.parse("${endpoint}driver/document/complete");
     var response = await client.get(
       url,
       headers: headers,
     );
+
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return CompleteModel.fromJson(data);
