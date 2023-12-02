@@ -89,6 +89,10 @@ class NationalId extends StatelessWidget {
             ),
             Gap(34.w),
             BlocBuilder<DocumentBloc, DocumentState>(
+              buildWhen: (previousState, state) {
+                return state is NationalIdLoadingState ||
+                    state is NationalIdLoadedState;
+              },
               builder: (context, state) {
                 if (state is NationalIdLoadingState) {
                   return Container(

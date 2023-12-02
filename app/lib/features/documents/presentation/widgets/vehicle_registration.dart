@@ -89,6 +89,10 @@ class VehicleRegistration extends StatelessWidget {
             ),
             Gap(34.w),
             BlocBuilder<DocumentBloc, DocumentState>(
+              buildWhen: (previousState, state) {
+                return state is VehicleRegistrationLoadingState ||
+                    state is VehicleRegistrationLoadedState;
+              },
               builder: (context, state) {
                 if (state is VehicleRegistrationLoadingState) {
                   return Container(

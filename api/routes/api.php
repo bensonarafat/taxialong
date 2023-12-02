@@ -42,8 +42,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
         // documents
         Route::group(["prefix" => "document"], function(){
+            Route::get("/", [DocumentController::class, "document"]);
             Route::post("/upload", [DocumentController::class, "upload"]);
             Route::get("/complete", [DocumentController::class, "complete"]);
+            Route::get("/proceed", [DocumentController::class, "proceed"]);
         });
     });
 });

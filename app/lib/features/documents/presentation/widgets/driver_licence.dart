@@ -89,6 +89,10 @@ class DriversLicence extends StatelessWidget {
             ),
             Gap(34.w),
             BlocBuilder<DocumentBloc, DocumentState>(
+              buildWhen: (previousState, state) {
+                return state is DriverLicenceLoadingState ||
+                    state is DriverLicenceLoadedState;
+              },
               builder: (context, state) {
                 if (state is DriverLicenceLoadingState) {
                   return Container(

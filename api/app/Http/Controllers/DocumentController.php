@@ -10,6 +10,29 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class DocumentController extends Controller
 {
+
+    // return my documents
+    public function document(){
+        $documents = Document::where("user_id", auth()->user()->id)->latest()->get();
+        return response()->json([
+            "status" => true,
+            "message" => "Documents Fetched",
+            "data" => $documents
+        ]);
+    }
+
+    // proceed without document upload
+    public function proceed(){
+        //update user role to driver
+        User::whereId(auth()->user()->id)->update([
+            "role" => "driver",
+        ]);
+        return response()->json([
+            "status" => true,
+            "message" => "Switched to Driver"
+        ]);
+    }
+
     public function upload(Request $request){
         try {
             $exists = Document::where(["type" => $request->type, "user_id" => $request->user()->id])->exists();

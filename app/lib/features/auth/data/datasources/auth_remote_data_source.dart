@@ -6,7 +6,6 @@ import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/auth/data/models/auth_model.dart';
 import 'package:taxialong/features/auth/data/models/logout_model.dart';
 import 'package:taxialong/features/auth/data/models/telephone_model.dart';
-import 'package:taxialong/features/auth/data/models/user_model.dart';
 import 'package:taxialong/features/auth/data/models/verify_otp_model.dart';
 
 abstract class AuthRemoteDataSource {
@@ -15,7 +14,6 @@ abstract class AuthRemoteDataSource {
   Future<VerifyOTPModel> verifyOTP({required params});
   Future<LogoutModel> logout();
   Future<AuthModel> authUser({required params});
-  Future<UserModel> getUserData();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -132,27 +130,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return AuthModel.fromJson(data);
-    } else {
-      throw ServerException();
-    }
-  }
-
-  @override
-  Future<UserModel> getUserData() async {
-    final token = await secureStorage.getToken();
-    if (token == null) throw ServerException();
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    };
-    var url = Uri.parse("${endpoint}auth/me");
-    var response = await client.get(
-      url,
-      headers: headers,
-    );
-    if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return UserModel.fromJson(data);
     } else {
       throw ServerException();
     }

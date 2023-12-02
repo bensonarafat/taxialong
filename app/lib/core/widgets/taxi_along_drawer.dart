@@ -12,7 +12,7 @@ import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
-import 'package:taxialong/features/auth/data/models/user_model.dart';
+import 'package:taxialong/core/models/user_model.dart';
 import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 
 class TaxiAlongDrawer extends StatefulWidget {
@@ -33,9 +33,13 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
   String role = 'rider';
   @override
   void initState() {
+    drawerAction();
+    super.initState();
+  }
+
+  drawerAction() {
     _getUserMode();
     _getUserData();
-    super.initState();
   }
 
   _getUserMode() async {
@@ -162,7 +166,10 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                 shrinkWrap: true,
                 children: [
                   ListTile(
-                    onTap: () => context.push('/ride-history'),
+                    onTap: () async {
+                      await context.push('/ride-history');
+                      drawerAction();
+                    },
                     title: Text(
                       'Ride History',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
@@ -181,7 +188,10 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                   //
 
                   ListTile(
-                    onTap: () => context.push("/profile"),
+                    onTap: () async {
+                      await context.push("/profile");
+                      drawerAction();
+                    },
                     title: Text(
                       'Profile',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
@@ -217,7 +227,10 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
 
                   driverMode
                       ? ListTile(
-                          onTap: () => context.push("/notification"),
+                          onTap: () async {
+                            context.push("/notification");
+                            drawerAction();
+                          },
                           title: Text(
                             'Notifications',
                             style:
@@ -236,7 +249,10 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                       : Container(),
 
                   ListTile(
-                    onTap: () => context.push("/referral"),
+                    onTap: () async {
+                      await context.push("/referral");
+                      drawerAction();
+                    },
                     title: Text(
                       'Referral',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
@@ -254,7 +270,10 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
 
                   driverMode
                       ? ListTile(
-                          onTap: () => context.push("/documents"),
+                          onTap: () async {
+                            await context.push("/documents");
+                            drawerAction();
+                          },
                           title: Text(
                             'Manage Documents',
                             style:
@@ -274,7 +293,10 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
 
                   role == 'rider'
                       ? ListTile(
-                          onTap: () => context.push("/become-driver"),
+                          onTap: () async {
+                            await context.push("/become-driver");
+                            drawerAction();
+                          },
                           title: Text(
                             'Become a Driver',
                             style:
@@ -293,7 +315,10 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                       : Container(),
 
                   ListTile(
-                    onTap: () => context.push("/help-center"),
+                    onTap: () async {
+                      context.push("/help-center");
+                      drawerAction();
+                    },
                     title: Text(
                       'Help',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
@@ -310,7 +335,10 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                   ),
 
                   ListTile(
-                    onTap: () => context.push("/settings"),
+                    onTap: () async {
+                      await context.push("/settings");
+                      drawerAction();
+                    },
                     title: Text(
                       'Settings',
                       style: Theme.of(context).listTileTheme.titleTextStyle,
