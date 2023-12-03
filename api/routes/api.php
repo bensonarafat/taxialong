@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::group(["prefix" => "account"], function() {
         Route::post("/upload-image", [AccountController::class, "uploadImage"]);
         Route::put("/update-profile", [AccountController::class,"updateProfile"]);
+        Route::get("/switch/{role}", [AccountController::class, "switchRole"]);
     });
 
     //terminals
@@ -39,13 +40,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // driver
     Route::group(["prefix" => "driver"], function() {
-
         // documents
         Route::group(["prefix" => "document"], function(){
             Route::get("/", [DocumentController::class, "document"]);
             Route::post("/upload", [DocumentController::class, "upload"]);
             Route::get("/complete", [DocumentController::class, "complete"]);
-            Route::get("/proceed", [DocumentController::class, "proceed"]);
         });
     });
 });

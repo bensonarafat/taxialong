@@ -77,4 +77,15 @@ class AccountController extends Controller
         }
 
     }
+
+    public function switchRole($role){
+        //update user role to driver
+        User::whereId(auth()->user()->id)->update([
+            "role" => $role,
+        ]);
+        return response()->json([
+            "status" => true,
+            "message" => "Account Switched"
+        ]);
+    }
 }
