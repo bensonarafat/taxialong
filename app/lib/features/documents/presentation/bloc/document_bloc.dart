@@ -1,11 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:taxialong/core/error/failure.dart';
+import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/documents/domain/entities/complete_entity.dart';
 import 'package:taxialong/features/documents/domain/entities/document_entity.dart';
+import 'package:taxialong/features/documents/domain/entities/documents_entity.dart';
 import 'package:taxialong/features/documents/domain/usecases/document_complete_usecase.dart';
 import 'package:taxialong/features/documents/domain/usecases/document_upload_usecase.dart';
+import 'package:taxialong/features/documents/domain/usecases/get_documents_usecase.dart';
 
 part 'document_event.dart';
 part 'document_state.dart';
@@ -13,9 +15,11 @@ part 'document_state.dart';
 class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
   DocumentUploadUseCase documentUploadUseCase;
   DocumentCompleteUsecase documentCompleteUsecase;
+  GetDocumentsUseCase getDocumentsUseCase;
   DocumentBloc({
     required this.documentUploadUseCase,
     required this.documentCompleteUsecase,
+    required this.getDocumentsUseCase,
   }) : super(DocumentInitialState()) {
     on<DocumentEvent>((event, emit) async {
       if (event is DocumentUploadEvent) {
@@ -30,7 +34,7 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
 
           emit(failureOrUploadDocument.fold(
               (failure) =>
-                  DocumentErrorState(message: _mapFailureToMessage(failure)),
+                  DocumentErrorState(message: mapFailureToMessage(failure)),
               (documentEntity) =>
                   DriverLicenceLoadedState(documentEntity: documentEntity)));
         } else if (event.type == "insurance") {
@@ -43,7 +47,7 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
 
           emit(failureOrUploadDocument.fold(
               (failure) =>
-                  DocumentErrorState(message: _mapFailureToMessage(failure)),
+                  DocumentErrorState(message: mapFailureToMessage(failure)),
               (documentEntity) =>
                   InsuranceLoadedState(documentEntity: documentEntity)));
         } else if (event.type == "national_id") {
@@ -56,7 +60,7 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
 
           emit(failureOrUploadDocument.fold(
               (failure) =>
-                  DocumentErrorState(message: _mapFailureToMessage(failure)),
+                  DocumentErrorState(message: mapFailureToMessage(failure)),
               (documentEntity) =>
                   NationalIdLoadedState(documentEntity: documentEntity)));
         } else if (event.type == "vehicle_registration") {
@@ -69,7 +73,7 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
 
           emit(failureOrUploadDocument.fold(
               (failure) =>
-                  DocumentErrorState(message: _mapFailureToMessage(failure)),
+                  DocumentErrorState(message: mapFailureToMessage(failure)),
               (documentEntity) => VehicleRegistrationLoadedState(
                   documentEntity: documentEntity)));
         }
@@ -80,23 +84,20 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
 
         emit(failureOrUploadDocument.fold(
             (failure) =>
-                DocumentErrorState(message: _mapFailureToMessage(failure)),
+                DocumentErrorState(message: mapFailureToMessage(failure)),
             (documentEntity) =>
                 DocumentUploadedState(documentEntity: documentEntity)));
+      } else if (event is DocumentFetchDocuments) {
+        emit(DocumentLoadingState());
+        final failureOrFetchedDocument =
+            await getDocumentsUseCase(DocumentsParams());
+
+        emit(failureOrFetchedDocument.fold(
+            (failure) =>
+                DocumentErrorState(message: mapFailureToMessage(failure)),
+            (documentsEntity) =>
+                DocumentsFetchedState(documentsEntity: documentsEntity)));
       }
     });
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return 'There was a server error!';
-      case CacheFailure:
-        return 'Cache Failure';
-      case NetworkFailure:
-        return 'Network error, check your internet connection';
-      default:
-        return "Unexpected Error , Please try again later .";
-    }
   }
 }

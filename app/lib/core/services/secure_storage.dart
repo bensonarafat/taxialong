@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:taxialong/core/models/user_model.dart';
+import 'package:taxialong/core/data/models/user_model.dart';
 
 class SecureStorage {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
@@ -12,6 +12,11 @@ class SecureStorage {
 
   Future<String?> getToken() async {
     return await _storage.read(key: 'jwt');
+  }
+
+  Future<bool> isTokenSave() async {
+    String? authToken = await _storage.read(key: 'jwt');
+    return authToken != null && authToken.isNotEmpty;
   }
 
   Future<void> deleteToken() async {

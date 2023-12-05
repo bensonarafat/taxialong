@@ -87,7 +87,7 @@ class CreateAccountButton extends StatelessWidget {
         if (state is CreateAccountState) {
           AuthEntity authEntity = state.authEntity;
           if (authEntity.status) {
-            // navigate to the home/nav page
+            // navigate to the home /nav page
             context.go("/nav");
           } else {
             toast(authEntity.message);

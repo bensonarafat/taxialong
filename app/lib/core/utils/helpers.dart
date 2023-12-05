@@ -6,6 +6,7 @@ import 'dart:math' as math;
 import 'package:geolocator/geolocator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:taxialong/core/constants/assets.dart';
+import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/features/home/presentation/bloc/home/home_bloc.dart';
@@ -182,5 +183,18 @@ String extractPhoneNumber(String fullNumber) {
   } else {
     // The input is not a Nigeria phone number with a country code
     return '080';
+  }
+}
+
+String mapFailureToMessage(Failure failure) {
+  switch (failure.runtimeType) {
+    case ServerFailure:
+      return 'There was a server error!';
+    case CacheFailure:
+      return 'Cache Failure';
+    case NetworkFailure:
+      return 'Network error, check your internet connection';
+    default:
+      return "Unexpected Error , Please try again later .";
   }
 }

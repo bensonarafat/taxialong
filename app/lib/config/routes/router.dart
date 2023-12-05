@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/bloc/bottom_navigation/bottom_navigation_bloc.dart';
+import 'package:taxialong/core/data/models/user_model.dart';
+import 'package:taxialong/core/services/get_it_services.dart';
+import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/widgets/taxi_along_bottom_navigation.dart';
 import 'package:taxialong/features/about/presentation/pages/about.dart';
 import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
@@ -24,10 +27,11 @@ import 'package:taxialong/features/referral/presentation/pages/referral.dart';
 import 'package:taxialong/features/settings/presentation/pages/settings.dart';
 import 'package:taxialong/features/taxi_classes/presentation/pages/taxi_classes.dart';
 import 'package:taxialong/features/trip_history/presentation/pages/trip_history.dart';
+import 'package:taxialong/features/wallet/presentation/pages/wallet.dart';
 
 final BottomNavigationBloc bottomNavigationBloc = BottomNavigationBloc();
 final GoRouter router = GoRouter(
-  initialLocation: "/",
+  initialLocation: "/nav",
   routes: [
     GoRoute(
       path: '/',
@@ -77,6 +81,11 @@ final GoRouter router = GoRouter(
       path: '/profile',
       name: 'profile',
       builder: (context, state) => const Profile(),
+    ),
+    GoRoute(
+      path: '/wallet',
+      name: 'wallet',
+      builder: (context, state) => const Wallet(),
     ),
     GoRoute(
       path: '/bus-stop',
@@ -152,29 +161,26 @@ final GoRouter router = GoRouter(
     ),
   ],
   redirect: (context, state) async {
-    // const storage = FlutterSecureStorage();
-    // Future<bool> isLoggedIn() async {
-    //   String? authToken = await storage.read(key: 'jwt');
-    //   return authToken != null && authToken.isNotEmpty;
-    // }
+    bool token = await getIt<SecureStorage>().isTokenSave();
 
-    // current route if AuthStream has new sign-in information.
-    // final bool loggedIn = AuthStreamScope.of(context).isSignedIn();
-    // final bool loggingIn = state.matchedLocation == '/login' ||
-    //     state.matchedLocation == 'getstarted';
-
-    // bool token = await isLoggedIn();
-    // print(">>> $loggedIn >> $loggingIn >> $token");
-    // if (!loggedIn) {
-    //   return '/getstarted';
-    // }
-
-    // if the user is logged in but still on the login page, send them to
-    // the home page
-    // if (loggingIn) {
-    //   return '/nav';
-    // }
-
+    // if the user is not loggin redirect to the home page/ onboarding page
+    if (!token) {
+      if (state.matchedLocation != "/getstarted" &&
+          state.matchedLocation != "/login" &&
+          state.matchedLocation != "/sign-up" &&
+          state.matchedLocation != "/create-account" &&
+          state.matchedLocation != "/verify-otp") {
+        return '/'; //home page
+      }
+    }
+    UserModel? userModel = await getIt<SecureStorage>().getUserData();
+    if (userModel != null) {
+      if (userModel.role == "driver") {
+        if (state.matchedLocation == "/nav") {
+          return '/driver-home';
+        }
+      }
+    }
     return null; // no need to redirect
   },
 );

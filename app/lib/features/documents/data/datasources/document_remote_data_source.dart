@@ -5,11 +5,13 @@ import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/documents/data/models/complete_model.dart';
 import 'package:taxialong/features/documents/data/models/document_model.dart';
+import 'package:taxialong/features/documents/data/models/documents_model.dart';
 import 'package:taxialong/features/documents/domain/usecases/document_upload_usecase.dart';
 
 abstract class DocumentRemoteDataSource {
   Future<DocumentModel> uploadDocument(DocumentParams params);
   Future<CompleteModel> completeUploadDocument();
+  Future<List<DocumentsModel>> getDocuments();
 }
 
 class DocumentRemoteDataSourceImpl implements DocumentRemoteDataSource {
@@ -65,6 +67,31 @@ class DocumentRemoteDataSourceImpl implements DocumentRemoteDataSource {
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return CompleteModel.fromJson(data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<DocumentsModel>> getDocuments() async {
+    final token = await secureStorage.getToken();
+    if (token == null) throw ServerException();
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    };
+    var url = Uri.parse("${endpoint}driver/document");
+    var response = await client.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      List<dynamic> jsonresponse = data['data'];
+      List<DocumentsModel> list =
+          jsonresponse.map((item) => DocumentsModel.fromJson(item)).toList();
+      return list;
     } else {
       throw ServerException();
     }

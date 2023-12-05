@@ -1,8 +1,13 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
 import 'package:taxialong/core/connection/network_info.dart';
-import 'package:taxialong/core/datasources/remote_user_data_source.dart';
+import 'package:taxialong/core/data/datasources/remote_user_data_source.dart';
+import 'package:taxialong/core/data/datasources/setting_remote_datasource.dart';
+import 'package:taxialong/core/data/repositories/settings_repository_impl.dart';
+import 'package:taxialong/core/domain/repositories/settings_repository.dart';
+import 'package:taxialong/core/domain/usecases/switch_account_usecase.dart';
 import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/auth/data/datasources/auth_local_data_source.dart';
@@ -26,6 +31,7 @@ import 'package:taxialong/features/documents/data/repositories/document_reposito
 import 'package:taxialong/features/documents/domain/repositories/document_repository.dart';
 import 'package:taxialong/features/documents/domain/usecases/document_complete_usecase.dart';
 import 'package:taxialong/features/documents/domain/usecases/document_upload_usecase.dart';
+import 'package:taxialong/features/documents/domain/usecases/get_documents_usecase.dart';
 import 'package:taxialong/features/documents/presentation/bloc/document_bloc.dart';
 import 'package:taxialong/features/home/data/datasources/home_local_data_source.dart';
 import 'package:taxialong/features/home/data/datasources/home_remote_data_source.dart';
@@ -189,12 +195,19 @@ Future<void> setupLocator() async {
  */
   // documents instance
   getIt.registerFactory<DocumentBloc>(() => DocumentBloc(
-      documentUploadUseCase: getIt(), documentCompleteUsecase: getIt()));
+        documentUploadUseCase: getIt(),
+        documentCompleteUsecase: getIt(),
+        getDocumentsUseCase: getIt(),
+      ));
   //usecase
   getIt.registerLazySingleton<DocumentUploadUseCase>(
       () => DocumentUploadUseCase(repository: getIt()));
   getIt.registerLazySingleton<DocumentCompleteUsecase>(
       () => DocumentCompleteUsecase(repository: getIt()));
+
+  getIt.registerLazySingleton<GetDocumentsUseCase>(
+      () => GetDocumentsUseCase(repository: getIt()));
+
   //repository
   getIt.registerLazySingleton<DocumentRepository>(
     () => DocumentRepositoryImpl(
@@ -217,4 +230,30 @@ Future<void> setupLocator() async {
 
   //local storage
   getIt.registerLazySingleton<LocalStorage>(() => LocalStorage());
+
+  /**
+ * -----------------------------------------------------------------------------------------------------------
+ */
+  // settings instance
+  getIt.registerFactory<SettingsBloc>(() => SettingsBloc(
+        switchAccountUseCase: getIt(),
+      ));
+
+  //usecase
+  getIt.registerLazySingleton<SwitchAccountUseCase>(
+      () => SwitchAccountUseCase(repository: getIt()));
+
+  //repository
+  getIt.registerLazySingleton<SettingsRepository>(
+    () => SettingRepositoryImpl(
+      networkInfo: getIt(),
+      remoteDataSource: getIt(),
+      userDataSource: getIt(),
+      secureStorage: getIt(),
+    ),
+  );
+  //remote data source
+  getIt.registerLazySingleton<SettingsRemoteDataSource>(
+    () => SettingsRemoteDataSourceImp(client: client, secureStorage: getIt()),
+  );
 }
