@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\User;
 use App\Models\Document;
+use App\Http\Trait\Driver;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class DocumentController extends Controller
 {
+
+    use Driver;
 
     // return my documents
     public function document(){
@@ -54,6 +57,8 @@ class DocumentController extends Controller
             User::whereId(auth()->user()->id)->update([
                 "role" => "driver",
             ]);
+            // create driver trips
+            $this->DriverTrip();
             return response()->json([
                 "status" => true,
                 "message" => "All documents recieved"

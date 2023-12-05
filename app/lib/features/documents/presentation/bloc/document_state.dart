@@ -74,6 +74,15 @@ class DocumentUploadedState extends DocumentState {
   List<Object?> get props => [documentEntity];
 }
 
+class DocumentsFetchedState extends DocumentState {
+  final List<DocumentsEntity> documentsEntity;
+
+  DocumentsFetchedState({required this.documentsEntity});
+
+  @override
+  List<Object?> get props => [documentsEntity];
+}
+
 class DocumentErrorState extends DocumentState {
   final String message;
 

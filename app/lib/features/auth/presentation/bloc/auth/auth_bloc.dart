@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:taxialong/core/error/failure.dart';
+import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/auth/domain/entities/auth_entity.dart';
 import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
 import 'package:taxialong/features/auth/domain/entities/telephone_entity.dart';
@@ -39,7 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthLoadingState());
         final failureOrLogout = await logoutUseCase(LogoutParams());
         emit(failureOrLogout.fold(
-            (failure) => ErrorAuthState(message: _mapFailureToMessage(failure)),
+            (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
             (r) => const AuthenticatedState(false)));
       } else if (event is PhoneNumberEvent) {
         emit(const AuthLoadingState());
@@ -50,7 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
 
         emit(failureOrPhoneNumberEvent.fold(
-            (failure) => ErrorAuthState(message: _mapFailureToMessage(failure)),
+            (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
             (telephoneEntity) =>
                 PhoneNumberState(telephoneEntity: telephoneEntity)));
       } else if (event is VerifyOTPEvent) {
@@ -65,7 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ));
           emit(failureOrVerifyOtp.fold(
               (failure) =>
-                  ErrorAuthState(message: _mapFailureToMessage(failure)),
+                  ErrorAuthState(message: mapFailureToMessage(failure)),
               (otpEntity) => VerifyOTPState(otpEntity: otpEntity)));
         } else {
           final failureOrAuth = await authUseCase(AuthParams(
@@ -76,7 +76,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ));
           emit(failureOrAuth.fold(
               (failure) =>
-                  ErrorAuthState(message: _mapFailureToMessage(failure)),
+                  ErrorAuthState(message: mapFailureToMessage(failure)),
               (authEntity) => LoginState(authEntity: authEntity)));
         }
       } else if (event is CreateAccountEvent) {
@@ -91,23 +91,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
         );
         emit(failureOrCreateAccount.fold(
-            (failure) => ErrorAuthState(message: _mapFailureToMessage(failure)),
+            (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
             (authEntity) => CreateAccountState(authEntity: authEntity)));
       }
     });
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return 'There was a server error!';
-      case CacheFailure:
-        return 'Cache Failure';
-      case NetworkFailure:
-        return 'Network error, check your internet connection';
-      default:
-        return "Unexpected Error , Please try again later .";
-    }
   }
 
   Future<bool> isLoggedIn() async {

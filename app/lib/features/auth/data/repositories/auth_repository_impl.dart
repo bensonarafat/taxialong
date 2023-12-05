@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:taxialong/core/connection/network_info.dart';
-import 'package:taxialong/core/datasources/remote_user_data_source.dart';
+import 'package:taxialong/core/data/datasources/remote_user_data_source.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/auth/data/datasources/auth_local_data_source.dart';
@@ -8,7 +8,7 @@ import 'package:taxialong/features/auth/data/datasources/auth_remote_data_source
 import 'package:taxialong/features/auth/data/models/auth_model.dart';
 import 'package:taxialong/features/auth/data/models/logout_model.dart';
 import 'package:taxialong/features/auth/data/models/telephone_model.dart';
-import 'package:taxialong/core/models/user_model.dart';
+import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/features/auth/data/models/verify_otp_model.dart';
 import 'package:taxialong/features/auth/domain/entities/auth_entity.dart';
 import 'package:taxialong/features/auth/domain/repositories/auth_repository.dart';

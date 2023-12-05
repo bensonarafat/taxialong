@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:taxialong/core/connection/network_info.dart';
-import 'package:taxialong/core/datasources/remote_user_data_source.dart';
+import 'package:taxialong/core/data/datasources/remote_user_data_source.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
-import 'package:taxialong/core/models/user_model.dart';
+import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/features/profile/data/datasources/profile_remote_data_source.dart';
 import 'package:taxialong/features/profile/data/models/profile_model.dart';
 import 'package:taxialong/features/profile/data/models/profile_photo_model.dart';

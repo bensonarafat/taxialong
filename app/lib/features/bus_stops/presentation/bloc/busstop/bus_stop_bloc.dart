@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:taxialong/core/error/failure.dart';
+import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/bus_stops/domain/entities/axis_entity.dart';
 import 'package:taxialong/features/bus_stops/domain/usecases/get_bus_stop_usecase.dart';
 
@@ -24,22 +24,9 @@ class BusStopBloc extends Bloc<BusStopEvent, BusStopState> {
         );
         emit(failureOrFetchAxisEvent.fold(
             (failure) =>
-                BusStopErrorState(message: _mapFailureToMessage(failure)),
+                BusStopErrorState(message: mapFailureToMessage(failure)),
             (busstops) => BusStopLoadedState(busstops: busstops)));
       }
     });
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return 'There was a server error!';
-      case CacheFailure:
-        return 'Cache Failure';
-      case NetworkFailure:
-        return 'Network error, check your internet connection';
-      default:
-        return "Unexpected Error , Please try again later .";
-    }
   }
 }

@@ -22,6 +22,11 @@ class _DriverMapState extends State<DriverMap> {
     target: LatLng(9.0747, 7.4760),
     zoom: 14.4746,
   );
+
+  static const CameraPosition _kLake = CameraPosition(
+    target: LatLng(37.43296265331129, -122.08832357078792),
+    zoom: 14.4746,
+  );
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,25 +54,33 @@ class _DriverMapState extends State<DriverMap> {
           Positioned(
             bottom: 0,
             right: 0,
-            child: Container(
-              margin: EdgeInsets.only(
-                right: 11.w,
-                bottom: 9.w,
-              ),
-              width: 38.w,
-              height: 38.h,
-              decoration: const ShapeDecoration(
-                color: primaryColor,
-                shape: OvalBorder(),
-              ),
-              child: const Icon(
-                Icons.gps_fixed,
-                color: white,
+            child: GestureDetector(
+              onTap: () => _goToTheLake(),
+              child: Container(
+                margin: EdgeInsets.only(
+                  right: 11.w,
+                  bottom: 9.w,
+                ),
+                width: 38.w,
+                height: 38.h,
+                decoration: const ShapeDecoration(
+                  color: primaryColor,
+                  shape: OvalBorder(),
+                ),
+                child: const Icon(
+                  Icons.gps_fixed,
+                  color: white,
+                ),
               ),
             ),
           )
         ],
       ),
     );
+  }
+
+  Future<void> _goToTheLake() async {
+    final GoogleMapController controller = await _controller.future;
+    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }

@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_drawer.dart';
 import 'package:taxialong/features/driver/presentation/widgets/driver_flexible_space.dart';
 import 'package:taxialong/features/driver/presentation/widgets/driver_map.dart';
@@ -21,6 +22,14 @@ class DriverHome extends StatefulWidget {
 
 class _DriverHomeState extends State<DriverHome> {
   bool status = false;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      showEnableLocation(context);
+    });
+    super.initState();
+  }
 
   void toggleOnOff() {
     setState(() {

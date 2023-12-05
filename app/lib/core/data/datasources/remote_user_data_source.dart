@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:taxialong/core/constants/constants.dart';
+import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
-import 'package:taxialong/core/models/user_model.dart';
 
 class UserDataSource {
   final SecureStorage secureStorage;

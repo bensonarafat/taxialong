@@ -12,7 +12,6 @@ class BecomeDriver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: key,
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () => context.pop(),

@@ -7,6 +7,7 @@ class UserModel {
   final String rating;
   final String verified;
   final String role;
+  final String documentCount;
 
   UserModel({
     required this.firstname,
@@ -17,6 +18,7 @@ class UserModel {
     required this.rating,
     required this.verified,
     required this.role,
+    required this.documentCount,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class UserModel {
       rating: json['rating'],
       verified: json['verified'],
       role: json['role'],
+      documentCount: json['documents_count'],
     );
   }
 
@@ -42,6 +45,7 @@ class UserModel {
       "rating": rating,
       "verified": verified,
       "role": role,
+      "documents_count": documentCount,
     };
   }
 }

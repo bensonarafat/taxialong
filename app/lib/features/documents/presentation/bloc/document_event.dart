@@ -3,6 +3,11 @@ part of 'document_bloc.dart';
 @immutable
 abstract class DocumentEvent extends Equatable {}
 
+class DocumentFetchDocuments extends DocumentEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 class DocumentUploadEvent extends DocumentEvent {
   final String type;
   final String path;

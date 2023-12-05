@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\User;
+use App\Http\Trait\Driver;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Exception;
 
 class AccountController extends Controller
 {
+
+    use Driver;
+
     public function updateProfile(Request $request){
         $firstname = ucfirst(strtolower(trim($request->firstname)));
         $lastname = ucfirst(strtolower(trim($request->lastname)));
@@ -83,9 +87,31 @@ class AccountController extends Controller
         User::whereId(auth()->user()->id)->update([
             "role" => $role,
         ]);
+        if($role == "driver"){
+            $this->DriverTrip();
+        }
         return response()->json([
             "status" => true,
             "message" => "Account Switched"
+        ]);
+    }
+
+    public function deleteAccount(){
+        $user = User::find(auth()->user()->id);
+        if(!$user){
+            return response()->json(
+                [
+                    "status" => false,
+                    "message" => "User not found"
+                ]
+            );
+        }
+
+        //delete user
+        $user->delete();
+        return response()->json([
+            "status" => true,
+            "message" => "User Account deleted"
         ]);
     }
 }

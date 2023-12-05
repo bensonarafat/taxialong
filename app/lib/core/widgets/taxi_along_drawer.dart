@@ -7,12 +7,11 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/constants/constants.dart';
-import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
-import 'package:taxialong/core/models/user_model.dart';
+import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 
 class TaxiAlongDrawer extends StatefulWidget {
@@ -23,14 +22,14 @@ class TaxiAlongDrawer extends StatefulWidget {
 }
 
 class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
-  LocalStorage localStorage = LocalStorage();
   SecureStorage secureStorage = SecureStorage();
   bool driverMode = false;
-
+  int documentCount = 0;
   String username = "";
   String avatar = imageplaceholder;
   int rating = 0;
   String role = 'rider';
+
   @override
   void initState() {
     drawerAction();
@@ -38,12 +37,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
   }
 
   drawerAction() {
-    _getUserMode();
     _getUserData();
-  }
-
-  _getUserMode() async {
-    driverMode = await localStorage.getDriverMode();
   }
 
   _getUserData() async {
@@ -53,6 +47,9 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
       avatar = "${usermodel?.avatar}";
       rating = usermodel == null ? 0 : int.parse(usermodel.rating);
       role = usermodel == null ? 'rider' : usermodel.role;
+      driverMode = role == "driver" ? true : false;
+      documentCount =
+          usermodel == null ? 0 : int.parse(usermodel.documentCount);
     });
   }
 
@@ -102,6 +99,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                         TaxiAlongCachedNetworkImage(
                           path: avatar,
                           width: 52,
+                          fit: BoxFit.fill,
                           height: 52,
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
@@ -208,6 +206,9 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                   ),
                   driverMode
                       ? ListTile(
+                          onTap: () {
+                            context.push("/wallet");
+                          },
                           title: Text(
                             'Wallet',
                             style:
@@ -291,7 +292,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                         )
                       : Container(),
 
-                  role == 'rider'
+                  role == 'rider' && documentCount != 4
                       ? ListTile(
                           onTap: () async {
                             await context.push("/become-driver");

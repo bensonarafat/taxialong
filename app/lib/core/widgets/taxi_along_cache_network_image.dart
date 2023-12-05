@@ -8,12 +8,14 @@ class TaxiAlongCachedNetworkImage extends StatelessWidget {
   final double width;
   final double height;
   final dynamic shape;
+  final BoxFit fit;
   const TaxiAlongCachedNetworkImage({
     super.key,
     required this.path,
     required this.width,
     required this.height,
     required this.shape,
+    required this.fit,
   });
 
   @override
@@ -31,7 +33,7 @@ class TaxiAlongCachedNetworkImage extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: imageProvider,
-              fit: BoxFit.fill,
+              fit: fit,
             ),
           ),
         ),
