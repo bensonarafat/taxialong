@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/bloc/bottom_navigation/bottom_navigation_bloc.dart';
@@ -32,6 +33,7 @@ import 'package:taxialong/features/wallet/presentation/pages/wallet.dart';
 final BottomNavigationBloc bottomNavigationBloc = BottomNavigationBloc();
 final GoRouter router = GoRouter(
   initialLocation: "/nav",
+  observers: [BotToastNavigatorObserver()],
   routes: [
     GoRoute(
       path: '/',

@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
@@ -291,7 +293,60 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                           ),
                         )
                       : Container(),
+                  // if the document count is 4, that means they have complete their driver registration
+                  documentCount == 4
+                      ? BlocListener<SettingsBloc, SettingsState>(
+                          listener: (context, state) {
+                            late CancelFunc cancel;
 
+                            if (state is SettingsSwitchLoadingState) {
+                              cancel = BotToast.showLoading();
+                            }
+                            if (state is SettingsSwitchedState) {
+                              cancel();
+
+                              if (role == "driver") {
+                                context.go("/nav");
+                              } else {
+                                context.go("/driver-home");
+                              }
+                            }
+
+                            if (state is SettingErrorState) {
+                              cancel();
+                              toast(state.message);
+                            }
+                          },
+                          child: Builder(builder: (context) {
+                            return ListTile(
+                              onTap: () {
+                                context.pop();
+                                context
+                                    .read<SettingsBloc>()
+                                    .add(SettingsSwitchAccountEvent());
+                              },
+                              title: Text(
+                                role == "driver"
+                                    ? "Passenger Mode"
+                                    : 'Driver Mode',
+                                style: Theme.of(context)
+                                    .listTileTheme
+                                    .titleTextStyle,
+                              ),
+                              leading: SvgPicture.asset(
+                                personMode,
+                                colorFilter: ColorFilter.mode(
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? white
+                                      : dark,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            );
+                          }),
+                        )
+                      : Container(),
                   role == 'rider' && documentCount != 4
                       ? ListTile(
                           onTap: () async {
