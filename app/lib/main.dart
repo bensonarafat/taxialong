@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/config/routes/router.dart';
 import 'package:taxialong/config/theme/theme.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:taxialong/core/services/stream_listener.dart';
 import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'firebase_options.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +38,7 @@ class TaxiAlong extends StatelessWidget {
       providers: [
         BlocProvider<AuthBloc>(
             create: (_) => getIt<AuthBloc>()..add(CheckLoginEvent())),
+        BlocProvider<SettingsBloc>(create: (_) => getIt<SettingsBloc>()),
       ],
       child: AuthStreamScope(
         child: ScreenUtilInit(
@@ -50,6 +53,7 @@ class TaxiAlong extends StatelessWidget {
               title: 'Taxi Along',
               debugShowCheckedModeBanner: false,
               routerConfig: router,
+              builder: BotToastInit(),
             );
           },
         ),

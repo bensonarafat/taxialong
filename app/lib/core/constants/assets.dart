@@ -129,3 +129,9 @@ const homeSVG = "assets/images/svg/home.svg";
 const walletSVG = "assets/images/svg/wallet.svg";
 
 const sortSVG = "assets/images/svg/sort.svg";
+
+const rideSettings = "assets/images/svg/ride-settings.svg";
+
+const driverLocation = "assets/images/svg/driver_location.svg";
+
+const personMode = "assets/images/svg/person_mode.svg";

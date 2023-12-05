@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Driver;
 use App\Models\RideSettings;
-use Exception;
 use Illuminate\Http\Request;
 
 class DriverController extends Controller
@@ -79,5 +80,36 @@ class DriverController extends Controller
                 "data" => $settings,
             ]
         );
+    }
+
+
+    public function goOnline(){
+        try {
+            //check if the user account is verified
+            $user = User::whereId(auth()->user()->id)->first();
+            if($user->verified){
+                $driver = Driver::where("user_id", auth()->user()->id)->first();
+                // dd($driver->first());
+                $driver->online = !$driver->online;
+                $driver->save();
+                return response()->json(
+                    [
+                        "status" => true,
+                        "message" => "Status Updated",
+                    ]
+                );
+            }else{
+                return response()->json([
+                    "status" => false,
+                    "message" => "Sorry, your account yet to be verified, if you have not submitted your documents please do so."
+                ]);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => false,
+                "message" => "Oops, there was an error",
+                "error" => $e->getMessage()
+            ]);
+        }
     }
 }

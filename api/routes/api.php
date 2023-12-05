@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post("/ride-settings", [DriverController::class, "rideSettings"]);
         Route::get("/get-settings", [DriverController::class, "getSettings"]);
         Route::post("/update-position", [DriverController::class, "updatePosition"]);
+        Route::get("/go-online", [DriverController::class, "goOnline"]);
         // documents
         Route::group(["prefix" => "document"], function(){
             Route::get("/" , [DocumentController::class, "document"]);
