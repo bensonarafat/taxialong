@@ -18,6 +18,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         emit(SettingsSwitchLoadingState());
 
         final failureOrSwitchEvent = await switchAccountUseCase({});
+
         emit(failureOrSwitchEvent.fold(
             (failure) =>
                 SettingErrorState(message: mapFailureToMessage(failure)),

@@ -31,7 +31,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
   String avatar = imageplaceholder;
   int rating = 0;
   String role = 'rider';
-
+  late CancelFunc cancel;
   @override
   void initState() {
     drawerAction();
@@ -51,7 +51,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
       role = usermodel == null ? 'rider' : usermodel.role;
       driverMode = role == "driver" ? true : false;
       documentCount =
-          usermodel == null ? 0 : int.parse(usermodel.documentCount);
+          usermodel == null ? 0 : int.parse(usermodel.documentCount ?? '0');
     });
   }
 
@@ -297,13 +297,11 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                   documentCount == 4
                       ? BlocListener<SettingsBloc, SettingsState>(
                           listener: (context, state) {
-                            late CancelFunc cancel;
-
                             if (state is SettingsSwitchLoadingState) {
-                              cancel = BotToast.showLoading();
+                              // cancel = BotToast.showLoading();
                             }
                             if (state is SettingsSwitchedState) {
-                              cancel();
+                              // cancel();
 
                               if (role == "driver") {
                                 context.go("/nav");
@@ -313,7 +311,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                             }
 
                             if (state is SettingErrorState) {
-                              cancel();
+                              // print("error");
                               toast(state.message);
                             }
                           },

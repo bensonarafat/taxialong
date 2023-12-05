@@ -33,6 +33,12 @@ import 'package:taxialong/features/documents/domain/usecases/document_complete_u
 import 'package:taxialong/features/documents/domain/usecases/document_upload_usecase.dart';
 import 'package:taxialong/features/documents/domain/usecases/get_documents_usecase.dart';
 import 'package:taxialong/features/documents/presentation/bloc/document_bloc.dart';
+import 'package:taxialong/features/driver/data/datasources/driver_home_remote_datasource.dart';
+import 'package:taxialong/features/driver/data/repositories/settings_repository_impl.dart';
+import 'package:taxialong/features/driver/domain/repositories/driver_home_repository.dart';
+import 'package:taxialong/features/driver/domain/usecases/get_driver_data_usecase.dart';
+import 'package:taxialong/features/driver/domain/usecases/go_online_usecase.dart';
+import 'package:taxialong/features/driver/presentation/bloc/driver_home_bloc.dart';
 import 'package:taxialong/features/home/data/datasources/home_local_data_source.dart';
 import 'package:taxialong/features/home/data/datasources/home_remote_data_source.dart';
 import 'package:taxialong/features/home/data/repositories/home_repository.dart';
@@ -255,5 +261,35 @@ Future<void> setupLocator() async {
   //remote data source
   getIt.registerLazySingleton<SettingsRemoteDataSource>(
     () => SettingsRemoteDataSourceImp(client: client, secureStorage: getIt()),
+  );
+
+  /**
+ * -----------------------------------------------------------------------------------------------------------
+ */
+  // driver instance
+  getIt.registerFactory<DriverHomeBloc>(() => DriverHomeBloc(
+        goOnlineUseCase: getIt(),
+        getDriverDataUseCase: getIt(),
+      ));
+
+  //usecase
+  getIt.registerLazySingleton<GoOnlineUseCase>(
+      () => GoOnlineUseCase(repository: getIt()));
+  getIt.registerLazySingleton<GetDriverDataUseCase>(
+      () => GetDriverDataUseCase(repository: getIt()));
+
+  //repository
+  getIt.registerLazySingleton<DriverHomeRepository>(
+    () => DriverHomeRepositoryImpl(
+      networkInfo: getIt(),
+      remoteDataSource: getIt(),
+      userDataSource: getIt(),
+      secureStorage: getIt(),
+    ),
+  );
+  //remote data source
+  getIt.registerLazySingleton<DriverHomeRemoteDataSource>(
+    () =>
+        DriverHomeRemoteDataSourceImpl(client: client, secureStorage: getIt()),
   );
 }

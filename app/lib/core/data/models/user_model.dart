@@ -1,25 +1,16 @@
-class UserModel {
-  final String firstname;
-  final String lastname;
-  final String email;
-  final String telephone;
-  final String avatar;
-  final String rating;
-  final String verified;
-  final String role;
-  final String documentCount;
+import 'package:taxialong/core/domain/entities/user_entity.dart';
 
-  UserModel({
-    required this.firstname,
-    required this.lastname,
-    required this.email,
-    required this.telephone,
-    required this.avatar,
-    required this.rating,
-    required this.verified,
-    required this.role,
-    required this.documentCount,
-  });
+class UserModel extends UserEntity {
+  UserModel(
+      {required super.firstname,
+      required super.lastname,
+      required super.email,
+      required super.telephone,
+      required super.avatar,
+      required super.rating,
+      required super.verified,
+      required super.role,
+      required super.documentCount});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
