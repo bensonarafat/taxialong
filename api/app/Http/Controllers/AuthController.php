@@ -132,7 +132,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        $user = User::whereId(auth()->user()->id)->withCount(["documents"])->first();
+        $user = User::whereId(auth()->user()->id)->with(["settings"])->withCount(["documents"])->first();
         return response()->json($user);
     }
 
