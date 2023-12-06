@@ -14,7 +14,7 @@ class DriverController extends Controller
     public function driver(){
         $today = Carbon::today()->toDateString();
         $driver = Driver::where("user_id", auth()->user()->id)
-                    ->with(["user", "settings"])
+                    ->with(["user"])
                     ->withCount([
                         "earnings", "total_rides",
                         'today_ride' => function ($query) use ($today) {

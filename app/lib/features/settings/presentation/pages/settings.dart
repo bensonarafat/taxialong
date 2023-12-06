@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +11,6 @@ import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
-import 'package:taxialong/features/settings/presentation/widgets/settings_loading.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -23,7 +23,7 @@ class _SettingsState extends State<Settings> {
   SecureStorage secureStorage = SecureStorage();
   String role = 'rider';
   String currentRole = "rider";
-  bool isLoading = false;
+  late CancelFunc cancel;
   int documentCount = 0;
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _SettingsState extends State<Settings> {
         role = "Driver";
       }
       documentCount =
-          usermodel == null ? 0 : int.parse(usermodel.documentCount);
+          usermodel == null ? 0 : int.parse(usermodel.documentCount ?? '0');
     });
   }
 
@@ -70,7 +70,6 @@ class _SettingsState extends State<Settings> {
       ),
       body: Stack(
         children: [
-          isLoading ? const SettingsLoading() : Container(),
           Align(
             alignment: Alignment.topLeft,
             child: BlocListener<SettingsBloc, SettingsState>(
@@ -79,14 +78,10 @@ class _SettingsState extends State<Settings> {
                   toast(state.message);
                 }
                 if (state is SettingsSwitchLoadingState) {
-                  setState(() {
-                    isLoading = true;
-                  });
+                  cancel = BotToast.showLoading();
                 }
                 if (state is SettingsSwitchedState) {
-                  setState(() {
-                    isLoading = false;
-                  });
+                  cancel();
                   if (currentRole == "driver") {
                     context.go("/nav");
                   } else {

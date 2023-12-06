@@ -1,15 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:taxialong/core/connection/network_info.dart';
 import 'package:taxialong/core/data/datasources/remote_user_data_source.dart';
-import 'package:taxialong/core/data/datasources/setting_remote_datasource.dart';
-import 'package:taxialong/core/data/models/account_switch_model.dart';
+import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/error/failure.dart';
-import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
+import 'package:taxialong/features/driver/data/datasources/driver_home_remote_datasource.dart';
+import 'package:taxialong/features/driver/data/models/driver_model.dart';
+import 'package:taxialong/features/driver/data/models/go_online_model.dart';
 import 'package:taxialong/features/driver/domain/repositories/driver_home_repository.dart';
 
 class DriverHomeRepositoryImpl implements DriverHomeRepository {
-  SettingsRemoteDataSource remoteDataSource;
+  DriverHomeRemoteDataSource remoteDataSource;
   NetworkInfo networkInfo;
   SecureStorage secureStorage;
   UserDataSource userDataSource;
@@ -19,18 +20,32 @@ class DriverHomeRepositoryImpl implements DriverHomeRepository {
     required this.secureStorage,
     required this.userDataSource,
   });
+
   @override
-  Future<Either<Failure, AccountSwitchModel>> switchAccount() async {
+  Future<Either<Failure, GoOnlineModel>> goOnline() async {
     if (await networkInfo.isConnected) {
       try {
-        AccountSwitchModel profileModel =
-            await remoteDataSource.switchAccount();
-        // get data and save to device
-        UserModel userModel = await userDataSource.getUserData();
-        secureStorage.saveUserData(userModel);
-        return Right(profileModel);
-      } catch (_) {
-        return Left(ServerFailure(message: 'There is a server Error!'));
+        GoOnlineModel goOnlineModel = await remoteDataSource.goOnline();
+
+        return Right(goOnlineModel);
+      } on ServerException {
+        return Left(ServerFailure(message: "There is a server failure"));
+      }
+    } else {
+      return Left(
+          NetworkFailure(message: 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, DriverModel>> getDriverData() async {
+    if (await networkInfo.isConnected) {
+      try {
+        DriverModel driverModel = await remoteDataSource.getDriverData();
+
+        return Right(driverModel);
+      } on ServerException {
+        return Left(ServerFailure(message: "There is a server failure"));
       }
     } else {
       return Left(

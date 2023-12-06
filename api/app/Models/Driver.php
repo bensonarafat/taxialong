@@ -22,9 +22,6 @@ class Driver extends Model
     public function user() : BelongsTo {
         return $this->belongsTo(User::class);
     }
-    public function settings() : BelongsTo {
-        return $this->belongsTo(RideSettings::class, "user_id", "user_id");
-    }
 
     public function total_rides(): HasMany {
         return $this->hasMany(Trip::class, "driver_id", "user_id");
