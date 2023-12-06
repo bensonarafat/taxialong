@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId("user_id")->constrained('users')->onDelete('cascade');
             $table->foreignId("driver_id")->constrained("drivers")->onDelete('cascade');
-            $table->foreignId("pointa")->constrained("bus_stops")->nullable();
-            $table->foreignId("pointb")->constrained("bus_stops")->nullable();
+            $table->foreignId("pointa")->constrained("terminals")->nullable();
+            $table->foreignId("pointb")->constrained("terminals")->nullable();
             $table->enum("payment_method", ["cash", "wallet"])->default("cash");
             $table->json("ride_class")->nullable();
             $table->timestamps();

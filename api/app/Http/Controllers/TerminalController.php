@@ -4,10 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\Axis;
 use App\Models\BusStop;
+use App\Models\Terminal;
+use Exception;
 use Illuminate\Http\Request;
 
 class TerminalController extends Controller
 {
+
+    public function terminals(){
+        try {
+            $terminals = Terminal::latest()->get();
+            return response()->json([
+                "status" => true,
+                "message" => "terminal fetched",
+                "data" => $terminals,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => false,
+                "message" => "Oops, there was an error",
+            ]);
+        }
+    }
 
     public function axis(Request $request){
         $perPage = $request->get('per_page', 10); // per_page 10 if nothing is set
