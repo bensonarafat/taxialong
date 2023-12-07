@@ -14,7 +14,6 @@ class DriverController extends Controller
     public function driver(){
         $today = Carbon::today()->toDateString();
         $driver = Driver::where("user_id", auth()->user()->id)
-                    ->with(["user"])
                     ->withCount([
                         "earnings", "total_rides",
                         'today_ride' => function ($query) use ($today) {
@@ -48,19 +47,6 @@ class DriverController extends Controller
         }
 
     }
-
-    public function getSettings(){
-        $settings = RideSettings::where("user_id", auth()->user()->id)->first();
-        $settings->ride_class = json_decode($settings->ride_class);
-        return response()->json(
-            [
-                "status" => true,
-                "message" => "Settings fetched",
-                "data" => $settings,
-            ]
-        );
-    }
-
 
     public function goOnline(){
         try {
