@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\User;
 use App\Http\Trait\Driver;
+use App\Models\RideSettings;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -114,4 +115,25 @@ class AccountController extends Controller
             "message" => "User Account deleted"
         ]);
     }
+
+        //driver ride settings
+        public function rideSettings(Request $request){
+            //update
+            try {
+                RideSettings::where(["user_id" =>  $request->user()->id])->update([
+                    "pointa" => $request->pointa,
+                    "pointb" => $request->pointb,
+                    "payment_method" => $request->payment_method,
+                    "ride_class" => json_encode($request->ride_class),
+                ]);
+                return response()->json(["status" => true,  "message" => "Setting updated"]);
+            } catch (Exception $e) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Oops, there was an error"
+                ]);
+            }
+
+        }
+
 }
