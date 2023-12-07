@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ride_settings', function (Blueprint $table) {
             $table->id();
             $table->foreignId("user_id")->constrained('users')->onDelete('cascade');
-            $table->foreignId("driver_id")->constrained("drivers")->onDelete('cascade');
+            $table->foreignId("driver_id")->constrained("drivers")->onDelete('cascade')->nullable();
             $table->foreignId("pointa")->constrained("terminals")->nullable();
             $table->foreignId("pointb")->constrained("terminals")->nullable();
             $table->enum("payment_method", ["cash", "wallet"])->default("cash");

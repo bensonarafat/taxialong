@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::put("/update-profile", [AccountController::class,"updateProfile"]);
         Route::get("/switch/{role}", [AccountController::class, "switchRole"]);
         Route::get("/delete", [AccountController::class, "deleteAccount"]);
+        Route::post("/ride-settings", [AccountController::class, "rideSettings"]);
     });
 
     //terminals
@@ -46,7 +47,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::group(["prefix" => "driver"], function() {
         //driver
         Route::get("/", [DriverController::class, "driver"]);
-        Route::post("/ride-settings", [DriverController::class, "rideSettings"]);
         Route::get("/get-settings", [DriverController::class, "getSettings"]);
         Route::post("/update-position", [DriverController::class, "updatePosition"]);
         Route::get("/go-online", [DriverController::class, "goOnline"]);
