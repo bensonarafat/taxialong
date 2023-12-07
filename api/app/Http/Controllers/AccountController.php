@@ -116,8 +116,8 @@ class AccountController extends Controller
         ]);
     }
 
-        //driver ride settings
-        public function rideSettings(Request $request){
+        // ride settings
+        public function updateSettings(Request $request){
             //update
             try {
                 RideSettings::where(["user_id" =>  $request->user()->id])->update([
@@ -135,5 +135,18 @@ class AccountController extends Controller
             }
 
         }
+
+        public function getSettings(){
+            $settings = RideSettings::where("user_id", auth()->user()->id)->first();
+            $settings->ride_class = json_decode($settings->ride_class);
+            return response()->json(
+                [
+                    "status" => true,
+                    "message" => "Settings fetched",
+                    "data" => $settings,
+                ]
+            );
+        }
+
 
 }
