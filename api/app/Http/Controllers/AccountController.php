@@ -124,7 +124,7 @@ class AccountController extends Controller
                     "pointa" => $request->pointa,
                     "pointb" => $request->pointb,
                     "payment_method" => $request->payment_method,
-                    "ride_class" => json_encode($request->ride_class),
+                    "ride_class" => $request->ride_class,
                 ]);
                 return response()->json(["status" => true,  "message" => "Setting updated"]);
             } catch (Exception $e) {
