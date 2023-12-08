@@ -9,7 +9,7 @@ import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/driver/domain/entities/driver_entity.dart';
 import 'package:taxialong/features/driver/domain/entities/go_online_entity.dart';
-import 'package:taxialong/features/driver/presentation/bloc/driver_home_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
 
 class DriverFlexibleSpace extends StatefulWidget {
   final Function action;

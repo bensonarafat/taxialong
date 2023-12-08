@@ -14,7 +14,7 @@ import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
 import 'package:taxialong/core/widgets/taxi_along_drawer.dart';
-import 'package:taxialong/features/driver/presentation/bloc/driver_home_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
 import 'package:taxialong/features/driver/presentation/widgets/current_location_bustop.dart';
 import 'package:taxialong/features/driver/presentation/widgets/driver_details_widget.dart';
 import 'package:taxialong/features/driver/presentation/widgets/driver_flexible_space.dart';
@@ -58,6 +58,7 @@ class _DriverHomeState extends State<DriverHome> {
       username = "${usermodel?.firstname} ${usermodel?.lastname}";
       avatar = "${usermodel?.avatar}";
       settings = usermodel?.settings;
+      // status = usermodel?.online;
     });
   }
 
@@ -146,6 +147,7 @@ class _DriverHomeState extends State<DriverHome> {
                             minDialogWidth: 400.w,
                             minPageHeight: 0.0,
                           );
+                          //update the user data
                           _getUserData();
                         },
                         child: Container(

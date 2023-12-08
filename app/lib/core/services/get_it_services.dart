@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
 import 'package:taxialong/core/connection/network_info.dart';
 import 'package:taxialong/core/data/datasources/remote_user_data_source.dart';
@@ -40,7 +41,7 @@ import 'package:taxialong/features/driver/domain/repositories/driver_home_reposi
 import 'package:taxialong/features/driver/domain/usecases/get_driver_data_usecase.dart';
 import 'package:taxialong/core/domain/usecases/get_terminals_usecase.dart';
 import 'package:taxialong/features/driver/domain/usecases/go_online_usecase.dart';
-import 'package:taxialong/features/driver/presentation/bloc/driver_home_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
 import 'package:taxialong/features/home/data/datasources/home_local_data_source.dart';
 import 'package:taxialong/features/home/data/datasources/home_remote_data_source.dart';
 import 'package:taxialong/features/home/data/repositories/home_repository.dart';
@@ -114,6 +115,11 @@ Future<void> setupLocator() async {
   //storage
   getIt.registerLazySingleton<SecureStorage>(() => SecureStorage());
 
+/**
+ * -----------------------------------------------------------------------------------------------------------
+ */
+  //map instance
+  getIt.registerFactory<MapBloc>(() => getIt());
 /**
  * -----------------------------------------------------------------------------------------------------------
  */
