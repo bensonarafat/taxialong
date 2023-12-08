@@ -28,12 +28,7 @@ class VehicleRegistration extends StatelessWidget {
             ];
           },
           modalTypeBuilder: (context) {
-            final size = MediaQuery.of(context).size.width;
-            if (size < 768.0) {
-              return WoltModalType.bottomSheet;
-            } else {
-              return WoltModalType.dialog;
-            }
+            return WoltModalType.bottomSheet;
           },
           maxDialogWidth: 560.w,
           minDialogWidth: 400.w,

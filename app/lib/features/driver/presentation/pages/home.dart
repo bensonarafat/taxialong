@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/data/models/user_model.dart';
+import 'package:taxialong/core/domain/entities/settings_entity.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
@@ -35,13 +36,13 @@ class _DriverHomeState extends State<DriverHome> {
   SecureStorage secureStorage = SecureStorage();
   String username = "";
   String avatar = imageplaceholder;
+  SettingsEntity? settings;
   @override
   void initState() {
     _getUserData();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       showEnableLocation(context);
     });
-
     super.initState();
   }
 
@@ -56,6 +57,7 @@ class _DriverHomeState extends State<DriverHome> {
     setState(() {
       username = "${usermodel?.firstname} ${usermodel?.lastname}";
       avatar = "${usermodel?.avatar}";
+      settings = usermodel?.settings;
     });
   }
 
@@ -125,27 +127,26 @@ class _DriverHomeState extends State<DriverHome> {
                         ],
                       ),
                       GestureDetector(
-                        onTap: () {
-                          WoltModalSheet.show<void>(
+                        onTap: () async {
+                          await WoltModalSheet.show<void>(
                             enableDrag: true,
                             context: context,
                             pageListBuilder: (modalSheetContext) {
                               return [
-                                sortClassBottomSheet(modalSheetContext),
+                                sortClassBottomSheet(
+                                  context: modalSheetContext,
+                                  settings: settings,
+                                ),
                               ];
                             },
                             modalTypeBuilder: (context) {
-                              final size = MediaQuery.of(context).size.width;
-                              if (size < 768.0) {
-                                return WoltModalType.bottomSheet;
-                              } else {
-                                return WoltModalType.dialog;
-                              }
+                              return WoltModalType.bottomSheet;
                             },
                             maxDialogWidth: 560.w,
                             minDialogWidth: 400.w,
                             minPageHeight: 0.0,
                           );
+                          _getUserData();
                         },
                         child: Container(
                           width: 40.w,

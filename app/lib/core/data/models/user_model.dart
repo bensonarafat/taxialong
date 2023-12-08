@@ -1,16 +1,19 @@
+import 'package:taxialong/core/data/models/settings_model.dart';
 import 'package:taxialong/core/domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
-  UserModel(
-      {required super.firstname,
-      required super.lastname,
-      required super.email,
-      required super.telephone,
-      required super.avatar,
-      required super.rating,
-      required super.verified,
-      required super.role,
-      required super.documentCount});
+  UserModel({
+    required super.firstname,
+    required super.lastname,
+    required super.email,
+    required super.telephone,
+    required super.avatar,
+    required super.rating,
+    required super.verified,
+    required super.role,
+    required super.documentCount,
+    required super.settings,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -23,6 +26,7 @@ class UserModel extends UserEntity {
       verified: json['verified'],
       role: json['role'],
       documentCount: json['documents_count'],
+      settings: SettingsModel.fromJson(json['settings']),
     );
   }
 
@@ -37,6 +41,7 @@ class UserModel extends UserEntity {
       "verified": verified,
       "role": role,
       "documents_count": documentCount,
+      "settings": settings,
     };
   }
 }

@@ -1,4 +1,4 @@
-import 'package:taxialong/features/home/data/models/terminal_model.dart';
+import 'package:taxialong/core/data/models/terminal_model.dart';
 import 'package:taxialong/features/home/domain/entities/axis_entity.dart';
 
 class AxisModel extends AxisEntity {

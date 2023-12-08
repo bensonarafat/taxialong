@@ -8,6 +8,7 @@ import 'package:taxialong/core/data/datasources/setting_remote_datasource.dart';
 import 'package:taxialong/core/data/repositories/settings_repository_impl.dart';
 import 'package:taxialong/core/domain/repositories/settings_repository.dart';
 import 'package:taxialong/core/domain/usecases/switch_account_usecase.dart';
+import 'package:taxialong/core/domain/usecases/update_settings_usecase.dart';
 import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/auth/data/datasources/auth_local_data_source.dart';
@@ -37,6 +38,7 @@ import 'package:taxialong/features/driver/data/datasources/driver_home_remote_da
 import 'package:taxialong/features/driver/data/repositories/settings_repository_impl.dart';
 import 'package:taxialong/features/driver/domain/repositories/driver_home_repository.dart';
 import 'package:taxialong/features/driver/domain/usecases/get_driver_data_usecase.dart';
+import 'package:taxialong/core/domain/usecases/get_terminals_usecase.dart';
 import 'package:taxialong/features/driver/domain/usecases/go_online_usecase.dart';
 import 'package:taxialong/features/driver/presentation/bloc/driver_home_bloc.dart';
 import 'package:taxialong/features/home/data/datasources/home_local_data_source.dart';
@@ -243,11 +245,17 @@ Future<void> setupLocator() async {
   // settings instance
   getIt.registerFactory<SettingsBloc>(() => SettingsBloc(
         switchAccountUseCase: getIt(),
+        getTermainalUseCase: getIt(),
+        updateSettingsUseCase: getIt(),
       ));
 
   //usecase
   getIt.registerLazySingleton<SwitchAccountUseCase>(
       () => SwitchAccountUseCase(repository: getIt()));
+  getIt.registerLazySingleton<GetTermainalUseCase>(
+      () => GetTermainalUseCase(repository: getIt()));
+  getIt.registerLazySingleton<UpdateSettingsUseCase>(
+      () => UpdateSettingsUseCase(repository: getIt()));
 
   //repository
   getIt.registerLazySingleton<SettingsRepository>(
@@ -277,7 +285,6 @@ Future<void> setupLocator() async {
       () => GoOnlineUseCase(repository: getIt()));
   getIt.registerLazySingleton<GetDriverDataUseCase>(
       () => GetDriverDataUseCase(repository: getIt()));
-
   //repository
   getIt.registerLazySingleton<DriverHomeRepository>(
     () => DriverHomeRepositoryImpl(

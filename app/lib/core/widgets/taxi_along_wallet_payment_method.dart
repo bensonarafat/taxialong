@@ -5,10 +5,31 @@ import 'package:gap/gap.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
-class WalletPaymentMethod extends StatelessWidget {
+class WalletPaymentMethod extends StatefulWidget {
+  final String paymentMethod;
+  final Function callback;
   const WalletPaymentMethod({
     super.key,
+    required this.paymentMethod,
+    required this.callback,
   });
+
+  @override
+  State<WalletPaymentMethod> createState() => _WalletPaymentMethodState();
+}
+
+class _WalletPaymentMethodState extends State<WalletPaymentMethod> {
+  late String selected;
+
+  @override
+  void initState() {
+    selected = widget.paymentMethod;
+    super.initState();
+  }
+
+  selectedFunc(paymentMethod) {
+    widget.callback(paymentMethod);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +70,14 @@ class WalletPaymentMethod extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Radio(
-                  value: true,
-                  onChanged: (v) {},
-                  groupValue: false,
+                  value: 'cash',
+                  onChanged: (value) {
+                    setState(() {
+                      selectedFunc(value);
+                      selected = value!;
+                    });
+                  },
+                  groupValue: selected,
                 ),
                 Gap(16.w),
                 Expanded(
@@ -124,9 +150,14 @@ class WalletPaymentMethod extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Radio(
-                  value: true,
-                  onChanged: (v) {},
-                  groupValue: false,
+                  value: 'wallet',
+                  onChanged: (value) {
+                    setState(() {
+                      selectedFunc(value);
+                      selected = value!;
+                    });
+                  },
+                  groupValue: selected,
                 ),
                 Gap(16.w),
                 Expanded(

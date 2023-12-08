@@ -24,7 +24,9 @@ class DriverDetailsWidget extends StatelessWidget {
         String? overallEarning;
         String overallRides = '0';
         String todayRides = '0';
-        if (state is DriverHomeErrorState) {}
+        if (state is DriverHomeErrorState) {
+          overallEarning = "---";
+        }
         if (state is DriverHomeLoadingState) {
           overallEarning = "--";
         }

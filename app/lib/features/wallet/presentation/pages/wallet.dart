@@ -12,6 +12,8 @@ import 'package:taxialong/core/widgets/taxi_along_wallet_payment_method.dart';
 import 'package:taxialong/features/wallet/presentation/widgets/wallet_topup.dart';
 import 'package:taxialong/features/wallet/presentation/widgets/wallet_withdrawal.dart';
 
+selected() {}
+
 class Wallet extends StatelessWidget {
   const Wallet({super.key});
 
@@ -72,7 +74,10 @@ class Wallet extends StatelessWidget {
                 ),
               ),
               Gap(16.h),
-              const WalletPaymentMethod(),
+              const WalletPaymentMethod(
+                paymentMethod: 'cash',
+                callback: selected,
+              ),
               Gap(16.h),
               Row(
                 children: [

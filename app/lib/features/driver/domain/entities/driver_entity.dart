@@ -1,6 +1,3 @@
-import 'package:taxialong/core/domain/entities/user_entity.dart';
-import 'package:taxialong/features/driver/domain/entities/settings_entity.dart';
-
 class DriverEntity {
   final String message;
   final bool status;
@@ -12,8 +9,6 @@ class DriverEntity {
   final String totalRidesCount;
   final String todayRideCount;
   final String? earningSumAmount;
-  final UserEntity user;
-  final SettingsEntity settings;
 
   DriverEntity({
     required this.message,
@@ -26,7 +21,5 @@ class DriverEntity {
     required this.totalRidesCount,
     required this.todayRideCount,
     required this.earningSumAmount,
-    required this.user,
-    required this.settings,
   });
 }

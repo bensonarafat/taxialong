@@ -42,7 +42,6 @@ class DriverHomeRepositoryImpl implements DriverHomeRepository {
     if (await networkInfo.isConnected) {
       try {
         DriverModel driverModel = await remoteDataSource.getDriverData();
-
         return Right(driverModel);
       } on ServerException {
         return Left(ServerFailure(message: "There is a server failure"));

@@ -23,6 +23,7 @@ class DriverHomeBloc extends Bloc<DriverHomeEvent, DriverHomeState> {
   }) : super(DriverHomeInitailState()) {
     on<DriverHomeEvent>((event, emit) async {
       mapStartLocationUpdateToState();
+
       if (event is DriverHomeGoOnlineEvent) {
         var failureOrOnline = await goOnlineUseCase({});
 
@@ -35,6 +36,7 @@ class DriverHomeBloc extends Bloc<DriverHomeEvent, DriverHomeState> {
         emit(DriverHomeLoadingState());
 
         var failureOrDriverData = await getDriverDataUseCase({});
+
         emit(failureOrDriverData.fold(
             (failure) =>
                 DriverHomeErrorState(message: mapFailureToMessage(failure)),

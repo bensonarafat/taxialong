@@ -10,7 +10,6 @@ import 'package:taxialong/features/auth/data/models/logout_model.dart';
 import 'package:taxialong/features/auth/data/models/telephone_model.dart';
 import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/features/auth/data/models/verify_otp_model.dart';
-import 'package:taxialong/features/auth/domain/entities/auth_entity.dart';
 import 'package:taxialong/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -104,7 +103,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthEntity>> authUser({required params}) async {
+  Future<Either<Failure, AuthModel>> authUser({required params}) async {
     if (await networkInfo.isConnected) {
       try {
         AuthModel authModel = await remoteDataSource.authUser(params: params);

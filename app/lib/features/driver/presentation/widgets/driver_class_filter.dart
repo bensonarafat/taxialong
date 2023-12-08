@@ -3,8 +3,59 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
-class ClassFilter extends StatelessWidget {
-  const ClassFilter({super.key});
+class TaxiAlongDriverClassFilter extends StatefulWidget {
+  final List<dynamic>? rideClass;
+  final Function callback;
+  const TaxiAlongDriverClassFilter({
+    super.key,
+    required this.rideClass,
+    required this.callback,
+  });
+
+  @override
+  State<TaxiAlongDriverClassFilter> createState() =>
+      _TaxiAlongDriverClassFilterState();
+}
+
+class _TaxiAlongDriverClassFilterState
+    extends State<TaxiAlongDriverClassFilter> {
+  List<dynamic>? rideClass;
+  bool class1 = false;
+  bool class2 = false;
+  bool class3 = false;
+  bool class4 = false;
+  bool class5 = false;
+
+  @override
+  void initState() {
+    rideClass = widget.rideClass;
+    if (rideClass != null) {
+      if (rideClass!.contains("1")) class1 = true;
+      if (rideClass!.contains("2")) class2 = true;
+      if (rideClass!.contains("3")) class3 = true;
+      if (rideClass!.contains("4")) class4 = true;
+      if (rideClass!.contains("5")) class5 = true;
+    }
+    super.initState();
+  }
+
+  selected(action, value) {
+    if (!action) {
+      //remove;
+      if (rideClass != null) {
+        rideClass!.remove(value);
+      }
+    } else {
+      //add
+      if (rideClass != null) {
+        rideClass!.add(value);
+      } else {
+        rideClass = [value];
+      }
+    }
+
+    widget.callback(rideClass);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +90,19 @@ class ClassFilter extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const TClass(name: "Class 1"),
+                    TClass(
+                      nm: "1",
+                      name: "Class 1",
+                      v: class1,
+                      callback: selected,
+                    ),
                     Gap(16.w),
-                    const TClass(name: "Class 2"),
+                    TClass(
+                      nm: "2",
+                      name: "Class 2",
+                      v: class2,
+                      callback: selected,
+                    ),
                   ],
                 ),
                 Gap(16.h),
@@ -50,19 +111,34 @@ class ClassFilter extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const TClass(name: "Class 3"),
+                    TClass(
+                      nm: "3",
+                      name: "Class 3",
+                      v: class3,
+                      callback: selected,
+                    ),
                     Gap(16.w),
-                    const TClass(name: "Class 4"),
+                    TClass(
+                      nm: "4",
+                      name: "Class 4",
+                      v: class4,
+                      callback: selected,
+                    ),
                   ],
                 ),
                 Gap(16.h),
-                const SizedBox(
+                SizedBox(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TClass(name: "Class 5"),
+                      TClass(
+                        nm: "5",
+                        name: "Class 5",
+                        v: class5,
+                        callback: selected,
+                      ),
                     ],
                   ),
                 ),
@@ -75,12 +151,34 @@ class ClassFilter extends StatelessWidget {
   }
 }
 
-class TClass extends StatelessWidget {
+class TClass extends StatefulWidget {
   final String name;
+  final bool v;
+  final String nm;
+  final Function callback;
   const TClass({
     super.key,
     required this.name,
+    required this.v,
+    required this.callback,
+    required this.nm,
   });
+
+  @override
+  State<TClass> createState() => _TClassState();
+}
+
+class _TClassState extends State<TClass> {
+  bool v = false;
+  @override
+  void initState() {
+    v = widget.v;
+    super.initState();
+  }
+
+  selected(action, value) {
+    widget.callback(action, value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +191,14 @@ class TClass extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Radio(
-              value: 1,
-              groupValue: 1,
-              onChanged: (v) {},
+            Checkbox(
+              value: v,
+              onChanged: (val) {
+                setState(() {
+                  v = val ?? false;
+                  selected(v, widget.nm);
+                });
+              },
             ),
             Gap(10.w),
             Container(
@@ -111,7 +213,7 @@ class TClass extends StatelessWidget {
             Expanded(
               child: SizedBox(
                 child: Text(
-                  name,
+                  widget.name,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),

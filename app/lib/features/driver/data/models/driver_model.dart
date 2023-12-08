@@ -1,5 +1,3 @@
-import 'package:taxialong/core/data/models/user_model.dart';
-import 'package:taxialong/features/driver/data/models/settings_model.dart';
 import 'package:taxialong/features/driver/domain/entities/driver_entity.dart';
 
 class DriverModel extends DriverEntity {
@@ -14,8 +12,6 @@ class DriverModel extends DriverEntity {
     required super.totalRidesCount,
     required super.todayRideCount,
     required super.earningSumAmount,
-    required super.user,
-    required super.settings,
   });
 
   factory DriverModel.fromJson(Map<String, dynamic> json) {
@@ -28,8 +24,6 @@ class DriverModel extends DriverEntity {
       totalRidesCount: data['total_rides_count'],
       todayRideCount: data['today_ride_count'],
       earningSumAmount: data['earnings_sum_amount'],
-      user: UserModel.fromJson(data['user']),
-      settings: SettingsModel.fromJson(data['settings']),
       status: json['status'],
       message: json['message'],
       online: data['online'],

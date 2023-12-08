@@ -1,22 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/core/widgets/taxi_along_class_filter.dart';
+import 'package:taxialong/core/domain/entities/settings_entity.dart';
+import 'package:taxialong/core/domain/usecases/update_settings_usecase.dart';
+import 'package:taxialong/features/driver/presentation/widgets/dirver_select_terminals.dart';
+import 'package:taxialong/features/driver/presentation/widgets/driver_class_filter.dart';
 import 'package:taxialong/core/widgets/taxi_along_wallet_payment_method.dart';
 import 'package:taxialong/features/driver/presentation/widgets/save_settings_action_button.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-WoltModalSheetPage sortClassBottomSheet(BuildContext modalSheetContext) {
+WoltModalSheetPage sortClassBottomSheet({
+  required BuildContext context,
+  required SettingsEntity? settings,
+}) {
+  List<dynamic>? rideclass = settings?.rideclass;
+  String paymentMethod = "cash";
+  String? pointa;
+  String? pointb;
+
+  if (settings != null) {
+    paymentMethod = settings.paymentMethod;
+
+    if (settings.pointa != null) pointa = settings.pointa!;
+    if (settings.pointb != null) pointb = settings.pointb!;
+  }
+
+  SettingsParams settingsParams = SettingsParams(
+    selectedClass: rideclass,
+    paymentMethod: paymentMethod,
+    pointa: pointa,
+    pointb: pointb,
+  );
+  classesCallback(data) {
+    settingsParams.selectedClass = data;
+  }
+
+  paymentCallback(data) {
+    settingsParams.paymentMethod = data;
+  }
+
+  pointaCallback(data) {
+    settingsParams.pointa = data.toString();
+  }
+
+  pointbCallback(data) {
+    settingsParams.pointb = data.toString();
+  }
+
   return WoltModalSheetPage.withSingleChild(
     hasSabGradient: false,
     topBarTitle: Text(
       "Ride Settings",
-      style: Theme.of(modalSheetContext).textTheme.titleLarge!.copyWith(
+      style: Theme.of(context).textTheme.titleLarge!.copyWith(
             fontSize: 20.sp,
           ),
     ),
-    stickyActionBar: const SaveSettingsActionButton(),
+    stickyActionBar: SaveSettingsActionButton(params: settingsParams),
     isTopBarLayerAlwaysVisible: true,
     child: Padding(
       padding: EdgeInsets.fromLTRB(
@@ -27,166 +66,21 @@ WoltModalSheetPage sortClassBottomSheet(BuildContext modalSheetContext) {
       ),
       child: Column(
         children: [
-          const ClassFilter(),
-          const WalletPaymentMethod(),
+          TaxiAlongDriverClassFilter(
+            rideClass: rideclass,
+            callback: classesCallback,
+          ),
+          WalletPaymentMethod(
+            paymentMethod: paymentMethod,
+            callback: paymentCallback,
+          ),
           Gap(16.h),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Select Terminal Locations',
-                  style:
-                      Theme.of(modalSheetContext).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.w600,
-                          )),
-              Gap(16.h),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.all(16.w),
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 2.w, color: primaryColor),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Starting Point',
-                                            style: Theme.of(modalSheetContext)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .copyWith(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Gap(16.w),
-                          IconTheme(
-                            data: Theme.of(modalSheetContext).iconTheme,
-                            child: const Icon(
-                              Icons.keyboard_arrow_down,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Gap(12.w),
-                  Text(
-                    'To',
-                    style: Theme.of(modalSheetContext)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                  Gap(12.w),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.all(16.w),
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 2.w, color: primaryColor),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Ending Point',
-                                            style: Theme.of(modalSheetContext)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .copyWith(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Gap(16.w),
-                          IconTheme(
-                            data: Theme.of(modalSheetContext).iconTheme,
-                            child: const Icon(
-                              Icons.keyboard_arrow_down,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          )
+          DriverSelectTerminals(
+            pointa: pointa,
+            pointb: pointb,
+            callbacka: pointaCallback,
+            callbackb: pointbCallback,
+          ),
         ],
       ),
     ),

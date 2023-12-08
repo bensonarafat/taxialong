@@ -28,3 +28,29 @@ class SettingErrorState extends SettingsState {
   @override
   List<Object?> get props => [message];
 }
+
+class SettingsTerminalsLoadingState extends SettingsState {
+  @override
+  List<Object?> get props => [];
+}
+
+class SettingsLoadingState extends SettingsState {
+  @override
+  List<Object?> get props => [];
+}
+
+class SettingsTerminalsLoadedState extends SettingsState {
+  final List<TerminalEntity> terminalEntity;
+  SettingsTerminalsLoadedState({required this.terminalEntity});
+  @override
+  List<Object?> get props => [terminalEntity];
+}
+
+class SettingsUpdatedState extends SettingsState {
+  final SettingsUpdateEntity settingsUpdateEntity;
+  SettingsUpdatedState({
+    required this.settingsUpdateEntity,
+  });
+  @override
+  List<Object?> get props => [settingsUpdateEntity];
+}

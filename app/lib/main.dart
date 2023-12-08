@@ -37,7 +37,8 @@ class TaxiAlong extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-            create: (_) => getIt<AuthBloc>()..add(CheckLoginEvent())),
+          create: (_) => getIt<AuthBloc>()..add(CheckLoginEvent()),
+        ),
         BlocProvider<SettingsBloc>(create: (_) => getIt<SettingsBloc>()),
       ],
       child: AuthStreamScope(
