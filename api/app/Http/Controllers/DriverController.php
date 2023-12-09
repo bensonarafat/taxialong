@@ -31,7 +31,7 @@ class DriverController extends Controller
     //update driver position
     public function updatePosition(Request $request) {
         try {
-            Driver::whereId($request->user()->id)->update([
+            Driver::where("user_id", $request->user()->id)->update([
                 "latitude" => $request->latitude,
                 "longitude" => $request->longitude,
             ]);
