@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/config/routes/router.dart';
@@ -37,8 +38,10 @@ class TaxiAlong extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-            create: (_) => getIt<AuthBloc>()..add(CheckLoginEvent())),
+          create: (_) => getIt<AuthBloc>()..add(CheckLoginEvent()),
+        ),
         BlocProvider<SettingsBloc>(create: (_) => getIt<SettingsBloc>()),
+        BlocProvider<MapBloc>(create: (_) => getIt<MapBloc>()),
       ],
       child: AuthStreamScope(
         child: ScreenUtilInit(

@@ -1,4 +1,4 @@
-import 'package:taxialong/features/home/domain/entities/terminal_entity.dart';
+import 'package:taxialong/core/domain/entities/terminal_entity.dart';
 
 class AxisEntity {
   final String pointa;

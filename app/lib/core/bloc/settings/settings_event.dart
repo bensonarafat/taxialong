@@ -7,3 +7,24 @@ class SettingsSwitchAccountEvent extends SettingsEvent {
   @override
   List<Object?> get props => [];
 }
+
+class SettingsGetTerminalsEvent extends SettingsEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class UpdateSettingsEvent extends SettingsEvent {
+  final String? pointa;
+  final String? pointb;
+  final List<dynamic>? selectedClass;
+  final String paymentMethod;
+
+  UpdateSettingsEvent({
+    required this.pointa,
+    required this.pointb,
+    required this.selectedClass,
+    required this.paymentMethod,
+  });
+  @override
+  List<Object?> get props => [];
+}

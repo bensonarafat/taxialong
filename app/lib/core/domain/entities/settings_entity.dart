@@ -5,6 +5,7 @@ class SettingsEntity {
   final String? pointa;
   final String? pointb;
   final List<dynamic>? rideclass;
+  final String paymentMethod;
 
   SettingsEntity({
     required this.id,
@@ -13,5 +14,6 @@ class SettingsEntity {
     required this.pointa,
     required this.pointb,
     required this.rideclass,
+    required this.paymentMethod,
   });
 }

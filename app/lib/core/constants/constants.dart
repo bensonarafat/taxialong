@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:onboarding_slider_flutter/onboarding_slider_flutter.dart';
 import 'package:taxialong/core/constants/assets.dart';
 
@@ -46,20 +47,9 @@ final List<OnBoardModel> onBoardData = [
 ];
 
 const appSliverExpandedHeightFixture = 178.0;
-
-List<String> busstops = [
-  "Apo Junction",
-  "Area 1 Junction",
-  "Lokogoma Junction",
-  "Garki Junction",
-  "Lugbe Junction",
-  "Wuye Junction",
-  "Jabi Junction",
-  "Asokoro Junction",
-  "Apo Junction",
-  "Area 1 Junction",
-  "Lokogoma Junction",
-  "Garki Junction",
-  "Lugbe Junction",
-  "Wuye Junction",
-];
+const double googleMapZoomLevel = 14.4746;
+const LatLng defaultLatLng = LatLng(9.0747, 7.4760);
+const CameraPosition defaultGoogleMapCameraPosition = CameraPosition(
+  target: defaultLatLng,
+  zoom: googleMapZoomLevel,
+);

@@ -47,3 +47,21 @@ class DriverHomeOnlineUpdated extends DriverHomeState {
   @override
   List<Object?> get props => [goOnlineEntity];
 }
+
+class DriverHomePositionUpdatedState extends DriverHomeState {
+  final String latitude;
+  final String longitude;
+  final List<Marker> markers;
+
+  DriverHomePositionUpdatedState({
+    required this.latitude,
+    required this.longitude,
+    required this.markers,
+  });
+  @override
+  List<Object?> get props => [
+        latitude,
+        longitude,
+        markers,
+      ];
+}

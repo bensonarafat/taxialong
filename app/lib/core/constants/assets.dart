@@ -132,6 +132,6 @@ const sortSVG = "assets/images/svg/sort.svg";
 
 const rideSettings = "assets/images/svg/ride-settings.svg";
 
-const driverLocation = "assets/images/svg/driver_location.svg";
+const driverLocation = "assets/images/marker.png";
 
 const personMode = "assets/images/svg/person_mode.svg";

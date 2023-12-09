@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/driver/domain/entities/driver_entity.dart';
-import 'package:taxialong/features/driver/presentation/bloc/driver_home_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
 
 class DriverDetailsWidget extends StatelessWidget {
   const DriverDetailsWidget({
@@ -24,7 +24,9 @@ class DriverDetailsWidget extends StatelessWidget {
         String? overallEarning;
         String overallRides = '0';
         String todayRides = '0';
-        if (state is DriverHomeErrorState) {}
+        if (state is DriverHomeErrorState) {
+          overallEarning = "---";
+        }
         if (state is DriverHomeLoadingState) {
           overallEarning = "--";
         }

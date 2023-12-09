@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:math' as math;
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/error/failure.dart';
@@ -197,4 +198,11 @@ String mapFailureToMessage(Failure failure) {
     default:
       return "Unexpected Error , Please try again later .";
   }
+}
+
+Future<BitmapDescriptor> createMarkerIcon() async {
+  // make sure to initialize before map loading
+  BitmapDescriptor customMarker = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(82, 82)), driverLocation);
+  return customMarker;
 }
