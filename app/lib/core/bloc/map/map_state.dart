@@ -8,12 +8,21 @@ class MapInitialState extends MapState {
   List<Object?> get props => [];
 }
 
-class MapError extends MapState {
+class MapErrorState extends MapState {
   @override
   List<Object?> get props => [];
 }
 
-class MapLoaded extends MapState {
+class MapLoadedState extends MapState {
   @override
   List<Object?> get props => [];
+}
+
+class MapCurrentPositionState extends MapState {
+  final String latitude;
+  final String longitude;
+
+  MapCurrentPositionState({required this.latitude, required this.longitude});
+  @override
+  List<Object?> get props => [latitude, longitude];
 }

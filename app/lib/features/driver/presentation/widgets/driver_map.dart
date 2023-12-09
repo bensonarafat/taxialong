@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/core/utils/helpers.dart';
+import 'package:taxialong/core/widgets/taxi_along_error_widget.dart';
+import 'package:taxialong/core/widgets/taxi_along_loading.dart';
 import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
 
 class DriverMap extends StatefulWidget {
@@ -22,34 +24,27 @@ class _DriverMapState extends State<DriverMap> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  static const CameraPosition _kLake = CameraPosition(
-    target: LatLng(37.43296265331129, -122.08832357078792),
-    zoom: 14.4746,
-  );
-  final List<Marker> _markers = <Marker>[];
-
-  createMarker() async {
-    BitmapDescriptor customIcon = await createMarkerIcon();
-    _markers.add(
-      Marker(
-        icon: customIcon,
-        markerId: const MarkerId('SomeId'),
-        position: defaultLatLng,
-      ),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
-    createMarker();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DriverHomeBloc, DriverHomeState>(
-        builder: (context, state) {
-      return Container(
+    return BlocListener<MapBloc, MapState>(
+      listener: (context, state) {
+        /// update driver location here
+        if (state is MapCurrentPositionState) {
+          ///add event here
+          context.read<DriverHomeBloc>().add(
+                DriverUpdateLocationEvent(
+                  latitude: state.latitude,
+                  longitude: state.longitude,
+                ),
+              );
+        }
+      },
+      child: Container(
         padding: EdgeInsets.only(
           left: 16.w,
           right: 16.w,
@@ -64,19 +59,51 @@ class _DriverMapState extends State<DriverMap> {
         ),
         child: Stack(
           children: [
-            GoogleMap(
-              markers: Set<Marker>.of(_markers),
-              initialCameraPosition: defaultGoogleMapCameraPosition,
-              zoomControlsEnabled: false,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
+            BlocBuilder<DriverHomeBloc, DriverHomeState>(
+              buildWhen: (previous, state) {
+                return state is DriverHomePositionUpdatedState ||
+                    state is DriverHomeLoadingState;
+              },
+              builder: (context, state) {
+                if (state is DriverHomePositionUpdatedState) {
+                  CameraPosition position = CameraPosition(
+                    target: LatLng(
+                      double.parse(state.latitude),
+                      double.parse(state.longitude),
+                    ),
+                    zoom: googleMapZoomLevel,
+                  );
+
+                  return GoogleMap(
+                    markers: Set<Marker>.of(state.markers),
+                    initialCameraPosition: position,
+                    zoomControlsEnabled: false,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                  );
+                } else if (state is DriverHomeLoadingState) {
+                  return Center(
+                    child: TaxiAlongLoading(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? white
+                          : dark,
+                    ),
+                  );
+                } else {
+                  // this shouldnt happen
+                  // print("Error >>> $state");
+                  return const TaxiAlongErrorWidget();
+                }
               },
             ),
             Positioned(
               bottom: 0,
               right: 0,
               child: GestureDetector(
-                onTap: () => _goToTheLake(),
+                onTap: () {
+                  context.read<MapBloc>().add(MapCurrentPositionEvent());
+                },
                 child: Container(
                   margin: EdgeInsets.only(
                     right: 11.w,
@@ -97,12 +124,7 @@ class _DriverMapState extends State<DriverMap> {
             )
           ],
         ),
-      );
-    });
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+      ),
+    );
   }
 }

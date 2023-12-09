@@ -13,6 +13,23 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   MapBloc() : super(MapInitialState()) {
     on<MapEvent>((event, emit) async {
       mapStartLocationUpdateToState();
+
+      if (event is MapCurrentPositionEvent) {
+        Position position = await Geolocator.getCurrentPosition();
+        emit(
+          MapCurrentPositionState(
+            latitude: position.latitude.toString(),
+            longitude: position.longitude.toString(),
+          ),
+        );
+      } else if (event is MapUpdateCurrentPostionEvent) {
+        emit(
+          MapCurrentPositionState(
+            latitude: event.latitude,
+            longitude: event.longitude,
+          ),
+        );
+      }
     });
   }
 
@@ -26,11 +43,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
             .listen((Position? position) {
       if (position != null) {
         if (!_isDisposed) {
-          // add(
-          //   UpdateTerminalEvent(
-          //       latitude: position.latitude.toString(),
-          //       longitude: position.longitude.toString()),
-          // );
+          add(
+            MapUpdateCurrentPostionEvent(
+                latitude: position.latitude.toString(),
+                longitude: position.longitude.toString()),
+          );
         }
       }
     });

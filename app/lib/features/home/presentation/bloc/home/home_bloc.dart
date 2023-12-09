@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/home/domain/entities/axis_entity.dart';
 import 'package:taxialong/features/home/domain/usecases/get_axis.dart';
@@ -15,14 +12,12 @@ part 'home_event.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetAxisUseCase axisUseCase;
   final GetAxisCachedUseCase axisCachedUseCase;
-  late StreamSubscription<Position> positionStream;
 
   HomeBloc({
     required this.axisUseCase,
     required this.axisCachedUseCase,
   }) : super(HomeLoadingState()) {
     on<HomeEvent>((event, emit) async {
-      mapStartLocationUpdateToState();
       if (event is FetchHomeTerminalsEvent) {
         emit(HomeLoadingState());
 
@@ -57,33 +52,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             (axisEntity) => HomeLoadedState(axisEntity: axisEntity)));
       }
     });
-  }
-
-  void mapStartLocationUpdateToState() async {
-    const LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-    positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) {
-      if (position != null) {
-        if (!_isDisposed) {
-          add(
-            UpdateTerminalEvent(
-                latitude: position.latitude.toString(),
-                longitude: position.longitude.toString()),
-          );
-        }
-      }
-    });
-  }
-
-  bool _isDisposed = false;
-  @override
-  Future<void> close() {
-    positionStream.cancel();
-    _isDisposed = true;
-    return super.close();
   }
 }

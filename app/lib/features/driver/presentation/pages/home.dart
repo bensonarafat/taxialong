@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/data/models/user_model.dart';
@@ -42,7 +43,11 @@ class _DriverHomeState extends State<DriverHome> {
     _getUserData();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       showEnableLocation(context);
+
+      // map bloc event
+      context.read<MapBloc>().add(MapCurrentPositionEvent());
     });
+
     super.initState();
   }
 
@@ -58,7 +63,6 @@ class _DriverHomeState extends State<DriverHome> {
       username = "${usermodel?.firstname} ${usermodel?.lastname}";
       avatar = "${usermodel?.avatar}";
       settings = usermodel?.settings;
-      // status = usermodel?.online;
     });
   }
 
@@ -70,188 +74,190 @@ class _DriverHomeState extends State<DriverHome> {
         drawer: const Drawer(
           child: TaxiAlongDrawer(),
         ),
-        body: CustomScrollView(slivers: [
-          SliverAppBar(
-            shadowColor: Theme.of(context).shadowColor,
-            surfaceTintColor: Theme.of(context).colorScheme.background,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            pinned: false,
-            floating: true,
-            expandedHeight: 100.h,
-            forceElevated: true,
-            flexibleSpace: DriverFlexibleSpace(action: toggleOnOff),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                    top: 16.h,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          TaxiAlongCachedNetworkImage(
-                            path: avatar,
-                            width: 50,
-                            height: 50,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100.r),
-                            ),
-                            fit: BoxFit.fill,
-                          ),
-                          Gap(12.w),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Hi $username',
-                                style: Theme.of(context).textTheme.bodyLarge,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              shadowColor: Theme.of(context).shadowColor,
+              surfaceTintColor: Theme.of(context).colorScheme.background,
+              backgroundColor: Theme.of(context).colorScheme.background,
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              pinned: false,
+              floating: true,
+              expandedHeight: 100.h,
+              forceElevated: true,
+              flexibleSpace: DriverFlexibleSpace(action: toggleOnOff),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      right: 16.w,
+                      top: 16.h,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            TaxiAlongCachedNetworkImage(
+                              path: avatar,
+                              width: 50,
+                              height: 50,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100.r),
                               ),
-                              Gap(2.h),
-                              CurrentLocationBustop(status: status),
-                            ],
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          await WoltModalSheet.show<void>(
-                            enableDrag: true,
-                            context: context,
-                            pageListBuilder: (modalSheetContext) {
-                              return [
-                                sortClassBottomSheet(
-                                  context: modalSheetContext,
-                                  settings: settings,
+                              fit: BoxFit.fill,
+                            ),
+                            Gap(12.w),
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Hi $username',
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
-                              ];
-                            },
-                            modalTypeBuilder: (context) {
-                              return WoltModalType.bottomSheet;
-                            },
-                            maxDialogWidth: 560.w,
-                            minDialogWidth: 400.w,
-                            minPageHeight: 0.0,
-                          );
-                          //update the user data
-                          _getUserData();
-                        },
-                        child: Container(
-                          width: 40.w,
-                          height: 40.h,
-                          padding: EdgeInsets.all(8.r),
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            color: const Color(0x19DADADA),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.r)),
+                                Gap(2.h),
+                                CurrentLocationBustop(status: status),
+                              ],
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            await WoltModalSheet.show<void>(
+                              enableDrag: true,
+                              context: context,
+                              pageListBuilder: (modalSheetContext) {
+                                return [
+                                  sortClassBottomSheet(
+                                    context: modalSheetContext,
+                                    settings: settings,
+                                  ),
+                                ];
+                              },
+                              modalTypeBuilder: (context) {
+                                return WoltModalType.bottomSheet;
+                              },
+                              maxDialogWidth: 560.w,
+                              minDialogWidth: 400.w,
+                              minPageHeight: 0.0,
+                            );
+                            //update the user data
+                            _getUserData();
+                          },
+                          child: Container(
+                            width: 40.w,
+                            height: 40.h,
+                            padding: EdgeInsets.all(8.r),
+                            clipBehavior: Clip.antiAlias,
+                            decoration: ShapeDecoration(
+                              color: const Color(0x19DADADA),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.r)),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  rideSettings,
+                                  width: 24.w,
+                                  height: 24.h,
+                                  colorFilter: ColorFilter.mode(
+                                    Brightness.dark ==
+                                            Theme.of(context).brightness
+                                        ? white
+                                        : dark,
+                                    BlendMode.dstIn,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Gap(24.h),
+                  const DriverDetailsWidget(),
+                  Gap(24.h),
+                  const DriverMap(),
+                  Gap(16.h),
+                  !status
+                      ? Container(
+                          padding: EdgeInsets.only(
+                            left: 16.w,
+                            right: 16.w,
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SvgPicture.asset(
-                                rideSettings,
-                                width: 24.w,
-                                height: 24.h,
-                                colorFilter: ColorFilter.mode(
-                                  Brightness.dark ==
-                                          Theme.of(context).brightness
-                                      ? white
-                                      : dark,
-                                  BlendMode.dstIn,
+                              Expanded(
+                                child: Text(
+                                  'Recent Request',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                ),
+                              ),
+                              Gap(20.w),
+                              SizedBox(
+                                width: 99.w,
+                                height: 21.h,
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'View ',
+                                        style: GoogleFonts.robotoFlex(
+                                          color: const Color(0xFF717171),
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: 'all',
+                                        style: GoogleFonts.robotoFlex(
+                                          color: const Color(0xFF717171),
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  textAlign: TextAlign.right,
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Gap(24.h),
-                const DriverDetailsWidget(),
-                Gap(24.h),
-                const DriverMap(),
-                Gap(16.h),
-                !status
-                    ? Container(
-                        padding: EdgeInsets.only(
-                          left: 16.w,
-                          right: 16.w,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Recent Request',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                              ),
-                            ),
-                            Gap(20.w),
-                            SizedBox(
-                              width: 99.w,
-                              height: 21.h,
-                              child: Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'View ',
-                                      style: GoogleFonts.robotoFlex(
-                                        color: const Color(0xFF717171),
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: 'all',
-                                      style: GoogleFonts.robotoFlex(
-                                        color: const Color(0xFF717171),
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : Container(),
-                !status ? Gap(16.h) : Container(),
+                        )
+                      : Container(),
+                  !status ? Gap(16.h) : Container(),
 
-                //
-                status ? const DriverTrips() : const RecentRequest(),
-              ],
+                  //
+                  status ? const DriverTrips() : const RecentRequest(),
+                ],
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }

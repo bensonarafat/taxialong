@@ -41,6 +41,7 @@ import 'package:taxialong/features/driver/domain/repositories/driver_home_reposi
 import 'package:taxialong/features/driver/domain/usecases/get_driver_data_usecase.dart';
 import 'package:taxialong/core/domain/usecases/get_terminals_usecase.dart';
 import 'package:taxialong/features/driver/domain/usecases/go_online_usecase.dart';
+import 'package:taxialong/features/driver/domain/usecases/update_driver_location_usecase.dart';
 import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
 import 'package:taxialong/features/home/data/datasources/home_local_data_source.dart';
 import 'package:taxialong/features/home/data/datasources/home_remote_data_source.dart';
@@ -119,7 +120,7 @@ Future<void> setupLocator() async {
  * -----------------------------------------------------------------------------------------------------------
  */
   //map instance
-  getIt.registerFactory<MapBloc>(() => getIt());
+  getIt.registerFactory<MapBloc>(() => MapBloc());
 /**
  * -----------------------------------------------------------------------------------------------------------
  */
@@ -284,6 +285,7 @@ Future<void> setupLocator() async {
   getIt.registerFactory<DriverHomeBloc>(() => DriverHomeBloc(
         goOnlineUseCase: getIt(),
         getDriverDataUseCase: getIt(),
+        updateDriverLocationUseCase: getIt(),
       ));
 
   //usecase
@@ -291,6 +293,10 @@ Future<void> setupLocator() async {
       () => GoOnlineUseCase(repository: getIt()));
   getIt.registerLazySingleton<GetDriverDataUseCase>(
       () => GetDriverDataUseCase(repository: getIt()));
+
+  getIt.registerLazySingleton<UpdateDriverLocationUseCase>(
+      () => UpdateDriverLocationUseCase(repository: getIt()));
+
   //repository
   getIt.registerLazySingleton<DriverHomeRepository>(
     () => DriverHomeRepositoryImpl(
