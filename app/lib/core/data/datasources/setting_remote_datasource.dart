@@ -104,7 +104,6 @@ class SettingsRemoteDataSourceImp implements SettingsRemoteDataSource {
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-
       return SettingsUpdateModel.fromJson(data);
     } else {
       throw ServerException();

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Earning;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -17,7 +18,12 @@ class Driver extends Model
         'longitude',
     ];
 
-
+    public function user() : HasOne{
+        return $this->hasOne(User::class,);
+    }
+    public function settings () : HasOne {
+        return $this->hasOne(RideSettings::class);
+    }
     public function total_rides(): HasMany {
         return $this->hasMany(Trip::class, "driver_id", "user_id");
     }

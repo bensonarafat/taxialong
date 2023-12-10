@@ -16,7 +16,7 @@ class SettingsGetTerminalsEvent extends SettingsEvent {
 class UpdateSettingsEvent extends SettingsEvent {
   final String? pointa;
   final String? pointb;
-  final List<dynamic>? selectedClass;
+  final List<Map<String, dynamic>>? selectedClass;
   final String paymentMethod;
 
   UpdateSettingsEvent({

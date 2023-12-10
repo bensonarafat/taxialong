@@ -84,6 +84,7 @@ class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
     });
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
+
       return DriverLocationModel.fromJson(data);
     } else {
       throw ServerException();

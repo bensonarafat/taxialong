@@ -12,13 +12,16 @@ class SettingsModel extends SettingsEntity {
   });
 
   factory SettingsModel.fromJson(Map<String, dynamic> json) {
+    List<dynamic> orginalRideClass = json['ride_class'];
+    List<Map<String, dynamic>> rideClass =
+        orginalRideClass.map((e) => e as Map<String, dynamic>).toList();
     return SettingsModel(
       id: json['id'],
       userId: json['user_id'],
       driverId: json['driver_id'],
       pointa: json['pointa'],
       pointb: json['pointb'],
-      rideclass: json['ride_class'],
+      rideclass: rideClass,
       paymentMethod: json['payment_method'],
     );
   }

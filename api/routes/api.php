@@ -60,6 +60,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // trips
     Route::group(["prefix" => "trips"], function() {
+        Route::post("/available-rides", [TripController::class, "availableRides"]);
         Route::post("/recent", [TripController::class, "recent"]);
         Route::post("/ongoing", [TripController::class, "ongoing"]);
     });

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/core/utils/helpers.dart';
 
 class TaxiAlongDriverClassFilter extends StatefulWidget {
-  final List<dynamic>? rideClass;
+  final List<Map<String, dynamic>>? rideClass;
   final Function callback;
   const TaxiAlongDriverClassFilter({
     super.key,
@@ -19,7 +20,7 @@ class TaxiAlongDriverClassFilter extends StatefulWidget {
 
 class _TaxiAlongDriverClassFilterState
     extends State<TaxiAlongDriverClassFilter> {
-  List<dynamic>? rideClass;
+  List<Map<String, dynamic>>? rideClass;
   bool class1 = false;
   bool class2 = false;
   bool class3 = false;
@@ -30,11 +31,11 @@ class _TaxiAlongDriverClassFilterState
   void initState() {
     rideClass = widget.rideClass;
     if (rideClass != null) {
-      if (rideClass!.contains("1")) class1 = true;
-      if (rideClass!.contains("2")) class2 = true;
-      if (rideClass!.contains("3")) class3 = true;
-      if (rideClass!.contains("4")) class4 = true;
-      if (rideClass!.contains("5")) class5 = true;
+      if (rideClass!.any((item) => item['class'] == 1)) class1 = true;
+      if (rideClass!.any((item) => item['class'] == 2)) class2 = true;
+      if (rideClass!.any((item) => item['class'] == 3)) class3 = true;
+      if (rideClass!.any((item) => item['class'] == 4)) class4 = true;
+      if (rideClass!.any((item) => item['class'] == 5)) class5 = true;
     }
     super.initState();
   }
@@ -42,16 +43,13 @@ class _TaxiAlongDriverClassFilterState
   selected(action, value) {
     if (!action) {
       //remove;
-      if (rideClass != null) {
-        rideClass!.remove(value);
-      }
+      rideClass = removeToClass(rideClass: rideClass, value: value);
     } else {
       //add
-      if (rideClass != null) {
-        rideClass!.add(value);
-      } else {
-        rideClass = [value];
-      }
+      rideClass = addToClass(
+        rideClass: rideClass,
+        value: value,
+      );
     }
 
     widget.callback(rideClass);

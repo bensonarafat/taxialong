@@ -18,14 +18,15 @@ class UpdateSettingsUseCase
 }
 
 class SettingsParams {
-  List<dynamic>? selectedClass;
+  List<Map<String, dynamic>>? selectedClass;
   String paymentMethod;
   String? pointa;
   String? pointb;
 
-  SettingsParams(
-      {required this.selectedClass,
-      required this.paymentMethod,
-      required this.pointa,
-      required this.pointb});
+  SettingsParams({
+    required this.selectedClass,
+    required this.paymentMethod,
+    required this.pointa,
+    required this.pointb,
+  });
 }
