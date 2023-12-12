@@ -36,7 +36,7 @@ import 'package:taxialong/features/documents/domain/usecases/document_upload_use
 import 'package:taxialong/features/documents/domain/usecases/get_documents_usecase.dart';
 import 'package:taxialong/features/documents/presentation/bloc/document_bloc.dart';
 import 'package:taxialong/features/driver/data/datasources/driver_home_remote_datasource.dart';
-import 'package:taxialong/features/driver/data/repositories/settings_repository_impl.dart';
+import 'package:taxialong/features/driver/data/repositories/driver_home_repository_impl.dart';
 import 'package:taxialong/features/driver/domain/repositories/driver_home_repository.dart';
 import 'package:taxialong/features/driver/domain/usecases/get_driver_data_usecase.dart';
 import 'package:taxialong/core/domain/usecases/get_terminals_usecase.dart';

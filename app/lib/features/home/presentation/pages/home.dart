@@ -24,6 +24,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      // NOTE:: Rework on show enable location dialog
       showEnableLocation(context);
       // map bloc event
       context.read<MapBloc>().add(MapCurrentPositionEvent());

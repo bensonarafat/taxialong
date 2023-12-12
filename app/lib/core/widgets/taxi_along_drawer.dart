@@ -294,6 +294,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                         )
                       : Container(),
                   // if the document count is 4, that means they have complete their driver registration
+                  // NOTE:: on the loading and switching to user type
                   documentCount == 4
                       ? BlocListener<SettingsBloc, SettingsState>(
                           listener: (context, state) {

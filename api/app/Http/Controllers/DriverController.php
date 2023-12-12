@@ -6,7 +6,6 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Driver;
-use App\Models\RideSettings;
 use Illuminate\Http\Request;
 
 class DriverController extends Controller

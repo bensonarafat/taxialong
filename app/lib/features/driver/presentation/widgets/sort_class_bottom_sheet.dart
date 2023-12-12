@@ -13,7 +13,7 @@ WoltModalSheetPage sortClassBottomSheet({
   required BuildContext context,
   required SettingsEntity? settings,
 }) {
-  List<dynamic>? rideclass = settings?.rideclass;
+  List<Map<String, dynamic>>? rideclass = settings?.rideclass;
   String paymentMethod = "cash";
   String? pointa;
   String? pointb;

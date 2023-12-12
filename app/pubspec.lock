@@ -1036,10 +1036,10 @@ packages:
     dependency: "direct main"
     description:
       name: onboarding_slider_flutter
-      sha256: "1f9c610569b998edfcea60a9cd4c9f9aa4e7b9fb9a4603c385c13aebe50cf683"
+      sha256: "3a5d3941cdae53186ef02f4734810c366d159dc79aba0476705a2d21fff64b55"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.4"
+    version: "0.0.5"
   package_config:
     dependency: transitive
     description:

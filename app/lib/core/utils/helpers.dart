@@ -206,3 +206,54 @@ Future<BitmapDescriptor> createMarkerIcon() async {
       const ImageConfiguration(size: Size(82, 82)), driverLocation);
   return customMarker;
 }
+
+/// Class 1 -> 1 passenger (charter)
+/// Class 2 -> Maximum of 2 at the  back. 1 in front
+/// Class 3 -> 3 at the back, 1 in front
+/// Class 4 -> 3 at the back, 2 in front.
+/// Class 5 -> 4 at the back, 2 in front.
+List<Map<String, dynamic>> addToClass({
+  required List<Map<String, dynamic>>? rideClass,
+  required String value,
+}) {
+  if (rideClass != null) {
+    if (value == '1') {
+      rideClass.add({"class": 1, "front": 1, "back": 0});
+    } else if (value == '2') {
+      rideClass.add({"class": 2, "front": 1, "back": 2});
+    } else if (value == '3') {
+      rideClass.add({"class": 3, "front": 1, "back": 3});
+    } else if (value == '4') {
+      rideClass.add({"class": 4, "front": 1, "back": 4});
+    } else if (value == '5') {
+      rideClass.add({"class": 5, "front": 2, "back": 4});
+    }
+  } else {
+    Map<String, dynamic> data = {};
+    if (value == '1') {
+      data = {"class": 1, "front": 1, "back": 0};
+    } else if (value == '2') {
+      data = {"class": 2, "front": 1, "back": 2};
+    } else if (value == '3') {
+      data = {"class": 3, "front": 1, "back": 3};
+    } else if (value == '4') {
+      data = {"class": 4, "front": 1, "back": 4};
+    } else if (value == '5') {
+      data = {"class": 5, "front": 2, "back": 4};
+    }
+    rideClass = [data];
+  }
+  return rideClass;
+}
+
+List<Map<String, dynamic>> removeToClass({
+  required List<Map<String, dynamic>>? rideClass,
+  required String value,
+}) {
+  if (rideClass == null) {
+    return [];
+  } else {
+    rideClass.removeWhere((element) => element["class"] == value);
+    return rideClass;
+  }
+}
