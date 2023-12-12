@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Driver;
 use App\Http\Trait\Distance;
+use App\Models\RideSettings;
 use Illuminate\Http\Request;
 
 class TripController extends Controller
@@ -26,9 +27,12 @@ class TripController extends Controller
         $endlongitude = $request->endlongitude;
         $endbusstop = $request->endbusstop;
         // NOTE: Filter by Class and Seat
-        $payment_method = $request->payment_method;
         $seat = $request->seat;
         $riderClass = $request->rider_class;
+
+        // user payment method from his settings
+        $usersettings = RideSettings::where("user_id", auth()->user()->id)->first();
+        $payment_method = $usersettings->payment_method ?? "cash";
 
         $drivers = Driver::where(["online" => 1])
                     ->select('latitude', 'longitude', 'id')
