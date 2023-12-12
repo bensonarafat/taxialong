@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Earning;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -16,10 +17,11 @@ class Driver extends Model
         'online',
         'latitude',
         'longitude',
+        'seats',
     ];
 
     public function user() : HasOne{
-        return $this->hasOne(User::class,);
+        return $this->hasOne(User::class, "id");
     }
     public function settings () : HasOne {
         return $this->hasOne(RideSettings::class);
