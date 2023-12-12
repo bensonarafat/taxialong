@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Driver;
 use App\Http\Trait\Distance;
+use App\Models\BusStop;
 use App\Models\RideSettings;
 use Illuminate\Http\Request;
 
@@ -16,16 +17,16 @@ class TripController extends Controller
 
         $perPage = 10;
         $page = request()->input("page", 1);
-
+        $pointa = BusStop::find($request->pointa);
+        $pointb = BusStop::find($request->pointb);
         //Current Location/Bus Stop
-        $startlatitude = $request->latitude;
-        $startlongitude = $request->longitude;
-        $startbusstop = $request->startbustop;
+        $startlatitude = $pointa->latitude;
+        $startlongitude = $pointa->longitude;
+
 
         //Drop off Location/Bus Stop
-        $endlatitude = $request->endlatitude;
-        $endlongitude = $request->endlongitude;
-        $endbusstop = $request->endbusstop;
+        $endlatitude = $pointb->latitude;
+        $endlongitude = $pointb->longitude;
         // NOTE: Filter by Class and Seat
         $seat = $request->seat;
         $riderClass = $request->rider_class;
@@ -34,7 +35,7 @@ class TripController extends Controller
         $usersettings = RideSettings::where("user_id", auth()->user()->id)->first();
         $payment_method = $usersettings->payment_method ?? "cash";
 
-        $drivers = Driver::where(["online" => 1])
+        $drivers = Driver::where(["online" => 0])
                     ->select('latitude', 'longitude', 'id')
                     ->selectRaw(
                         '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
@@ -61,18 +62,18 @@ class TripController extends Controller
             ($seat !== null && ($driver->settings->seats == null || $driver->settings->seats === 0));
         });
 
-        $avaiable_rides = $drivers->flatMap(function ( $driver ) use ($startbusstop, $startlatitude, $startlongitude, $endbusstop, $endlatitude, $endlongitude) {
+        $avaiable_rides = $drivers->flatMap(function ( $driver ) use ($pointa, $startlatitude, $startlongitude, $pointb, $endlatitude, $endlongitude) {
             $rideClasses = $driver->ride_class;
-            return array_map(function($class) use ($driver, $startbusstop, $startlatitude, $startlongitude, $endbusstop, $endlatitude, $endlongitude){
+            return array_map(function($class) use ($driver, $pointa, $startlatitude, $startlongitude, $pointb, $endlatitude, $endlongitude){
                 $amount = $this->calculatePrice(
                     $class['class'],
                     [
-                        "busstop" => $startbusstop,
+                        "busstop" => $pointa->id,
                         "latitude" => $startlatitude,
                         "longitude" => $startlongitude,
                     ],
                     [
-                        "busstop" => $endbusstop,
+                        "busstop" => $pointb->id,
                         "latitude" => $endlatitude,
                         "longitude" => $endlongitude,
                     ]
