@@ -6,6 +6,7 @@ use App\Models\Driver;
 use App\Http\Trait\Distance;
 use App\Models\BusStop;
 use App\Models\RideSettings;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TripController extends Controller
@@ -13,25 +14,21 @@ class TripController extends Controller
 
     use Distance;
 
-    public function availableRides(Request $request){
+    public function availableRides(Request $request) : JsonResponse {
 
         $perPage = 10;
         $page = request()->input("page", 1);
-        $pointa = BusStop::find($request->pointa);
-        $pointb = BusStop::find($request->pointb);
-        //Current Location/Bus Stop
+        $pointa = $this->closestBusStop($request->pointAlatitude, $request->pointAlongtiude);
+        $pointb =  BusStop::find($request->pointb);
         $startlatitude = $pointa->latitude;
         $startlongitude = $pointa->longitude;
 
 
-        //Drop off Location/Bus Stop
         $endlatitude = $pointb->latitude;
         $endlongitude = $pointb->longitude;
-        // NOTE: Filter by Class and Seat
         $seat = $request->seat;
         $riderClass = $request->rider_class;
 
-        // user payment method from his settings
         $usersettings = RideSettings::where("user_id", auth()->user()->id)->first();
         $payment_method = $usersettings->payment_method ?? "cash";
 

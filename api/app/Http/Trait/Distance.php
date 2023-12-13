@@ -4,6 +4,7 @@ namespace App\Http\Trait;
 use App\Models\Price;
 use Exception;
 use App\Http\Classes\Pricing;
+use App\Models\BusStop;
 
 trait Distance  {
 
@@ -99,6 +100,16 @@ trait Distance  {
         $keys = array_column($classes, "class");
         $index = array_search($classId, $keys);
         return $index !== false ? $classes[$index]['amount'] : false;
+    }
+
+    public function closestBusStop(string $lat, string $long) : BusStop {
+        return BusStop::select('latitude', 'longitude', 'id')
+                    ->selectRaw(
+                        '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
+                        [$lat, $long, $lat]
+                    )
+                    ->orderBy('distance')
+                    ->first();
     }
 }
 ?>

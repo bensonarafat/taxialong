@@ -125,11 +125,7 @@ class AuthController extends Controller
         $exists = User::where('telephone', $request->telephone)->exists(); // check if exist, so the user wont create an account again
         return $this->sendToken($request->telephone, $exists);
     }
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function me()
     {
         $user = User::whereId(auth()->user()->id)->with(["settings"])->withCount(["documents"])->first();
@@ -137,11 +133,7 @@ class AuthController extends Controller
         return response()->json($user);
     }
 
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function logout()
     {
         auth()->logout();
@@ -154,23 +146,13 @@ class AuthController extends Controller
             ]);
     }
 
-    /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
     }
 
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     protected function respondWithToken($token)
     {
         return response()->json([
@@ -191,7 +173,6 @@ class AuthController extends Controller
         ]);
     }
 
-    // send Token
     private function sendToken($telephone, $exists){
         //delete otp for user phone number
         OTP::where("telephone", $telephone)->delete();

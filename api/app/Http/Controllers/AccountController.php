@@ -67,11 +67,9 @@ class AccountController extends Controller
         try {
             $filename = strtolower($request->user()->firstname) . '_' . time(). rand(1000,9999);
             $result = $request->file->storeOnCloudinaryAs('avatar', $filename);
-            //destory
             if($request->user()->avatar_publicId){
                 Cloudinary::destroy($request->user()->avatar_publicId);
             }
-            //update user avatar
             User::whereId($request->user()->id)->update([
                 "avatar" => $result->getPath(),
                 "avatar_publicId" => $result->getPublicId(),
@@ -84,7 +82,6 @@ class AccountController extends Controller
     }
 
     public function switchRole($role){
-        //update user role to driver
         User::whereId(auth()->user()->id)->update([
             "role" => $role,
         ]);
@@ -108,7 +105,6 @@ class AccountController extends Controller
             );
         }
 
-        //delete user
         $user->delete();
         return response()->json([
             "status" => true,

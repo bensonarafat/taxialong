@@ -14,7 +14,6 @@ class DocumentController extends Controller
 
     use Driver;
 
-    // return my documents
     public function document(){
         $documents = Document::where("user_id", auth()->user()->id)->latest()->get();
         return response()->json([
@@ -28,15 +27,12 @@ class DocumentController extends Controller
         try {
             $exists = Document::where(["type" => $request->type, "user_id" => $request->user()->id])->exists();
             if($exists){
-                // delete
                 $document =  Document::where(["type" => $request->type, "user_id" => $request->user()->id])->first();
-                //destory
                 Cloudinary::destroy($document->publicId);
                 Document::where(["type" => $request->type, "user_id" => $request->user()->id])->delete();
             }
             $filename = strtolower($request->user()->firstname) .'_'. $request->type . '_' . time(). rand(1000,9999);
             $result = $request->file->storeOnCloudinaryAs('documents', $filename);
-            //update user avatar
             $document = Document::create([
                 "user_id"=> $request->user()->id,
                 "file" => $result->getPath(),
@@ -53,11 +49,9 @@ class DocumentController extends Controller
     public function complete(){
         $count = Document::where("user_id", auth()->user()->id)->count();
         if($count == 4){
-            //update user role to driver
             User::whereId(auth()->user()->id)->update([
                 "role" => "driver",
             ]);
-            // create driver trips
             $this->DriverTrip();
             return response()->json([
                 "status" => true,

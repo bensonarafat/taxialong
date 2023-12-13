@@ -31,8 +31,8 @@ class TerminalController extends Controller
     }
 
     public function axis(Request $request){
-        $perPage = $request->get('per_page', 10); // per_page 10 if nothing is set
-        $page = $request->get('page', 1); // page 1 if nothing is set
+        $perPage = $request->get('per_page', 10);
+        $page = $request->get('page', 1);
         if(!is_numeric($perPage)){
             $perPage = 10;
         }
@@ -55,7 +55,6 @@ class TerminalController extends Controller
         }else{
             $latitude = $request->latitude;
             $longitude = $request->longitude;
-            //NOTE:: This has to be review.. Haversine formula uses a striaght line to calculate the distance.. i have to consider using Google Map API
             $busstopsQuery = BusStop::selectRaw("
                 id,
                 name,
@@ -64,17 +63,13 @@ class TerminalController extends Controller
                 (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance
             ")
             ->orderBy('distance');
-            // Paginate the results
             $busstops = $busstopsQuery->paginate($perPage*10, ['*'], 'page', $page);
-            // Get the sorted bus stops
             $sortedBusStops = collect($busstops->items())->map(function ($value) use ($request) {
-            // Fetch Axis data for the bus stop
             $axisData = Axis::where(['bus_stop_id' => $value->id])
                     ->select('point_a', 'point_b')
                     ->with(['terminalA', 'terminalB'])
                     ->distinct()
                     ->get();
-            // Determine which point is closest based on user's location
             $isPointBClosest = $this->isPointClosest($request, $axisData);
 
                 return $axisData->map(function ($axis) use ($isPointBClosest) {
@@ -104,9 +99,7 @@ class TerminalController extends Controller
         }
     }
 
-    /**
-     * Bustops
-     */
+
     public function busStops(Request $request) {
         $axis = Axis::where(["point_a" => $request->pointa, "point_b" => $request->pointb])->orWhere(["point_b" => $request->pointa, "point_a" => $request->pointb])->with(['busStop'])->get();
         return response()->json([
