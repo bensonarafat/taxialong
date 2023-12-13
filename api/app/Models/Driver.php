@@ -20,9 +20,6 @@ class Driver extends Model
         'seats',
     ];
 
-    public function user() : HasOne{
-        return $this->hasOne(User::class, "id");
-    }
     public function settings () : HasOne {
         return $this->hasOne(RideSettings::class);
     }

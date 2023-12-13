@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Driver;
-use App\Http\Trait\Distance;
 use App\Models\BusStop;
+use App\Http\Trait\Distance;
 use App\Models\RideSettings;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class TripController extends Controller
 {
@@ -38,7 +39,7 @@ class TripController extends Controller
                         '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
                         [$startlatitude, $startlongitude, $startlatitude]
                     )
-                    ->with(["settings", "user"])
+                    ->with(["settings"])
                     ->orderBy('distance')
                     ->skip(($page - 1) * $perPage)
                     ->take($perPage)
@@ -82,7 +83,7 @@ class TripController extends Controller
                         "distance" => $driver->distance,
                         "payment_method" => $driver->settings->payment_method,
                         "amount" => $amount,
-                        "driver" => $driver->user,
+                        "driver" => User::find($driver->settings->user_id),
                         "seats" => "",
                     ];
                 }
