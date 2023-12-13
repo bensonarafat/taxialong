@@ -27,7 +27,6 @@ class DriverController extends Controller
         ]);
     }
 
-    //update driver position
     public function updatePosition(Request $request) {
         try {
             Driver::where("user_id", $request->user()->id)->update([
@@ -49,11 +48,10 @@ class DriverController extends Controller
 
     public function goOnline(){
         try {
-            //check if the user account is verified
             $user = User::whereId(auth()->user()->id)->first();
             if($user->verified){
                 $driver = Driver::where("user_id", auth()->user()->id)->first();
-                // dd($driver->first());
+
                 $driver->online = !$driver->online;
                 $driver->save();
                 return response()->json(
