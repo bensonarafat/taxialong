@@ -27,7 +27,7 @@ class TripController extends Controller
         $endlatitude = $pointb->latitude;
         $endlongitude = $pointb->longitude;
         $seat = $request->seat;
-        $riderClass = $request->rider_class;
+        $riderClass = json_decode($request->rider_class, true);
 
         $usersettings = RideSettings::where("user_id", auth()->user()->id)->first();
         $payment_method = $usersettings->payment_method ?? "cash";
@@ -48,7 +48,7 @@ class TripController extends Controller
             $ride_class = json_decode($driver->settings->ride_class, true);
 
             $filteredClasses = array_filter($ride_class, function( $class ) use ($riderClass){
-                return $riderClass === null || in_array($class['class'], $riderClass);
+                return $riderClass === null || in_array($class['class'], $riderClass) || count($riderClass) == 0;
             });
 
             $driver->ride_class = $filteredClasses;
