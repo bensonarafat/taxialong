@@ -18,7 +18,7 @@ class TripController extends Controller
 
         $perPage = 10;
         $page = request()->input("page", 1);
-        $pointa = $this->closestBusStop($request->pointAlatitude, $request->pointAlongtiude);
+        $pointa = $this->closestBusStop($request->pointAlatitude, $request->pointAlongitude);
         $pointb =  BusStop::find($request->pointb);
         $startlatitude = $pointa->latitude;
         $startlongitude = $pointa->longitude;

@@ -1,14 +1,15 @@
 <?php
 namespace App\Http\Trait;
 
-use App\Models\Price;
 use Exception;
-use App\Http\Classes\Pricing;
+use App\Models\Price;
 use App\Models\BusStop;
+use Illuminate\Http\Request;
+use App\Http\Classes\Pricing;
 
 trait Distance  {
 
-     function isPointClosest($request, $axisData) {
+     function isPointClosest(Request $request, $axisData) : bool {
         $distanceA = $this->calculateDistance($request->latitude, $request->longitude, $axisData->first()->terminalA->latitude, $axisData->first()->terminalA->longitude);
 
         $distanceB = $this->calculateDistance($request->latitude, $request->longitude, $axisData->first()->terminalB->latitude, $axisData->first()->terminalB->longitude);
@@ -29,14 +30,7 @@ trait Distance  {
         return $distance;
     }
 
-    /**
-     * @param int Ride Class
-     * @param array Pickup Bus Stop
-     * @param array Drop Off Bus Stop
-     *
-     * @return int|bool amount | false
-     */
-    public function calculatePrice($rideClass, $pickUpBusStop, $dropOffBusStop) : int | bool
+    public function calculatePrice(int $rideClass, array $pickUpBusStop, array $dropOffBusStop) : int | bool
     {
         $exists = Price::where(
                                 [
@@ -70,14 +64,7 @@ trait Distance  {
         }
     }
 
-    /**
-     * @param int Ride Class
-     * @param array Pickup Bus Stop
-     * @param array Drop Off Bus Stop
-     *
-     * @return int|bool amount | false
-     */
-    private function googleMatrixPrice($rideClass, $pickUpBusStop, $dropOffBusStop) : int | bool
+    private function googleMatrixPrice(int $rideClass, array $pickUpBusStop, array $dropOffBusStop) : int | bool
     {
         try {
             $response = \GoogleMaps::load('distancematrix')
