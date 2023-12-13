@@ -7,6 +7,7 @@ use App\Models\Axis;
 use App\Models\BusStop;
 use App\Models\Terminal;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TerminalController extends Controller
@@ -14,7 +15,7 @@ class TerminalController extends Controller
 
     use Distance;
 
-    public function terminals(){
+    public function terminals() : JsonResponse {
         try {
             $terminals = Terminal::latest()->get();
             return response()->json([
@@ -30,7 +31,7 @@ class TerminalController extends Controller
         }
     }
 
-    public function axis(Request $request){
+    public function axis(Request $request) : JsonResponse{
         $perPage = $request->get('per_page', 10);
         $page = $request->get('page', 1);
         if(!is_numeric($perPage)){
@@ -100,7 +101,7 @@ class TerminalController extends Controller
     }
 
 
-    public function busStops(Request $request) {
+    public function busStops(Request $request) : JsonResponse {
         $axis = Axis::where(["point_a" => $request->pointa, "point_b" => $request->pointb])->orWhere(["point_b" => $request->pointa, "point_a" => $request->pointb])->with(['busStop'])->get();
         return response()->json([
             "status" => true,
