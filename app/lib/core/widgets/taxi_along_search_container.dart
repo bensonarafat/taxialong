@@ -10,7 +10,6 @@ class SearchContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(
         horizontal: 8.w,
       ),
-      width: 284.w,
       height: 40.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),

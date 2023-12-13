@@ -57,7 +57,7 @@ class SeatsSelector extends StatelessWidget {
                                     .textTheme
                                     .titleSmall!
                                     .copyWith(
-                                      fontSize: 18.sp,
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),
@@ -86,7 +86,7 @@ class SeatsSelector extends StatelessWidget {
                                     .textTheme
                                     .titleSmall!
                                     .copyWith(
-                                      fontSize: 18.sp,
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),
@@ -115,7 +115,7 @@ class SeatsSelector extends StatelessWidget {
                                     .textTheme
                                     .titleSmall!
                                     .copyWith(
-                                      fontSize: 18.sp,
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),

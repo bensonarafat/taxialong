@@ -56,6 +56,11 @@ import 'package:taxialong/features/profile/domain/repositories/profile_repositor
 import 'package:taxialong/features/profile/domain/usecases/update_profile_image_usecase.dart';
 import 'package:taxialong/features/profile/domain/usecases/update_profile_usecase.dart';
 import 'package:taxialong/features/profile/presentation/bloc/profile/profile_bloc.dart';
+import 'package:taxialong/features/rides/data/datasources/ride_remote_data_sources.dart';
+import 'package:taxialong/features/rides/data/repositories/rides_repository_impl.dart';
+import 'package:taxialong/features/rides/domain/repositories/ride_repository.dart';
+import 'package:taxialong/features/rides/domain/usecases/get_rides_usecase.dart';
+import 'package:taxialong/features/rides/presentation/bloc/ride_bloc.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -310,5 +315,29 @@ Future<void> setupLocator() async {
   getIt.registerLazySingleton<DriverHomeRemoteDataSource>(
     () =>
         DriverHomeRemoteDataSourceImpl(client: client, secureStorage: getIt()),
+  );
+
+  /**
+ * -----------------------------------------------------------------------------------------------------------
+ */
+  // rides instance
+  getIt.registerFactory<RideBloc>(() => RideBloc(
+        getRidesUseCase: getIt(),
+      ));
+
+  //usecase
+  getIt.registerLazySingleton<GetRidesUseCase>(
+      () => GetRidesUseCase(repository: getIt()));
+
+  //repository
+  getIt.registerLazySingleton<RideRepository>(
+    () => RidesRepositoryImpl(
+      networkInfo: getIt(),
+      remoteDataSource: getIt(),
+    ),
+  );
+  //remote data source
+  getIt.registerLazySingleton<RideRemoteDataSource>(
+    () => RideRemoteDataSourceImpl(client: client, secureStorage: getIt()),
   );
 }

@@ -49,7 +49,10 @@ class RecentStops extends StatelessWidget {
                     ),
               ),
             ),
-            const TaxiAlongRoute(),
+            const TaxiAlongRoute(
+              pointa: "Abuja",
+              pointb: "Lagos",
+            ),
             Container(
               margin: EdgeInsets.only(
                 left: 16.w,

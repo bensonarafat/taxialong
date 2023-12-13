@@ -44,7 +44,6 @@ class Referral extends StatelessWidget {
             Gap(16.h),
             Container(
               width: 390.w,
-              height: 120.h,
               padding: EdgeInsets.all(16.w),
               child: Column(
                 mainAxisSize: MainAxisSize.min,

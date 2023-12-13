@@ -80,7 +80,6 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                     ),
                   ),
                 ),
-                height: 222.h,
                 width: double.infinity,
                 child: Column(
                   children: [

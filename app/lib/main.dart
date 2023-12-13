@@ -41,7 +41,9 @@ class TaxiAlong extends StatelessWidget {
           create: (_) => getIt<AuthBloc>()..add(CheckLoginEvent()),
         ),
         BlocProvider<SettingsBloc>(create: (_) => getIt<SettingsBloc>()),
-        BlocProvider<MapBloc>(create: (_) => getIt<MapBloc>()),
+        BlocProvider<MapBloc>(
+          create: (_) => getIt<MapBloc>(),
+        ),
       ],
       child: AuthStreamScope(
         child: ScreenUtilInit(

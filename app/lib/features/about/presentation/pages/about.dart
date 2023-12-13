@@ -127,7 +127,6 @@ class AboutPage extends StatelessWidget {
                           children: [
                             Container(
                               width: 30.w,
-                              height: 25.h,
                               padding: EdgeInsets.all(4.r),
                               decoration: ShapeDecoration(
                                 shape: RoundedRectangleBorder(

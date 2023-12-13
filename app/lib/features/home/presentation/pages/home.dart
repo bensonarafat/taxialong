@@ -21,13 +21,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final GlobalKey contentKey = GlobalKey();
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // NOTE:: Rework on show enable location dialog
       showEnableLocation(context);
-      // map bloc event
-      context.read<MapBloc>().add(MapCurrentPositionEvent());
     });
     super.initState();
   }
@@ -37,16 +35,10 @@ class _HomeState extends State<Home> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(
-          create: (BuildContext context) =>
-              getIt<HomeBloc>()..add(FetchHomeTerminalsEvent()),
+          create: (BuildContext context) => getIt<HomeBloc>(),
         ),
       ],
-      child:
-          /**
-       * 
-       *  Listen for position stream here 
-       */
-          BlocListener<MapBloc, MapState>(
+      child: BlocListener<MapBloc, MapState>(
         listener: (context, state) {
           if (state is MapCurrentPositionState) {
             context.read<HomeBloc>().add(
@@ -68,7 +60,7 @@ class _HomeState extends State<Home> {
               automaticallyImplyLeading: false,
               pinned: true,
               floating: true,
-              expandedHeight: appSliverExpandedHeightFixture.h,
+              expandedHeight: appSliverExpandedHeightFixture,
               forceElevated: true,
               flexibleSpace: const HomeFlexibleSpace(),
             ),
@@ -89,7 +81,6 @@ class _HomeState extends State<Home> {
                               : dark,
                         );
                       } else if (state is HomeErrorState) {
-                        // Error page
                         return const TaxiAlongErrorPage();
                       } else if (state is HomeLoadedState) {
                         List<AxisEntity> terminals = state.axisEntity;

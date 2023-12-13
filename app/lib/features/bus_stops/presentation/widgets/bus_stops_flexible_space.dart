@@ -42,7 +42,6 @@ class BusStopsFlexibleSpace extends StatelessWidget {
                         left: 16.w,
                       ),
                       width: 318.w,
-                      height: 45.h,
                       padding: EdgeInsets.all(8.w),
                       decoration: ShapeDecoration(
                         shape: RoundedRectangleBorder(
@@ -82,7 +81,6 @@ class BusStopsFlexibleSpace extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Gap(16.w),
                   ],
                 ),
               ),

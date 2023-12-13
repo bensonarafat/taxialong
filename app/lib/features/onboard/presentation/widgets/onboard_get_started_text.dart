@@ -11,7 +11,6 @@ class OnboardGetStartedText extends StatelessWidget {
         top: 108.h,
       ),
       width: 291.w,
-      height: 91.h,
       child: Column(
         children: [
           Text(

@@ -10,7 +10,6 @@ class WalletTopUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 358.w,
-      height: 45.h,
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
         color: const Color(0x19DADADA),
@@ -27,7 +26,6 @@ class WalletTopUp extends StatelessWidget {
           Gap(16.w),
           Expanded(
             child: SizedBox(
-              height: 37.h,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,

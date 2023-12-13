@@ -40,7 +40,7 @@ class TaxiAlongRiderClassFilter extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const TClass(name: "Class 1"),
-                    Gap(16.w),
+                    Gap(8.w),
                     const TClass(name: "Class 2"),
                   ],
                 ),
@@ -51,7 +51,7 @@ class TaxiAlongRiderClassFilter extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const TClass(name: "Class 3"),
-                    Gap(16.w),
+                    Gap(8.w),
                     const TClass(name: "Class 4"),
                   ],
                 ),
@@ -86,7 +86,6 @@ class TClass extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 44.h,
         padding: EdgeInsets.all(10.w),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -98,7 +97,7 @@ class TClass extends StatelessWidget {
               groupValue: 1,
               onChanged: (v) {},
             ),
-            Gap(10.w),
+            Gap(6.w),
             Container(
               width: 18,
               height: 18,

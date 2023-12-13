@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
@@ -39,49 +41,60 @@ class HomeFlexibleSpace extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Builder(builder: (context) {
-                          return Builder(builder: (context) {
-                            return GestureDetector(
-                              onTap: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                  left: 16.w,
-                                ),
-                                child: SvgPicture.asset(
-                                  menu,
-                                  colorFilter: ColorFilter.mode(
-                                    Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? white
-                                        : dark,
-                                    BlendMode.srcIn,
+                        Expanded(
+                          flex: 1,
+                          child: Builder(builder: (context) {
+                            return Builder(builder: (context) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Scaffold.of(context).openDrawer();
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    left: 16.w,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    menu,
+                                    colorFilter: ColorFilter.mode(
+                                      Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? white
+                                          : dark,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          });
-                        }),
+                              );
+                            });
+                          }),
+                        ),
                         Gap(16.w),
-                        const SearchContainer(),
+                        const Expanded(
+                          flex: 5,
+                          child: SearchContainer(),
+                        ),
                         Gap(8.w),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const TaxiAlongNotification()));
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                              right: 16.w,
-                            ),
-                            child: SvgPicture.asset(
-                              notificationSVG,
-                              colorFilter: ColorFilter.mode(
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? white
-                                    : dark,
-                                BlendMode.srcIn,
+                        Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) =>
+                                      const TaxiAlongNotification()));
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                right: 16.w,
+                              ),
+                              child: SvgPicture.asset(
+                                notificationSVG,
+                                colorFilter: ColorFilter.mode(
+                                  Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? white
+                                      : dark,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ),
                           ),
@@ -95,11 +108,19 @@ class HomeFlexibleSpace extends StatelessWidget {
                       left: 16.w,
                     ),
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Terminals",
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                    child: GestureDetector(
+                      onTap: () {
+                        context.read<MapBloc>().add(
+                              MapUpdateCurrentPostionEvent(
+                                  latitude: "9.0765", longitude: "7.3986"),
+                            );
+                      },
+                      child: Text(
+                        "Terminals",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
                     ),
                   ),
                 ],
