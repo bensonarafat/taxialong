@@ -33,7 +33,7 @@ class TripController extends Controller
         $usersettings = RideSettings::where("user_id", auth()->user()->id)->first();
         $payment_method = $usersettings->payment_method ?? "cash";
 
-        $drivers = Driver::where(["online" => 0])
+        $drivers = Driver::where(["online" => 1])
                     ->select('latitude', 'longitude', 'id', 'seats')
                     ->selectRaw(
                         '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
@@ -100,7 +100,7 @@ class TripController extends Controller
 
     private function numberOfAvailableSeats(array $carSeats,) : int  {
         $availableSeats = array_filter($carSeats, function($seat){
-            return $seat['available'] == true;
+            return $seat['status'] == 'available';
         });
         return count($availableSeats);
     }

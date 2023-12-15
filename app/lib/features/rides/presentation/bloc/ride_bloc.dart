@@ -14,6 +14,7 @@ class RideBloc extends Bloc<RideEvent, RideState> {
   RideBloc({required this.getRidesUseCase}) : super(RideLoadingState()) {
     on<RideEvent>((event, emit) async {
       if (event is FetchRideEvent) {
+        emit(RideLoadingState());
         if (await serviceEnabled()) {
           Position position = await Geolocator.getCurrentPosition();
           final failureOrRideEvent = await getRidesUseCase(
@@ -22,6 +23,7 @@ class RideBloc extends Bloc<RideEvent, RideState> {
               longitude: position.longitude.toString(),
               pointb: event.pointb,
               rideClass: event.rideClass,
+              seat: event.seat,
             ),
           );
 

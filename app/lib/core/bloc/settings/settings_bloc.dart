@@ -59,6 +59,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
                 settingsUpdateEntity: settingsUpdateEntity),
           ),
         );
+      } else if (event is RideFilterEvent) {
+        emit(FilterRideState(rideClass: event.rideClass, seat: event.seat));
       }
     });
   }

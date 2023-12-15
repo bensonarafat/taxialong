@@ -7,9 +7,7 @@ import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/extensions.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/rides/domain/entities/rides_entity.dart';
-import 'package:taxialong/features/rides/presentation/widgets/cash_widget.dart';
-import 'package:taxialong/features/rides/presentation/widgets/confirm_ride_button.dart';
-import 'package:taxialong/features/rides/presentation/widgets/seats_selector.dart';
+import 'package:taxialong/features/rides/presentation/widgets/seat_preference.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ClassRide extends StatelessWidget {
@@ -21,33 +19,6 @@ class ClassRide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WoltModalSheetPage selectSeatPreference(BuildContext modalSheetContext) {
-      return WoltModalSheetPage.withSingleChild(
-        hasSabGradient: false,
-        isTopBarLayerAlwaysVisible: true,
-        topBarTitle: SizedBox(
-          child: Text(
-            'Select Seat (s)',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-        ),
-        child: Column(
-          children: [
-            const SeatsSelector(),
-            Gap(16.h),
-            const CashWidget(),
-            Gap(16.h),
-            const ConfirmRideButton(),
-            Gap(150.h),
-          ],
-        ),
-      );
-    }
-
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       child: Column(
@@ -157,9 +128,12 @@ class ClassRide extends StatelessWidget {
                         WoltModalSheet.show<void>(
                           enableDrag: true,
                           context: context,
-                          pageListBuilder: (modalSheetContext) {
+                          pageListBuilder: (context) {
                             return [
-                              selectSeatPreference(modalSheetContext),
+                              selectSeatPreference(
+                                context: context,
+                                seats: rides.seats,
+                              ),
                             ];
                           },
                           modalTypeBuilder: (context) {

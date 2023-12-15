@@ -28,3 +28,13 @@ class UpdateSettingsEvent extends SettingsEvent {
   @override
   List<Object?> get props => [];
 }
+
+class RideFilterEvent extends SettingsEvent {
+  final List<dynamic>? rideClass;
+  final String? seat;
+
+  RideFilterEvent({this.rideClass, this.seat});
+
+  @override
+  List<Object?> get props => [rideClass, seat];
+}

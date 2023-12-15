@@ -54,3 +54,12 @@ class SettingsUpdatedState extends SettingsState {
   @override
   List<Object?> get props => [settingsUpdateEntity];
 }
+
+class FilterRideState extends SettingsState {
+  final List<dynamic>? rideClass;
+  final String? seat;
+
+  FilterRideState({required this.rideClass, required this.seat});
+  @override
+  List<Object?> get props => [seat, rideClass];
+}

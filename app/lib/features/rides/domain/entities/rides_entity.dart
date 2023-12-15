@@ -5,14 +5,14 @@ class RidesEntity {
   final int rideClass;
   final String paymentMethod;
   final int amount;
-  final SeatsEntity? seatsEntity;
-  final DriverEntity driverEntity;
+  final List<SeatsEntity>? seats;
+  final DriverEntity driver;
 
   RidesEntity({
     required this.rideClass,
     required this.paymentMethod,
     required this.amount,
-    required this.seatsEntity,
-    required this.driverEntity,
+    required this.seats,
+    required this.driver,
   });
 }

@@ -4,10 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/features/rides/domain/entities/seats_entity.dart';
 
 class SeatsSelector extends StatelessWidget {
+  final List<SeatsEntity>? seats;
   const SeatsSelector({
     super.key,
+    required this.seats,
   });
 
   @override
@@ -155,25 +158,6 @@ class SeatsSelector extends StatelessWidget {
                           BlendMode.srcIn,
                         ),
                       ),
-                      Gap(200.w),
-                      SvgPicture.asset(
-                        unavailableSeat,
-                        width: 48.w,
-                        height: 48.h,
-                      ),
-                    ],
-                  ),
-                  Gap(16.h),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        unavailableSeat,
-                        width: 48.w,
-                        height: 48.h,
-                      ),
                       Gap(78.w),
                       SvgPicture.asset(
                         selectedSeat,
@@ -206,6 +190,19 @@ class SeatsSelector extends StatelessWidget {
                         height: 48.h,
                       ),
                       Gap(78.w),
+                      SvgPicture.asset(
+                        unavailableSeat,
+                        width: 48.w,
+                        height: 48.h,
+                      ),
+                    ],
+                  ),
+                  Gap(16.h),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
                       SvgPicture.asset(
                         unavailableSeat,
                         width: 48.w,
