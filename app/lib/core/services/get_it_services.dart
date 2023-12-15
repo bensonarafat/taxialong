@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
@@ -340,4 +341,6 @@ Future<void> setupLocator() async {
   getIt.registerLazySingleton<RideRemoteDataSource>(
     () => RideRemoteDataSourceImpl(client: client, secureStorage: getIt()),
   );
+
+  getIt.registerLazySingleton(() => Logger());
 }

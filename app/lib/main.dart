@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logger/logger.dart';
+import 'package:taxialong/app_observer.dart';
 import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
@@ -22,8 +24,9 @@ Future<void> main() async {
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  //set up get it
   await setupLocator();
+
+  Bloc.observer = AppObserver(logger: getIt<Logger>());
 
   runApp(const TaxiAlong());
 

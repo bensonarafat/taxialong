@@ -34,7 +34,7 @@ class TripController extends Controller
         $payment_method = $usersettings->payment_method ?? "cash";
 
         $drivers = Driver::where(["online" => 0])
-                    ->select('latitude', 'longitude', 'id')
+                    ->select('latitude', 'longitude', 'id', 'seats')
                     ->selectRaw(
                         '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
                         [$startlatitude, $startlongitude, $startlatitude]
@@ -57,7 +57,7 @@ class TripController extends Controller
             return $driver;
         })->reject(function ($driver) use ($payment_method, $seat) {
             return ($payment_method !== null && $driver->settings->payment_method !== $payment_method ) ||
-            ($seat !== null && ($driver->settings->seats == null || $driver->settings->seats === 0));
+            ($seat !== null && $this->numberOfAvailableSeats(json_decode($driver->seats, true)) < $seat );
         });
 
         $avaiable_rides = $drivers->flatMap(function ( $driver ) use ($pointa, $startlatitude, $startlongitude, $pointb, $endlatitude, $endlongitude) {
@@ -84,7 +84,7 @@ class TripController extends Controller
                         "payment_method" => $driver->settings->payment_method,
                         "amount" => $amount,
                         "driver" => User::find($driver->settings->user_id),
-                        "seats" => "",
+                        "seats" => json_decode($driver->seats),
                     ];
                 }
 
@@ -98,6 +98,12 @@ class TripController extends Controller
         ]);
     }
 
+    private function numberOfAvailableSeats(array $carSeats,) : int  {
+        $availableSeats = array_filter($carSeats, function($seat){
+            return $seat['available'] == true;
+        });
+        return count($availableSeats);
+    }
 
     public function recent(Request $request){
 
