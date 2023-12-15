@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('drivers', function (Blueprint $table) {
-            $seats = [ [ "seat" => 1, "available" => true, ], [ "seat" => 2, "available" => true, ], [ "seat" => 3, "available" => true, ], [ "seat" => 4, "available" => true, ],["seat" => 5,"available" => true, ], [ "seat" => 6, "available" => true, ],];
+            $seats = [ [ "seat" => 1, "status" => 'available', ], [ "seat" => 2, "status" => 'available', ], [ "seat" => 3, "status" => 'available', ], [ "seat" => 4, "status" => 'available', ],["seat" => 5,"status" => 'available', ], [ "seat" => 6, "status" => 'available', ],];
             $table->json("seats")->default(json_encode($seats));
         });
     }

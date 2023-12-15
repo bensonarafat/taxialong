@@ -200,8 +200,8 @@ class _TClassState extends State<TClass> {
             ),
             Gap(10.w),
             Container(
-              width: 18,
-              height: 18,
+              width: 18.w,
+              height: 18.h,
               decoration: const ShapeDecoration(
                 color: Color(0xFFFEDA15),
                 shape: OvalBorder(),

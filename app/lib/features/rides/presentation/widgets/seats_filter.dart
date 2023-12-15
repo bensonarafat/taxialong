@@ -3,8 +3,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
-class SeatsFilter extends StatelessWidget {
-  const SeatsFilter({super.key});
+class SeatsFilter extends StatefulWidget {
+  final Function callback;
+  const SeatsFilter({
+    super.key,
+    required this.callback,
+  });
+
+  @override
+  State<SeatsFilter> createState() => _SeatsFilterState();
+}
+
+class _SeatsFilterState extends State<SeatsFilter> {
+  String selectedOption = '1';
+  selected(seat) {
+    setState(() {
+      selectedOption = seat;
+      widget.callback(seat);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +56,19 @@ class SeatsFilter extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Seat(name: "1 Seat"),
+                      Seat(
+                        v: "1",
+                        name: "1 Seat",
+                        callback: selected,
+                        selectedoption: selectedOption,
+                      ),
                       Gap(16.w),
-                      const Seat(name: "2 Seat"),
+                      Seat(
+                        v: "2",
+                        name: "2 Seat",
+                        callback: selected,
+                        selectedoption: selectedOption,
+                      ),
                     ],
                   ),
                 ),
@@ -61,9 +88,19 @@ class SeatsFilter extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Seat(name: "3 Seat"),
+                      Seat(
+                        v: "3",
+                        name: "3 Seat",
+                        callback: selected,
+                        selectedoption: selectedOption,
+                      ),
                       Gap(16.w),
-                      const Seat(name: "4 Seat"),
+                      Seat(
+                        v: "4",
+                        name: "4 Seat",
+                        callback: selected,
+                        selectedoption: selectedOption,
+                      ),
                     ],
                   ),
                 ),
@@ -71,7 +108,7 @@ class SeatsFilter extends StatelessWidget {
             ),
           ),
           Gap(8.h),
-          const SizedBox(
+          SizedBox(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -83,7 +120,19 @@ class SeatsFilter extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Seat(name: "5 Seat"),
+                      Seat(
+                        v: "5",
+                        name: "5 Seat",
+                        callback: selected,
+                        selectedoption: selectedOption,
+                      ),
+                      Gap(16.w),
+                      Seat(
+                        v: "6",
+                        name: "6 Seat",
+                        callback: selected,
+                        selectedoption: selectedOption,
+                      ),
                     ],
                   ),
                 ),
@@ -96,9 +145,29 @@ class SeatsFilter extends StatelessWidget {
   }
 }
 
-class Seat extends StatelessWidget {
+class Seat extends StatefulWidget {
   final String name;
-  const Seat({super.key, required this.name});
+  final String selectedoption;
+  final Function callback;
+  final String v;
+  const Seat({
+    super.key,
+    required this.name,
+    required this.callback,
+    required this.v,
+    required this.selectedoption,
+  });
+
+  @override
+  State<Seat> createState() => _SeatState();
+}
+
+class _SeatState extends State<Seat> {
+  selectedFunc(selected) {
+    setState(() {
+      widget.callback(selected);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,15 +180,19 @@ class Seat extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Radio(
-              value: 1,
-              groupValue: 1,
-              onChanged: (v) {},
+              value: widget.v,
+              groupValue: widget.selectedoption,
+              onChanged: (value) {
+                setState(() {
+                  selectedFunc(value);
+                });
+              },
             ),
             Gap(10.w),
             Expanded(
               child: SizedBox(
                 child: Text(
-                  name,
+                  widget.name,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),

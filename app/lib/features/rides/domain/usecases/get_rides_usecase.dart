@@ -19,12 +19,14 @@ class RideParams extends Equatable {
   final String longitude;
   final String pointb;
   final List<dynamic>? rideClass;
+  final String? seat;
 
   const RideParams({
     required this.latitude,
     required this.longitude,
     required this.pointb,
     required this.rideClass,
+    required this.seat,
   });
 
   @override
@@ -33,5 +35,6 @@ class RideParams extends Equatable {
         longitude,
         pointb,
         rideClass,
+        seat,
       ];
 }

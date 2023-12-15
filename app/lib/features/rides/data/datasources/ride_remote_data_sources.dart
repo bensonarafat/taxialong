@@ -27,14 +27,21 @@ class RideRemoteDataSourceImpl implements RideRemoteDataSource {
       'Accept': 'application/json',
     };
     var url = Uri.parse("${endpoint}trips/available-rides");
+
+    Map<String, dynamic> data = {
+      "pointAlatitude": params.latitude,
+      "pointAlongitude": params.longitude,
+      "pointb": params.pointb,
+    };
+    if (params.seat != null) {
+      data['seat'] = params.seat;
+    }
+    if (params.rideClass != null) {
+      data['rider_class'] = jsonEncode(params.rideClass);
+    }
     final response = await client.post(
       url,
-      body: {
-        "pointAlatitude": params.latitude,
-        "pointAlongitude": params.longitude,
-        "pointb": params.pointb,
-        "rider_class": jsonEncode(params.rideClass),
-      },
+      body: data,
       headers: headers,
     );
 

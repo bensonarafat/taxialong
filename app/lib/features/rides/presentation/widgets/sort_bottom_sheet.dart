@@ -1,15 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:taxialong/core/widgets/taxi_along_rider_class_filter.dart';
-import 'package:taxialong/core/widgets/taxi_along_seats_filter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
+import 'package:taxialong/features/rides/presentation/widgets/rider_class_filter.dart';
+import 'package:taxialong/features/rides/presentation/widgets/seats_filter.dart';
 import 'package:taxialong/features/rides/presentation/widgets/fliter_action_button.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-WoltModalSheetPage sortBottomSheet(BuildContext modalSheetContext) {
+WoltModalSheetPage sortBottomSheet({
+  required BuildContext context,
+  required String pointb,
+}) {
+  List<dynamic>? classes;
+  String seat = '1';
+  classesCallback(data) {
+    classes = data;
+  }
+
+  seatCallback(data) {
+    seat = data;
+  }
+
   return WoltModalSheetPage.withSingleChild(
     hasSabGradient: false,
-    stickyActionBar: const FliterActionButton(),
+    stickyActionBar: GestureDetector(
+      onTap: () {
+        context.read<SettingsBloc>().add(
+              RideFilterEvent(
+                rideClass: classes,
+                seat: seat,
+              ),
+            );
+
+        context.pop();
+      },
+      child: FliterActionButton(
+        pointb: pointb,
+      ),
+    ),
     isTopBarLayerAlwaysVisible: true,
     child: Padding(
       padding: EdgeInsets.fromLTRB(
@@ -20,9 +50,13 @@ WoltModalSheetPage sortBottomSheet(BuildContext modalSheetContext) {
       ),
       child: Column(
         children: [
-          const TaxiAlongRiderClassFilter(),
+          RiderClassFilter(
+            callback: classesCallback,
+          ),
           Gap(16.h),
-          const SeatsFilter(),
+          SeatsFilter(
+            callback: seatCallback,
+          ),
         ],
       ),
     ),
