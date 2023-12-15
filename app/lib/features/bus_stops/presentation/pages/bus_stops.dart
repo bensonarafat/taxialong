@@ -60,78 +60,78 @@ class _BusStopState extends State<BusStop> {
               backgroundColor: Theme.of(context).colorScheme.background,
               automaticallyImplyLeading: false,
               pinned: true,
-              expandedHeight: 74.h,
+              expandedHeight: 74,
               forceElevated: true,
               flexibleSpace: BusStopsFlexibleSpace(axis: axis),
             ),
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  // areas list
                   Container(
-                    height: 74.h,
                     padding: EdgeInsets.all(16.w),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
+                    child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      itemCount: terminals.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selected = index;
-                              axis =
-                                  "${terminals[selected].terminala.name} along ${terminals[selected].terminalb.name}";
-                            });
-                            context.read<BusStopBloc>().add(
-                                  BusStopFetchEvent(
-                                    pointa: terminals[selected].pointa,
-                                    pointb: terminals[selected].pointb,
+                      child: Row(
+                        children: [
+                          for (int index = 0; index < terminals.length; index++)
+                            Builder(builder: (context) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selected = index;
+                                    axis =
+                                        "${terminals[selected].terminala.name} along ${terminals[selected].terminalb.name}";
+                                  });
+                                  context.read<BusStopBloc>().add(
+                                        BusStopFetchEvent(
+                                          pointa: terminals[selected].pointa,
+                                          pointb: terminals[selected].pointb,
+                                        ),
+                                      );
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    right: 16.w,
                                   ),
-                                );
-                          },
-                          child: Container(
-                            height: 42.h,
-                            margin: EdgeInsets.only(
-                              right: 16.w,
-                            ),
-                            padding: EdgeInsets.all(8.w),
-                            decoration: ShapeDecoration(
-                              color: index == selected
-                                  ? primaryColor
-                                  : Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? const Color(0x19DADADA)
-                                      : const Color.fromARGB(24, 113, 112, 112),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "${terminals[index].terminala.name} along ${terminals[index].terminalb.name}",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      fontSize: 16.sp,
-                                      color: index == selected
-                                          ? white
-                                          : Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? white
-                                              : dark,
+                                  padding: EdgeInsets.all(8.w),
+                                  decoration: ShapeDecoration(
+                                    color: index == selected
+                                        ? primaryColor
+                                        : Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? const Color(0x19DADADA)
+                                            : const Color.fromARGB(
+                                                24, 113, 112, 112),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.r),
                                     ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "${terminals[index].terminala.name} along ${terminals[index].terminalb.name}",
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            fontSize: 16.sp,
+                                            color: index == selected
+                                                ? white
+                                                : Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? white
+                                                    : dark,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            })
+                        ],
+                      ),
                     ),
                   ),
-
                   Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.h, vertical: 8.w),
@@ -159,7 +159,6 @@ class _BusStopState extends State<BusStop> {
                       ],
                     ),
                   ),
-
                   BlocConsumer<BusStopBloc, BusStopState>(
                     listener: (context, state) {
                       if (state is BusStopErrorState) {
@@ -196,6 +195,7 @@ class _BusStopState extends State<BusStop> {
                               return BusStopsName(
                                 busstops: busstops[index],
                                 index: index,
+                                terminal: terminals[selected],
                               );
                             },
                           ),

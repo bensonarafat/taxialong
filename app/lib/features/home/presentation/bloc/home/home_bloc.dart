@@ -18,28 +18,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required this.axisCachedUseCase,
   }) : super(HomeLoadingState()) {
     on<HomeEvent>((event, emit) async {
-      if (event is FetchHomeTerminalsEvent) {
-        emit(HomeLoadingState());
-
-        // // cache data
-        // final failureOrFetchTerminalEventCached = await axisCachedUseCase(true);
-        // // make sure the right contain data
-        // if (failureOrFetchTerminalEventCached.isRight()) {
-        //   emit(failureOrFetchTerminalEventCached.fold(
-        //       (failure) =>
-        //           HomeErrorState(message: mapFailureToMessage(failure)),
-        //       (axisEntity) => HomeLoadedState(axisEntity: axisEntity)));
-        // }
-
-        // ---------------------------
-        final failureOrFetchTerminalsEvent = await axisUseCase(
-          const PositionParams(latitude: null, longitude: null),
-        );
-
-        emit(failureOrFetchTerminalsEvent.fold(
-            (failure) => HomeErrorState(message: mapFailureToMessage(failure)),
-            (axisEntity) => HomeLoadedState(axisEntity: axisEntity)));
-      } else if (event is UpdateTerminalEvent) {
+      if (event is UpdateTerminalEvent) {
         final failureOrFetchTerminalsEvent = await axisUseCase(
           PositionParams(
             latitude: event.latitude,

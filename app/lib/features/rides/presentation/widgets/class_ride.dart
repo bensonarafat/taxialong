@@ -4,14 +4,19 @@ import 'package:taxialong/core/constants/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/features/taxi_classes/presentation/widgets/cash_widget.dart';
-import 'package:taxialong/features/taxi_classes/presentation/widgets/confirm_ride_button.dart';
-import 'package:taxialong/features/taxi_classes/presentation/widgets/seats_selector.dart';
+import 'package:taxialong/core/utils/extensions.dart';
+import 'package:taxialong/core/utils/helpers.dart';
+import 'package:taxialong/features/rides/domain/entities/rides_entity.dart';
+import 'package:taxialong/features/rides/presentation/widgets/cash_widget.dart';
+import 'package:taxialong/features/rides/presentation/widgets/confirm_ride_button.dart';
+import 'package:taxialong/features/rides/presentation/widgets/seats_selector.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ClassRide extends StatelessWidget {
+  final RidesEntity rides;
   const ClassRide({
     super.key,
+    required this.rides,
   });
 
   @override
@@ -71,7 +76,6 @@ class ClassRide extends StatelessWidget {
                 Gap(18.w),
                 Expanded(
                   child: SizedBox(
-                    height: 80.h,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -87,7 +91,7 @@ class ClassRide extends StatelessWidget {
                               SizedBox(
                                 width: double.infinity,
                                 child: Text(
-                                  'Class 2 ',
+                                  'Class ${rides.rideClass}',
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleSmall!
@@ -101,7 +105,7 @@ class ClassRide extends StatelessWidget {
                               SizedBox(
                                 width: double.infinity,
                                 child: Text(
-                                  'N100',
+                                  '₦ ${numberFormat(rides.amount)}',
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleSmall!
@@ -113,7 +117,7 @@ class ClassRide extends StatelessWidget {
                               ),
                               Gap(4.h),
                               Text(
-                                'Cash',
+                                rides.paymentMethod.inCaps,
                                 textAlign: TextAlign.right,
                                 style: Theme.of(context)
                                     .textTheme

@@ -4,9 +4,10 @@ import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/home/data/models/axis_model.dart';
+import 'package:taxialong/features/home/domain/usecases/get_axis.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<List<AxisModel>> getAxis({required params});
+  Future<List<AxisModel>> getAxis({required PositionParams params});
 }
 
 class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
@@ -16,7 +17,7 @@ class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
   HomeRemoteDataSourceImp({required this.client, required this.secureStorage});
 
   @override
-  Future<List<AxisModel>> getAxis({required params}) async {
+  Future<List<AxisModel>> getAxis({required PositionParams params}) async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
     var headers = {

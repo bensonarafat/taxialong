@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:taxialong/core/widgets/taxi_along_rider_class_filter.dart';
 import 'package:taxialong/core/widgets/taxi_along_seats_filter.dart';
-import 'package:taxialong/features/taxi_classes/presentation/widgets/fliter_action_button.dart';
+import 'package:taxialong/features/rides/presentation/widgets/fliter_action_button.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 WoltModalSheetPage sortBottomSheet(BuildContext modalSheetContext) {

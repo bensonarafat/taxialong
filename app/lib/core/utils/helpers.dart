@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,11 +9,11 @@ import 'dart:math' as math;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/features/home/presentation/bloc/home/home_bloc.dart';
 
 double getCollapseOpacity(context) {
   final settings =
@@ -24,97 +27,72 @@ double getCollapseOpacity(context) {
   return opacity;
 }
 
-Future<bool> locationEnabled() async {
+Future<bool> serviceEnabled() async {
   return await Geolocator.isLocationServiceEnabled();
 }
 
-showEnableLocation(_) async {
+showEnableLocation(BuildContext context) async {
   LocalStorage localStorage = LocalStorage();
-  bool? islocationSet = await localStorage.getEnableLocation();
+  bool islocationSet = await localStorage.getEnableLocation();
+
   //check if location is enabled
-  if (islocationSet != null) {
-    Position? position = await enableGeoLocation();
-    if (position != null) {
-      // subscribe to
-      _.read<HomeBloc>().add(UpdateTerminalEvent(
-          latitude: position.latitude.toString(),
-          longitude: position.longitude.toString()));
-      localStorage.setGeoLocation();
-    }
-    return;
+  if (islocationSet == true) {
+    Position position = await enableGeoLocation();
+    // subscribe to
+
+    context.read<MapBloc>().add(
+          MapUpdateCurrentPostionEvent(
+              latitude: position.latitude.toString(),
+              longitude: position.longitude.toString()),
+        );
+    localStorage.setGeoLocation();
   } else {
-    // if this pop has already happend dont show it again
-    if (await locationEnabled()) return;
-    return Alert(
-      context: _,
-      style: AlertStyle(
-        buttonsDirection: ButtonsDirection.column,
-        isCloseButton: false,
-        titleStyle: Theme.of(_).textTheme.headlineSmall!,
-        alertBorder: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          side: const BorderSide(
-            color: Color(0xFF121212),
+    //  Test if location services are enabled.
+    if (!await serviceEnabled()) {
+      toast("Location services are disabled.");
+    } else {
+      return Alert(
+        context: context,
+        style: AlertStyle(
+          buttonsDirection: ButtonsDirection.column,
+          isCloseButton: false,
+          titleStyle: Theme.of(context).textTheme.headlineSmall!,
+          alertBorder: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.r),
+            side: const BorderSide(
+              color: Color(0xFF121212),
+            ),
           ),
+          descStyle: Theme.of(context).textTheme.bodyMedium!,
         ),
-        descStyle: Theme.of(_).textTheme.bodyMedium!,
-      ),
-      image: Image.asset(
-        enableLocation,
-        width: 97.w,
-        height: 97.h,
-      ),
-      title: "Enable your location",
-      desc:
-          "Turn On your location to allow “Taxi Along” to Determine Your Location",
-      buttons: [
-        DialogButton(
-          color: Colors.transparent,
-          onPressed: () async {
-            Position? position = await enableGeoLocation();
-            if (position != null) {
+        image: Image.asset(
+          enableLocation,
+          width: 97.w,
+          height: 97.h,
+        ),
+        title: "Enable your location",
+        desc:
+            "Turn On your location to allow “Taxi Along” to Determine Your Location",
+        buttons: [
+          DialogButton(
+            color: Colors.transparent,
+            onPressed: () async {
+              Position? position = await enableGeoLocation();
+
               // subscribe to
-              _.read<HomeBloc>().add(UpdateTerminalEvent(
+              context.read<MapBloc>().add(MapUpdateCurrentPostionEvent(
                   latitude: position.latitude.toString(),
                   longitude: position.longitude.toString()));
               localStorage.setGeoLocation();
-            }
-            Navigator.of(_).pop();
-          },
-          child: Container(
-            width: 305.w,
-            height: 54.h,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-            decoration: ShapeDecoration(
-              color: primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Use current location',
-                  style: GoogleFonts.robotoFlex(
-                    color: white,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        DialogButton(
-            color: Colors.transparent,
-            onPressed: () => Navigator.of(_).pop(),
+
+              Navigator.of(context).pop();
+            },
             child: Container(
               width: 305.w,
               height: 54.h,
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
               decoration: ShapeDecoration(
+                color: primaryColor,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.r)),
               ),
@@ -124,18 +102,47 @@ showEnableLocation(_) async {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Skip for now',
-                    style: Theme.of(_).textTheme.titleSmall,
+                    'Use current location',
+                    style: GoogleFonts.robotoFlex(
+                      color: white,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
-            ))
-      ],
-    ).show();
+            ),
+          ),
+          DialogButton(
+              color: Colors.transparent,
+              onPressed: () => Navigator.of(context).pop(),
+              child: Container(
+                width: 305.w,
+                height: 54.h,
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Skip for now',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                  ],
+                ),
+              ))
+        ],
+      ).show();
+    }
   }
 }
 
-Future<Position?> enableGeoLocation() async {
+Future<Position> enableGeoLocation() async {
   LocationPermission permission;
   permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
@@ -149,9 +156,8 @@ Future<Position?> enableGeoLocation() async {
     // Permissions are denied forever, handle appropriately.
     toast(
         'Location permissions are permanently denied, we cannot request permissions.');
-    return await Geolocator.getCurrentPosition();
   }
-  return null;
+  return await Geolocator.getCurrentPosition();
 }
 
 String formatDuration(Duration duration) {
@@ -207,11 +213,6 @@ Future<BitmapDescriptor> createMarkerIcon() async {
   return customMarker;
 }
 
-/// Class 1 -> 1 passenger (charter)
-/// Class 2 -> Maximum of 2 at the  back. 1 in front
-/// Class 3 -> 3 at the back, 1 in front
-/// Class 4 -> 3 at the back, 2 in front.
-/// Class 5 -> 4 at the back, 2 in front.
 List<Map<String, dynamic>> addToClass({
   required List<Map<String, dynamic>>? rideClass,
   required String value,
@@ -256,4 +257,19 @@ List<Map<String, dynamic>> removeToClass({
     rideClass.removeWhere((element) => element["class"] == value);
     return rideClass;
   }
+}
+
+double calculateExpandedHeight(GlobalKey contentKey) {
+  final RenderBox renderBox =
+      contentKey.currentContext?.findRenderObject() as RenderBox;
+  final contentHeight = renderBox.size.height;
+  return contentHeight + 100;
+}
+
+String numberFormat(int amount) {
+  NumberFormat formatter = NumberFormat.decimalPatternDigits(
+    locale: 'en_us',
+    decimalDigits: 2,
+  );
+  return formatter.format(amount);
 }

@@ -65,7 +65,6 @@ class TripHistory extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            height: 28.h,
                             padding: EdgeInsets.all(4.r),
                             decoration: ShapeDecoration(
                               color: Theme.of(context).brightness ==

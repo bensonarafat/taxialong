@@ -205,7 +205,10 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
               ),
             ),
             Gap(16.h),
-            const TaxiAlongRoute(),
+            const TaxiAlongRoute(
+              pointa: "Abuja",
+              pointb: "Lagos",
+            ),
             Gap(6.h),
             Container(
               padding: EdgeInsets.only(

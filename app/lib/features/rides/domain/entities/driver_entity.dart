@@ -1,0 +1,19 @@
+class DriverEntity {
+  final String firstname;
+  final String lastname;
+  final String email;
+  final String telephone;
+  final String avatar;
+  final String rating;
+  final String verified;
+
+  DriverEntity({
+    required this.firstname,
+    required this.lastname,
+    required this.email,
+    required this.telephone,
+    required this.avatar,
+    required this.rating,
+    required this.verified,
+  });
+}

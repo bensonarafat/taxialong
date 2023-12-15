@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/bloc/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:taxialong/core/data/models/user_model.dart';
+import 'package:taxialong/core/pages/taxi_along_enable_location_page.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/widgets/taxi_along_bottom_navigation.dart';
@@ -13,7 +14,6 @@ import 'package:taxialong/features/auth/presentation/pages/create_account.dart';
 import 'package:taxialong/features/auth/presentation/pages/login.dart';
 import 'package:taxialong/features/auth/presentation/pages/phone_number_verification.dart';
 import 'package:taxialong/features/auth/presentation/pages/signup.dart';
-import 'package:taxialong/features/bus_stops/domain/entities/axis_entity.dart';
 import 'package:taxialong/features/bus_stops/presentation/pages/bus_stops.dart';
 import 'package:taxialong/features/documents/presentation/pages/documents.dart';
 import 'package:taxialong/features/documents/presentation/pages/upload_documents.dart';
@@ -25,8 +25,8 @@ import 'package:taxialong/features/onboard/presentation/pages/get_started.dart';
 import 'package:taxialong/features/onboard/presentation/pages/onboarding.dart';
 import 'package:taxialong/features/profile/presentation/pages/profile.dart';
 import 'package:taxialong/features/referral/presentation/pages/referral.dart';
+import 'package:taxialong/features/rides/presentation/pages/rides.dart';
 import 'package:taxialong/features/settings/presentation/pages/settings.dart';
-import 'package:taxialong/features/taxi_classes/presentation/pages/taxi_classes.dart';
 import 'package:taxialong/features/trip_history/presentation/pages/trip_history.dart';
 import 'package:taxialong/features/wallet/presentation/pages/wallet.dart';
 
@@ -97,10 +97,10 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/taxi-classes',
-      name: 'taxiClasses',
-      builder: (context, state) => TaxiClasses(
-        busstops: state.extra as AxisEntity,
+      path: '/rides',
+      name: 'rides',
+      builder: (context, state) => Rides(
+        extra: state.extra as Map<String, dynamic>,
       ),
     ),
 
@@ -160,6 +160,11 @@ final GoRouter router = GoRouter(
       path: "/driver-home",
       name: "driverHome",
       builder: (context, state) => const DriverHome(),
+    ),
+    GoRoute(
+      path: "/enable-location",
+      name: "enableLocation",
+      builder: (context, state) => const TaxiAlongEnableLocationPage(),
     ),
   ],
   redirect: (context, state) async {

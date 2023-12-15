@@ -141,7 +141,7 @@ class _DriverFlexibleSpaceState extends State<DriverFlexibleSpace> {
                                         status ? 'Online' : 'Offline',
                                         style: GoogleFonts.robotoFlex(
                                           color: const Color(0xFFA0A2A9),
-                                          fontSize: 14.sp,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),

@@ -3,14 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/features/bus_stops/domain/entities/axis_entity.dart';
+import 'package:taxialong/features/home/domain/entities/axis_entity.dart'
+    as home;
 
 class BusStopsName extends StatelessWidget {
   final AxisEntity busstops;
+  final home.AxisEntity terminal;
   final int index;
   const BusStopsName({
     super.key,
     required this.busstops,
     required this.index,
+    required this.terminal,
   });
 
   @override
@@ -18,8 +22,8 @@ class BusStopsName extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.push(
-          '/taxi-classes',
-          extra: busstops,
+          '/rides',
+          extra: {"terminal": terminal, "busstops": busstops},
         );
       },
       child: Container(

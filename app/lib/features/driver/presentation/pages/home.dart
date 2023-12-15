@@ -100,7 +100,7 @@ class _DriverHomeState extends State<DriverHome> {
                 automaticallyImplyLeading: false,
                 pinned: false,
                 floating: true,
-                expandedHeight: 100.h,
+                expandedHeight: 100,
                 forceElevated: true,
                 flexibleSpace: DriverFlexibleSpace(action: toggleOnOff),
               ),

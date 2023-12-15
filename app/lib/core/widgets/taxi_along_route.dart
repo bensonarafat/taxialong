@@ -4,7 +4,13 @@ import 'package:gap/gap.dart';
 import 'package:taxialong/core/constants/assets.dart';
 
 class TaxiAlongRoute extends StatelessWidget {
-  const TaxiAlongRoute({super.key});
+  final String pointa;
+  final String pointb;
+  const TaxiAlongRoute({
+    super.key,
+    required this.pointa,
+    required this.pointb,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +42,12 @@ class TaxiAlongRoute extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Berger Junction",
+                pointa,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               Gap(8.h),
               Text(
-                "Apo Junction",
+                pointb,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ],

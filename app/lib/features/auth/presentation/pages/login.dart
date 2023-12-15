@@ -41,65 +41,67 @@ class _LoginState extends State<Login> {
         children: [
           Align(
             alignment: Alignment.topCenter,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 8.h,
-                    left: 16.w,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 8.h,
+                      left: 16.w,
+                    ),
+                    child: Text(
+                      "Welcome back",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
                   ),
-                  child: Text(
-                    "Welcome back",
-                    style: Theme.of(context).textTheme.headlineSmall,
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 8.h,
+                      bottom: 48.h,
+                      left: 16.w,
+                    ),
+                    child: Text(
+                      "Login to continue",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 8.h,
-                    bottom: 48.h,
-                    left: 16.w,
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 8.h,
+                      left: 16.w,
+                      right: 16.w,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Enter Phone Number",
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                        PhoneNumberInput(userNumberFunc: userNumberFunc),
+                      ],
+                    ),
                   ),
-                  child: Text(
-                    "Login to continue",
-                    style: Theme.of(context).textTheme.titleMedium,
+                  Center(
+                    child: PhoneNextButton(
+                      telephone: phoneNumber,
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 8.h,
-                    left: 16.w,
-                    right: 16.w,
+                  const Center(child: OrText()),
+                  const SocialButtons(),
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 21.h,
+                    ),
+                    child: const DontHaveAnAccount(),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Enter Phone Number",
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                      SizedBox(
-                        height: 4.h,
-                      ),
-                      PhoneNumberInput(userNumberFunc: userNumberFunc),
-                    ],
-                  ),
-                ),
-                Center(
-                  child: PhoneNextButton(
-                    telephone: phoneNumber,
-                  ),
-                ),
-                const Center(child: OrText()),
-                const SocialButtons(),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 21.h,
-                  ),
-                  child: const DontHaveAnAccount(),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
