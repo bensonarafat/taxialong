@@ -6,6 +6,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
-    //auth
     Route::group(["prefix" => "auth"], function() {
         Route::post("telephone", [AuthController::class, "telephone"])->withoutMiddleware("auth:api");
         Route::post('otp-login', [AuthController::class, "otpLogin"])->withoutMiddleware("auth:api");
@@ -27,7 +27,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('me', [AuthController::class, "me"]);
     });
 
-    //account
     Route::group(["prefix" => "account"], function() {
         Route::post("/upload-image", [AccountController::class, "uploadImage"]);
         Route::put("/update-profile", [AccountController::class,"updateProfile"]);
@@ -37,20 +36,16 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get("/get-settings", [AccountController::class, "getSettings"]); //  under consideration
     });
 
-    //terminals
     Route::group(["prefix" => "terminal"], function(){
         Route::get("/", [TerminalController::class, "terminals"]);
         Route::post("/axis", [TerminalController::class, "axis"]);
         Route::post("/bus-stops", [TerminalController::class, "busStops"]);
     });
 
-    // driver
     Route::group(["prefix" => "driver"], function() {
-        //driver
         Route::get("/", [DriverController::class, "driver"]);
         Route::post("/update-position", [DriverController::class, "updatePosition"]);
         Route::get("/go-online", [DriverController::class, "goOnline"]);
-        // documents
         Route::group(["prefix" => "document"], function(){
             Route::get("/" , [DocumentController::class, "document"]);
             Route::post("/upload", [DocumentController::class, "upload"]);
@@ -58,10 +53,14 @@ Route::group(['middleware' => 'auth:api'], function () {
         });
     });
 
-    // trips
     Route::group(["prefix" => "trips"], function() {
         Route::post("/available-rides", [TripController::class, "availableRides"]);
+        Route::post("/confirm-ride", [TripController::class, "confirmRide"]);
         Route::post("/recent", [TripController::class, "recent"]);
         Route::post("/ongoing", [TripController::class, "ongoing"]);
+    });
+
+    Route::group(["prefix" => "wallet"], function(){
+        Route::post("/fund", [WalletController::class, "fundWallet"]);
     });
 });
