@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Trip;
 use App\Models\User;
 use App\Models\Driver;
 use App\Models\BusStop;
+use App\Http\Trait\Seats;
 use App\Http\Trait\Distance;
 use App\Models\RideSettings;
 use Illuminate\Http\Request;
+use App\Http\Trait\TaxiAlongTrip;
+use App\Http\Trait\TaxiAlongTransaction;
 use Illuminate\Http\JsonResponse;
+use App\Http\Trait\TaxiAlongWallet;
+use Exception;
 
 class TripController extends Controller
 {
 
-    use Distance;
+    use Distance, TaxiAlongWallet, TaxiAlongTrip, Seats, TaxiAlongTransaction;
 
     public function availableRides(Request $request) : JsonResponse {
 
@@ -98,11 +104,49 @@ class TripController extends Controller
         ]);
     }
 
-    private function numberOfAvailableSeats(array $carSeats,) : int  {
-        $availableSeats = array_filter($carSeats, function($seat){
-            return $seat['status'] == 'available';
-        });
-        return count($availableSeats);
+    public function confirmRide(Request $request) : JsonResponse {
+        try {
+            if($this->hasSufficientFunds($request) || $this->isCashPayment($request)){
+                $createdTrip = $this->createAndBookTrip($request);
+                return response()->json([
+                    "status" => true,
+                    "message" => "Trip created",
+                    "data" => $createdTrip,
+                ]);
+            }else{
+                return response()->json([
+                    "status" => false,
+                    "message" => "Insufficient fund"
+                ]);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => false,
+                "message" => $e->getMessage(),
+            ]);
+        }
+
+    }
+
+    private function hasSufficientFunds(Request $request): bool {
+        return $this->availableFund() >= $request->amount;
+    }
+
+    private function isCashPayment(Request $request): bool {
+        return $request->payment_method == "cash";
+    }
+
+    private function createAndBookTrip(Request $request): ?Trip {
+        if(!$this->makeSeatUnavailable($request->driver_id, $request->seats)){
+            throw new Exception("Seats are not available for booking.");
+        }
+        if($request->payment_method == "wallet"){
+            if(!$this->withdraw($request->amount, "fund")){
+                throw new Exception("Insufficient fund");
+            }
+            $this->createTransaction($request, "debit");
+        }
+        return $this->createTrip($request);
     }
 
     public function recent(Request $request){
