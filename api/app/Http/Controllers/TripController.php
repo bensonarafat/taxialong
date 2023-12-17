@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 use App\Http\Trait\TaxiAlongTrip;
 use Illuminate\Http\JsonResponse;
 use App\Http\Trait\TaxiAlongWallet;
-use Illuminate\Support\Facades\Log;
 use App\Http\Trait\TaxiAlongTransaction;
 
 class TripController extends Controller
@@ -106,7 +105,6 @@ class TripController extends Controller
     }
 
     public function confirmRide(Request $request) : JsonResponse {
-        Log::info("message");
         try {
             if($this->hasSufficientFunds($request) || $this->isCashPayment($request)){
                 $createdTrip = $this->createAndBookTrip($request);
