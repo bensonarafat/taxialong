@@ -78,7 +78,6 @@ class RideRemoteDataSourceImpl implements RideRemoteDataSource {
       "pointb": params.pointb,
       "trip_class": params.tripClass,
     });
-    print(params.seats);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
 
