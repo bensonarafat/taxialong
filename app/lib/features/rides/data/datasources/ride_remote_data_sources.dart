@@ -71,14 +71,14 @@ class RideRemoteDataSourceImpl implements RideRemoteDataSource {
     var url = Uri.parse("${endpoint}trips/confirm-ride");
     var response = await client.post(url, headers: headers, body: {
       "amount": params.amount,
-      "payment_method": params.paymentMethod,
+      "payment_method": params.paymentMethod.toLowerCase(),
       "driver_id": params.driverId,
       "seats": jsonEncode(params.seats),
       "pointa": params.pointa,
       "pointb": params.pointb,
       "trip_class": params.tripClass,
     });
-
+    print(params.seats);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
 

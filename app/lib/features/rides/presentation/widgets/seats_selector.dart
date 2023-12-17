@@ -21,7 +21,7 @@ class SeatsSelector extends StatefulWidget {
 
 class _SeatsSelectorState extends State<SeatsSelector> {
   List<Widget> rideseats = [];
-  List<dynamic> selectedSeats = [];
+  List<int> selectedSeats = [];
   @override
   void initState() {
     appSeats();

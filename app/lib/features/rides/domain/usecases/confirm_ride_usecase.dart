@@ -20,7 +20,7 @@ class ConfirmRideParams extends Equatable {
   final String amount;
   final String paymentMethod;
   final String driverId;
-  final List<dynamic> seats;
+  final List<int> seats;
   final String pointa;
   final String pointb;
   final String tripClass;

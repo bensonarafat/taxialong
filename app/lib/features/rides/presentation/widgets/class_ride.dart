@@ -29,7 +29,7 @@ class ClassRide extends StatefulWidget {
 }
 
 class _ClassRideState extends State<ClassRide> {
-  List<dynamic> selectedSeats = [];
+  List<int> selectedSeats = [];
   late CancelFunc cancel;
   void tripSeats(seat) {
     selectedSeats = seat;

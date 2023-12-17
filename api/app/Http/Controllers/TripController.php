@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Trip;
 use App\Models\User;
 use App\Models\Driver;
@@ -11,10 +12,10 @@ use App\Http\Trait\Distance;
 use App\Models\RideSettings;
 use Illuminate\Http\Request;
 use App\Http\Trait\TaxiAlongTrip;
-use App\Http\Trait\TaxiAlongTransaction;
 use Illuminate\Http\JsonResponse;
 use App\Http\Trait\TaxiAlongWallet;
-use Exception;
+use Illuminate\Support\Facades\Log;
+use App\Http\Trait\TaxiAlongTransaction;
 
 class TripController extends Controller
 {
@@ -105,6 +106,7 @@ class TripController extends Controller
     }
 
     public function confirmRide(Request $request) : JsonResponse {
+        Log::info("message");
         try {
             if($this->hasSufficientFunds($request) || $this->isCashPayment($request)){
                 $createdTrip = $this->createAndBookTrip($request);

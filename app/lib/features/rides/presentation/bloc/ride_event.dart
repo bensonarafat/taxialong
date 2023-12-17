@@ -23,7 +23,7 @@ class FetchRideEvent extends RideEvent {
 }
 
 class RideBookEvent extends RideEvent {
-  final List<dynamic> seats;
+  final List<int> seats;
   final String amount;
   final String driverId;
   final String pointa;
