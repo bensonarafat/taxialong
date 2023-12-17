@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Trip;
 use App\Models\User;
 use App\Models\Driver;
@@ -11,10 +12,9 @@ use App\Http\Trait\Distance;
 use App\Models\RideSettings;
 use Illuminate\Http\Request;
 use App\Http\Trait\TaxiAlongTrip;
-use App\Http\Trait\TaxiAlongTransaction;
 use Illuminate\Http\JsonResponse;
 use App\Http\Trait\TaxiAlongWallet;
-use Exception;
+use App\Http\Trait\TaxiAlongTransaction;
 
 class TripController extends Controller
 {

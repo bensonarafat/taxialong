@@ -12,11 +12,10 @@ class RidesModel extends RidesEntity {
   });
 
   factory RidesModel.fromJson(Map<String, dynamic> json) {
-    List<SeatsModel>? seats;
-    if (json['seats'] != null) {
-      List<dynamic> seats = json['seats'];
-      seats = seats.map((item) => SeatsModel.fromJson(item)).toList();
-    }
+    List<dynamic> driverseats = json['seats'];
+    List<SeatsModel> seats =
+        driverseats.map((item) => SeatsModel.fromJson(item)).toList();
+
     return RidesModel(
       rideClass: json['class'],
       paymentMethod: json['payment_method'],

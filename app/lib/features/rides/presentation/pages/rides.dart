@@ -5,7 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
 import 'package:taxialong/core/constants/assets.dart';
+import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
+import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_error_page.dart';
@@ -35,12 +37,23 @@ class Rides extends StatefulWidget {
 class _RidesState extends State<Rides> {
   late AxisEntity busstops;
   late home.AxisEntity terminal;
-
+  SecureStorage secureStorage = SecureStorage();
+  String paymentMethod = "cash";
   @override
   void initState() {
     busstops = widget.extra['busstops'];
     terminal = widget.extra['terminal'];
+    _getUserData();
     super.initState();
+  }
+
+  _getUserData() async {
+    UserModel? usermodel = await secureStorage.getUserData();
+    setState(() {
+      if (usermodel?.settings == null) {
+        paymentMethod = usermodel?.settings!.paymentMethod ?? "cash";
+      }
+    });
   }
 
   @override
@@ -159,6 +172,12 @@ class _RidesState extends State<Rides> {
                     ),
                   ),
                   BlocConsumer<RideBloc, RideState>(
+                    buildWhen: (pre, state) {
+                      return state is RideErrorState ||
+                          state is RideLocationDisableState ||
+                          state is RideLoadingState ||
+                          state is RideLoadedState;
+                    },
                     listener: (context, state) {
                       if (state is RideErrorState) {
                         toast(state.message);
@@ -181,7 +200,10 @@ class _RidesState extends State<Rides> {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
-                            return ClassRide(rides: rideEntity[index]);
+                            return ClassRide(
+                              rides: rideEntity[index],
+                              paymentMethod: paymentMethod,
+                            );
                           },
                         );
                       } else {

@@ -3,6 +3,7 @@ import 'package:taxialong/core/connection/network_info.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/features/rides/data/datasources/ride_remote_data_sources.dart';
+import 'package:taxialong/features/rides/data/models/confirm_ride_model.dart';
 import 'package:taxialong/features/rides/data/models/rides_model.dart';
 import 'package:taxialong/features/rides/domain/repositories/ride_repository.dart';
 
@@ -21,6 +22,23 @@ class RidesRepositoryImpl implements RideRepository {
             await remoteDataSource.getAvaiableRides(params);
 
         return Right(ridesModel);
+      } on ServerException {
+        return Left(ServerFailure(message: "There is a server failure"));
+      }
+    } else {
+      return Left(
+          NetworkFailure(message: 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ConfirmRideModel>> confirmRide(params) async {
+    if (await networkInfo.isConnected) {
+      try {
+        ConfirmRideModel confirmRide =
+            await remoteDataSource.confirmRide(params);
+
+        return Right(confirmRide);
       } on ServerException {
         return Left(ServerFailure(message: "There is a server failure"));
       }

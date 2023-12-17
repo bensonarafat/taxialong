@@ -5,13 +5,13 @@ use App\Models\Driver;
 
 trait Seats {
     public function makeSeatUnavailable(int $driverId, string $seats) : bool {
-        $driver = Driver::whereId($driverId)->first();
+        $driver = Driver::where("user_id",$driverId)->first();
         $driverSeats = json_decode($driver->seats, true);
         $selectedSeats = json_decode($seats, true);
         if($this->numberOfAvailableSeats($driverSeats) == 0) return false;
         $updatedSeats = array_map(function (array $seat) use ($selectedSeats) {
             if(in_array($seat['seat'], $selectedSeats)){
-                $seat['status'] = "selected";
+                $seat['status'] = "unavailable";
             }
             return $seat;
         }, $driverSeats );

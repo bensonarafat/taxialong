@@ -5,7 +5,7 @@ class RidesEntity {
   final int rideClass;
   final String paymentMethod;
   final int amount;
-  final List<SeatsEntity>? seats;
+  final List<SeatsEntity> seats;
   final DriverEntity driver;
 
   RidesEntity({

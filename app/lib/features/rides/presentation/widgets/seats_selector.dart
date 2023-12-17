@@ -6,12 +6,86 @@ import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/features/rides/domain/entities/seats_entity.dart';
 
-class SeatsSelector extends StatelessWidget {
-  final List<SeatsEntity>? seats;
+class SeatsSelector extends StatefulWidget {
+  final List<SeatsEntity> seats;
+  final Function callback;
   const SeatsSelector({
     super.key,
     required this.seats,
+    required this.callback,
   });
+
+  @override
+  State<SeatsSelector> createState() => _SeatsSelectorState();
+}
+
+class _SeatsSelectorState extends State<SeatsSelector> {
+  List<Widget> rideseats = [];
+  List<int> selectedSeats = [];
+  @override
+  void initState() {
+    appSeats();
+    super.initState();
+  }
+
+  void appSeats() {
+    for (var element in widget.seats) {
+      late Widget current;
+      if (element.status == 'available') {
+        current = InkWell(
+          onTap: () {
+            selectAndUnselectSeat(element.seat);
+          },
+          child: SvgPicture.asset(
+            availableSeat,
+            width: 48.w,
+            height: 48.h,
+          ),
+        );
+      }
+
+      if (element.status == 'unavailable') {
+        current = SvgPicture.asset(
+          unavailableSeat,
+          width: 48.w,
+          height: 48.h,
+        );
+      }
+      rideseats.insert(element.seat - 1, current);
+    }
+  }
+
+  selectAndUnselectSeat(seat) {
+    setState(() {
+      if (selectedSeats.contains(seat)) {
+        rideseats[seat - 1] = InkWell(
+          onTap: () {
+            selectAndUnselectSeat(seat);
+          },
+          child: SvgPicture.asset(
+            availableSeat,
+            width: 48.w,
+            height: 48.h,
+          ),
+        );
+        selectedSeats.remove(seat);
+      } else {
+        rideseats[seat - 1] = InkWell(
+          onTap: () {
+            selectAndUnselectSeat(seat);
+          },
+          child: SvgPicture.asset(
+            selectedSeat,
+            width: 48.w,
+            height: 48.h,
+          ),
+        );
+        selectedSeats.add(seat);
+      }
+
+      widget.callback(selectedSeats);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,17 +233,21 @@ class SeatsSelector extends StatelessWidget {
                         ),
                       ),
                       Gap(78.w),
-                      SvgPicture.asset(
-                        selectedSeat,
-                        width: 48.w,
-                        height: 48.h,
-                      ),
+                      rideseats.asMap().containsKey(0)
+                          ? rideseats[0]
+                          : SvgPicture.asset(
+                              unavailableSeat,
+                              width: 48.w,
+                              height: 48.h,
+                            ),
                       Gap(78.w),
-                      SvgPicture.asset(
-                        unavailableSeat,
-                        width: 48.w,
-                        height: 48.h,
-                      ),
+                      rideseats.asMap().containsKey(1)
+                          ? rideseats[1]
+                          : SvgPicture.asset(
+                              unavailableSeat,
+                              width: 48.w,
+                              height: 48.h,
+                            ),
                     ],
                   ),
                   Gap(16.h),
@@ -178,23 +256,29 @@ class SeatsSelector extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        unavailableSeat,
-                        width: 48.w,
-                        height: 48.h,
-                      ),
+                      rideseats.asMap().containsKey(2)
+                          ? rideseats[2]
+                          : SvgPicture.asset(
+                              unavailableSeat,
+                              width: 48.w,
+                              height: 48.h,
+                            ),
                       Gap(78.w),
-                      SvgPicture.asset(
-                        selectedSeat,
-                        width: 48.w,
-                        height: 48.h,
-                      ),
+                      rideseats.asMap().containsKey(3)
+                          ? rideseats[3]
+                          : SvgPicture.asset(
+                              unavailableSeat,
+                              width: 48.w,
+                              height: 48.h,
+                            ),
                       Gap(78.w),
-                      SvgPicture.asset(
-                        unavailableSeat,
-                        width: 48.w,
-                        height: 48.h,
-                      ),
+                      rideseats.asMap().containsKey(4)
+                          ? rideseats[4]
+                          : SvgPicture.asset(
+                              unavailableSeat,
+                              width: 48.w,
+                              height: 48.h,
+                            ),
                     ],
                   ),
                   Gap(16.h),
@@ -203,11 +287,13 @@ class SeatsSelector extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        unavailableSeat,
-                        width: 48.w,
-                        height: 48.h,
-                      ),
+                      rideseats.asMap().containsKey(5)
+                          ? rideseats[5]
+                          : SvgPicture.asset(
+                              unavailableSeat,
+                              width: 48.w,
+                              height: 48.h,
+                            ),
                     ],
                   ),
                 ],
