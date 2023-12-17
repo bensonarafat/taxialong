@@ -28,6 +28,7 @@ import 'package:taxialong/features/referral/presentation/pages/referral.dart';
 import 'package:taxialong/features/rides/presentation/pages/rides.dart';
 import 'package:taxialong/features/settings/presentation/pages/settings.dart';
 import 'package:taxialong/features/trip_history/presentation/pages/trip_history.dart';
+import 'package:taxialong/features/trips/presentation/pages/trip.dart';
 import 'package:taxialong/features/wallet/presentation/pages/wallet.dart';
 
 final BottomNavigationBloc bottomNavigationBloc = BottomNavigationBloc();
@@ -165,6 +166,11 @@ final GoRouter router = GoRouter(
       path: "/enable-location",
       name: "enableLocation",
       builder: (context, state) => const TaxiAlongEnableLocationPage(),
+    ),
+    GoRoute(
+      path: "/trip",
+      name: "trip",
+      builder: (context, state) => const Trip(),
     ),
   ],
   redirect: (context, state) async {

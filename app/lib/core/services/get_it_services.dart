@@ -60,6 +60,7 @@ import 'package:taxialong/features/profile/presentation/bloc/profile/profile_blo
 import 'package:taxialong/features/rides/data/datasources/ride_remote_data_sources.dart';
 import 'package:taxialong/features/rides/data/repositories/rides_repository_impl.dart';
 import 'package:taxialong/features/rides/domain/repositories/ride_repository.dart';
+import 'package:taxialong/features/rides/domain/usecases/confirm_ride_usecase.dart';
 import 'package:taxialong/features/rides/domain/usecases/get_rides_usecase.dart';
 import 'package:taxialong/features/rides/presentation/bloc/ride_bloc.dart';
 
@@ -324,11 +325,14 @@ Future<void> setupLocator() async {
   // rides instance
   getIt.registerFactory<RideBloc>(() => RideBloc(
         getRidesUseCase: getIt(),
+        confirmRideUseCase: getIt(),
       ));
 
   //usecase
   getIt.registerLazySingleton<GetRidesUseCase>(
       () => GetRidesUseCase(repository: getIt()));
+  getIt.registerLazySingleton<ConfirmRideUseCase>(
+      () => ConfirmRideUseCase(repository: getIt()));
 
   //repository
   getIt.registerLazySingleton<RideRepository>(

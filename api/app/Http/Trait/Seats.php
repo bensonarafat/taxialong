@@ -11,7 +11,7 @@ trait Seats {
         if($this->numberOfAvailableSeats($driverSeats) == 0) return false;
         $updatedSeats = array_map(function (array $seat) use ($selectedSeats) {
             if(in_array($seat['seat'], $selectedSeats)){
-                $seat['status'] = "selected";
+                $seat['status'] = "unavailable";
             }
             return $seat;
         }, $driverSeats );

@@ -2,6 +2,7 @@ import 'package:taxialong/features/rides/domain/entities/driver_entity.dart';
 
 class DriverModel extends DriverEntity {
   DriverModel({
+    required super.id,
     required super.firstname,
     required super.lastname,
     required super.email,
@@ -13,6 +14,7 @@ class DriverModel extends DriverEntity {
 
   factory DriverModel.fromJson(Map<String, dynamic> json) {
     return DriverModel(
+      id: json['id'],
       firstname: json['firstname'],
       lastname: json["lastname"],
       email: json['email'],
