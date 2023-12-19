@@ -169,42 +169,50 @@ class _ClassRideState extends State<ClassRide> {
                       child: GestureDetector(
                         onTap: () {
                           selectedSeats.clear();
-                          WoltModalSheet.show<void>(
-                            enableDrag: true,
-                            context: context,
-                            pageListBuilder: (context) {
-                              return [
-                                selectSeatPreference(
-                                  context: context,
-                                  seats: widget.rides.seats,
-                                  paymentMethod: widget.paymentMethod,
-                                  callback: tripSeats,
-                                ),
-                              ];
-                            },
-                            modalTypeBuilder: (context) {
-                              return WoltModalType.bottomSheet;
-                            },
-                            maxDialogWidth: 560.w,
-                            minDialogWidth: 400.w,
-                            minPageHeight: 0.0,
-                          ).then((value) {
-                            if (selectedSeats.isNotEmpty) {
-                              context.read<RideBloc>().add(
-                                    RideBookEvent(
-                                      seats: selectedSeats,
-                                      amount: widget.rides.amount.toString(),
-                                      driverId:
-                                          widget.rides.driver.id.toString(),
-                                      pointa: '1',
-                                      pointb: '2',
-                                      tripClass:
-                                          widget.rides.rideClass.toString(),
-                                      paymentMethod: widget.paymentMethod,
-                                    ),
-                                  );
-                            }
-                          });
+
+                          if (widget.paymentMethod.toLowerCase() ==
+                              widget.rides.paymentMethod.toLowerCase()) {
+                            WoltModalSheet.show<void>(
+                              enableDrag: true,
+                              context: context,
+                              pageListBuilder: (context) {
+                                return [
+                                  selectSeatPreference(
+                                    context: context,
+                                    seats: widget.rides.seats,
+                                    paymentMethod: widget.paymentMethod,
+                                    callback: tripSeats,
+                                  ),
+                                ];
+                              },
+                              modalTypeBuilder: (context) {
+                                return WoltModalType.bottomSheet;
+                              },
+                              maxDialogWidth: 560.w,
+                              minDialogWidth: 400.w,
+                              minPageHeight: 0.0,
+                            ).then((value) {
+                              if (selectedSeats.isNotEmpty) {
+                                context.read<RideBloc>().add(
+                                      RideBookEvent(
+                                        seats: selectedSeats,
+                                        amount: widget.rides.amount.toString(),
+                                        driverId:
+                                            widget.rides.driver.id.toString(),
+                                        pointa: widget.rides.pointa.toString(),
+                                        pointb: widget.rides.pointb.toString(),
+                                        tripClass:
+                                            widget.rides.rideClass.toString(),
+                                        paymentMethod: widget.paymentMethod,
+                                      ),
+                                    );
+                              }
+                            });
+                          } else {
+                            toast(
+                              "You can book this class because the driver only accept ${widget.rides.paymentMethod.inCaps} payment",
+                            );
+                          }
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

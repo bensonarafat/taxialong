@@ -9,6 +9,8 @@ class RidesModel extends RidesEntity {
     required super.amount,
     required super.seats,
     required super.driver,
+    required super.pointa,
+    required super.pointb,
   });
 
   factory RidesModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,8 @@ class RidesModel extends RidesEntity {
       amount: json['amount'],
       seats: seats,
       driver: DriverModel.fromJson(json['driver']),
+      pointa: json['pointa'],
+      pointb: json['pointb'],
     );
   }
 }

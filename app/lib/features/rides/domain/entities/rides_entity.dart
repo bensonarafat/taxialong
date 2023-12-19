@@ -7,6 +7,8 @@ class RidesEntity {
   final int amount;
   final List<SeatsEntity> seats;
   final DriverEntity driver;
+  final int pointa;
+  final int pointb;
 
   RidesEntity({
     required this.rideClass,
@@ -14,5 +16,7 @@ class RidesEntity {
     required this.amount,
     required this.seats,
     required this.driver,
+    required this.pointa,
+    required this.pointb,
   });
 }
