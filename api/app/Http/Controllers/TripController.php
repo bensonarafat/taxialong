@@ -91,6 +91,8 @@ class TripController extends Controller
                         "amount" => $amount,
                         "driver" => User::find($driver->settings->user_id),
                         "seats" => json_decode($driver->seats),
+                        "pointa" => $pointa->id,
+                        "pointb" => $pointb->id,
                     ];
                 }
 
