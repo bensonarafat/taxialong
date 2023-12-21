@@ -169,7 +169,6 @@ class _ClassRideState extends State<ClassRide> {
                       child: GestureDetector(
                         onTap: () {
                           selectedSeats.clear();
-
                           if (widget.paymentMethod.toLowerCase() ==
                               widget.rides.paymentMethod.toLowerCase()) {
                             WoltModalSheet.show<void>(

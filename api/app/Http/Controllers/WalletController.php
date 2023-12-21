@@ -13,4 +13,16 @@ class WalletController extends Controller
     public function fundWallet(Request $request) : JsonResponse{
         return response()->json();
     }
+
+    public function wallet() : JsonResponse
+    {
+        return response()->json([
+            "status" => true,
+            "message" => "Wallet fetched",
+            "data" => [
+                "bonus" => $this->availableBonus(),
+                "fund" => $this->availableFund(),
+            ]
+            ]);
+    }
 }

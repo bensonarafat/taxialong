@@ -63,6 +63,12 @@ import 'package:taxialong/features/rides/domain/repositories/ride_repository.dar
 import 'package:taxialong/features/rides/domain/usecases/confirm_ride_usecase.dart';
 import 'package:taxialong/features/rides/domain/usecases/get_rides_usecase.dart';
 import 'package:taxialong/features/rides/presentation/bloc/ride_bloc.dart';
+import 'package:taxialong/features/wallet/data/datasources/wallet_remote_datasource.dart';
+import 'package:taxialong/features/wallet/data/repositories/wallet_repository_impl.dart';
+import 'package:taxialong/features/wallet/domain/repositories/wallet_repository.dart';
+import 'package:taxialong/features/wallet/domain/usecases/get_transaction_usecase.dart';
+import 'package:taxialong/features/wallet/domain/usecases/get_wallet_usecase.dart';
+import 'package:taxialong/features/wallet/presentation/bloc/wallet_bloc.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -347,4 +353,35 @@ Future<void> setupLocator() async {
   );
 
   getIt.registerLazySingleton(() => Logger());
+
+  /**
+ * -----------------------------------------------------------------------------------------------------------
+ */
+
+  // rides instance
+  getIt.registerFactory<WalletBloc>(() => WalletBloc(
+        getTransactionUseCase: getIt(),
+        getWalletUseCase: getIt(),
+      ));
+
+  //usecase
+  getIt.registerLazySingleton<GetWalletUseCase>(
+      () => GetWalletUseCase(repository: getIt()));
+  getIt.registerLazySingleton<GetTransactionUseCase>(
+      () => GetTransactionUseCase(repository: getIt()));
+
+  //repository
+  getIt.registerLazySingleton<WalletRepository>(
+    () => WalletRepositoryImpl(
+      networkInfo: getIt(),
+      remoteDataSource: getIt(),
+    ),
+  );
+  //remote data source
+  getIt.registerLazySingleton<WalletRemoteDataSource>(
+    () => WalletRemoteDataSourceImpl(
+      client: client,
+      secureStorage: getIt(),
+    ),
+  );
 }

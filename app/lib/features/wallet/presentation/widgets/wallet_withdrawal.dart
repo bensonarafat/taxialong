@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:taxialong/core/constants/assets.dart';
+import 'package:taxialong/features/wallet/domain/entities/transaction_entity.dart';
 
 class WalletWithdrawal extends StatelessWidget {
-  const WalletWithdrawal({super.key});
+  final TransactionEntity transaction;
+  const WalletWithdrawal({
+    super.key,
+    required this.transaction,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +75,7 @@ class WalletWithdrawal extends StatelessWidget {
                   Expanded(
                     child: SizedBox(
                       child: Text(
-                        '₦2000.00',
+                        '₦${transaction.amount}',
                         textAlign: TextAlign.right,
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
                               fontSize: 14.sp,
