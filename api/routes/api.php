@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\TerminalController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\WalletController;
 use Illuminate\Http\Request;
@@ -61,6 +62,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::group(["prefix" => "wallet"], function(){
+        Route::get("", [WalletController::class, "wallet"]);
         Route::post("/fund", [WalletController::class, "fundWallet"]);
+    });
+
+    Route::group(["prefix" => "transactions"], function() {
+        Route::get("", [TransactionController::class, "transactions"]);
     });
 });

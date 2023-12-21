@@ -1,0 +1,54 @@
+part of 'wallet_bloc.dart';
+
+@immutable
+abstract class WalletState extends Equatable {}
+
+class WalletInitialState extends WalletState {
+  @override
+  List<Object?> get props => [];
+}
+
+class WalletLoadingState extends WalletState {
+  @override
+  List<Object?> get props => [];
+}
+
+class TransactionLoadingState extends WalletState {
+  @override
+  List<Object?> get props => [];
+}
+
+class TransactionErrorState extends WalletState {
+  final String message;
+
+  TransactionErrorState({required this.message});
+  @override
+  List<Object?> get props => [message];
+}
+
+class WalletErrorState extends WalletState {
+  final String message;
+
+  WalletErrorState({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class WalletLoadedState extends WalletState {
+  final WalletEntity walletEntity;
+
+  WalletLoadedState({required this.walletEntity});
+
+  @override
+  List<Object?> get props => [walletEntity];
+}
+
+class TransactionLoadedState extends WalletState {
+  final List<TransactionEntity> transactionEntity;
+
+  TransactionLoadedState({required this.transactionEntity});
+
+  @override
+  List<Object?> get props => [transactionEntity];
+}

@@ -5,8 +5,10 @@ import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 class WalletAvailableBalance extends StatelessWidget {
+  final int wallet;
   const WalletAvailableBalance({
     super.key,
+    required this.wallet,
   });
 
   @override
@@ -37,7 +39,7 @@ class WalletAvailableBalance extends StatelessWidget {
                       alignment: Alignment.center,
                       width: 111.w,
                       child: Text(
-                        "₦500.00",
+                        "₦$wallet",
                         style:
                             Theme.of(context).textTheme.headlineSmall!.copyWith(
                                   fontSize: 20.sp,
