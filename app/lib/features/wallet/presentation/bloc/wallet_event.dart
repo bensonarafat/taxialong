@@ -12,3 +12,12 @@ class FetchTransactionEvent extends WalletEvent {
   @override
   List<Object?> get props => [];
 }
+
+class UpdatePaymentMethodEvent extends WalletEvent {
+  final String paymentMethod;
+
+  UpdatePaymentMethodEvent({required this.paymentMethod});
+
+  @override
+  List<Object?> get props => [paymentMethod];
+}

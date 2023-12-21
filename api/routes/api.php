@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::group(["prefix" => "wallet"], function(){
         Route::get("", [WalletController::class, "wallet"]);
         Route::post("/fund", [WalletController::class, "fundWallet"]);
+        Route::post("/update-payment-method", [WalletController::class, "updatePaymentMethod"]);
     });
 
     Route::group(["prefix" => "transactions"], function() {

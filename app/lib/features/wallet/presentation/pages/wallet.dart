@@ -10,9 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/widgets/taxi_along_search_container.dart';
 import 'package:taxialong/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:taxialong/core/widgets/taxi_along_wallet_payment_method.dart';
+import 'package:taxialong/features/wallet/presentation/widgets/transactions.dart';
 import 'package:taxialong/features/wallet/presentation/widgets/wallet_widgets.dart';
-
-selected() {}
 
 class Wallet extends StatefulWidget {
   const Wallet({super.key});
@@ -72,10 +71,15 @@ class _WalletState extends State<Wallet> {
               children: [
                 const WalletWidgets(),
                 Gap(16.h),
-                const WalletPaymentMethod(
-                  paymentMethod: 'cash',
-                  callback: selected,
-                ),
+                Builder(builder: (context) {
+                  return WalletPaymentMethod(
+                    paymentMethod: 'cash',
+                    callback: (paymentMethod) {
+                      context.read<WalletBloc>().add(UpdatePaymentMethodEvent(
+                          paymentMethod: paymentMethod));
+                    },
+                  );
+                }),
                 Gap(16.h),
                 Row(
                   children: [
@@ -104,7 +108,7 @@ class _WalletState extends State<Wallet> {
                   ],
                 ),
                 Gap(16.h),
-                // const Transactions(),
+                const Transactions(),
               ],
             ),
           ),
