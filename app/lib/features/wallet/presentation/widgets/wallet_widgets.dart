@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_error_widget.dart';
 import 'package:taxialong/core/widgets/taxi_along_loading.dart';
@@ -18,6 +19,9 @@ class WalletWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<WalletBloc, WalletState>(
+      buildWhen: (pre, state) {
+        return state is WalletLoadingState || state is WalletLoadedState;
+      },
       listener: (context, state) {
         if (state is WalletErrorState) {
           toast(state.message);
@@ -25,7 +29,10 @@ class WalletWidgets extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is WalletLoadingState) {
-          return const TaxiAlongLoading();
+          return TaxiAlongLoading(
+            color:
+                Theme.of(context).brightness == Brightness.dark ? white : dark,
+          );
         } else if (state is WalletLoadedState) {
           WalletEntity walletEntity = state.walletEntity;
           return Container(

@@ -39,7 +39,7 @@ class WalletAvailableBalance extends StatelessWidget {
                       alignment: Alignment.center,
                       width: 111.w,
                       child: Text(
-                        "₦$wallet",
+                        "₦ $wallet",
                         style:
                             Theme.of(context).textTheme.headlineSmall!.copyWith(
                                   fontSize: 20.sp,
