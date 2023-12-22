@@ -378,6 +378,8 @@ Future<void> setupLocator() async {
     () => WalletRepositoryImpl(
       networkInfo: getIt(),
       remoteDataSource: getIt(),
+      userDataSource: getIt(),
+      secureStorage: getIt(),
     ),
   );
   //remote data source

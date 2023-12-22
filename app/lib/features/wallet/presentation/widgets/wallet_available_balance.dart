@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
-class WalletAvailableBalance extends StatelessWidget {
+class WalletAvailableBalance extends StatefulWidget {
   final int wallet;
   const WalletAvailableBalance({
     super.key,
     required this.wallet,
   });
+
+  @override
+  State<WalletAvailableBalance> createState() => _WalletAvailableBalanceState();
+}
+
+class _WalletAvailableBalanceState extends State<WalletAvailableBalance> {
+  bool ishide = false;
+
+  hideUnHide() {
+    setState(() {
+      ishide = !ishide;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +53,7 @@ class WalletAvailableBalance extends StatelessWidget {
                       alignment: Alignment.center,
                       width: 111.w,
                       child: Text(
-                        "₦ $wallet",
+                        ishide ? "***" : "₦ ${widget.wallet}",
                         style:
                             Theme.of(context).textTheme.headlineSmall!.copyWith(
                                   fontSize: 20.sp,
@@ -47,7 +61,8 @@ class WalletAvailableBalance extends StatelessWidget {
                                 ),
                       ),
                     ),
-                    Image.asset(eye),
+                    GestureDetector(
+                        onTap: () => hideUnHide(), child: Image.asset(eye)),
                   ],
                 ),
               ),
@@ -77,7 +92,7 @@ class WalletAvailableBalance extends StatelessWidget {
                 ),
                 backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
               ),
-              onPressed: () {},
+              onPressed: () => context.push("/fund-wallet"),
               child: Text(
                 "Fund wallet",
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(

@@ -29,7 +29,9 @@ import 'package:taxialong/features/rides/presentation/pages/rides.dart';
 import 'package:taxialong/features/settings/presentation/pages/settings.dart';
 import 'package:taxialong/features/trip_history/presentation/pages/trip_history.dart';
 import 'package:taxialong/features/trips/presentation/pages/trip.dart';
+import 'package:taxialong/features/wallet/presentation/pages/fund.dart';
 import 'package:taxialong/features/wallet/presentation/pages/wallet.dart';
+import 'package:taxialong/features/wallet/presentation/pages/withdraw.dart';
 
 final BottomNavigationBloc bottomNavigationBloc = BottomNavigationBloc();
 final GoRouter router = GoRouter(
@@ -171,6 +173,17 @@ final GoRouter router = GoRouter(
       path: "/trip",
       name: "trip",
       builder: (context, state) => const Trip(),
+    ),
+
+    GoRoute(
+      path: "/withdraw-fund",
+      name: "withdrawFund",
+      builder: (context, state) => const Withdraw(),
+    ),
+    GoRoute(
+      path: "/fund-wallet",
+      name: "fundWallet",
+      builder: (context, state) => const Fund(),
     ),
   ],
   redirect: (context, state) async {
