@@ -94,7 +94,7 @@ class _WalletAvailableBalanceState extends State<WalletAvailableBalance> {
               ),
               onPressed: () => context.push("/fund-wallet"),
               child: Text(
-                "Fund wallet",
+                "Top up",
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontWeight: FontWeight.w600,
                       color: white,

@@ -29,7 +29,9 @@ import 'package:taxialong/features/rides/presentation/pages/rides.dart';
 import 'package:taxialong/features/settings/presentation/pages/settings.dart';
 import 'package:taxialong/features/trip_history/presentation/pages/trip_history.dart';
 import 'package:taxialong/features/trips/presentation/pages/trip.dart';
+import 'package:taxialong/features/wallet/domain/entities/initialize_entity.dart';
 import 'package:taxialong/features/wallet/presentation/pages/fund.dart';
+import 'package:taxialong/features/wallet/presentation/pages/payment_webview.dart';
 import 'package:taxialong/features/wallet/presentation/pages/wallet.dart';
 import 'package:taxialong/features/wallet/presentation/pages/withdraw.dart';
 
@@ -184,6 +186,14 @@ final GoRouter router = GoRouter(
       path: "/fund-wallet",
       name: "fundWallet",
       builder: (context, state) => const Fund(),
+    ),
+
+    GoRoute(
+      path: "/payment-webview",
+      name: "PaymentWebview",
+      builder: (context, state) => PaymentWebView(
+        initializeEntity: state.extra as InitializeEntity,
+      ),
     ),
   ],
   redirect: (context, state) async {

@@ -9,6 +9,11 @@ import 'package:taxialong/core/constants/assets.dart';
 
 const endpoint = "http://taxialong.com/api/";
 
+const paystackInitializeEndpoint =
+    "https://api.paystack.co/transaction/initialize";
+
+const paystackSecretKey = "sk_test_8e6cf8a8d90cd1bd6e29d5616ef7daf1a30b0c21";
+
 const imageplaceholder =
     "https://res.cloudinary.com/dxlgnxlzt/image/upload/v1701358353/default/y3uwlifaijlubtpvzeso.png";
 const LinearGradient onboardGradiant = LinearGradient(

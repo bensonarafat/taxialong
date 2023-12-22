@@ -52,3 +52,16 @@ class TransactionLoadedState extends WalletState {
   @override
   List<Object?> get props => [transactionEntity];
 }
+
+class InitializePaymentLoading extends WalletState {
+  @override
+  List<Object?> get props => [];
+}
+
+class InitializePaymentLoaded extends WalletState {
+  final InitializeEntity initializeEntity;
+
+  InitializePaymentLoaded({required this.initializeEntity});
+  @override
+  List<Object?> get props => [initializeEntity];
+}

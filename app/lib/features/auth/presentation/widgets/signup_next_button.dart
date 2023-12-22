@@ -59,6 +59,7 @@ class SignUpNextButton extends StatelessWidget {
                   ),
             onPressed: () {
               String otp = otps!.values.join();
+
               if (otp.isNotEmpty) {
                 if (telephone != null || uuid != null) {
                   context.read<AuthBloc>().add(VerifyOTPEvent(
