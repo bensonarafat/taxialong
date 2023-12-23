@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/constants/constants.dart';
+import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
@@ -24,7 +25,7 @@ class TaxiAlongDrawer extends StatefulWidget {
 }
 
 class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
-  SecureStorage secureStorage = SecureStorage();
+  SecureStorage secureStorage = getIt<SecureStorage>();
   bool driverMode = false;
   int documentCount = 0;
   String username = "";

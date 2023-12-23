@@ -21,3 +21,21 @@ class UpdatePaymentMethodEvent extends WalletEvent {
   @override
   List<Object?> get props => [paymentMethod];
 }
+
+class InitializePaymentEvent extends WalletEvent {
+  final String amount;
+
+  InitializePaymentEvent({required this.amount});
+
+  @override
+  List<Object?> get props => [amount];
+}
+
+class VerifyPaymentEvent extends WalletEvent {
+  final String? reference;
+
+  VerifyPaymentEvent({required this.reference});
+
+  @override
+  List<Object?> get props => [reference];
+}

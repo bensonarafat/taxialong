@@ -3,6 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:taxialong/core/constants/assets.dart';
+import 'package:taxialong/core/data/models/user_model.dart';
+import 'package:taxialong/core/services/get_it_services.dart';
+import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
 
 class WalletPaymentMethod extends StatefulWidget {
@@ -20,11 +23,20 @@ class WalletPaymentMethod extends StatefulWidget {
 
 class _WalletPaymentMethodState extends State<WalletPaymentMethod> {
   late String selected;
-
+  SecureStorage secureStorage = getIt<SecureStorage>();
+  String paymentMethod = "cash";
   @override
   void initState() {
     selected = widget.paymentMethod;
+    _getUserData();
     super.initState();
+  }
+
+  _getUserData() async {
+    UserModel? usermodel = await secureStorage.getUserData();
+    setState(() {
+      selected = usermodel?.settings?.paymentMethod ?? "cash";
+    });
   }
 
   selectedFunc(paymentMethod) {

@@ -47,6 +47,7 @@ dependencies:
   intl: any
   logger: ^2.0.2+1
   pay: ^1.1.2
+  webview_flutter: ^4.4.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

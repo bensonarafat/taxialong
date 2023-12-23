@@ -68,7 +68,9 @@ import 'package:taxialong/features/wallet/data/repositories/wallet_repository_im
 import 'package:taxialong/features/wallet/domain/repositories/wallet_repository.dart';
 import 'package:taxialong/features/wallet/domain/usecases/get_transaction_usecase.dart';
 import 'package:taxialong/features/wallet/domain/usecases/get_wallet_usecase.dart';
+import 'package:taxialong/features/wallet/domain/usecases/initialize_transaction_usecase.dart';
 import 'package:taxialong/features/wallet/domain/usecases/update_payment_method_usecase.dart';
+import 'package:taxialong/features/wallet/domain/usecases/verify_payment_usecase.dart';
 import 'package:taxialong/features/wallet/presentation/bloc/wallet_bloc.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -364,6 +366,8 @@ Future<void> setupLocator() async {
         getTransactionUseCase: getIt(),
         getWalletUseCase: getIt(),
         updatePaymentMethodUseCase: getIt(),
+        initializePaymentUseCase: getIt(),
+        verifyPaymentUseCase: getIt(),
       ));
 
   //usecase
@@ -373,11 +377,17 @@ Future<void> setupLocator() async {
       () => GetTransactionUseCase(repository: getIt()));
   getIt.registerLazySingleton<UpdatePaymentMethodUseCase>(
       () => UpdatePaymentMethodUseCase(repository: getIt()));
+  getIt.registerLazySingleton<InitializePaymentUseCase>(
+      () => InitializePaymentUseCase(repository: getIt()));
+  getIt.registerLazySingleton<VerifyPaymentUseCase>(
+      () => VerifyPaymentUseCase(repository: getIt()));
   //repository
   getIt.registerLazySingleton<WalletRepository>(
     () => WalletRepositoryImpl(
       networkInfo: getIt(),
       remoteDataSource: getIt(),
+      userDataSource: getIt(),
+      secureStorage: getIt(),
     ),
   );
   //remote data source
