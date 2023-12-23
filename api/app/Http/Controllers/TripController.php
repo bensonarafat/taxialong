@@ -155,7 +155,25 @@ class TripController extends Controller
 
     }
 
-    public function ongoing(Request $request){
+    public function requests():  JsonResponse
+    {
+        if(auth()->user()->role == "driver") {
+           return $this->driverRequestedTrips();
+        }else{
+            return $this->riderRequestedTrip();
+        }
+    }
 
+    private function driverRequestedTrips() : JsonResponse
+    {
+        $trips = Trip::where(["driver_id" => auth()->user()->id, "status" => "requested"])->with(["riders", "location" ,'pointa', 'pointb'])->latest()->get();
+        return response()->json(["status" => true, "data" => $trips]);
+    }
+
+    private function riderRequestedTrip() : JsonResponse
+    {
+        $trip = Trip::where(["rider_id" => auth()->user()->id, "status" => "requested"])->with(['driver', 'location', 'reviews','pointa', 'pointb'])->withAvg('reviews', 'rating')->latest()->first();
+        //NOTE:  Distance
+        return response()->json(["status" => true, "data" => $trip]);
     }
 }

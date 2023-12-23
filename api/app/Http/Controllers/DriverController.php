@@ -33,6 +33,7 @@ class DriverController extends Controller
                 "latitude" => $request->latitude,
                 "longitude" => $request->longitude,
             ]);
+            //TODO :: Event here
             return response()->json([
                 "status" => true,
                 "message" => "Position updated",
