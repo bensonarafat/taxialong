@@ -1,6 +1,6 @@
 class VerifyPaymentEntity {
   final bool status;
-  final String amount;
+  final int amount;
 
   VerifyPaymentEntity({
     required this.status,

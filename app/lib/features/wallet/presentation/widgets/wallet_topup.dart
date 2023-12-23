@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:taxialong/core/constants/assets.dart';
+import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/wallet/domain/entities/transaction_entity.dart';
 
 class WalletTopUp extends StatelessWidget {
@@ -45,7 +46,7 @@ class WalletTopUp extends StatelessWidget {
                         SizedBox(
                           width: double.infinity,
                           child: Text(
-                            'Tony',
+                            '${transaction.description}',
                             style:
                                 Theme.of(context).textTheme.bodySmall!.copyWith(
                                       fontWeight: FontWeight.w500,
@@ -56,7 +57,7 @@ class WalletTopUp extends StatelessWidget {
                         SizedBox(
                           width: double.infinity,
                           child: Text(
-                            'Today at 02:45 pm',
+                            readableDate(transaction.createdAt),
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!
@@ -76,6 +77,7 @@ class WalletTopUp extends StatelessWidget {
                     child: SizedBox(
                       child: Text(
                         '₦${transaction.amount}',
+                        maxLines: 1,
                         textAlign: TextAlign.right,
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
                               fontSize: 14.sp,

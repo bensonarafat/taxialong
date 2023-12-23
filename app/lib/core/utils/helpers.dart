@@ -273,3 +273,20 @@ String numberFormat(int amount) {
   );
   return formatter.format(amount);
 }
+
+String readableDate(String date) {
+  DateTime dateTime = DateTime.parse(date);
+  DateTime now = DateTime.now();
+  DateTime today = DateTime(now.year, now.month, now.day);
+  String formattedDate;
+  if (dateTime.isAfter(today) &&
+      dateTime.isBefore(today.add(const Duration(days: 1)))) {
+    // If the date is today
+    formattedDate = "Today at ${DateFormat.jm().format(dateTime)}";
+  } else {
+    // For other days
+    formattedDate = DateFormat('MMM d, y \'at\' h:mm a').format(dateTime);
+  }
+
+  return formattedDate;
+}

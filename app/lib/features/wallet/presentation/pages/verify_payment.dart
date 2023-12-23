@@ -40,7 +40,7 @@ class VerifyPayment extends StatelessWidget {
               if (verifyPaymentEntity.status) {
                 return TaxiAlongPaymentSuccessPage(
                   reference: params['reference'],
-                  amount: verifyPaymentEntity.amount,
+                  amount: verifyPaymentEntity.amount.toString(),
                 );
               } else {
                 return const TaxiAlongPaymentFailedPage();
