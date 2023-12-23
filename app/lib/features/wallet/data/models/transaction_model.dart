@@ -6,6 +6,7 @@ class TransactionModel extends TransactionEntity {
     required super.type,
     required super.amount,
     required super.description,
+    required super.createdAt,
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
@@ -14,6 +15,7 @@ class TransactionModel extends TransactionEntity {
       type: json['type'],
       amount: json['amount'],
       description: json['description'],
+      createdAt: json['created_at'],
     );
   }
 }

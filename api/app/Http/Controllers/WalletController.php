@@ -50,8 +50,9 @@ class WalletController extends Controller
             $body = $response->getBody()->getContents();
             $content = json_decode($body, true);
             if($content['status']){
-                $this->topUp($content['data']['amount'], "fund");
-                $transaction = $this->createTransaction($content['data']['amount'], "credit", "Top up");
+                $amount = intval($content['data']['amount']) / 100;
+                $this->topUp($amount, "fund");
+                $transaction = $this->createTransaction($amount, "credit", "Top up");
                 $this->createPayment($transaction, $content['data']);
                 return response()->json(["status" => true, "message" => "Payment sucessful", "amount" => $content['data']['amount']]);
             }else{
@@ -69,7 +70,7 @@ class WalletController extends Controller
             "domain" => $content['domain'],
             "status" => $content['status'],
             "reference" => $content['reference'],
-            "amount" => $content['amount'],
+            "amount" => intval($content['data']['amount']) / 100,
             "gateway_response" => $content['gateway_response'],
             'channel' => $content['channel'],
             'currency' => $content['currency'],

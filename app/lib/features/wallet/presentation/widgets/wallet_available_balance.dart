@@ -54,6 +54,7 @@ class _WalletAvailableBalanceState extends State<WalletAvailableBalance> {
                       width: 111.w,
                       child: Text(
                         ishide ? "***" : "₦ ${widget.wallet}",
+                        maxLines: 1,
                         style:
                             Theme.of(context).textTheme.headlineSmall!.copyWith(
                                   fontSize: 20.sp,
