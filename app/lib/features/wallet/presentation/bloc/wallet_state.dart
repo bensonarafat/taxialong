@@ -65,3 +65,17 @@ class InitializePaymentLoaded extends WalletState {
   @override
   List<Object?> get props => [initializeEntity];
 }
+
+class VerifyPaymentLoaded extends WalletState {
+  final VerifyPaymentEntity verifyPaymentEntity;
+
+  VerifyPaymentLoaded({required this.verifyPaymentEntity});
+  @override
+  List<Object?> get props => [verifyPaymentEntity];
+}
+
+class PaymentFailed extends WalletState {
+  PaymentFailed();
+  @override
+  List<Object?> get props => [];
+}

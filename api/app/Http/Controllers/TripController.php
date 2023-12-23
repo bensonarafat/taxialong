@@ -146,7 +146,7 @@ class TripController extends Controller
             if(!$this->withdraw($request->amount, "fund")){
                 throw new Exception("Insufficient fund");
             }
-            $this->createTransaction($request, "debit");
+            $this->createTransaction($request->amount, "debit", 'Trip Payment');
         }
         return $this->createTrip($request);
     }

@@ -7,6 +7,7 @@ import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/wallet/data/models/initialize_model.dart';
 import 'package:taxialong/features/wallet/data/models/payment_method_model.dart';
 import 'package:taxialong/features/wallet/data/models/transaction_model.dart';
+import 'package:taxialong/features/wallet/data/models/verify_payment_model.dart';
 import 'package:taxialong/features/wallet/data/models/wallet_model.dart';
 import 'package:taxialong/features/wallet/domain/usecases/update_payment_method_usecase.dart';
 
@@ -15,6 +16,7 @@ abstract class WalletRemoteDataSource {
   Future<WalletModel> getWallet();
   Future<InitializeModel> initializePayment(params);
   Future<PaymentMethodModel> updatePaymentMethod(PaymentMethodParam param);
+  Future<VerifyPaymentModel> verifyPayment(params);
 }
 
 class WalletRemoteDataSourceImpl implements WalletRemoteDataSource {
@@ -101,18 +103,39 @@ class WalletRemoteDataSourceImpl implements WalletRemoteDataSource {
     if (userModel == null) throw ServerException();
     var headers = {
       'Authorization': 'Bearer $paystackSecretKey',
-      'Accept': 'application/json'
+      'Accept': 'application/json',
     };
     var url = Uri.parse(paystackInitializeEndpoint);
     var response = await client.post(url, headers: headers, body: {
       "email": userModel.email,
-      "amount": params.amount,
+      "amount": (int.parse(params.amount) * 100).toString(),
+      "callback_url": "${endpoint}paystack-callback",
     });
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
 
       return InitializeModel.fromJson(data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<VerifyPaymentModel> verifyPayment(params) async {
+    final token = await secureStorage.getToken();
+    if (token == null) throw ServerException();
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    };
+    var url = Uri.parse("${endpoint}wallet/verify-payment/${params.reference}");
+    var response = await client.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+
+      return VerifyPaymentModel.fromJson(data);
     } else {
       throw ServerException();
     }

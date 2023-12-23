@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 
 trait TaxiAlongTransaction{
 
-    public function createTransaction(Request $request, string $type) : void {
-        Transaction::create([
+    public function createTransaction(string $amount, string $type, string $description) : Transaction
+     {
+       return Transaction::create([
             "user_id" => auth()->user()->id,
             "type" => $type,
-            "amount" => $request->amount,
+            "amount" => $amount,
+            "description" => $description,
         ]);
     }
 }

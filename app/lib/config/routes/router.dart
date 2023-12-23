@@ -32,6 +32,7 @@ import 'package:taxialong/features/trips/presentation/pages/trip.dart';
 import 'package:taxialong/features/wallet/domain/entities/initialize_entity.dart';
 import 'package:taxialong/features/wallet/presentation/pages/fund.dart';
 import 'package:taxialong/features/wallet/presentation/pages/payment_webview.dart';
+import 'package:taxialong/features/wallet/presentation/pages/verify_payment.dart';
 import 'package:taxialong/features/wallet/presentation/pages/wallet.dart';
 import 'package:taxialong/features/wallet/presentation/pages/withdraw.dart';
 
@@ -194,6 +195,13 @@ final GoRouter router = GoRouter(
       builder: (context, state) => PaymentWebView(
         initializeEntity: state.extra as InitializeEntity,
       ),
+    ),
+
+    GoRoute(
+      path: "/verify-payment",
+      name: "VerifyPayment",
+      builder: (context, state) =>
+          VerifyPayment(params: state.extra as Map<String, dynamic>),
     ),
   ],
   redirect: (context, state) async {

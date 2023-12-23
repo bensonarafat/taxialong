@@ -9,6 +9,7 @@ import 'package:taxialong/features/wallet/data/datasources/wallet_remote_datasou
 import 'package:taxialong/features/wallet/data/models/initialize_model.dart';
 import 'package:taxialong/features/wallet/data/models/payment_method_model.dart';
 import 'package:taxialong/features/wallet/data/models/transaction_model.dart';
+import 'package:taxialong/features/wallet/data/models/verify_payment_model.dart';
 import 'package:taxialong/features/wallet/data/models/wallet_model.dart';
 import 'package:taxialong/features/wallet/domain/repositories/wallet_repository.dart';
 
@@ -83,6 +84,23 @@ class WalletRepositoryImpl implements WalletRepository {
             await remoteDataSource.initializePayment(params);
 
         return Right(initializeModel);
+      } on ServerException {
+        return Left(ServerFailure(message: "There is a server failure"));
+      }
+    } else {
+      return Left(
+          NetworkFailure(message: 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, VerifyPaymentModel>> verifyPayment(params) async {
+    if (await networkInfo.isConnected) {
+      try {
+        VerifyPaymentModel verifyPaymentModel =
+            await remoteDataSource.verifyPayment(params);
+
+        return Right(verifyPaymentModel);
       } on ServerException {
         return Left(ServerFailure(message: "There is a server failure"));
       }

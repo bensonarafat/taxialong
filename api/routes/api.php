@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get("", [WalletController::class, "wallet"]);
         Route::post("/fund", [WalletController::class, "fundWallet"]);
         Route::post("/update-payment-method", [WalletController::class, "updatePaymentMethod"]);
+        Route::get("/verify-payment/{reference}", [WalletController::class, "verifyPayment"]);
     });
 
     Route::group(["prefix" => "transactions"], function() {
