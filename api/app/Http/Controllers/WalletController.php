@@ -50,9 +50,10 @@ class WalletController extends Controller
             $body = $response->getBody()->getContents();
             $content = json_decode($body, true);
             if($content['status']){
+                $this->topUp($content['data']['amount'], "fund");
                 $transaction = $this->createTransaction($content['data']['amount'], "credit", "Top up");
                 $this->createPayment($transaction, $content['data']);
-                return response()->json(["status" => true, "message" => "Payment sucessful"]);
+                return response()->json(["status" => true, "message" => "Payment sucessful", "amount" => $content['data']['amount']]);
             }else{
                 return response()->json(["status" => false, "message" => "Payment failed"]);
             }

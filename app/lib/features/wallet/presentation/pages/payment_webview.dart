@@ -43,7 +43,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
               Uri uri = Uri.parse(url);
               String? trxref = uri.queryParameters['trxref'];
               String? reference = uri.queryParameters['reference'];
-              context.go(
+              context.pushNamed(
                 "/verify-payment",
                 extra: {'trxref': trxref, 'reference': reference},
               );
