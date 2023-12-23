@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/features/wallet/presentation/bloc/wallet_bloc.dart';
 
 class WalletBonusBalance extends StatefulWidget {
   final int wallet;
@@ -93,7 +95,11 @@ class _WalletBonusBalanceState extends State<WalletBonusBalance> {
                 ),
                 backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
               ),
-              onPressed: () => context.push("/withdraw-fund"),
+              onPressed: () => context
+                  .push("/withdraw-fund")
+                  .then((value) => context.read<WalletBloc>()
+                    ..add(FetchWalletEvent())
+                    ..add(FetchTransactionEvent())),
               child: Text(
                 "Withdraw",
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(

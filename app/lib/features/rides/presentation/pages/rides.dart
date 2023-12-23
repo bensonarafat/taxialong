@@ -50,7 +50,7 @@ class _RidesState extends State<Rides> {
   _getUserData() async {
     UserModel? usermodel = await secureStorage.getUserData();
     setState(() {
-      if (usermodel?.settings == null) {
+      if (usermodel?.settings != null) {
         paymentMethod = usermodel?.settings!.paymentMethod ?? "cash";
       }
     });

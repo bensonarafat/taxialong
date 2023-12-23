@@ -57,8 +57,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::group(["prefix" => "trips"], function() {
         Route::post("/available-rides", [TripController::class, "availableRides"]);
         Route::post("/confirm-ride", [TripController::class, "confirmRide"]);
-        Route::post("/recent", [TripController::class, "recent"]);
-        Route::post("/ongoing", [TripController::class, "ongoing"]);
+        Route::get("/recent", [TripController::class, "recent"]);
+        Route::get("/requests", [TripController::class, "requests"]);
     });
 
     Route::group(["prefix" => "wallet"], function(){

@@ -55,28 +55,30 @@ class TaxiAlongPaymentSuccessPage extends StatelessWidget {
               width: 358.w,
               height: 60.h,
               child: TextButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                      side: const BorderSide(
-                        color: primaryColor,
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        side: const BorderSide(
+                          color: primaryColor,
+                        ),
                       ),
                     ),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(primaryColor),
                   ),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(primaryColor),
-                ),
-                child: Text(
-                  "Go to Wallet",
-                  style: GoogleFonts.robotoFlex(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: white,
+                  child: Text(
+                    "Go to Wallet",
+                    style: GoogleFonts.robotoFlex(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: white,
+                    ),
                   ),
-                ),
-                onPressed: () => context.pop(),
-              ),
+                  onPressed: () {
+                    context.pop();
+                    context.pop();
+                  }),
             ))
       ],
     );
