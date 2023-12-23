@@ -5,6 +5,7 @@ import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_error_page.dart';
 import 'package:taxialong/core/widgets/taxi_along_loading.dart';
 import 'package:taxialong/core/widgets/taxi_along_payment_failed_page.dart';
+import 'package:taxialong/core/widgets/taxi_along_payment_success_page.dart';
 import 'package:taxialong/features/wallet/domain/entities/verify_payment_entity.dart';
 import 'package:taxialong/features/wallet/presentation/bloc/wallet_bloc.dart';
 
@@ -36,8 +37,14 @@ class VerifyPayment extends StatelessWidget {
             } else if (state is VerifyPaymentLoaded) {
               VerifyPaymentEntity verifyPaymentEntity =
                   state.verifyPaymentEntity;
-              debugPrint(verifyPaymentEntity.toString());
-              return const Text("Yes");
+              if (verifyPaymentEntity.status) {
+                return TaxiAlongPaymentSuccessPage(
+                  reference: params['reference'],
+                  amount: verifyPaymentEntity.amount,
+                );
+              } else {
+                return const TaxiAlongPaymentFailedPage();
+              }
             } else {
               return const TaxiAlongErrorPage();
             }
