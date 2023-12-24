@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LocationUpdateEvent;
 use Exception;
 use Carbon\Carbon;
 use App\Models\User;
@@ -33,7 +34,7 @@ class DriverController extends Controller
                 "latitude" => $request->latitude,
                 "longitude" => $request->longitude,
             ]);
-            //TODO :: Event here
+            LocationUpdateEvent::dispatch($request->user()->id, $request->latitude, $request->longitude);
             return response()->json([
                 "status" => true,
                 "message" => "Position updated",
@@ -41,7 +42,7 @@ class DriverController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 "status" => false,
-                "message" => "Oops, there was an error"
+                "message" => "Oops, there was an error",
             ]);
         }
 
