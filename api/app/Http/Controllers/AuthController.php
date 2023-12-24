@@ -180,7 +180,7 @@ class AuthController extends Controller
     private function sendToken($telephone, $exists){
         //delete otp for user phone number
         OTP::where("telephone", $telephone)->delete();
-        $pin = 0000; //mt_rand(1111, 9999);
+        $pin = 1234; //mt_rand(1111, 9999);
 
         // $response = Http::post('https://api.ng.termii.com/api/sms/otp/send', [
         //     "api_key" => "TLZIkb6uWLscKCseoQYrVhciWejur54gpqtF5FuAM8F8zzF1ey5lY8kssnwceR",

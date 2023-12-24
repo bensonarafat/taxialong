@@ -3,10 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:logger/logger.dart';
+import 'package:taxialong/core/constants/constants.dart';
+import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/features/trips/presentation/widgets/connected_driver_content.dart';
 import 'package:taxialong/features/trips/presentation/widgets/connecting_driver_content.dart';
 import 'package:taxialong/features/trips/presentation/widgets/map_custom_app_bar.dart';
 import 'package:taxialong/features/trips/presentation/widgets/taxi_along_google_map.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Trip extends StatefulWidget {
   const Trip({super.key});
@@ -16,6 +20,22 @@ class Trip extends StatefulWidget {
 }
 
 class _TripState extends State<Trip> {
+  final wsUrl = Uri.parse(pusherWebSocketConnection);
+
+  @override
+  void initState() {
+    locationWebsocket();
+    super.initState();
+  }
+
+  locationWebsocket() async {
+    final channel = WebSocketChannel.connect(wsUrl);
+    await channel.ready;
+    channel.stream.listen((event) {
+      getIt<Logger>().i("Event  $event");
+    });
+  }
+
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
