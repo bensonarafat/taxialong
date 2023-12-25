@@ -109,12 +109,8 @@ class TripController extends Controller
     public function confirmRide(Request $request) : JsonResponse {
         try {
             if($this->hasSufficientFunds($request) || $this->isCashPayment($request)){
-                $createdTrip = $this->createAndBookTrip($request);
-                return response()->json([
-                    "status" => true,
-                    "message" => "Trip created",
-                    "data" => $createdTrip,
-                ]);
+                $this->createAndBookTrip($request);
+                return $this->riderRequestedTrip();
             }else{
                 return response()->json([
                     "status" => false,
@@ -124,7 +120,7 @@ class TripController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 "status" => false,
-                "message" => $e->getMessage(),
+                "message" => "Oops, there was an error",
             ]);
         }
 
@@ -167,13 +163,12 @@ class TripController extends Controller
     private function driverRequestedTrips() : JsonResponse
     {
         $trips = Trip::where(["driver_id" => auth()->user()->id, "status" => "requested"])->with(["riders", "location" ,'pointa', 'pointb'])->latest()->get();
-        return response()->json(["status" => true, "data" => $trips]);
+        return response()->json(["status" => true, "message" => "Trip fetched", "data" => $trips]);
     }
 
     private function riderRequestedTrip() : JsonResponse
     {
         $trip = Trip::where(["rider_id" => auth()->user()->id, "status" => "requested"])->with(['driver', 'location', 'reviews','pointa', 'pointb'])->withAvg('reviews', 'rating')->latest()->first();
-        //NOTE:  Distance
-        return response()->json(["status" => true, "data" => $trip]);
+        return response()->json(["status" => true, "message" => "Trip fetched", "data" => $trip]);
     }
 }

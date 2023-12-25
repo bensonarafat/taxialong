@@ -25,6 +25,7 @@ import 'package:taxialong/features/onboard/presentation/pages/get_started.dart';
 import 'package:taxialong/features/onboard/presentation/pages/onboarding.dart';
 import 'package:taxialong/features/profile/presentation/pages/profile.dart';
 import 'package:taxialong/features/referral/presentation/pages/referral.dart';
+import 'package:taxialong/features/rides/domain/entities/confirm_ride_entity.dart';
 import 'package:taxialong/features/rides/presentation/pages/rides.dart';
 import 'package:taxialong/features/settings/presentation/pages/settings.dart';
 import 'package:taxialong/features/trip_history/presentation/pages/trip_history.dart';
@@ -175,7 +176,9 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: "/trip",
       name: "trip",
-      builder: (context, state) => const Trip(),
+      builder: (context, state) => Trip(
+        confirmRideEntity: state.extra as ConfirmRideEntity,
+      ),
     ),
 
     GoRoute(

@@ -17,3 +17,12 @@ class MapUpdateCurrentPostionEvent extends MapEvent {
   @override
   List<Object?> get props => [latitude, longitude];
 }
+
+class GetDriverLocationEvent extends MapEvent {
+  final String driverId;
+
+  GetDriverLocationEvent({required this.driverId});
+
+  @override
+  List<Object?> get props => [driverId];
+}

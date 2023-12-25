@@ -56,7 +56,10 @@ class _ClassRideState extends State<ClassRide> {
           ConfirmRideEntity confirmRideEntity = state.confirmRideEntity;
           cancel();
           if (confirmRideEntity.status) {
-            context.go("/trip");
+            context.go(
+              "/trip",
+              extra: confirmRideEntity,
+            );
           } else {
             toast(confirmRideEntity.message);
           }
