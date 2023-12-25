@@ -11,7 +11,7 @@ class LocationModel extends LocationEntity {
 
   factory LocationModel.fromJson(Map<String, dynamic> json) {
     return LocationModel(
-      id: json['json'],
+      id: json['id'],
       userId: json['user_id'],
       online: json['online'],
       latitude: json['latitude'],

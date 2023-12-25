@@ -9,7 +9,11 @@ class ConfirmRideModel extends ConfirmRideEntity {
   });
 
   factory ConfirmRideModel.fromJson(Map<String, dynamic> json) {
-    TripModel trip = TripModel.fromJson(json['data']);
+    TripModel? trip;
+    if (json['data'] != null) {
+      trip = TripModel.fromJson(json['data']);
+    }
+
     return ConfirmRideModel(
       status: json['status'],
       message: json['message'],

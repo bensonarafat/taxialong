@@ -13,15 +13,15 @@ class LocationUpdateEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $driverId;
-    public $latiude;
+    public $latitude;
     public $longitude;
     /**
      * Create a new event instance.
      */
-    public function __construct($driverId, $latiude, $longitude)
+    public function __construct($driverId, $latitude, $longitude)
     {
         $this->driverId = $driverId;
-        $this->latiude = $latiude;
+        $this->latitude = $latitude;
         $this->longitude = $longitude;
     }
 

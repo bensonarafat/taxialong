@@ -5,13 +5,13 @@ import 'package:taxialong/features/rides/domain/entities/review_entity.dart';
 
 class TripEntity {
   final int id;
-  final int riderId;
-  final int driverId;
+  final String riderId;
+  final String driverId;
   final PointEntity pointa;
   final PointEntity pointb;
   final String paymentMethod;
   final String amount;
-  final int tripClass;
+  final String tripClass;
   final List<dynamic> seats;
   final String status;
   final String? reviewsAvg;
