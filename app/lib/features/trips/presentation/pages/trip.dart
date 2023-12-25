@@ -1,39 +1,35 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:logger/logger.dart';
-import 'package:taxialong/core/constants/constants.dart';
-import 'package:taxialong/core/services/get_it_services.dart';
-import 'package:taxialong/features/trips/presentation/widgets/connected_driver_content.dart';
+import 'package:taxialong/core/bloc/map/map_bloc.dart';
+import 'package:taxialong/features/rides/domain/entities/confirm_ride_entity.dart';
+
 import 'package:taxialong/features/trips/presentation/widgets/connecting_driver_content.dart';
-import 'package:taxialong/features/trips/presentation/widgets/map_custom_app_bar.dart';
 import 'package:taxialong/features/trips/presentation/widgets/taxi_along_google_map.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Trip extends StatefulWidget {
-  const Trip({super.key});
+  final ConfirmRideEntity confirmRideEntity;
+  const Trip({
+    super.key,
+    required this.confirmRideEntity,
+  });
 
   @override
   State<Trip> createState() => _TripState();
 }
 
 class _TripState extends State<Trip> {
-  final wsUrl = Uri.parse(pusherWebSocketConnection);
-
   @override
   void initState() {
-    locationWebsocket();
+    context.read<MapBloc>().add(
+          GetDriverLocationEvent(
+            driverId: widget.confirmRideEntity.trip!.driverId.toString(),
+          ),
+        );
     super.initState();
-  }
-
-  locationWebsocket() async {
-    final channel = WebSocketChannel.connect(wsUrl);
-    await channel.ready;
-    channel.stream.listen((event) {
-      getIt<Logger>().i("Event  $event");
-    });
   }
 
   final Completer<GoogleMapController> _controller =
@@ -61,7 +57,6 @@ class _TripState extends State<Trip> {
             kGooglePlex: _kGooglePlex,
             controller: _controller,
           ),
-          const MapCustomAppBar(),
           DraggableScrollableSheet(
             initialChildSize: 0.4,
             minChildSize: 0.3,
@@ -77,12 +72,6 @@ class _TripState extends State<Trip> {
       ),
     );
   }
-}
-
-Future<void> connectiondriver() async {
-  await Future.delayed(
-    const Duration(seconds: 5),
-  );
 }
 
 /// Content of the DraggableBottomSheet's child SingleChildScrollView
@@ -109,22 +98,10 @@ class _BottomSheetViewContentState extends State<BottomSheetViewContent> {
         ),
         margin: const EdgeInsets.all(0),
         child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24.r),
-          ),
-          child: FutureBuilder<void>(
-              future: connectiondriver(),
-              builder: (context, AsyncSnapshot snap) {
-                switch (snap.connectionState) {
-                  case ConnectionState.waiting:
-                    return const ConnectingDriverContent();
-                  case ConnectionState.done:
-                    return const ConnectedDriverContent();
-                  default:
-                    return Container();
-                }
-              }),
-        ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24.r),
+            ),
+            child: const ConnectingDriverContent()),
       ),
     );
   }

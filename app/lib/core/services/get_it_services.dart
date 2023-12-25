@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
@@ -63,6 +64,11 @@ import 'package:taxialong/features/rides/domain/repositories/ride_repository.dar
 import 'package:taxialong/features/rides/domain/usecases/confirm_ride_usecase.dart';
 import 'package:taxialong/features/rides/domain/usecases/get_rides_usecase.dart';
 import 'package:taxialong/features/rides/presentation/bloc/ride_bloc.dart';
+import 'package:taxialong/features/trips/data/datasources/trip_remote_data_source.dart';
+import 'package:taxialong/features/trips/data/repositories/trip_repository_impl.dart';
+import 'package:taxialong/features/trips/domain/repositories/trip_repository.dart';
+import 'package:taxialong/features/trips/domain/usecases/get_trip_usecase.dart';
+import 'package:taxialong/features/trips/presentation/bloc/trip_bloc.dart';
 import 'package:taxialong/features/wallet/data/datasources/wallet_remote_datasource.dart';
 import 'package:taxialong/features/wallet/data/repositories/wallet_repository_impl.dart';
 import 'package:taxialong/features/wallet/domain/repositories/wallet_repository.dart';
@@ -135,8 +141,9 @@ Future<void> setupLocator() async {
 /**
  * -----------------------------------------------------------------------------------------------------------
  */
+  PusherChannelsFlutter pusher = PusherChannelsFlutter.getInstance();
   //map instance
-  getIt.registerFactory<MapBloc>(() => MapBloc());
+  getIt.registerFactory<MapBloc>(() => MapBloc(pusher: pusher));
 /**
  * -----------------------------------------------------------------------------------------------------------
  */
@@ -361,7 +368,7 @@ Future<void> setupLocator() async {
  * -----------------------------------------------------------------------------------------------------------
  */
 
-  // rides instance
+  // wallet instance
   getIt.registerFactory<WalletBloc>(() => WalletBloc(
         getTransactionUseCase: getIt(),
         getWalletUseCase: getIt(),
@@ -395,6 +402,38 @@ Future<void> setupLocator() async {
     () => WalletRemoteDataSourceImpl(
       client: client,
       secureStorage: getIt(),
+    ),
+  );
+
+  /**
+ * -----------------------------------------------------------------------------------------------------------
+ */
+
+  // trip instance
+  getIt.registerFactory<TripBloc>(
+    () => TripBloc(
+      getTripUseCase: getIt(),
+    ),
+  );
+  //usecase
+  getIt.registerLazySingleton<GetTripUseCase>(
+    () => GetTripUseCase(
+      repository: getIt(),
+    ),
+  );
+
+  //repository
+  getIt.registerLazySingleton<TripRepository>(
+    () => TripRepositoryImpl(
+      networkInfo: getIt(),
+      remoteDataSource: getIt(),
+    ),
+  );
+  // remote data source
+  getIt.registerLazySingleton<TripRemoteDataSource>(
+    () => TripRemoteDataSourceImpl(
+      secureStorage: getIt(),
+      client: getIt(),
     ),
   );
 }

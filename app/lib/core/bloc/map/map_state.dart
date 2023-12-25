@@ -26,3 +26,12 @@ class MapCurrentPositionState extends MapState {
   @override
   List<Object?> get props => [latitude, longitude];
 }
+
+class DriverLocationUpdatedState extends MapState {
+  final String latitude;
+  final String longitude;
+
+  DriverLocationUpdatedState({required this.latitude, required this.longitude});
+  @override
+  List<Object?> get props => [latitude, longitude];
+}

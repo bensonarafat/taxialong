@@ -59,5 +59,5 @@ const CameraPosition defaultGoogleMapCameraPosition = CameraPosition(
   zoom: googleMapZoomLevel,
 );
 
-const String pusherWebSocketConnection =
-    "ws://ws-eu.pusher.com:80/app/0ced9f805f48a99d4f5a";
+const String pusherAPIKey = "0ced9f805f48a99d4f5a";
+const String pusherCluster = "eu";
