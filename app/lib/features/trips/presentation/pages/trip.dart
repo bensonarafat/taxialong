@@ -25,7 +25,7 @@ class _TripState extends State<Trip> {
   @override
   void initState() {
     context.read<MapBloc>().add(
-          GetDriverLocationEvent(
+          SubscribeToDriverChannel(
             driverId: widget.confirmRideEntity.trip!.driverId.toString(),
           ),
         );
@@ -98,10 +98,11 @@ class _BottomSheetViewContentState extends State<BottomSheetViewContent> {
         ),
         margin: const EdgeInsets.all(0),
         child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24.r),
-            ),
-            child: const ConnectingDriverContent()),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24.r),
+          ),
+          child: const ConnectingDriverContent(),
+        ),
       ),
     );
   }

@@ -1,7 +1,7 @@
 class LocationEntity {
   final int id;
-  final int userId;
-  final int online;
+  final String userId;
+  final String online;
   final String latitude;
   final String longitude;
 

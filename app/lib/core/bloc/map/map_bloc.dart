@@ -18,21 +18,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   MapBloc({required this.pusher}) : super(MapInitialState()) {
     on<MapEvent>((event, emit) async {
-      try {
-        await pusher.init(
-          apiKey: pusherAPIKey,
-          cluster: pusherCluster,
-          onEvent: (PusherEvent e) {
-            final data = jsonDecode(e.data);
-            emit(
-              DriverLocationUpdatedState(
-                  latitude: data['latitude'], longitude: data['longitude']),
-            );
-          },
-        );
-      } catch (e) {
-        // print("ERROR: $e");
-      }
+      initPusher();
 
       if (await serviceEnabled()) {
         mapStartLocationUpdateToState();
@@ -59,9 +45,17 @@ class MapBloc extends Bloc<MapEvent, MapState> {
             longitude: event.longitude,
           ),
         );
-      } else if (event is GetDriverLocationEvent) {
-        await pusher.connect();
-        await pusher.subscribe(channelName: "driver-location${event.driverId}");
+      } else if (event is SubscribeToDriverChannel) {
+        await pusher.subscribe(
+            channelName: "driver-locations${event.driverId}");
+      } else if (event is PusherUpdateLocationEvent) {
+        // print("EVENT ==> $event");
+        emit(
+          DriverLocationUpdatedState(
+            latitude: event.latitude,
+            longitude: event.longitude,
+          ),
+        );
       }
     });
   }
@@ -78,18 +72,43 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         if (!_isDisposed) {
           add(
             MapUpdateCurrentPostionEvent(
-                latitude: position.latitude.toString(),
-                longitude: position.longitude.toString()),
+              latitude: position.latitude.toString(),
+              longitude: position.longitude.toString(),
+            ),
           );
         }
       }
     });
   }
 
+  Future<void> initPusher() async {
+    try {
+      await pusher.init(
+        apiKey: pusherAPIKey,
+        cluster: pusherCluster,
+        onEvent: (PusherEvent e) {
+          final data = jsonDecode(e.data);
+
+          // print("DATA ==> $data");
+          add(
+            PusherUpdateLocationEvent(
+              latitude: data['latitude'],
+              longitude: data['longitude'],
+            ),
+          );
+        },
+      );
+      await pusher.connect(); // Connect immediately
+    } catch (e) {
+      // print("ERROR >>>>> : $e");
+    }
+  }
+
   bool _isDisposed = false;
   @override
   Future<void> close() {
     positionStream.cancel();
+    pusher.disconnect();
     _isDisposed = true;
     return super.close();
   }

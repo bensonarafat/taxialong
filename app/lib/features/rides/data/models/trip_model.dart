@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:taxialong/features/rides/data/models/driver_model.dart';
 import 'package:taxialong/features/rides/data/models/location_model.dart';
 import 'package:taxialong/features/rides/data/models/point_model.dart';
@@ -40,7 +42,7 @@ class TripModel extends TripEntity {
       paymentMethod: json['payment_method'],
       amount: json['amount'],
       tripClass: json['trip_class'],
-      seats: json['seats'],
+      seats: jsonDecode(json['seats']),
       status: json['status'],
       reviewsAvg: json['reviews_avg_rating'],
       driver: driver,
