@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post("/confirm-ride", [TripController::class, "confirmRide"]);
         Route::get("/recent", [TripController::class, "recent"]);
         Route::get("/requests", [TripController::class, "requests"]);
+        Route::post("/cancel", [TripController::class, "cancel"]);
     });
 
     Route::group(["prefix" => "wallet"], function(){
