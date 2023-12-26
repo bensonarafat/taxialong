@@ -174,10 +174,12 @@ class TripController extends Controller
 
     public function cancel(Request $request) : JsonResponse
     {
-        Trip::whereId($request->tripId)->update([
-            "status" => 'canceled',
-            "reason" => $request->reason,
-        ]);
+        $trip = Trip::whereId($request->tripId)->first();
+
+        $trip->status = 'canceled';
+        $trip->reason = $request->reason;
+        $trip->save();
+        $this->dropSeats($trip);
         return response()->json(["status" => true, "message" => "Trip canceled"]);
     }
 }
