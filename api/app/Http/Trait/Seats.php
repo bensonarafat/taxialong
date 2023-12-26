@@ -30,7 +30,7 @@ trait Seats {
     public function dropSeats($trip) : void
     {
         $seats = json_decode($trip->seats, true);
-        $driver = Driver::find($trip->driver_id);
+        $driver = Driver::where("user_id",$trip->driver_id)->first();
         $driverSeats = json_decode($driver->seats,true);
         $updatedSeats =  array_map(function(array $driverSeat) use ($seats) {
             if(in_array($driverSeat['seat'], $seats)){
