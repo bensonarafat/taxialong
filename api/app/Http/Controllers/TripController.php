@@ -168,7 +168,16 @@ class TripController extends Controller
 
     private function riderRequestedTrip() : JsonResponse
     {
-        $trip = Trip::where(["rider_id" => auth()->user()->id, "status" => "requested"])->with(['driver', 'location', 'reviews','pointa', 'pointb'])->withAvg('reviews', 'rating')->latest()->first();
+        $trip = Trip::where(["rider_id" => auth()->user()->id, "status" => "requested"])->with(['driver', 'location', 'reviews','pointa', 'pointb'])->latest()->first();
         return response()->json(["status" => true, "message" => "Trip fetched", "data" => $trip]);
+    }
+
+    public function cancel(Request $request) : JsonResponse
+    {
+        Trip::whereId($request->tripId)->update([
+            "status" => 'canceled',
+            "reason" => $request->reason,
+        ]);
+        return response()->json(["status" => true, "message" => "Trip canceled"]);
     }
 }
