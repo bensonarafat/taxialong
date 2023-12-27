@@ -65,3 +65,25 @@ class DriverHomePositionUpdatedState extends DriverHomeState {
         markers,
       ];
 }
+
+class RequestRecentLoading extends DriverHomeState {
+  @override
+  List<Object?> get props => [];
+}
+
+class RequestRecentLoaded extends DriverHomeState {
+  final List<TripEntity> tripEntity;
+
+  RequestRecentLoaded({required this.tripEntity});
+  @override
+  List<Object?> get props => [tripEntity];
+}
+
+class RequestRecentError extends DriverHomeState {
+  final String message;
+
+  RequestRecentError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}

@@ -30,3 +30,28 @@ class TripErrorState extends TripState {
   @override
   List<Object?> get props => [message];
 }
+
+class TripCancelState extends TripState {
+  final CancelEntity cancelEntity;
+  TripCancelState({required this.cancelEntity});
+  @override
+  List<Object?> get props => [cancelEntity];
+}
+
+class UpdateCompleteState extends TripState {
+  final UpdateTripEntity updateTripEntity;
+
+  UpdateCompleteState({required this.updateTripEntity});
+
+  @override
+  List<Object?> get props => [updateTripEntity];
+}
+
+class UpdatePickUpState extends TripState {
+  final UpdateTripEntity updateTripEntity;
+
+  UpdatePickUpState({required this.updateTripEntity});
+
+  @override
+  List<Object?> get props => [updateTripEntity];
+}

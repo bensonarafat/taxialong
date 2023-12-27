@@ -30,8 +30,20 @@ class MapCurrentPositionState extends MapState {
 class DriverLocationUpdatedState extends MapState {
   final String latitude;
   final String longitude;
+  final List<Marker> markers;
 
-  DriverLocationUpdatedState({required this.latitude, required this.longitude});
+  DriverLocationUpdatedState(
+      {required this.latitude, required this.longitude, required this.markers});
   @override
-  List<Object?> get props => [latitude, longitude];
+  List<Object?> get props => [latitude, longitude, markers];
+}
+
+class TripOnGoingState extends MapState {
+  @override
+  List<Object?> get props => [];
+}
+
+class DripTripUpdateState extends MapState {
+  @override
+  List<Object?> get props => [];
 }

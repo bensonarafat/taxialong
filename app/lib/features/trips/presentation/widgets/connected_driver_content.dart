@@ -1,41 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:taxialong/core/constants/assets.dart';
+import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/core/utils/extensions.dart';
+import 'package:taxialong/core/utils/helpers.dart';
+import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
 import 'package:taxialong/core/widgets/taxi_along_route.dart';
-import 'package:taxialong/features/chat/presentation/pages/chat.dart';
-import 'package:taxialong/features/rating/presentation/pages/rating.dart';
-import 'package:taxialong/features/trips/presentation/pages/trip.dart';
+import 'package:taxialong/features/rides/domain/entities/confirm_ride_entity.dart';
+import 'package:taxialong/features/rides/domain/entities/driver_entity.dart';
+import 'package:taxialong/features/rides/domain/entities/trip_entity.dart';
+import 'package:taxialong/features/trips/presentation/widgets/custom_dragging_handle.dart';
+import 'package:taxialong/features/trips/presentation/widgets/driver_details.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ConnectedDriverContent extends StatefulWidget {
-  const ConnectedDriverContent({super.key});
+  final ConfirmRideEntity ridedetails;
+  final MapState state;
+  const ConnectedDriverContent({
+    super.key,
+    required this.ridedetails,
+    required this.state,
+  });
 
   @override
   State<ConnectedDriverContent> createState() => _ConnectedDriverContentState();
 }
 
 class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
-  bool ongoing = false;
-  bool completed = false;
-
+  late DriverEntity driver;
+  late TripEntity trip;
   @override
   void initState() {
+    driver = widget.ridedetails.trip!.driver;
+    trip = widget.ridedetails.trip!;
     super.initState();
-    tripCompleted();
   }
 
-  void tripCompleted() async {
-    Future.delayed(const Duration(seconds: 4)).then((value) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const Rating(),
-          ),
-        );
-      });
-    });
+  WoltModalSheetPage showDriverInformation(BuildContext modalSheetContext) {
+    return WoltModalSheetPage.withSingleChild(
+      hasSabGradient: false,
+      isTopBarLayerAlwaysVisible: true,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          16.0.w,
+          16.0.h,
+          16.0.w,
+          150.0.h,
+        ),
+        child: DriverDetails(
+          driver: widget.ridedetails.trip!.driver,
+          reviews: widget.ridedetails.trip!.reviews,
+        ),
+      ),
+    );
   }
 
   @override
@@ -65,7 +85,9 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                   Container(
                     padding: EdgeInsets.only(left: 16.w),
                     child: Text(
-                      'You have been connected to your driver',
+                      widget.state is TripOnGoingState
+                          ? 'Ongoing.....'
+                          : 'You have been connected to your driver',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
@@ -102,126 +124,165 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                 left: 16.w,
                 right: 16.w,
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 48.w,
-                          height: 48.h,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            image: const DecorationImage(
-                              image: AssetImage(driver),
-                              fit: BoxFit.fill,
-                            ),
+              child: GestureDetector(
+                onTap: () {
+                  WoltModalSheet.show<void>(
+                    enableDrag: true,
+                    context: context,
+                    pageListBuilder: (modalSheetContext) {
+                      return [
+                        showDriverInformation(modalSheetContext),
+                      ];
+                    },
+                    modalTypeBuilder: (context) {
+                      return WoltModalType.bottomSheet;
+                    },
+                    maxDialogWidth: 560.w,
+                    minDialogWidth: 400.w,
+                    minPageHeight: 0.0,
+                  );
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TaxiAlongCachedNetworkImage(
+                            path: driver.avatar,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.fill,
                             shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                width: 1,
+                                color: primaryColor,
+                              ),
                               borderRadius: BorderRadius.circular(100.r),
                             ),
                           ),
+                          Gap(35.w),
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  child: Text(
+                                    '${driver.firstname} ${driver.lastname}',
+                                    maxLines: 1,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ),
+                                Gap(3.h),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.star,
+                                      color: Color(0xffFFC700),
+                                    ),
+                                    Gap(4.w),
+                                    SizedBox(
+                                      width: 32.w,
+                                      child: Text(
+                                        driver.rating,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Gap(32.w),
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '10 min. away',
+                                  maxLines: 1,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                Gap(4.h),
+                                Text(
+                                  '2, 5km',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Gap(16.w),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () async =>
+                              uriLauncher('tel:${driver.telephone}'),
+                          child: Container(
+                            width: 36.w,
+                            height: 36.h,
+                            decoration: const ShapeDecoration(
+                              color: primaryColor,
+                              shape: OvalBorder(),
+                            ),
+                            child: Icon(
+                              Icons.phone,
+                              color: white,
+                              size: 15.w,
+                            ),
+                          ),
                         ),
-                        const SizedBox(width: 35),
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                child: Text(
-                                  'Andrew Williams',
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ),
-                              const SizedBox(height: 3),
-                              SizedBox(
-                                child: Text(
-                                  'Driver ID: 012345',
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ),
-                              Gap(3.h),
-                              SizedBox(
-                                child: Text(
-                                  'Plate number: ABC12345',
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ),
-                            ],
+                        Gap(10.w),
+                        GestureDetector(
+                          onTap: () {
+                            context.push("/chat");
+                          },
+                          child: Container(
+                            width: 36.w,
+                            height: 36.h,
+                            decoration: const ShapeDecoration(
+                              color: primaryColor,
+                              shape: OvalBorder(),
+                            ),
+                            child: Icon(
+                              Icons.message,
+                              color: white,
+                              size: 15.w,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  Gap(16.w),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 36.w,
-                        height: 36.h,
-                        decoration: const ShapeDecoration(
-                          color: primaryColor,
-                          shape: OvalBorder(),
-                        ),
-                        child: Icon(
-                          Icons.phone,
-                          color: white,
-                          size: 15.w,
-                        ),
-                      ),
-                      Gap(10.w),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => const Chat()));
-                        },
-                        child: Container(
-                          width: 36.w,
-                          height: 36.h,
-                          decoration: const ShapeDecoration(
-                            color: primaryColor,
-                            shape: OvalBorder(),
-                          ),
-                          child: Icon(
-                            Icons.message,
-                            color: white,
-                            size: 15.w,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Gap(16.h),
-            const TaxiAlongRoute(
-              pointa: "Abuja",
-              pointb: "Lagos",
+            TaxiAlongRoute(
+              pointa: trip.pointa.name,
+              pointb: trip.pointb.name,
             ),
             Gap(6.h),
-            Container(
-              padding: EdgeInsets.only(
-                right: 16.w,
-              ),
-              alignment: Alignment.centerRight,
-              child: Text(
-                'Change',
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      fontSize: 14.sp,
-                    ),
-              ),
-            ),
             Gap(16.h),
             Padding(
               padding: EdgeInsets.only(
@@ -257,7 +318,7 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                     ),
                     Gap(16.w),
                     Text(
-                      'Cash',
+                      trip.paymentMethod.inCaps,
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
@@ -280,7 +341,7 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'N150',
+                        '₦${trip.amount}',
                         style: GoogleFonts.robotoFlex(
                           color: primaryColor,
                           fontSize: 24.sp,
@@ -293,27 +354,38 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                       ),
                     ],
                   ),
-                  Container(
-                    width: 120.w,
-                    height: 50.h,
-                    alignment: Alignment.center,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 1.w, color: primaryColor),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                    ),
-                    child: Text(
-                      'Cancel Ride',
-                      style: GoogleFonts.robotoFlex(
-                        color: primaryColor,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  )
+                  widget.state is TripOnGoingState
+                      ? Container()
+                      : GestureDetector(
+                          onTap: () {
+                            context.push(
+                              "/cancel-trip",
+                              extra: widget.ridedetails.trip,
+                            );
+                          },
+                          child: Container(
+                            width: 120.w,
+                            height: 50.h,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16.w, vertical: 4.h),
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side:
+                                    BorderSide(width: 1.w, color: primaryColor),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                            child: Text(
+                              'Cancel Ride',
+                              style: GoogleFonts.robotoFlex(
+                                color: primaryColor,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        )
                 ],
               ),
             ),

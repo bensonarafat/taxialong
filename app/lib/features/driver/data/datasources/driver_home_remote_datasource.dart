@@ -6,12 +6,15 @@ import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/driver/data/models/driver_location_model.dart';
 import 'package:taxialong/features/driver/data/models/driver_model.dart';
 import 'package:taxialong/features/driver/data/models/go_online_model.dart';
+import 'package:taxialong/features/driver/data/models/trip_model.dart';
 import 'package:taxialong/features/driver/domain/usecases/update_driver_location_usecase.dart';
 
 abstract class DriverHomeRemoteDataSource {
   Future<GoOnlineModel> goOnline();
   Future<DriverModel> getDriverData();
   Future<DriverLocationModel> updateDriverLocation(LocationParams params);
+  Future<List<TripModel>> getRecents();
+  Future<List<TripModel>> getRequests();
 }
 
 class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
@@ -86,6 +89,56 @@ class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
       var data = json.decode(response.body);
 
       return DriverLocationModel.fromJson(data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<TripModel>> getRecents() async {
+    final token = await secureStorage.getToken();
+    if (token == null) throw ServerException();
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    };
+    var url = Uri.parse("${endpoint}trips/recent");
+    var response = await client.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      List<dynamic> jsonresponse = data['data'];
+      List<TripModel> list =
+          jsonresponse.map((item) => TripModel.fromJson(item)).toList();
+      return list;
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<TripModel>> getRequests() async {
+    final token = await secureStorage.getToken();
+    if (token == null) throw ServerException();
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    };
+    var url = Uri.parse("${endpoint}trips/requests");
+    var response = await client.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      List<dynamic> jsonresponse = data['data'];
+      List<TripModel> list =
+          jsonresponse.map((item) => TripModel.fromJson(item)).toList();
+      return list;
     } else {
       throw ServerException();
     }

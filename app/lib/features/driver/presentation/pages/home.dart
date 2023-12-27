@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/constants/constants.dart';
@@ -20,8 +19,8 @@ import 'package:taxialong/features/driver/presentation/widgets/current_location_
 import 'package:taxialong/features/driver/presentation/widgets/driver_details_widget.dart';
 import 'package:taxialong/features/driver/presentation/widgets/driver_flexible_space.dart';
 import 'package:taxialong/features/driver/presentation/widgets/driver_map.dart';
-import 'package:taxialong/features/driver/presentation/widgets/new_request.dart';
-import 'package:taxialong/features/driver/presentation/widgets/recent_request.dart';
+import 'package:taxialong/features/driver/presentation/widgets/requests.dart';
+import 'package:taxialong/features/driver/presentation/widgets/recents.dart';
 import 'package:taxialong/features/driver/presentation/widgets/sort_class_bottom_sheet.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -36,6 +35,7 @@ class _DriverHomeState extends State<DriverHome> {
   bool status = false;
   SecureStorage secureStorage = SecureStorage();
   String username = "";
+  String? userId;
   String avatar = imageplaceholder;
   SettingsEntity? settings;
   @override
@@ -44,7 +44,6 @@ class _DriverHomeState extends State<DriverHome> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // NOTE:: Rework on show enable location dialog
       showEnableLocation(context);
-
       // map bloc event
       context.read<MapBloc>().add(MapCurrentPositionEvent());
     });
@@ -63,14 +62,25 @@ class _DriverHomeState extends State<DriverHome> {
     setState(() {
       username = "${usermodel?.firstname} ${usermodel?.lastname}";
       avatar = "${usermodel?.avatar}";
+      userId = usermodel?.id.toString();
       settings = usermodel?.settings;
     });
+    registerTripChannel();
+  }
+
+  registerTripChannel() {
+    if (userId != null) {
+      context.read<MapBloc>().add(SubscribeToTripChannel(driverId: userId!));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<DriverHomeBloc>(
-      create: (context) => getIt<DriverHomeBloc>()..add(DriverHomeFetchEvent()),
+      create: (context) => getIt<DriverHomeBloc>()
+        ..add(DriverHomeFetchEvent())
+        ..add(DriverHomeFetchRecents())
+        ..add(DriverHomeFetchRequests()),
       child: Scaffold(
         drawer: const Drawer(
           child: TaxiAlongDrawer(),
@@ -79,8 +89,6 @@ class _DriverHomeState extends State<DriverHome> {
           listener: (context, state) {
             /// update driver location here
             if (state is MapCurrentPositionState) {
-              // NOTE: Come back this fix the listener of the location
-
               ///add event here
               context.read<DriverHomeBloc>().add(
                     DriverUpdateLocationEvent(
@@ -88,6 +96,10 @@ class _DriverHomeState extends State<DriverHome> {
                       longitude: state.longitude,
                     ),
                   );
+            } else if (state is DripTripUpdateState) {
+              context.read<DriverHomeBloc>()
+                ..add(DriverHomeFetchRecents())
+                ..add(DriverHomeFetchRequests());
             }
           },
           child: CustomScrollView(
@@ -211,65 +223,7 @@ class _DriverHomeState extends State<DriverHome> {
                     Gap(24.h),
                     const DriverMap(),
                     Gap(16.h),
-                    !status
-                        ? Container(
-                            padding: EdgeInsets.only(
-                              left: 16.w,
-                              right: 16.w,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Recent Request',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(
-                                          fontSize: 20.sp,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                  ),
-                                ),
-                                Gap(20.w),
-                                SizedBox(
-                                  width: 99.w,
-                                  height: 21.h,
-                                  child: Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: 'View ',
-                                          style: GoogleFonts.robotoFlex(
-                                            color: const Color(0xFF717171),
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: 'all',
-                                          style: GoogleFonts.robotoFlex(
-                                            color: const Color(0xFF717171),
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Container(),
-                    !status ? Gap(16.h) : Container(),
-
-                    //
-                    status ? const DriverTrips() : const RecentRequest(),
+                    status ? const Requests() : const Recents(),
                   ],
                 ),
               ),

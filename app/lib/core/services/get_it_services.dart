@@ -42,6 +42,8 @@ import 'package:taxialong/features/driver/data/repositories/driver_home_reposito
 import 'package:taxialong/features/driver/domain/repositories/driver_home_repository.dart';
 import 'package:taxialong/features/driver/domain/usecases/get_driver_data_usecase.dart';
 import 'package:taxialong/core/domain/usecases/get_terminals_usecase.dart';
+import 'package:taxialong/features/driver/domain/usecases/get_recent_usecase.dart';
+import 'package:taxialong/features/driver/domain/usecases/get_request_usecase.dart';
 import 'package:taxialong/features/driver/domain/usecases/go_online_usecase.dart';
 import 'package:taxialong/features/driver/domain/usecases/update_driver_location_usecase.dart';
 import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
@@ -67,7 +69,10 @@ import 'package:taxialong/features/rides/presentation/bloc/ride_bloc.dart';
 import 'package:taxialong/features/trips/data/datasources/trip_remote_data_source.dart';
 import 'package:taxialong/features/trips/data/repositories/trip_repository_impl.dart';
 import 'package:taxialong/features/trips/domain/repositories/trip_repository.dart';
+import 'package:taxialong/features/trips/domain/usecases/cancel_trip_usecase.dart';
 import 'package:taxialong/features/trips/domain/usecases/get_trip_usecase.dart';
+import 'package:taxialong/features/trips/domain/usecases/update_complete_usecase.dart';
+import 'package:taxialong/features/trips/domain/usecases/update_pickup_usecase.dart';
 import 'package:taxialong/features/trips/presentation/bloc/trip_bloc.dart';
 import 'package:taxialong/features/wallet/data/datasources/wallet_remote_datasource.dart';
 import 'package:taxialong/features/wallet/data/repositories/wallet_repository_impl.dart';
@@ -309,6 +314,8 @@ Future<void> setupLocator() async {
         goOnlineUseCase: getIt(),
         getDriverDataUseCase: getIt(),
         updateDriverLocationUseCase: getIt(),
+        getRecentUseCase: getIt(),
+        getRequestUseCase: getIt(),
       ));
 
   //usecase
@@ -319,6 +326,12 @@ Future<void> setupLocator() async {
 
   getIt.registerLazySingleton<UpdateDriverLocationUseCase>(
       () => UpdateDriverLocationUseCase(repository: getIt()));
+
+  getIt.registerLazySingleton<GetRecentUseCase>(
+      () => GetRecentUseCase(repository: getIt()));
+
+  getIt.registerLazySingleton<GetRequestUseCase>(
+      () => GetRequestUseCase(repository: getIt()));
 
   //repository
   getIt.registerLazySingleton<DriverHomeRepository>(
@@ -413,15 +426,33 @@ Future<void> setupLocator() async {
   getIt.registerFactory<TripBloc>(
     () => TripBloc(
       getTripUseCase: getIt(),
+      cancelTripUseCase: getIt(),
+      updateCompleteUseCase: getIt(),
+      updatePickUpUseCase: getIt(),
     ),
   );
+
   //usecase
   getIt.registerLazySingleton<GetTripUseCase>(
     () => GetTripUseCase(
       repository: getIt(),
     ),
   );
-
+  getIt.registerLazySingleton<CancelTripUseCase>(
+    () => CancelTripUseCase(
+      repository: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<UpdateCompleteUseCase>(
+    () => UpdateCompleteUseCase(
+      repository: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<UpdatePickUpUseCase>(
+    () => UpdatePickUpUseCase(
+      repository: getIt(),
+    ),
+  );
   //repository
   getIt.registerLazySingleton<TripRepository>(
     () => TripRepositoryImpl(
@@ -429,11 +460,12 @@ Future<void> setupLocator() async {
       remoteDataSource: getIt(),
     ),
   );
+
   // remote data source
   getIt.registerLazySingleton<TripRemoteDataSource>(
     () => TripRemoteDataSourceImpl(
       secureStorage: getIt(),
-      client: getIt(),
+      client: client,
     ),
   );
 }

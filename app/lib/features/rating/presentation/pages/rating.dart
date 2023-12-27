@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
+import 'package:taxialong/features/rides/domain/entities/trip_entity.dart';
 
 class Rating extends StatelessWidget {
-  const Rating({super.key});
+  final TripEntity trip;
+  const Rating({
+    super.key,
+    required this.trip,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,18 +56,17 @@ class Rating extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  width: 94.w,
-                  height: 94.h,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    image: const DecorationImage(
-                      image: AssetImage(driver),
-                      fit: BoxFit.fill,
+                TaxiAlongCachedNetworkImage(
+                  path: trip.driver.avatar,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.fill,
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      width: 1,
+                      color: primaryColor,
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
+                    borderRadius: BorderRadius.circular(100.r),
                   ),
                 ),
                 Gap(15.h),
@@ -72,7 +76,7 @@ class Rating extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Andrew Williams',
+                      '${trip.driver.firstname} ${trip.driver.lastname}',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),

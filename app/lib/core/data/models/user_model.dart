@@ -3,6 +3,7 @@ import 'package:taxialong/core/domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
   UserModel({
+    required super.id,
     required super.firstname,
     required super.lastname,
     required super.email,
@@ -17,6 +18,7 @@ class UserModel extends UserEntity {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
+      id: json['id'],
       firstname: json['firstname'],
       lastname: json['lastname'],
       email: json['email'],
@@ -32,6 +34,7 @@ class UserModel extends UserEntity {
 
   Map<String, dynamic> toJson() {
     return {
+      "id": id,
       "firstname": firstname,
       "lastname": lastname,
       "email": email,

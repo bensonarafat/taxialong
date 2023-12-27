@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UpdateTripStatusEvent;
 use Exception;
 use App\Models\Trip;
 use App\Models\User;
@@ -18,13 +19,15 @@ use App\Http\Trait\TaxiAlongTransaction;
 
 class TripController extends Controller
 {
+    const PER_PAGE = 10;
+    const PAGE = 1;
 
     use Distance, TaxiAlongWallet, TaxiAlongTrip, Seats, TaxiAlongTransaction;
 
     public function availableRides(Request $request) : JsonResponse {
 
-        $perPage = 10;
-        $page = request()->input("page", 1);
+        $perPage = self::PER_PAGE;
+        $page = request()->input("page", self::PAGE);
         $pointa = $this->closestBusStop($request->pointAlatitude, $request->pointAlongitude);
         $pointb =  BusStop::find($request->pointb);
         $startlatitude = $pointa->latitude;
@@ -148,7 +151,15 @@ class TripController extends Controller
     }
 
     public function recent(Request $request){
-
+        $perPage = self::PER_PAGE;
+        $page = request()->input("page", self::PAGE);
+        $trips = Trip::where(["driver_id" => auth()->user()->id])
+                    ->with(["rider", "location" ,'pointa', 'pointb'])
+                    ->latest()
+                    ->skip(($page - 1) * $perPage)
+                    ->take($perPage)
+                    ->get();
+        return response()->json(["status" => true, "message" => "Trip fetched", "data" => $trips]);
     }
 
     public function requests():  JsonResponse
@@ -162,7 +173,15 @@ class TripController extends Controller
 
     private function driverRequestedTrips() : JsonResponse
     {
-        $trips = Trip::where(["driver_id" => auth()->user()->id, "status" => "requested"])->with(["riders", "location" ,'pointa', 'pointb'])->latest()->get();
+
+        $perPage = self::PER_PAGE;
+        $page = request()->input("page", self::PAGE);
+
+        $trips = Trip::where(["driver_id" => auth()->user()->id, "status" => "requested"])
+                        ->with(["rider", "location" ,'pointa', 'pointb'])
+                        ->skip(($page - 1) * $perPage)
+                        ->take($perPage)
+                        ->latest()->get();
         return response()->json(["status" => true, "message" => "Trip fetched", "data" => $trips]);
     }
 
@@ -175,11 +194,55 @@ class TripController extends Controller
     public function cancel(Request $request) : JsonResponse
     {
         $trip = Trip::whereId($request->tripId)->first();
-
+        UpdateTripStatusEvent::dispatch($trip->driver_id);
         $trip->status = 'canceled';
         $trip->reason = $request->reason;
         $trip->save();
         $this->dropSeats($trip);
         return response()->json(["status" => true, "message" => "Trip canceled"]);
+    }
+
+    public function updatePickup() : JsonResponse
+    {
+        $exists = Trip::where(["status" =>  "requested", "user_id" => auth()->user()->id])->exists();
+        if($exists){
+            $trip = Trip::where(["status" =>  "requested", "user_id" => auth()->user()->id])->first();
+            $trip->status = "pickedup";
+            $trip->save();
+            UpdateTripStatusEvent::dispatch($trip->driver_id);
+            return response()->json([
+                "status" => true,
+                "message" => "Trip Updated"
+            ]);
+        }else{
+            return response()->json([
+                "status" => false,
+                "message" => "Nothing to update"
+            ]);
+        }
+
+
+    }
+
+    public function updateCompleted(Request $request) : JsonResponse
+    {
+        $exists = Trip::where(["status" => "pickedup", "user_id" => auth()->user()->id])->exists();
+        if($exists){
+            $trip = Trip::where(["status" => "pickedup", "user_id" => auth()->user()->id])->first();
+            $trip->status = "completed";
+            $trip->save();
+
+            UpdateTripStatusEvent::dispatch($trip->driver_id);
+            return response()->json([
+                "status" => true,
+                "message" => "Trip Updated"
+            ]);
+        }else{
+            return response()->json([
+                "status" => false,
+                "message" => "Nothing to update"
+            ]);
+        }
+
     }
 }
