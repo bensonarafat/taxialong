@@ -80,7 +80,6 @@ class WalletRemoteDataSourceImpl implements WalletRemoteDataSource {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
 
-    // print("Wallet $token");
     var headers = {
       'Authorization': 'Bearer $token',
       'Accept': 'application/json',

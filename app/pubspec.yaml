@@ -50,6 +50,7 @@ dependencies:
   webview_flutter: ^4.4.2
   web_socket_channel: ^2.4.0
   pusher_channels_flutter: ^2.2.0
+  url_launcher: ^6.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

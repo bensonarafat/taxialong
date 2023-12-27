@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/utils/helpers.dart';
@@ -15,14 +16,15 @@ part 'map_state.dart';
 class MapBloc extends Bloc<MapEvent, MapState> {
   late StreamSubscription<Position> positionStream;
   final PusherChannelsFlutter pusher;
+  late BitmapDescriptor customIcon;
 
+  List<Marker> markers = <Marker>[];
   MapBloc({required this.pusher}) : super(MapInitialState()) {
     on<MapEvent>((event, emit) async {
-      initPusher();
-
       if (await serviceEnabled()) {
         mapStartLocationUpdateToState();
       }
+      initPusher();
 
       if (event is MapCurrentPositionEvent) {
         String latitude = '9.0765';
@@ -48,14 +50,30 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       } else if (event is SubscribeToDriverChannel) {
         await pusher.subscribe(
             channelName: "driver-locations${event.driverId}");
+      } else if (event is SubscribeToTripChannel) {
+        await pusher.subscribe(channelName: "update-trip${event.driverId}");
       } else if (event is PusherUpdateLocationEvent) {
         // print("EVENT ==> $event");
+        customIcon = await createMarkerIcon();
+        markers.add(
+          Marker(
+            icon: customIcon,
+            markerId: const MarkerId('driver'),
+            position: LatLng(
+                double.parse(event.latitude), double.parse(event.longitude)),
+          ),
+        );
         emit(
           DriverLocationUpdatedState(
             latitude: event.latitude,
             longitude: event.longitude,
+            markers: markers,
           ),
         );
+      } else if (event is PusherTripUpdateEevnt) {
+        emit(DripTripUpdateState());
+      } else if (event is UpdatePickUpMapEvent) {
+        emit(TripOnGoingState());
       }
     });
   }
@@ -89,7 +107,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         onEvent: (PusherEvent e) {
           final data = jsonDecode(e.data);
 
-          // print("DATA ==> $data");
+          // print("DATA ==> ${data['latitude']} -->> $data");
           add(
             PusherUpdateLocationEvent(
               latitude: data['latitude'],
@@ -98,6 +116,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
           );
         },
       );
+
       await pusher.connect(); // Connect immediately
     } catch (e) {
       // print("ERROR >>>>> : $e");

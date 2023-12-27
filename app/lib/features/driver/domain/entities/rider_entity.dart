@@ -1,6 +1,4 @@
-import 'package:taxialong/core/domain/entities/settings_entity.dart';
-
-class UserEntity {
+class RiderEntity {
   final int id;
   final String firstname;
   final String lastname;
@@ -9,11 +7,8 @@ class UserEntity {
   final String avatar;
   final String rating;
   final String verified;
-  final String role;
-  final String? documentCount;
-  final SettingsEntity? settings;
 
-  UserEntity({
+  RiderEntity({
     required this.id,
     required this.firstname,
     required this.lastname,
@@ -22,8 +17,5 @@ class UserEntity {
     required this.avatar,
     required this.rating,
     required this.verified,
-    required this.role,
-    required this.documentCount,
-    required this.settings,
   });
 }

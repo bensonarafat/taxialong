@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Events\LocationUpdateEvent;
 use App\Events\NotificationEvent;
+use App\Events\UpdateTripStatusEvent;
 use App\Listeners\LocationUpdateListener;
 use App\Listeners\NotificationListener;
+use App\Listeners\UpdateTripStatusListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         LocationUpdateEvent::class => [
             LocationUpdateListener::class,
         ],
+        UpdateTripStatusEvent::class => [
+            UpdateTripStatusListener::class
+        ]
     ];
 
     /**

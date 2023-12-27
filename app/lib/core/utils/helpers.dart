@@ -1,4 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:math';
+
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +16,7 @@ import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 double getCollapseOpacity(context) {
   final settings =
@@ -289,4 +292,28 @@ String readableDate(String date) {
   }
 
   return formattedDate;
+}
+
+Future<void> uriLauncher(tel) async {
+  final Uri url = Uri.parse(tel);
+  if (!await launchUrl(url)) {
+    toast("There was an error");
+  }
+}
+
+double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+  const earthRadius = 6371000; // Earth's radius in meters
+  final dLat = _toRadians(lat2 - lat1);
+  final dLon = _toRadians(lon2 - lon1);
+  final a = sin(dLat / 2) * sin(dLat / 2) +
+      cos(_toRadians(lat1)) *
+          cos(_toRadians(lat2)) *
+          sin(dLon / 2) *
+          sin(dLon / 2);
+  final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+  return earthRadius * c;
+}
+
+double _toRadians(double degrees) {
+  return degrees * pi / 180;
 }

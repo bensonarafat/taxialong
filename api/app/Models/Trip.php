@@ -29,9 +29,9 @@ class Trip extends Model
         return $this->hasOne(User::class, 'id', "driver_id");
     }
 
-    public function riders() : HasMany
+    public function rider() : HasOne
     {
-        return $this->hasMany(User::class, "id", "rider_id");
+        return $this->hasOne(User::class, "id", "rider_id");
     }
 
     public function location() : HasOne

@@ -13,6 +13,16 @@ class DriverHomeFetchEvent extends DriverHomeEvent {
   List<Object?> get props => [];
 }
 
+class DriverHomeFetchRecents extends DriverHomeEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class DriverHomeFetchRequests extends DriverHomeEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 class DriverUpdateLocationEvent extends DriverHomeEvent {
   final String latitude;
   final String longitude;

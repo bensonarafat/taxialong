@@ -8,6 +8,7 @@ import 'package:taxialong/features/driver/data/datasources/driver_home_remote_da
 import 'package:taxialong/features/driver/data/models/driver_location_model.dart';
 import 'package:taxialong/features/driver/data/models/driver_model.dart';
 import 'package:taxialong/features/driver/data/models/go_online_model.dart';
+import 'package:taxialong/features/driver/data/models/trip_model.dart';
 import 'package:taxialong/features/driver/domain/repositories/driver_home_repository.dart';
 
 class DriverHomeRepositoryImpl implements DriverHomeRepository {
@@ -68,5 +69,15 @@ class DriverHomeRepositoryImpl implements DriverHomeRepository {
       return Left(
           NetworkFailure(message: 'Please check your internet connection'));
     }
+  }
+
+  @override
+  Future<Either<Failure, List<TripModel>>> getRecents() async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<TripModel>>> getRequests() async {
+    throw UnimplementedError();
   }
 }

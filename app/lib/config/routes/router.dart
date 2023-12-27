@@ -15,6 +15,7 @@ import 'package:taxialong/features/auth/presentation/pages/login.dart';
 import 'package:taxialong/features/auth/presentation/pages/phone_number_verification.dart';
 import 'package:taxialong/features/auth/presentation/pages/signup.dart';
 import 'package:taxialong/features/bus_stops/presentation/pages/bus_stops.dart';
+import 'package:taxialong/features/chat/presentation/pages/chat.dart';
 import 'package:taxialong/features/documents/presentation/pages/documents.dart';
 import 'package:taxialong/features/documents/presentation/pages/upload_documents.dart';
 import 'package:taxialong/features/driver/presentation/pages/become_driver.dart';
@@ -24,11 +25,14 @@ import 'package:taxialong/features/notification/presentation/pages/notification.
 import 'package:taxialong/features/onboard/presentation/pages/get_started.dart';
 import 'package:taxialong/features/onboard/presentation/pages/onboarding.dart';
 import 'package:taxialong/features/profile/presentation/pages/profile.dart';
+import 'package:taxialong/features/rating/presentation/pages/rating.dart';
 import 'package:taxialong/features/referral/presentation/pages/referral.dart';
 import 'package:taxialong/features/rides/domain/entities/confirm_ride_entity.dart';
+import 'package:taxialong/features/rides/domain/entities/trip_entity.dart';
 import 'package:taxialong/features/rides/presentation/pages/rides.dart';
 import 'package:taxialong/features/settings/presentation/pages/settings.dart';
 import 'package:taxialong/features/trip_history/presentation/pages/trip_history.dart';
+import 'package:taxialong/features/trips/presentation/pages/cancel_trip.dart';
 import 'package:taxialong/features/trips/presentation/pages/trip.dart';
 import 'package:taxialong/features/wallet/domain/entities/initialize_entity.dart';
 import 'package:taxialong/features/wallet/presentation/pages/fund.dart';
@@ -180,7 +184,13 @@ final GoRouter router = GoRouter(
         confirmRideEntity: state.extra as ConfirmRideEntity,
       ),
     ),
-
+    GoRoute(
+      path: "/cancel-trip",
+      name: "cancelTrip",
+      builder: (context, state) => CancelTrip(
+        trip: state.extra as TripEntity,
+      ),
+    ),
     GoRoute(
       path: "/withdraw-fund",
       name: "withdrawFund",
@@ -205,6 +215,16 @@ final GoRouter router = GoRouter(
       name: "VerifyPayment",
       builder: (context, state) =>
           VerifyPayment(params: state.extra as Map<String, dynamic>),
+    ),
+    GoRoute(
+      path: "/chat",
+      name: "chat",
+      builder: (context, state) => const Chat(),
+    ),
+    GoRoute(
+      path: "/rating",
+      name: "rating",
+      builder: (context, state) => Rating(trip: state.extra as TripEntity),
     ),
   ],
   redirect: (context, state) async {

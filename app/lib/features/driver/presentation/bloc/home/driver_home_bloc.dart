@@ -5,7 +5,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/driver/domain/entities/driver_entity.dart';
 import 'package:taxialong/features/driver/domain/entities/go_online_entity.dart';
+import 'package:taxialong/features/driver/domain/entities/trip_entity.dart';
 import 'package:taxialong/features/driver/domain/usecases/get_driver_data_usecase.dart';
+import 'package:taxialong/features/driver/domain/usecases/get_recent_usecase.dart';
+import 'package:taxialong/features/driver/domain/usecases/get_request_usecase.dart';
 import 'package:taxialong/features/driver/domain/usecases/go_online_usecase.dart';
 import 'package:taxialong/features/driver/domain/usecases/update_driver_location_usecase.dart';
 
@@ -16,6 +19,8 @@ class DriverHomeBloc extends Bloc<DriverHomeEvent, DriverHomeState> {
   GoOnlineUseCase goOnlineUseCase;
   GetDriverDataUseCase getDriverDataUseCase;
   UpdateDriverLocationUseCase updateDriverLocationUseCase;
+  GetRecentUseCase getRecentUseCase;
+  GetRequestUseCase getRequestUseCase;
   late BitmapDescriptor customIcon;
 
   List<Marker> markers = <Marker>[];
@@ -24,6 +29,8 @@ class DriverHomeBloc extends Bloc<DriverHomeEvent, DriverHomeState> {
     required this.getDriverDataUseCase,
     required this.goOnlineUseCase,
     required this.updateDriverLocationUseCase,
+    required this.getRecentUseCase,
+    required this.getRequestUseCase,
   }) : super(DriverHomeInitailState()) {
     on<DriverHomeEvent>((event, emit) async {
       if (event is DriverHomeGoOnlineEvent) {
@@ -72,6 +79,24 @@ class DriverHomeBloc extends Bloc<DriverHomeEvent, DriverHomeState> {
             markers: markers,
           ),
         );
+      } else if (event is DriverHomeFetchRequests) {
+        emit(RequestRecentLoading());
+
+        var failureOrRequestData = await getRequestUseCase({});
+
+        emit(failureOrRequestData.fold(
+            (failure) =>
+                RequestRecentError(message: mapFailureToMessage(failure)),
+            (tripEntity) => RequestRecentLoaded(tripEntity: tripEntity)));
+      } else if (event is DriverHomeFetchRecents) {
+        emit(RequestRecentLoading());
+
+        var failureOrRequestData = await getRecentUseCase({});
+
+        emit(failureOrRequestData.fold(
+            (failure) =>
+                RequestRecentError(message: mapFailureToMessage(failure)),
+            (tripEntity) => RequestRecentLoaded(tripEntity: tripEntity)));
       }
     });
   }

@@ -1,7 +1,6 @@
-import 'package:taxialong/features/rides/domain/entities/driver_entity.dart';
-import 'package:taxialong/features/rides/domain/entities/location_entity.dart';
-import 'package:taxialong/features/rides/domain/entities/point_entity.dart';
-import 'package:taxialong/features/rides/domain/entities/review_entity.dart';
+import 'package:taxialong/features/driver/domain/entities/location_entity.dart';
+import 'package:taxialong/features/driver/domain/entities/point_entity.dart';
+import 'package:taxialong/features/driver/domain/entities/rider_entity.dart';
 
 class TripEntity {
   final int id;
@@ -14,9 +13,8 @@ class TripEntity {
   final String tripClass;
   final List<dynamic> seats;
   final String status;
-  final DriverEntity driver;
+  final RiderEntity rider;
   final LocationEntity location;
-  final List<ReviewEntity> reviews;
 
   TripEntity({
     required this.id,
@@ -29,8 +27,7 @@ class TripEntity {
     required this.tripClass,
     required this.seats,
     required this.status,
-    required this.driver,
+    required this.rider,
     required this.location,
-    required this.reviews,
   });
 }
