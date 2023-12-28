@@ -9,13 +9,14 @@ use Webpatser\Uuid\Uuid;
 use App\Http\Trait\TaxiAlongWallet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Trait\RideSettings;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
 
-    use TaxiAlongWallet;
+    use TaxiAlongWallet, RideSettings;
 
     public function oAuth(Request $request){
         $exists = User::where("email", $request->email)->exists();
@@ -82,6 +83,7 @@ class AuthController extends Controller
                 'message'=> "User is unauthorized",
             ]);
         }
+        $this->createSettings();
         $this->createWallet();
         return $this->respondWithToken($token);
     }
