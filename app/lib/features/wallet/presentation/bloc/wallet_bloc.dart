@@ -28,58 +28,71 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     required this.initializePaymentUseCase,
     required this.verifyPaymentUseCase,
   }) : super(WalletInitialState()) {
-    on<WalletEvent>((event, emit) async {
-      if (event is FetchTransactionEvent) {
-        emit(WalletLoadingState());
+    on<FetchTransactionEvent>(
+        (event, emit) => fetchTransactionEvent(event, emit));
+    on<FetchWalletEvent>((event, emit) => fetchWalletEvent(event, emit));
+    on<UpdatePaymentMethodEvent>(
+        (event, emit) => updatePaymentMethodEvent(event, emit));
+    on<InitializePaymentEvent>(
+        (event, emit) => initializePaymentEvent(event, emit));
 
-        final failureOrTransactionUsecase = await getTransactionUseCase({});
+    on<VerifyPaymentEvent>((event, emit) => verifyPaymentEvent(event, emit));
+  }
 
-        emit(failureOrTransactionUsecase.fold(
-            (failure) =>
-                TransactionErrorState(message: mapFailureToMessage(failure)),
-            (transactionEntity) =>
-                TransactionLoadedState(transactionEntity: transactionEntity)));
-      } else if (event is FetchWalletEvent) {
-        emit(TransactionLoadingState());
+  verifyPaymentEvent(event, emit) async {
+    emit(WalletLoadingState());
 
-        final failureOrWalletUsecase = await getWalletUseCase({});
+    if (event.reference != null) {
+      final failureOrVerifyUsecase = await verifyPaymentUseCase(
+          VerifyPaymentParams(reference: event.reference!));
+      emit(failureOrVerifyUsecase.fold(
+          (failure) => WalletErrorState(message: mapFailureToMessage(failure)),
+          (verifyPaymentEntity) =>
+              VerifyPaymentLoaded(verifyPaymentEntity: verifyPaymentEntity)));
+    } else {
+      emit(PaymentFailed());
+    }
+  }
 
-        emit(failureOrWalletUsecase.fold(
-            (failure) =>
-                WalletErrorState(message: mapFailureToMessage(failure)),
-            (walletEntity) => WalletLoadedState(walletEntity: walletEntity)));
-      } else if (event is UpdatePaymentMethodEvent) {
-        await updatePaymentMethodUseCase(
-          PaymentMethodParam(
-            paymentMethod: event.paymentMethod,
-          ),
-        );
-      } else if (event is InitializePaymentEvent) {
-        emit(InitializePaymentLoading());
+  initializePaymentEvent(event, emit) async {
+    emit(InitializePaymentLoading());
 
-        final failureOrInitUsecase = await initializePaymentUseCase(
-            InitializeParams(amount: event.amount));
+    final failureOrInitUsecase =
+        await initializePaymentUseCase(InitializeParams(amount: event.amount));
 
-        emit(failureOrInitUsecase.fold(
-            (failure) =>
-                WalletErrorState(message: mapFailureToMessage(failure)),
-            (initializeEntity) =>
-                InitializePaymentLoaded(initializeEntity: initializeEntity)));
-      } else if (event is VerifyPaymentEvent) {
-        emit(WalletLoadingState());
+    emit(failureOrInitUsecase.fold(
+        (failure) => WalletErrorState(message: mapFailureToMessage(failure)),
+        (initializeEntity) =>
+            InitializePaymentLoaded(initializeEntity: initializeEntity)));
+  }
 
-        if (event.reference != null) {
-          final failureOrVerifyUsecase = await verifyPaymentUseCase(
-              VerifyPaymentParams(reference: event.reference!));
-          emit(failureOrVerifyUsecase.fold(
-              (failure) =>
-                  WalletErrorState(message: mapFailureToMessage(failure)),
-              (verifyPaymentEntity) => VerifyPaymentLoaded(
-                  verifyPaymentEntity: verifyPaymentEntity)));
-        } else {
-          emit(PaymentFailed());
-        }
-      }
-    });
+  updatePaymentMethodEvent(event, emit) async {
+    await updatePaymentMethodUseCase(
+      PaymentMethodParam(
+        paymentMethod: event.paymentMethod,
+      ),
+    );
+  }
+
+  fetchTransactionEvent(event, emit) async {
+    emit(WalletLoadingState());
+
+    final failureOrTransactionUsecase = await getTransactionUseCase({});
+
+    emit(failureOrTransactionUsecase.fold(
+        (failure) =>
+            TransactionErrorState(message: mapFailureToMessage(failure)),
+        (transactionEntity) =>
+            TransactionLoadedState(transactionEntity: transactionEntity)));
+  }
+
+  fetchWalletEvent(event, emit) async {
+    emit(TransactionLoadingState());
+
+    final failureOrWalletUsecase = await getWalletUseCase({});
+
+    emit(failureOrWalletUsecase.fold(
+        (failure) => WalletErrorState(message: mapFailureToMessage(failure)),
+        (walletEntity) => WalletLoadedState(walletEntity: walletEntity)));
   }
 }

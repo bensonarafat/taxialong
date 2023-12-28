@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:taxialong/core/bloc/map/map_bloc.dart';
+import 'package:taxialong/core/bloc/web_sockets/pusher/pusher_bloc.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/data/models/user_model.dart';
@@ -64,13 +65,14 @@ class _DriverHomeState extends State<DriverHome> {
       avatar = "${usermodel?.avatar}";
       userId = usermodel?.id.toString();
       settings = usermodel?.settings;
+      status = usermodel?.driver?.online == "1" ? true : false;
     });
     registerTripChannel();
   }
 
   registerTripChannel() {
     if (userId != null) {
-      context.read<MapBloc>().add(SubscribeToTripChannel(driverId: userId!));
+      context.read<PusherBloc>().add(SubscribeToTripChannel(driverId: userId!));
     }
   }
 
@@ -79,155 +81,160 @@ class _DriverHomeState extends State<DriverHome> {
     return BlocProvider<DriverHomeBloc>(
       create: (context) => getIt<DriverHomeBloc>()
         ..add(DriverHomeFetchEvent())
-        ..add(DriverHomeFetchRecents())
-        ..add(DriverHomeFetchRequests()),
+        ..add(DriverHomeFetchRecents(loading: true))
+        ..add(DriverHomeFetchRequests(loading: true)),
       child: Scaffold(
         drawer: const Drawer(
           child: TaxiAlongDrawer(),
         ),
-        body: BlocListener<MapBloc, MapState>(
+        body: BlocListener<PusherBloc, PusherState>(
           listener: (context, state) {
-            /// update driver location here
-            if (state is MapCurrentPositionState) {
-              ///add event here
-              context.read<DriverHomeBloc>().add(
-                    DriverUpdateLocationEvent(
-                      latitude: state.latitude,
-                      longitude: state.longitude,
-                    ),
-                  );
-            } else if (state is DripTripUpdateState) {
+            if (state is PusherTripUpdateState) {
               context.read<DriverHomeBloc>()
-                ..add(DriverHomeFetchRecents())
-                ..add(DriverHomeFetchRequests());
+                ..add(DriverHomeFetchRecents(loading: false))
+                ..add(DriverHomeFetchRequests(loading: false));
             }
           },
-          child: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                shadowColor: Theme.of(context).shadowColor,
-                surfaceTintColor: Theme.of(context).colorScheme.background,
-                backgroundColor: Theme.of(context).colorScheme.background,
-                elevation: 0,
-                automaticallyImplyLeading: false,
-                pinned: false,
-                floating: true,
-                expandedHeight: 100,
-                forceElevated: true,
-                flexibleSpace: DriverFlexibleSpace(action: toggleOnOff),
-              ),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Container(
-                      padding: EdgeInsets.only(
-                        left: 16.w,
-                        right: 16.w,
-                        top: 16.h,
+          child: BlocListener<MapBloc, MapState>(
+            listener: (context, state) {
+              /// update driver location here
+              if (state is MapCurrentPositionState) {
+                ///add event here
+                context.read<DriverHomeBloc>().add(
+                      DriverHomeUpdateLocationEvent(
+                        latitude: state.latitude,
+                        longitude: state.longitude,
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              TaxiAlongCachedNetworkImage(
-                                path: avatar,
-                                width: 50,
-                                height: 50,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100.r),
+                    );
+              }
+            },
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  shadowColor: Theme.of(context).shadowColor,
+                  surfaceTintColor: Theme.of(context).colorScheme.background,
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  elevation: 0,
+                  automaticallyImplyLeading: false,
+                  pinned: false,
+                  floating: true,
+                  expandedHeight: 100,
+                  forceElevated: true,
+                  flexibleSpace: DriverFlexibleSpace(action: toggleOnOff),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Container(
+                        padding: EdgeInsets.only(
+                          left: 16.w,
+                          right: 16.w,
+                          top: 16.h,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                TaxiAlongCachedNetworkImage(
+                                  path: avatar,
+                                  width: 50,
+                                  height: 50,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100.r),
+                                  ),
+                                  fit: BoxFit.fill,
                                 ),
-                                fit: BoxFit.fill,
-                              ),
-                              Gap(12.w),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Hi $username',
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                  Gap(2.h),
-                                  CurrentLocationBustop(status: status),
-                                ],
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              await WoltModalSheet.show<void>(
-                                enableDrag: true,
-                                context: context,
-                                pageListBuilder: (modalSheetContext) {
-                                  return [
-                                    sortClassBottomSheet(
-                                      context: modalSheetContext,
-                                      settings: settings,
+                                Gap(12.w),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Hi $username',
+                                      style:
+                                          Theme.of(context).textTheme.bodyLarge,
                                     ),
-                                  ];
-                                },
-                                modalTypeBuilder: (context) {
-                                  return WoltModalType.bottomSheet;
-                                },
-                                maxDialogWidth: 560.w,
-                                minDialogWidth: 400.w,
-                                minPageHeight: 0.0,
-                              );
-                              //update the user data
-                              _getUserData();
-                            },
-                            child: Container(
-                              width: 40.w,
-                              height: 40.h,
-                              padding: EdgeInsets.all(8.r),
-                              clipBehavior: Clip.antiAlias,
-                              decoration: ShapeDecoration(
-                                color: const Color(0x19DADADA),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.r)),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    rideSettings,
-                                    width: 24.w,
-                                    height: 24.h,
-                                    colorFilter: ColorFilter.mode(
-                                      Brightness.dark ==
-                                              Theme.of(context).brightness
-                                          ? white
-                                          : dark,
-                                      BlendMode.dstIn,
+                                    Gap(2.h),
+                                    CurrentLocationBustop(status: status),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                await WoltModalSheet.show<void>(
+                                  enableDrag: true,
+                                  context: context,
+                                  pageListBuilder: (modalSheetContext) {
+                                    return [
+                                      sortClassBottomSheet(
+                                        context: modalSheetContext,
+                                        settings: settings,
+                                      ),
+                                    ];
+                                  },
+                                  modalTypeBuilder: (context) {
+                                    return WoltModalType.bottomSheet;
+                                  },
+                                  maxDialogWidth: 560.w,
+                                  minDialogWidth: 400.w,
+                                  minPageHeight: 0.0,
+                                );
+                                //update the user data
+                                _getUserData();
+                              },
+                              child: Container(
+                                width: 40.w,
+                                height: 40.h,
+                                padding: EdgeInsets.all(8.r),
+                                clipBehavior: Clip.antiAlias,
+                                decoration: ShapeDecoration(
+                                  color: const Color(0x19DADADA),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.r)),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      rideSettings,
+                                      width: 24.w,
+                                      height: 24.h,
+                                      colorFilter: ColorFilter.mode(
+                                        Brightness.dark ==
+                                                Theme.of(context).brightness
+                                            ? white
+                                            : dark,
+                                        BlendMode.dstIn,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Gap(24.h),
-                    const DriverDetailsWidget(),
-                    Gap(24.h),
-                    const DriverMap(),
-                    Gap(16.h),
-                    status ? const Requests() : const Recents(),
-                  ],
+                      Gap(24.h),
+                      const DriverDetailsWidget(),
+                      Gap(24.h),
+                      const DriverMap(),
+                      Gap(16.h),
+                      status ? const Requests() : const Recents(),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

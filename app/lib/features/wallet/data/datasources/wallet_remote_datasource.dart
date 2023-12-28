@@ -78,6 +78,7 @@ class WalletRemoteDataSourceImpl implements WalletRemoteDataSource {
   Future<PaymentMethodModel> updatePaymentMethod(
       PaymentMethodParam param) async {
     final token = await secureStorage.getToken();
+    // print("Token $token");
     if (token == null) throw ServerException();
 
     var headers = {

@@ -73,11 +73,31 @@ class DriverHomeRepositoryImpl implements DriverHomeRepository {
 
   @override
   Future<Either<Failure, List<TripModel>>> getRecents() async {
-    throw UnimplementedError();
+    if (await networkInfo.isConnected) {
+      try {
+        List<TripModel> tripList = await remoteDataSource.getRecents();
+        return Right(tripList);
+      } on ServerException {
+        return Left(ServerFailure(message: "There is a server failure"));
+      }
+    } else {
+      return Left(
+          NetworkFailure(message: 'Please check your internet connection'));
+    }
   }
 
   @override
   Future<Either<Failure, List<TripModel>>> getRequests() async {
-    throw UnimplementedError();
+    if (await networkInfo.isConnected) {
+      try {
+        List<TripModel> tripList = await remoteDataSource.getRequests();
+        return Right(tripList);
+      } on ServerException {
+        return Left(ServerFailure(message: "There is a server failure"));
+      }
+    } else {
+      return Left(
+          NetworkFailure(message: 'Please check your internet connection'));
+    }
   }
 }

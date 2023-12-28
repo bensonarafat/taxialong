@@ -21,47 +21,52 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required this.getTermainalUseCase,
     required this.updateSettingsUseCase,
   }) : super(SettingInitial()) {
-    on<SettingsEvent>((event, emit) async {
-      if (event is SettingsSwitchAccountEvent) {
-        emit(SettingsSwitchLoadingState());
+    on<RideFilterEvent>((event, emit) =>
+        emit(FilterRideState(rideClass: event.rideClass, seat: event.seat)));
+    on<UpdateSettingsEvent>((event, emit) => updateSettingsEvent(event, emit));
+    on<SettingsGetTerminalsEvent>(
+        (event, emit) => settingsGetTerminalsEvent(event, emit));
+    on<SettingsSwitchAccountEvent>(
+        (event, emit) => settingsSwitchAccountEvent(event, emit));
+  }
 
-        final failureOrSwitchEvent = await switchAccountUseCase({});
+  settingsSwitchAccountEvent(event, emit) async {
+    emit(SettingsSwitchLoadingState());
 
-        emit(failureOrSwitchEvent.fold(
-            (failure) =>
-                SettingErrorState(message: mapFailureToMessage(failure)),
-            (accountSwitchEntity) => SettingsSwitchedState(
-                accountSwitchEntity: accountSwitchEntity)));
-      } else if (event is SettingsGetTerminalsEvent) {
-        emit(SettingsTerminalsLoadingState());
-        var failureOrTerminalData = await getTermainalUseCase({});
-        emit(failureOrTerminalData.fold(
-            (failure) =>
-                SettingErrorState(message: mapFailureToMessage(failure)),
-            (terminalEntity) =>
-                SettingsTerminalsLoadedState(terminalEntity: terminalEntity)));
-      } else if (event is UpdateSettingsEvent) {
-        emit(SettingsLoadingState());
+    final failureOrSwitchEvent = await switchAccountUseCase({});
 
-        var failureOrSettingsData = await updateSettingsUseCase(
-          SettingsParams(
-            selectedClass: event.selectedClass,
-            paymentMethod: event.paymentMethod,
-            pointa: event.pointa,
-            pointb: event.pointb,
-          ),
-        );
-        emit(
-          failureOrSettingsData.fold(
-            (failure) =>
-                SettingErrorState(message: mapFailureToMessage(failure)),
-            (settingsUpdateEntity) => SettingsUpdatedState(
-                settingsUpdateEntity: settingsUpdateEntity),
-          ),
-        );
-      } else if (event is RideFilterEvent) {
-        emit(FilterRideState(rideClass: event.rideClass, seat: event.seat));
-      }
-    });
+    emit(failureOrSwitchEvent.fold(
+        (failure) => SettingErrorState(message: mapFailureToMessage(failure)),
+        (accountSwitchEntity) =>
+            SettingsSwitchedState(accountSwitchEntity: accountSwitchEntity)));
+  }
+
+  settingsGetTerminalsEvent(event, emit) async {
+    emit(SettingsTerminalsLoadingState());
+    var failureOrTerminalData = await getTermainalUseCase({});
+    emit(failureOrTerminalData.fold(
+        (failure) => SettingErrorState(message: mapFailureToMessage(failure)),
+        (terminalEntity) =>
+            SettingsTerminalsLoadedState(terminalEntity: terminalEntity)));
+  }
+
+  updateSettingsEvent(event, emit) async {
+    emit(SettingsLoadingState());
+
+    var failureOrSettingsData = await updateSettingsUseCase(
+      SettingsParams(
+        selectedClass: event.selectedClass,
+        paymentMethod: event.paymentMethod,
+        pointa: event.pointa,
+        pointb: event.pointb,
+      ),
+    );
+    emit(
+      failureOrSettingsData.fold(
+        (failure) => SettingErrorState(message: mapFailureToMessage(failure)),
+        (settingsUpdateEntity) =>
+            SettingsUpdatedState(settingsUpdateEntity: settingsUpdateEntity),
+      ),
+    );
   }
 }

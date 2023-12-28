@@ -31,70 +31,80 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.logoutUseCase,
     required this.authUseCase,
   }) : super(const AuthInitial()) {
-    on<AuthEvent>((AuthEvent event, Emitter<AuthState> emit) async {
-      if (event is CheckLoginEvent) {
-        bool isLogin = await isLoggedIn();
-        emit(AuthenticatedState(isLogin));
-      } else if (event is LogoutEvent) {
-        emit(const AuthLoadingState());
-        final failureOrLogout = await logoutUseCase(LogoutParams());
-        emit(failureOrLogout.fold(
-            (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
-            (r) => const AuthenticatedState(false)));
-      } else if (event is PhoneNumberEvent) {
-        emit(const AuthLoadingState());
-        final failureOrPhoneNumberEvent = await telephoneUseCase(
-          TelephoneParams(
-            telephone: event.telephone,
-          ),
-        );
+    on<CheckLoginEvent>((event, emit) => checkLoginEvent(event, emit));
+    on<LogoutEvent>((event, emit) => logoutEvent(event, emit));
+    on<PhoneNumberEvent>((event, emit) => phoneNumberEvent(event, emit));
+    on<VerifyOTPEvent>((event, emit) => verifyOTPEvent(event, emit));
+    on<CreateAccountEvent>((event, emit) => createAccountEvent(event, emit));
+  }
 
-        emit(failureOrPhoneNumberEvent.fold(
-            (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
-            (telephoneEntity) =>
-                PhoneNumberState(telephoneEntity: telephoneEntity)));
-      } else if (event is VerifyOTPEvent) {
-        emit(const AuthLoadingState());
-        // if its a new user
-        if (event.handler == "new") {
-          final failureOrVerifyOtp = await verifyOTPUserCase(VerifyOTPParams(
-            otp: event.otp,
-            telephone: event.telephone,
-            uuid: event.uuid,
-            handler: event.handler,
-          ));
-          emit(failureOrVerifyOtp.fold(
-              (failure) =>
-                  ErrorAuthState(message: mapFailureToMessage(failure)),
-              (otpEntity) => VerifyOTPState(otpEntity: otpEntity)));
-        } else {
-          final failureOrAuth = await authUseCase(AuthParams(
-            otp: event.otp,
-            telephone: event.telephone,
-            uuid: event.uuid,
-            handler: event.handler,
-          ));
-          emit(failureOrAuth.fold(
-              (failure) =>
-                  ErrorAuthState(message: mapFailureToMessage(failure)),
-              (authEntity) => LoginState(authEntity: authEntity)));
-        }
-      } else if (event is CreateAccountEvent) {
-        emit(const AuthLoadingState());
-        final failureOrCreateAccount = await createAccountUserCase(
-          CreateAccountParams(
-            firstname: event.firstname,
-            lastname: event.lastname,
-            email: event.email,
-            uuid: event.uuid,
-            telephone: event.telephone,
-          ),
-        );
-        emit(failureOrCreateAccount.fold(
-            (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
-            (authEntity) => CreateAccountState(authEntity: authEntity)));
-      }
-    });
+  createAccountEvent(event, emit) async {
+    emit(const AuthLoadingState());
+    final failureOrCreateAccount = await createAccountUserCase(
+      CreateAccountParams(
+        firstname: event.firstname,
+        lastname: event.lastname,
+        email: event.email,
+        uuid: event.uuid,
+        telephone: event.telephone,
+      ),
+    );
+    emit(failureOrCreateAccount.fold(
+        (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
+        (authEntity) => CreateAccountState(authEntity: authEntity)));
+  }
+
+  verifyOTPEvent(event, emit) async {
+    emit(const AuthLoadingState());
+    // if its a new user
+    if (event.handler == "new") {
+      final failureOrVerifyOtp = await verifyOTPUserCase(VerifyOTPParams(
+        otp: event.otp,
+        telephone: event.telephone,
+        uuid: event.uuid,
+        handler: event.handler,
+      ));
+      emit(failureOrVerifyOtp.fold(
+          (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
+          (otpEntity) => VerifyOTPState(otpEntity: otpEntity)));
+    } else {
+      final failureOrAuth = await authUseCase(AuthParams(
+        otp: event.otp,
+        telephone: event.telephone,
+        uuid: event.uuid,
+        handler: event.handler,
+      ));
+      emit(failureOrAuth.fold(
+          (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
+          (authEntity) => LoginState(authEntity: authEntity)));
+    }
+  }
+
+  phoneNumberEvent(event, emit) async {
+    emit(const AuthLoadingState());
+    final failureOrPhoneNumberEvent = await telephoneUseCase(
+      TelephoneParams(
+        telephone: event.telephone,
+      ),
+    );
+
+    emit(failureOrPhoneNumberEvent.fold(
+        (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
+        (telephoneEntity) =>
+            PhoneNumberState(telephoneEntity: telephoneEntity)));
+  }
+
+  logoutEvent(event, emit) async {
+    emit(const AuthLoadingState());
+    final failureOrLogout = await logoutUseCase(LogoutParams());
+    emit(failureOrLogout.fold(
+        (failure) => ErrorAuthState(message: mapFailureToMessage(failure)),
+        (r) => const AuthenticatedState(false)));
+  }
+
+  checkLoginEvent(event, emit) async {
+    bool isLogin = await isLoggedIn();
+    emit(AuthenticatedState(isLogin));
   }
 
   Future<bool> isLoggedIn() async {

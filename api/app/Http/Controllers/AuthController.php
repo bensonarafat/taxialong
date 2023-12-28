@@ -132,7 +132,7 @@ class AuthController extends Controller
 
     public function me()
     {
-        $user = User::whereId(auth()->user()->id)->with(["settings"])->withCount(["documents"])->first();
+        $user = User::whereId(auth()->user()->id)->with(["settings", "driver"])->withCount(["documents"])->first();
         $user->settings->ride_class = json_decode($user->settings->ride_class);
         return response()->json($user);
     }

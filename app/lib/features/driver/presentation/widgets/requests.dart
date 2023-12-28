@@ -19,10 +19,9 @@ class Requests extends StatelessWidget {
     return Column(
       children: [
         const TaxiAlongRoute(
-          pointa: "Apo junction",
-          pointb: "Lungbe Juctions",
+          pointa: "Abuja",
+          pointb: "Lagos",
         ),
-        Gap(16.h),
         Container(
           padding: EdgeInsets.only(
             left: 16.w,
@@ -35,7 +34,7 @@ class Requests extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Recent Request',
+                  'Ride Request',
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w400,
@@ -73,15 +72,21 @@ class Requests extends StatelessWidget {
             ],
           ),
         ),
+        Gap(16.h),
         BlocBuilder<DriverHomeBloc, DriverHomeState>(
+          buildWhen: (pre, state) {
+            return state is RequestLoading ||
+                state is RequestLoaded ||
+                state is RequestError;
+          },
           builder: (context, state) {
-            if (state is RequestRecentLoading) {
+            if (state is RequestLoading) {
               return TaxiAlongLoading(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? white
                     : dark,
               );
-            } else if (state is RequestRecentLoaded) {
+            } else if (state is RequestLoaded) {
               List<TripEntity> trips = state.tripEntity;
               return Column(
                 children: [

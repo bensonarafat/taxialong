@@ -1,10 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
+import 'package:taxialong/core/bloc/web_sockets/pusher/pusher_bloc.dart';
 import 'package:taxialong/core/connection/network_info.dart';
 import 'package:taxialong/core/data/datasources/remote_user_data_source.dart';
 import 'package:taxialong/core/data/datasources/setting_remote_datasource.dart';
@@ -146,9 +146,10 @@ Future<void> setupLocator() async {
 /**
  * -----------------------------------------------------------------------------------------------------------
  */
-  PusherChannelsFlutter pusher = PusherChannelsFlutter.getInstance();
   //map instance
-  getIt.registerFactory<MapBloc>(() => MapBloc(pusher: pusher));
+  getIt.registerFactory<MapBloc>(() => MapBloc());
+
+  getIt.registerFactory<PusherBloc>(() => PusherBloc());
 /**
  * -----------------------------------------------------------------------------------------------------------
  */

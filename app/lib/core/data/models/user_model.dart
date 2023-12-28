@@ -1,3 +1,4 @@
+import 'package:taxialong/core/data/models/driver_model.dart';
 import 'package:taxialong/core/data/models/settings_model.dart';
 import 'package:taxialong/core/domain/entities/user_entity.dart';
 
@@ -14,9 +15,15 @@ class UserModel extends UserEntity {
     required super.role,
     required super.documentCount,
     required super.settings,
+    required super.driver,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    DriverModel? driver;
+
+    if (json['driver'] != null) {
+      driver = DriverModel.fromJson(json['driver']);
+    }
     return UserModel(
       id: json['id'],
       firstname: json['firstname'],
@@ -29,6 +36,7 @@ class UserModel extends UserEntity {
       role: json['role'],
       documentCount: json['documents_count'],
       settings: SettingsModel.fromJson(json['settings']),
+      driver: driver,
     );
   }
 
@@ -45,6 +53,7 @@ class UserModel extends UserEntity {
       "role": role,
       "documents_count": documentCount,
       "settings": settings,
+      "driver": driver,
     };
   }
 }

@@ -67,16 +67,23 @@ class Recents extends StatelessWidget {
             ],
           ),
         ),
+        Gap(16.h),
         BlocBuilder<DriverHomeBloc, DriverHomeState>(
+          buildWhen: (pre, state) {
+            return state is RecentLoading ||
+                state is RecentLoaded ||
+                state is RecentError;
+          },
           builder: (context, state) {
-            if (state is RequestRecentLoading) {
+            if (state is RecentLoading) {
               return TaxiAlongLoading(
                 color: Theme.of(context).brightness == Brightness.dark
                     ? white
                     : dark,
               );
-            } else if (state is RequestRecentLoaded) {
+            } else if (state is RecentLoaded) {
               List<TripEntity> trips = state.tripEntity;
+
               return Column(
                 children: [
                   for (int i = 0; i < trips.length; i++)

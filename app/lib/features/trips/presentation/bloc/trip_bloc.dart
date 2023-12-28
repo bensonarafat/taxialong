@@ -24,45 +24,55 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     required this.updateCompleteUseCase,
     required this.updatePickUpUseCase,
   }) : super(TripInit()) {
-    on<TripEvent>((event, emit) async {
-      if (event is GetTripEvent) {
-        final failureOrTripEvent = await getTripUseCase({});
+    on<UpdateCompletedEvent>(
+        (event, emit) => updateCompletedEvent(event, emit));
+    on<UpdatePickUpEvent>((event, emit) => updatePickUpEvent(event, emit));
+    on<CancelTripEvent>((event, emit) => cancelTripEvent(event, emit));
+    on<GetTripEvent>((event, emit) => getTripEvent(event, emit));
+  }
 
-        emit(
-          failureOrTripEvent.fold(
-            (failure) => TripErrorState(message: mapFailureToMessage(failure)),
-            (tripEntity) => TripLoadedState(tripEntity: tripEntity),
-          ),
-        );
-      } else if (event is CancelTripEvent) {
-        emit(TripLoadingState());
-        final failureOrTripEvent = await cancelTripUseCase(
-            CancelParam(tripId: event.tripId, reason: event.reason));
-        emit(
-          failureOrTripEvent.fold(
-            (failure) => TripErrorState(message: mapFailureToMessage(failure)),
-            (cancelEntity) => TripCancelState(cancelEntity: cancelEntity),
-          ),
-        );
-      } else if (event is UpdatePickUpEvent) {
-        final finalureOrUpdate = await updatePickUpUseCase({});
-        emit(
-          finalureOrUpdate.fold(
-            (failure) => TripErrorState(message: mapFailureToMessage(failure)),
-            (updateTripEntity) =>
-                UpdatePickUpState(updateTripEntity: updateTripEntity),
-          ),
-        );
-      } else if (event is UpdateCompletedEvent) {
-        final finalureOrUpdate = await updateCompleteUseCase({});
-        emit(
-          finalureOrUpdate.fold(
-            (failure) => TripErrorState(message: mapFailureToMessage(failure)),
-            (updateTripEntity) =>
-                UpdateCompleteState(updateTripEntity: updateTripEntity),
-          ),
-        );
-      }
-    });
+  getTripEvent(event, emit) async {
+    final failureOrTripEvent = await getTripUseCase({});
+
+    emit(
+      failureOrTripEvent.fold(
+        (failure) => TripErrorState(message: mapFailureToMessage(failure)),
+        (tripEntity) => TripLoadedState(tripEntity: tripEntity),
+      ),
+    );
+  }
+
+  cancelTripEvent(event, emit) async {
+    emit(TripLoadingState());
+    final failureOrTripEvent = await cancelTripUseCase(
+        CancelParam(tripId: event.tripId, reason: event.reason));
+    emit(
+      failureOrTripEvent.fold(
+        (failure) => TripErrorState(message: mapFailureToMessage(failure)),
+        (cancelEntity) => TripCancelState(cancelEntity: cancelEntity),
+      ),
+    );
+  }
+
+  updatePickUpEvent(event, emit) async {
+    final finalureOrUpdate = await updatePickUpUseCase({});
+    emit(
+      finalureOrUpdate.fold(
+        (failure) => TripErrorState(message: mapFailureToMessage(failure)),
+        (updateTripEntity) =>
+            UpdatePickUpState(updateTripEntity: updateTripEntity),
+      ),
+    );
+  }
+
+  updateCompletedEvent(event, emit) async {
+    final finalureOrUpdate = await updateCompleteUseCase({});
+    emit(
+      finalureOrUpdate.fold(
+        (failure) => TripErrorState(message: mapFailureToMessage(failure)),
+        (updateTripEntity) =>
+            UpdateCompleteState(updateTripEntity: updateTripEntity),
+      ),
+    );
   }
 }
