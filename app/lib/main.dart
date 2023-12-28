@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:taxialong/app_observer.dart';
 import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
+import 'package:taxialong/core/bloc/web_sockets/pusher/pusher_bloc.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/config/routes/router.dart';
 import 'package:taxialong/config/theme/theme.dart';
@@ -45,6 +46,10 @@ class TaxiAlong extends StatelessWidget {
         BlocProvider<SettingsBloc>(create: (_) => getIt<SettingsBloc>()),
         BlocProvider<MapBloc>(
           create: (_) => getIt<MapBloc>(),
+        ),
+        // websocket
+        BlocProvider<PusherBloc>(
+          create: (_) => getIt<PusherBloc>(),
         ),
       ],
       child: AuthStreamScope(

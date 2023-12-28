@@ -21,83 +21,89 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
     required this.documentCompleteUsecase,
     required this.getDocumentsUseCase,
   }) : super(DocumentInitialState()) {
-    on<DocumentEvent>((event, emit) async {
-      if (event is DocumentUploadEvent) {
-        // driver licence
-        if (event.type == "driver_licence") {
-          emit(DriverLicenceLoadingState());
-          final failureOrUploadDocument =
-              await documentUploadUseCase(DocumentParams(
-            file: event.path,
-            type: event.type,
-          ));
+    on<DocumentUploadEvent>((event, emit) => documentUploadEvent(event, emit));
+    on<DocumentUploadCompleteEvent>(
+        (event, emit) => documentUploadCompleteEvent(event, emit));
+    on<DocumentFetchDocuments>(
+        (event, emit) => documentFetchDocuments(event, emit));
+  }
 
-          emit(failureOrUploadDocument.fold(
-              (failure) =>
-                  DocumentErrorState(message: mapFailureToMessage(failure)),
-              (documentEntity) =>
-                  DriverLicenceLoadedState(documentEntity: documentEntity)));
-        } else if (event.type == "insurance") {
-          emit(InsuranceLoadingState());
-          final failureOrUploadDocument =
-              await documentUploadUseCase(DocumentParams(
-            file: event.path,
-            type: event.type,
-          ));
+  documentFetchDocuments(event, emit) async {
+    emit(DocumentLoadingState());
+    final failureOrFetchedDocument =
+        await getDocumentsUseCase(DocumentsParams());
 
-          emit(failureOrUploadDocument.fold(
-              (failure) =>
-                  DocumentErrorState(message: mapFailureToMessage(failure)),
-              (documentEntity) =>
-                  InsuranceLoadedState(documentEntity: documentEntity)));
-        } else if (event.type == "national_id") {
-          emit(NationalIdLoadingState());
-          final failureOrUploadDocument =
-              await documentUploadUseCase(DocumentParams(
-            file: event.path,
-            type: event.type,
-          ));
+    emit(failureOrFetchedDocument.fold(
+        (failure) => DocumentErrorState(message: mapFailureToMessage(failure)),
+        (documentsEntity) =>
+            DocumentsFetchedState(documentsEntity: documentsEntity)));
+  }
 
-          emit(failureOrUploadDocument.fold(
-              (failure) =>
-                  DocumentErrorState(message: mapFailureToMessage(failure)),
-              (documentEntity) =>
-                  NationalIdLoadedState(documentEntity: documentEntity)));
-        } else if (event.type == "vehicle_registration") {
-          emit(VehicleRegistrationLoadingState());
-          final failureOrUploadDocument =
-              await documentUploadUseCase(DocumentParams(
-            file: event.path,
-            type: event.type,
-          ));
+  documentUploadCompleteEvent(event, emit) async {
+    emit(DocumentLoadingState());
+    final failureOrUploadDocument =
+        await documentCompleteUsecase(CompleteParams());
 
-          emit(failureOrUploadDocument.fold(
-              (failure) =>
-                  DocumentErrorState(message: mapFailureToMessage(failure)),
-              (documentEntity) => VehicleRegistrationLoadedState(
-                  documentEntity: documentEntity)));
-        }
-      } else if (event is DocumentUploadCompleteEvent) {
-        emit(DocumentLoadingState());
-        final failureOrUploadDocument =
-            await documentCompleteUsecase(CompleteParams());
+    emit(failureOrUploadDocument.fold(
+        (failure) => DocumentErrorState(message: mapFailureToMessage(failure)),
+        (documentEntity) =>
+            DocumentUploadedState(documentEntity: documentEntity)));
+  }
 
-        emit(failureOrUploadDocument.fold(
-            (failure) =>
-                DocumentErrorState(message: mapFailureToMessage(failure)),
-            (documentEntity) =>
-                DocumentUploadedState(documentEntity: documentEntity)));
-      } else if (event is DocumentFetchDocuments) {
-        emit(DocumentLoadingState());
-        final failureOrFetchedDocument =
-            await getDocumentsUseCase(DocumentsParams());
+  documentUploadEvent(event, emit) async {
+    // driver licence
+    if (event.type == "driver_licence") {
+      emit(DriverLicenceLoadingState());
+      final failureOrUploadDocument =
+          await documentUploadUseCase(DocumentParams(
+        file: event.path,
+        type: event.type,
+      ));
 
-        emit(failureOrFetchedDocument.fold(
-            (failure) =>
-                DocumentErrorState(message: mapFailureToMessage(failure)),
-            (documentsEntity) =>
-                DocumentsFetchedState(documentsEntity: documentsEntity)));
-      }
-    });
+      emit(failureOrUploadDocument.fold(
+          (failure) =>
+              DocumentErrorState(message: mapFailureToMessage(failure)),
+          (documentEntity) =>
+              DriverLicenceLoadedState(documentEntity: documentEntity)));
+    } else if (event.type == "insurance") {
+      emit(InsuranceLoadingState());
+      final failureOrUploadDocument =
+          await documentUploadUseCase(DocumentParams(
+        file: event.path,
+        type: event.type,
+      ));
+
+      emit(failureOrUploadDocument.fold(
+          (failure) =>
+              DocumentErrorState(message: mapFailureToMessage(failure)),
+          (documentEntity) =>
+              InsuranceLoadedState(documentEntity: documentEntity)));
+    } else if (event.type == "national_id") {
+      emit(NationalIdLoadingState());
+      final failureOrUploadDocument =
+          await documentUploadUseCase(DocumentParams(
+        file: event.path,
+        type: event.type,
+      ));
+
+      emit(failureOrUploadDocument.fold(
+          (failure) =>
+              DocumentErrorState(message: mapFailureToMessage(failure)),
+          (documentEntity) =>
+              NationalIdLoadedState(documentEntity: documentEntity)));
+    } else if (event.type == "vehicle_registration") {
+      emit(VehicleRegistrationLoadingState());
+      final failureOrUploadDocument =
+          await documentUploadUseCase(DocumentParams(
+        file: event.path,
+        type: event.type,
+      ));
+
+      emit(failureOrUploadDocument.fold(
+          (failure) =>
+              DocumentErrorState(message: mapFailureToMessage(failure)),
+          (documentEntity) =>
+              VehicleRegistrationLoadedState(documentEntity: documentEntity)));
+    }
   }
 }

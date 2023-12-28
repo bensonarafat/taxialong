@@ -107,7 +107,6 @@ class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
       url,
       headers: headers,
     );
-
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       List<dynamic> jsonresponse = data['data'];
@@ -132,7 +131,6 @@ class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
       url,
       headers: headers,
     );
-
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       List<dynamic> jsonresponse = data['data'];

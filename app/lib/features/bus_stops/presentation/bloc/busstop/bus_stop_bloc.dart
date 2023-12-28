@@ -13,20 +13,19 @@ class BusStopBloc extends Bloc<BusStopEvent, BusStopState> {
   BusStopBloc({
     required this.busStopUseCase,
   }) : super(BusStopLoadingState()) {
-    on<BusStopEvent>((event, emit) async {
-      if (event is BusStopFetchEvent) {
-        emit(BusStopLoadingState());
-        final failureOrFetchAxisEvent = await busStopUseCase(
-          AxisParams(
-            pointa: event.pointa,
-            pointb: event.pointb,
-          ),
-        );
-        emit(failureOrFetchAxisEvent.fold(
-            (failure) =>
-                BusStopErrorState(message: mapFailureToMessage(failure)),
-            (busstops) => BusStopLoadedState(busstops: busstops)));
-      }
-    });
+    on<BusStopFetchEvent>((event, emit) => busStopFetchEvent(event, emit));
+  }
+
+  busStopFetchEvent(event, emit) async {
+    emit(BusStopLoadingState());
+    final failureOrFetchAxisEvent = await busStopUseCase(
+      AxisParams(
+        pointa: event.pointa,
+        pointb: event.pointb,
+      ),
+    );
+    emit(failureOrFetchAxisEvent.fold(
+        (failure) => BusStopErrorState(message: mapFailureToMessage(failure)),
+        (busstops) => BusStopLoadedState(busstops: busstops)));
   }
 }

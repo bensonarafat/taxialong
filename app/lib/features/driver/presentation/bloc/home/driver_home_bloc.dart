@@ -32,72 +32,89 @@ class DriverHomeBloc extends Bloc<DriverHomeEvent, DriverHomeState> {
     required this.getRecentUseCase,
     required this.getRequestUseCase,
   }) : super(DriverHomeInitailState()) {
-    on<DriverHomeEvent>((event, emit) async {
-      if (event is DriverHomeGoOnlineEvent) {
-        var failureOrOnline = await goOnlineUseCase({});
+    on<DriverHomeGoOnlineEvent>(
+        (event, emit) => driverHomeGoOnlineEvent(event, emit));
+    on<DriverHomeFetchEvent>(
+        (event, emit) => driverHomeFetchEvent(event, emit));
+    on<DriverHomeUpdateLocationEvent>(
+        (event, emit) => driverUpdateLocationEvent(event, emit));
+    on<DriverHomeFetchRequests>(
+        (event, emit) => driverHomeFetchRequests(event, emit));
+    on<DriverHomeFetchRecents>(
+        (event, emit) => driverHomeFetchRecents(event, emit));
+  }
 
-        emit(failureOrOnline.fold(
-            (failure) =>
-                DriverHomeOnlineError(message: mapFailureToMessage(failure)),
-            (goOnlineEntity) =>
-                DriverHomeOnlineUpdated(goOnlineEntity: goOnlineEntity)));
-      } else if (event is DriverHomeFetchEvent) {
-        emit(DriverHomeLoadingState());
+  driverHomeFetchRecents(event, emit) async {
+    if (event.loading) {
+      emit(RecentLoading());
+    }
 
-        var failureOrDriverData = await getDriverDataUseCase({});
+    var failureOrRequestData = await getRecentUseCase({});
 
-        emit(failureOrDriverData.fold(
-            (failure) =>
-                DriverHomeErrorState(message: mapFailureToMessage(failure)),
-            (driverEntity) =>
-                DriverHomeFetchState(driverEntity: driverEntity)));
-      } else if (event is DriverUpdateLocationEvent) {
-        emit(DriverHomeLoadingState());
-        customIcon = await createMarkerIcon();
-        markers.add(
-          Marker(
-            icon: customIcon,
-            markerId: const MarkerId('driver'),
-            position: LatLng(
-                double.parse(event.latitude), double.parse(event.longitude)),
-          ),
-        );
+    emit(failureOrRequestData.fold(
+        (failure) => RecentError(message: mapFailureToMessage(failure)),
+        (tripEntity) => RecentLoaded(tripEntity: tripEntity)));
+  }
 
-        // update driver location
-        await updateDriverLocationUseCase(
-          LocationParams(
-            latitude: event.latitude,
-            longitude: event.longitude,
-          ),
-        );
+  driverHomeFetchRequests(event, emit) async {
+    if (event.loading) {
+      emit(RequestLoading());
+    }
 
-        // emit location to map
-        emit(
-          DriverHomePositionUpdatedState(
-            latitude: event.latitude,
-            longitude: event.longitude,
-            markers: markers,
-          ),
-        );
-      } else if (event is DriverHomeFetchRequests) {
-        emit(RequestRecentLoading());
+    var failureOrRequestData = await getRequestUseCase({});
 
-        var failureOrRequestData = await getRequestUseCase({});
+    emit(failureOrRequestData.fold(
+        (failure) => RequestError(message: mapFailureToMessage(failure)),
+        (tripEntity) => RequestLoaded(tripEntity: tripEntity)));
+  }
 
-        emit(failureOrRequestData.fold(
-            (failure) =>
-                RequestRecentError(message: mapFailureToMessage(failure)),
-            (tripEntity) => RequestRecentLoaded(tripEntity: tripEntity)));
-      } else if (event is DriverHomeFetchRecents) {
-        emit(RequestRecentLoading());
+  driverUpdateLocationEvent(event, emit) async {
+    emit(DriverHomeLoadingState());
+    customIcon = await createMarkerIcon();
+    markers.add(
+      Marker(
+        icon: customIcon,
+        markerId: const MarkerId('driver'),
+        position:
+            LatLng(double.parse(event.latitude), double.parse(event.longitude)),
+      ),
+    );
 
-        var failureOrRequestData = await getRecentUseCase({});
+    // update driver location
+    await updateDriverLocationUseCase(
+      LocationParams(
+        latitude: event.latitude,
+        longitude: event.longitude,
+      ),
+    );
 
-        emit(failureOrRequestData.fold(
-            (failure) =>
-                RequestRecentError(message: mapFailureToMessage(failure)),
-            (tripEntity) => RequestRecentLoaded(tripEntity: tripEntity)));
-      }
-    });
+    emit(
+      DriverHomePositionUpdatedState(
+        latitude: event.latitude,
+        longitude: event.longitude,
+        markers: markers,
+      ),
+    );
+  }
+
+  driverHomeFetchEvent(event, emit) async {
+    emit(DriverHomeLoadingState());
+
+    var failureOrDriverData = await getDriverDataUseCase({});
+
+    emit(failureOrDriverData.fold(
+        (failure) =>
+            DriverHomeErrorState(message: mapFailureToMessage(failure)),
+        (driverEntity) => DriverHomeFetchState(driverEntity: driverEntity)));
+  }
+
+  driverHomeGoOnlineEvent(event, emit) async {
+    var failureOrOnline = await goOnlineUseCase({});
+
+    emit(failureOrOnline.fold(
+        (failure) =>
+            DriverHomeOnlineError(message: mapFailureToMessage(failure)),
+        (goOnlineEntity) =>
+            DriverHomeOnlineUpdated(goOnlineEntity: goOnlineEntity)));
   }
 }

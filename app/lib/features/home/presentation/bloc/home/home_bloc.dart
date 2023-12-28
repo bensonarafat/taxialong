@@ -17,19 +17,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required this.axisUseCase,
     required this.axisCachedUseCase,
   }) : super(HomeLoadingState()) {
-    on<HomeEvent>((event, emit) async {
-      if (event is UpdateTerminalEvent) {
-        final failureOrFetchTerminalsEvent = await axisUseCase(
-          PositionParams(
-            latitude: event.latitude,
-            longitude: event.longitude,
-          ),
-        );
+    on<UpdateTerminalEvent>((event, emit) => updateTerminalEvent(event, emit));
+  }
 
-        emit(failureOrFetchTerminalsEvent.fold(
-            (failure) => HomeErrorState(message: mapFailureToMessage(failure)),
-            (axisEntity) => HomeLoadedState(axisEntity: axisEntity)));
-      }
-    });
+  updateTerminalEvent(event, emit) async {
+    final failureOrFetchTerminalsEvent = await axisUseCase(
+      PositionParams(
+        latitude: event.latitude,
+        longitude: event.longitude,
+      ),
+    );
+
+    emit(failureOrFetchTerminalsEvent.fold(
+        (failure) => HomeErrorState(message: mapFailureToMessage(failure)),
+        (axisEntity) => HomeLoadedState(axisEntity: axisEntity)));
   }
 }

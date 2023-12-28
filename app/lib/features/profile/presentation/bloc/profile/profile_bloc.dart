@@ -17,36 +17,36 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     required this.updateProfileUseCase,
     required this.updateProfileImageUseCase,
   }) : super(ProfileInitialState()) {
-    on<ProfileEvent>((event, emit) async {
-      if (event is ProfileUpdateEvent) {
-        emit(ProfileLoadingState());
+    on<ProfileUpdateEvent>((event, emit) => profileUpdateEvent(event, emit));
+    on<ProfileUpdateImageEvent>(
+        (event, emit) => profileUpdateImageEvent(event, emit));
+  }
 
-        final failureOrCreateAccount = await updateProfileUseCase(
-          ProfileParams(
-            firstname: event.firstname,
-            lastname: event.lastname,
-            email: event.email,
-            telephone: event.telephone,
-          ),
-        );
-        emit(failureOrCreateAccount.fold(
-            (failure) =>
-                ProfileErrorState(message: mapFailureToMessage(failure)),
-            (profileEntity) =>
-                ProfileUpdateState(profileEntity: profileEntity)));
-      } else if (event is ProfileUpdateImageEvent) {
-        final failureOrCreateAccount = await updateProfileImageUseCase(
-          ProfilePhotoParams(
-            path: event.path,
-          ),
-        );
+  profileUpdateImageEvent(event, emit) async {
+    final failureOrCreateAccount = await updateProfileImageUseCase(
+      ProfilePhotoParams(
+        path: event.path,
+      ),
+    );
 
-        emit(failureOrCreateAccount.fold(
-            (failure) =>
-                ProfileErrorState(message: mapFailureToMessage(failure)),
-            (photoEntity) =>
-                ProfilePhotoUpdateState(photoEntity: photoEntity)));
-      }
-    });
+    emit(failureOrCreateAccount.fold(
+        (failure) => ProfileErrorState(message: mapFailureToMessage(failure)),
+        (photoEntity) => ProfilePhotoUpdateState(photoEntity: photoEntity)));
+  }
+
+  profileUpdateEvent(event, emit) async {
+    emit(ProfileLoadingState());
+
+    final failureOrCreateAccount = await updateProfileUseCase(
+      ProfileParams(
+        firstname: event.firstname,
+        lastname: event.lastname,
+        email: event.email,
+        telephone: event.telephone,
+      ),
+    );
+    emit(failureOrCreateAccount.fold(
+        (failure) => ProfileErrorState(message: mapFailureToMessage(failure)),
+        (profileEntity) => ProfileUpdateState(profileEntity: profileEntity)));
   }
 }

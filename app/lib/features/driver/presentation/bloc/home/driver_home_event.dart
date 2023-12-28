@@ -14,20 +14,28 @@ class DriverHomeFetchEvent extends DriverHomeEvent {
 }
 
 class DriverHomeFetchRecents extends DriverHomeEvent {
+  final bool loading;
+
+  DriverHomeFetchRecents({required this.loading});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [loading];
 }
 
 class DriverHomeFetchRequests extends DriverHomeEvent {
+  final bool loading;
+
+  DriverHomeFetchRequests({required this.loading});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [loading];
 }
 
-class DriverUpdateLocationEvent extends DriverHomeEvent {
+class DriverHomeUpdateLocationEvent extends DriverHomeEvent {
   final String latitude;
   final String longitude;
 
-  DriverUpdateLocationEvent({required this.latitude, required this.longitude});
+  DriverHomeUpdateLocationEvent(
+      {required this.latitude, required this.longitude});
   @override
   List<Object?> get props => [latitude, longitude];
 }

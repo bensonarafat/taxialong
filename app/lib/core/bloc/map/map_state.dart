@@ -42,8 +42,3 @@ class TripOnGoingState extends MapState {
   @override
   List<Object?> get props => [];
 }
-
-class DripTripUpdateState extends MapState {
-  @override
-  List<Object?> get props => [];
-}

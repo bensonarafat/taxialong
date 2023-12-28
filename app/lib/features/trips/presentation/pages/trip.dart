@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/bloc/map/map_bloc.dart';
+import 'package:taxialong/core/bloc/web_sockets/pusher/pusher_bloc.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/features/rides/domain/entities/confirm_ride_entity.dart';
 import 'package:taxialong/features/trips/domain/entities/update_trip_entity.dart';
@@ -24,7 +25,7 @@ class Trip extends StatefulWidget {
 class _TripState extends State<Trip> {
   @override
   void initState() {
-    context.read<MapBloc>().add(
+    context.read<PusherBloc>().add(
           SubscribeToDriverChannel(
             driverId: widget.confirmRideEntity.trip!.driverId.toString(),
           ),

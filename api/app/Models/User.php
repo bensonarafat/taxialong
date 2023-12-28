@@ -77,4 +77,8 @@ class User extends Authenticatable implements JWTSubject
     public function settings() : HasOne {
         return $this->hasOne(RideSettings::class);
     }
+
+    public function driver(): HasOne {
+        return $this->hasOne(Driver::class);
+    }
 }

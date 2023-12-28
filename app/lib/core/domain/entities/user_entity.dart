@@ -1,3 +1,4 @@
+import 'package:taxialong/core/domain/entities/driver_entity.dart';
 import 'package:taxialong/core/domain/entities/settings_entity.dart';
 
 class UserEntity {
@@ -12,6 +13,7 @@ class UserEntity {
   final String role;
   final String? documentCount;
   final SettingsEntity? settings;
+  final DriverEntity? driver;
 
   UserEntity({
     required this.id,
@@ -25,5 +27,6 @@ class UserEntity {
     required this.role,
     required this.documentCount,
     required this.settings,
+    required this.driver,
   });
 }
