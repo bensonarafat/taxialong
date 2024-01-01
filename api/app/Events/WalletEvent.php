@@ -4,22 +4,22 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateTripStatusEvent implements ShouldBroadcast
+class WalletEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $driverId;
     /**
      * Create a new event instance.
      */
-    public function __construct($driverId)
+    public function __construct()
     {
-        $this->driverId = $driverId;
+        //
     }
 
     /**
@@ -27,8 +27,10 @@ class UpdateTripStatusEvent implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): Channel
+    public function broadcastOn(): array
     {
-       return new Channel("update-trip". $this->driverId);
+        return [
+            new PrivateChannel('channel-name'),
+        ];
     }
 }

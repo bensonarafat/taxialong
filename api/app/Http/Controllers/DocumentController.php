@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\User;
+use App\Trait\Driver;
 use App\Models\Document;
-use App\Http\Trait\Driver;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 

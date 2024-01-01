@@ -103,7 +103,7 @@ class SignUpNextButton extends StatelessWidget {
         if (state is VerifyOTPState) {
           OTPEntity otpEntity = state.otpEntity;
           if (otpEntity.status) {
-            context.push(
+            context.go(
               "/create-account",
               extra: otpEntity,
             );

@@ -2,22 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Trait\TaxiAlongTransaction;
 use GuzzleHttp\Client;
 use App\Models\RideSettings;
 use Illuminate\Http\Request;
+use App\Trait\TaxiAlongWallet;
+use App\Events\TransactionEvent;
 use Illuminate\Http\JsonResponse;
-use App\Http\Trait\TaxiAlongWallet;
-use App\Models\Payment;
-use App\Models\Transaction;
 
 class WalletController extends Controller
 {
-    use TaxiAlongWallet, TaxiAlongTransaction;
-
-    public function fundWallet(Request $request) : JsonResponse{
-        return response()->json();
-    }
+    use TaxiAlongWallet;
 
     public function wallet() : JsonResponse
     {
@@ -52,9 +46,12 @@ class WalletController extends Controller
             if($content['status']){
                 $amount = intval($content['data']['amount']) / 100;
                 $this->topUp($amount, "fund");
-                $transaction = $this->createTransaction($amount, "credit", "Top up");
-                $this->createPayment($transaction, $content['data']);
-                return response()->json(["status" => true, "message" => "Payment sucessful", "amount" => $content['data']['amount']]);
+                $content['message'] = "You have successfully top up your account with NGN$amount";
+                $content['amount'] = $amount;
+                $content['title'] = 'Wallet Topup Successful!';
+                $content['userId'] = auth()->user()->id;
+                TransactionEvent::dispatch($content);
+                return response()->json(["status" => true, "message" => "Payment sucessful", "amount" => $amount]);
             }else{
                 return response()->json(["status" => false, "message" => "Payment failed"]);
             }
@@ -62,19 +59,4 @@ class WalletController extends Controller
     }
 
 
-    private function createPayment(Transaction $transaction, array $content) :void
-    {
-        Payment::create([
-            "user_id" => auth()->user()->id,
-            "transaction_id" => $transaction->id,
-            "domain" => $content['domain'],
-            "status" => $content['status'],
-            "reference" => $content['reference'],
-            "amount" => intval($content['data']['amount']) / 100,
-            "gateway_response" => $content['gateway_response'],
-            'channel' => $content['channel'],
-            'currency' => $content['currency'],
-            'ip_address' => $content['ip_address'],
-        ]);
-    }
 }

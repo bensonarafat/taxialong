@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\User;
-use App\Http\Trait\Driver;
+use App\Trait\Driver;
 use App\Models\RideSettings;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;

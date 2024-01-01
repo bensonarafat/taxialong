@@ -2,29 +2,24 @@
 
 namespace App\Events;
 
+use App\Models\Trip;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NotificationEvent implements ShouldBroadcast
+class TripEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public int $userId;
-
-    public string $message;
-
-    public string $title;
+    public Trip $trip;
     /**
      * Create a new event instance.
      */
-    public function __construct(int $userId, string $title, string $message)
+    public function __construct($trip)
     {
-        $this->userId = $userId;
-        $this->message = $message;
-        $this->title = $title;
+        $this->trip = $trip;
     }
 
     /**
@@ -34,6 +29,6 @@ class NotificationEvent implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        return new Channel("notification" . $this->userId);
+        return new Channel("update-trip". $this->trip->driver_id);
     }
 }

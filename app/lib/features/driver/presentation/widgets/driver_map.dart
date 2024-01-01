@@ -77,13 +77,16 @@ class _DriverMapState extends State<DriverMap> {
                   ),
                 );
               } else {
-                // NOTE: Look at this later on: it product an init state
-                return Center(
-                  child: TaxiAlongLoading(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? white
-                        : dark,
-                  ),
+                CameraPosition position = const CameraPosition(
+                  target: defaultLatLng,
+                  zoom: googleMapZoomLevel,
+                );
+                return GoogleMap(
+                  initialCameraPosition: position,
+                  zoomControlsEnabled: false,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
                 );
               }
             },

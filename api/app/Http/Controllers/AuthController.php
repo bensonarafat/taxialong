@@ -6,10 +6,10 @@ use Carbon\Carbon;
 use App\Models\OTP;
 use App\Models\User;
 use Webpatser\Uuid\Uuid;
-use App\Http\Trait\TaxiAlongWallet;
+use App\Trait\RideSettings;
 use Illuminate\Http\Request;
+use App\Trait\TaxiAlongWallet;
 use App\Http\Controllers\Controller;
-use App\Http\Trait\RideSettings;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 

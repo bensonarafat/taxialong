@@ -16,4 +16,13 @@ class DriverModel extends DriverEntity {
       online: json['online'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "user_id": userId,
+      "latitude": latitude,
+      "longitude": longitude,
+      "online": online,
+    };
+  }
 }

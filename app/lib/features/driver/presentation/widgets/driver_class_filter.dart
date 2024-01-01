@@ -182,7 +182,6 @@ class _TClassState extends State<TClass> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 44.h,
         padding: EdgeInsets.all(10.w),
         child: Row(
           mainAxisSize: MainAxisSize.min,
