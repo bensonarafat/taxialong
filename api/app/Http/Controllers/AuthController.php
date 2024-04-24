@@ -115,7 +115,8 @@ class AuthController extends Controller
                         "telephone"=> $request->telephone,
                         "password" => Hash::make($request->telephone),
                     ]);
-                    return $this->loginUser($request->telephone);
+                    $res = $this->loginUser($request->telephone);
+                    return $res;
                 }
             }
         }else{

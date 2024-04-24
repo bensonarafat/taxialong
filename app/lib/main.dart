@@ -27,6 +27,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   String? token = await messaging.getToken();
@@ -52,9 +57,6 @@ Future<void> main() async {
       // print('Message also contained a notification: ${message.notification}');
     }
   });
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
