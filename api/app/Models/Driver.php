@@ -24,11 +24,11 @@ class Driver extends Model
         return $this->hasOne(RideSettings::class);
     }
     public function total_rides(): HasMany {
-        return $this->hasMany(Trip::class, "driver_id", "user_id");
+        return $this->hasMany(Trip::class, "driver_id", "user_id")->where('status', "completed");
     }
 
     public function today_ride() : HasMany {
-        return $this->hasMany(Trip::class, "driver_id", "user_id");
+        return $this->hasMany(Trip::class, "driver_id", "user_id")->where('status', "completed");
     }
 
     public function earnings() : HasMany

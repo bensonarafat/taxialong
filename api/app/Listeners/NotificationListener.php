@@ -2,24 +2,22 @@
 
 namespace App\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Events\NotificationEvent;
+use App\Models\Notification;
 
 class NotificationListener
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
+
 
     /**
      * Handle the event.
      */
-    public function handle(object $event): void
+    public function handle(NotificationEvent $event): void
     {
-        //
+        Notification::create([
+            "user_id" => $event->userId,
+            "title" => $event->title,
+            "content" => $event->message,
+        ]);
     }
 }

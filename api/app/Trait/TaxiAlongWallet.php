@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Trait;
+namespace App\Trait;
 
 use App\Models\Wallet;
 
@@ -24,8 +24,9 @@ trait TaxiAlongWallet {
         return $wallet->balance;
     }
 
-    public function topUp(int $amount, string $type) : void {
-        $wallet = Wallet::where(["user_id" =>  auth()->user()->id, "type" => $type ])->first();
+    public function topUp(int $amount, string $type, int $userId = null) : void
+    {
+        $wallet = Wallet::where(["user_id" =>  $userId ?? auth()->user()->id, "type" => $type ])->first();
         $balance = floatval($wallet->balance) + floatval($amount);
         $wallet->balance = $balance;
         $wallet->save();

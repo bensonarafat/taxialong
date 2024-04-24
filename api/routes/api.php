@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TripController;
@@ -62,16 +63,22 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post("/cancel", [TripController::class, "cancel"]);
         Route::get("/update-pickup", [TripController::class, "updatePickup"]);
         Route::get("/update-completed", [TripController::class, "updateCompleted"]);
+        Route::get("/history", [TripController::class, "history"]);
     });
 
     Route::group(["prefix" => "wallet"], function(){
         Route::get("", [WalletController::class, "wallet"]);
-        Route::post("/fund", [WalletController::class, "fundWallet"]);
         Route::post("/update-payment-method", [WalletController::class, "updatePaymentMethod"]);
         Route::get("/verify-payment/{reference}", [WalletController::class, "verifyPayment"]);
     });
 
     Route::group(["prefix" => "transactions"], function() {
         Route::get("", [TransactionController::class, "transactions"]);
+    });
+
+    Route::group(["prefix" => "notification"], function(){
+        Route::get("/", [NotificationController::class, "notifications"]);
+        Route::get("/read/{id}", [NotificationController::class, "read"]);
+        Route::get("read-all", [NotificationController::class, "readAll"]);
     });
 });

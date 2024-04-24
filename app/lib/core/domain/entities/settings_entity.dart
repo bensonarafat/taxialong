@@ -1,7 +1,7 @@
 class SettingsEntity {
   final int id;
   final String userId;
-  final String driverId;
+  final String? driverId;
   final String? pointa;
   final String? pointb;
   final List<Map<String, dynamic>>? rideclass;

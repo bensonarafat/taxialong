@@ -133,7 +133,9 @@ class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
     );
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
+
       List<dynamic> jsonresponse = data['data'];
+
       List<TripModel> list =
           jsonresponse.map((item) => TripModel.fromJson(item)).toList();
       return list;

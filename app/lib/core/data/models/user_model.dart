@@ -20,9 +20,12 @@ class UserModel extends UserEntity {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     DriverModel? driver;
-
     if (json['driver'] != null) {
       driver = DriverModel.fromJson(json['driver']);
+    }
+    SettingsModel? settings;
+    if (json['settings'] != null) {
+      settings = SettingsModel.fromJson(json['settings']);
     }
     return UserModel(
       id: json['id'],
@@ -35,7 +38,7 @@ class UserModel extends UserEntity {
       verified: json['verified'],
       role: json['role'],
       documentCount: json['documents_count'],
-      settings: SettingsModel.fromJson(json['settings']),
+      settings: settings,
       driver: driver,
     );
   }

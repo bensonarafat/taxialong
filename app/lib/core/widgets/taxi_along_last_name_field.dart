@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 class LastNameField extends StatelessWidget {
-  final TextEditingController lastnameController;
+  final Function callback;
   const LastNameField({
     super.key,
-    required this.lastnameController,
+    required this.callback,
   });
 
   @override
@@ -28,7 +28,9 @@ class LastNameField extends StatelessWidget {
             width: 358.w,
             height: 60.h,
             child: TextFormField(
-              controller: lastnameController,
+              onChanged: (v) {
+                callback(v);
+              },
               decoration: const InputDecoration(
                 counterText: '',
               ),

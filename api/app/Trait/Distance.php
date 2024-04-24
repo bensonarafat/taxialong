@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Trait;
+namespace App\Trait;
 
 use Exception;
 use App\Models\Price;

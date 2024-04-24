@@ -33,6 +33,7 @@ class AuthRepositoryImpl implements AuthRepository {
         AuthModel authModel =
             await remoteDataSource.createAccount(params: params);
         // if status true store Bear token
+
         if (authModel.status) {
           secureStorage.saveToken(authModel.token);
           // get data and save to device
@@ -111,10 +112,13 @@ class AuthRepositoryImpl implements AuthRepository {
         if (authModel.status) {
           secureStorage.saveToken(authModel.token);
           // get data and save to device
+
           UserModel userModel = await userDataSource.getUserData();
+
           secureStorage.saveUserData(userModel);
         } else {
-          return Left(ServerFailure(message: 'There is a server Error!'));
+          return Left(
+              ServerFailure(message: "Sorry, you cant't login at the moment"));
         }
         return Right(authModel);
       } catch (_) {

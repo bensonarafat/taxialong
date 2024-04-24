@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UpdateTripStatusEvent;
 use Exception;
 use App\Models\Trip;
 use App\Models\User;
+use App\Trait\Seats;
 use App\Models\Driver;
 use App\Models\BusStop;
-use App\Http\Trait\Seats;
-use App\Http\Trait\Distance;
+use App\Trait\Distance;
+use App\Events\TripEvent;
 use App\Models\RideSettings;
+use App\Trait\TaxiAlongTrip;
 use Illuminate\Http\Request;
-use App\Http\Trait\TaxiAlongTrip;
+use App\Trait\TaxiAlongWallet;
+use App\Trait\TaxiAlongEarning;
 use Illuminate\Http\JsonResponse;
-use App\Http\Trait\TaxiAlongWallet;
-use App\Http\Trait\TaxiAlongTransaction;
+use App\Trait\TaxiAlongTransaction;
 
 class TripController extends Controller
 {
     const PER_PAGE = 10;
     const PAGE = 1;
 
-    use Distance, TaxiAlongWallet, TaxiAlongTrip, Seats, TaxiAlongTransaction;
+    use Distance, TaxiAlongWallet, TaxiAlongTrip, Seats, TaxiAlongTransaction, TaxiAlongEarning;
 
     public function availableRides(Request $request) : JsonResponse {
 
@@ -194,7 +195,7 @@ class TripController extends Controller
     public function cancel(Request $request) : JsonResponse
     {
         $trip = Trip::whereId($request->tripId)->first();
-        UpdateTripStatusEvent::dispatch($trip->driver_id);
+        TripEvent::dispatch($trip);
         $trip->status = 'canceled';
         $trip->reason = $request->reason;
         $trip->save();
@@ -209,7 +210,7 @@ class TripController extends Controller
             $trip = Trip::where(["status" =>  "requested", "user_id" => auth()->user()->id])->first();
             $trip->status = "pickedup";
             $trip->save();
-            UpdateTripStatusEvent::dispatch($trip->driver_id);
+            TripEvent::dispatch($trip);
             return response()->json([
                 "status" => true,
                 "message" => "Trip Updated"
@@ -231,8 +232,12 @@ class TripController extends Controller
             $trip = Trip::where(["status" => "pickedup", "user_id" => auth()->user()->id])->first();
             $trip->status = "completed";
             $trip->save();
-
-            UpdateTripStatusEvent::dispatch($trip->driver_id);
+            $this->createEarning($trip);
+            $this->topUp($trip->amount, "fund", $trip->driver);
+            if($trip->payment_method == "wallet"){
+                $this->withdraw($trip->amount, "fund");
+            }
+            TripEvent::dispatch($trip);
             return response()->json([
                 "status" => true,
                 "message" => "Trip Updated"
@@ -244,5 +249,23 @@ class TripController extends Controller
             ]);
         }
 
+    }
+
+    public function history() : JsonResponse
+    {
+        $perPage = self::PER_PAGE;
+        $page = request()->input("page", self::PAGE);
+        $trips = Trip::
+                    with(['pointa', 'pointb'])
+                    ->skip(($page - 1) * $perPage)
+                    ->take($perPage)
+                    ->latest()->get();
+        return response()->json(
+            [
+                "status" => true,
+                "message" => "Trip fetched",
+                "data" => $trips,
+            ]
+        );
     }
 }

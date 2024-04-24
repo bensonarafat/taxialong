@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Trait\Distance;
+use Exception;
 use App\Models\Axis;
 use App\Models\BusStop;
+use App\Trait\Distance;
 use App\Models\Terminal;
-use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class TerminalController extends Controller
 {

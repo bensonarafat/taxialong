@@ -30,6 +30,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     var headers = {
       'Accept': 'application/json',
     };
+
     var url = Uri.parse("${endpoint}auth/create-account");
     var response = await client.post(
       url,
@@ -42,7 +43,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       },
       headers: headers,
     );
-
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return AuthModel.fromJson(data);

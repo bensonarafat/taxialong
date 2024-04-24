@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/widgets/taxi_along_email_field.dart';
 import 'package:taxialong/core/widgets/taxi_along_first_name_field.dart';
 import 'package:taxialong/core/widgets/taxi_along_last_name_field.dart';
@@ -22,106 +21,105 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  TextEditingController firstnameController = TextEditingController();
-  TextEditingController lastnameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  String firstname = "";
+  String lastname = "";
+  String email = "";
+  fieldfirstname(v) {
+    setState(() {
+      firstname = v;
+    });
+  }
 
-  @override
-  void dispose() {
-    firstnameController.dispose();
-    lastnameController.dispose();
-    emailController.dispose();
-    super.dispose();
+  fieldlastname(v) {
+    setState(() {
+      lastname = v;
+    });
+  }
+
+  fieldemail(v) {
+    setState(() {
+      email = v;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () => context.pop(),
-          child: IconTheme(
-            data: Theme.of(context).iconTheme,
-            child: Icon(
-              Icons.chevron_left,
-              weight: 24.sp,
-            ),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 8.h,
-                      left: 16.w,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topCenter,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 8.h,
+                        left: 16.w,
+                      ),
+                      child: Text(
+                        "Create an Account",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
                     ),
-                    child: Text(
-                      "Create an Account",
-                      style: Theme.of(context).textTheme.headlineSmall,
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 8.h,
+                        bottom: 16.h,
+                        left: 16.w,
+                      ),
+                      child: Text(
+                        "Sign up to get started",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 8.h,
-                      bottom: 16.h,
-                      left: 16.w,
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 48.h,
+                      ),
+                      child: FirstNameField(
+                        callback: fieldfirstname,
+                      ),
                     ),
-                    child: Text(
-                      "Sign up to get started",
-                      style: Theme.of(context).textTheme.titleMedium,
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 8.h,
+                      ),
+                      child: LastNameField(
+                        callback: fieldlastname,
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 48.h,
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 8.h,
+                      ),
+                      child: EmailField(
+                        callback: fieldemail,
+                      ),
                     ),
-                    child: FirstNameField(
-                      firstnameController: firstnameController,
+                    Center(
+                      child: CreateAccountButton(
+                        otp: widget.otp,
+                        firstname: firstname,
+                        lastname: lastname,
+                        email: email,
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 8.h,
+                    const Center(child: OrText()),
+                    const SocialButtons(),
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 21.h,
+                      ),
+                      child: const AlreadyHaveAnAccount(),
                     ),
-                    child: LastNameField(
-                      lastnameController: lastnameController,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 8.h,
-                    ),
-                    child: EmailField(
-                      emailController: emailController,
-                    ),
-                  ),
-                  Center(
-                    child: CreateAccountButton(
-                      otp: widget.otp,
-                      firstname: firstnameController.text,
-                      lastname: lastnameController.text,
-                      email: emailController.text,
-                    ),
-                  ),
-                  const Center(child: OrText()),
-                  const SocialButtons(),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 21.h,
-                    ),
-                    child: const AlreadyHaveAnAccount(),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 class EmailField extends StatelessWidget {
-  final TextEditingController emailController;
+  final Function callback;
   const EmailField({
     super.key,
-    required this.emailController,
+    required this.callback,
   });
 
   @override
@@ -28,7 +28,9 @@ class EmailField extends StatelessWidget {
             width: 358.w,
             height: 60.h,
             child: TextFormField(
-              controller: emailController,
+              onChanged: (v) {
+                callback(v);
+              },
               decoration: const InputDecoration(
                 counterText: '',
               ),

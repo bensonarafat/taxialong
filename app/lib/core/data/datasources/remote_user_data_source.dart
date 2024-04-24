@@ -25,6 +25,7 @@ class UserDataSource {
     );
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
+
       return UserModel.fromJson(data);
     } else {
       throw ServerException();
