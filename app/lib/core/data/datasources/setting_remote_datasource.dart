@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/data/models/account_switch_model.dart';
 import 'package:taxialong/core/data/models/settings_update_model.dart';
@@ -17,12 +18,14 @@ abstract class SettingsRemoteDataSource {
 
 class SettingsRemoteDataSourceImp implements SettingsRemoteDataSource {
   final SecureStorage secureStorage;
-  final dynamic client;
+  final Dio dio;
 
   SettingsRemoteDataSourceImp({
     required this.secureStorage,
-    required this.client,
-  });
+    required this.dio,
+  }) {
+    dio.options.headers["Accept"] = "application/json";
+  }
 
   @override
   Future<AccountSwitchModel> switchAccount() async {
@@ -38,17 +41,13 @@ class SettingsRemoteDataSourceImp implements SettingsRemoteDataSource {
       }
     }
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}account/switch/$role");
-    var response = await client.get(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}account/switch/$role";
+    var response = await dio.get(
       url,
-      headers: headers,
     );
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
       return AccountSwitchModel.fromJson(data);
     } else {
       throw ServerException();
@@ -60,17 +59,13 @@ class SettingsRemoteDataSourceImp implements SettingsRemoteDataSource {
     final token = await secureStorage.getToken();
 
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}terminal");
-    var response = await client.get(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}terminal";
+    var response = await dio.get(
       url,
-      headers: headers,
     );
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
       List<dynamic> jsonresponse = data['data'];
       List<TerminalModel> list =
           jsonresponse.map((item) => TerminalModel.fromJson(item)).toList();
@@ -85,16 +80,12 @@ class SettingsRemoteDataSourceImp implements SettingsRemoteDataSource {
     final token = await secureStorage.getToken();
 
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}account/update-settings");
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}account/update-settings";
 
-    var response = await client.post(
+    var response = await dio.post(
       url,
-      headers: headers,
-      body: {
+      data: {
         "pointa": params.pointa,
         "pointb": params.pointb,
         "payment_method": params.paymentMethod,
@@ -103,7 +94,7 @@ class SettingsRemoteDataSourceImp implements SettingsRemoteDataSource {
     );
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
       return SettingsUpdateModel.fromJson(data);
     } else {
       throw ServerException();

@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
@@ -17,35 +16,31 @@ abstract class AuthRemoteDataSource {
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final dynamic client;
+  final Dio dio;
   final SecureStorage secureStorage;
 
   AuthRemoteDataSourceImpl({
-    required this.client,
+    required this.dio,
     required this.secureStorage,
-  });
+  }) {
+    dio.options.headers["Accept"] = "application/json";
+  }
 
   @override
   Future<AuthModel> createAccount({required params}) async {
-    var headers = {
-      'Accept': 'application/json',
-    };
-
-    var url = Uri.parse("${endpoint}auth/create-account");
-    var response = await client.post(
+    var url = "${endpoint}auth/create-account";
+    var response = await dio.post(
       url,
-      body: {
+      data: {
         "firstname": params.firstname,
         "lastname": params.lastname,
         "telephone": params.telephone,
         "email": params.email,
         "uuid": params.uuid,
       },
-      headers: headers,
     );
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return AuthModel.fromJson(data);
+      return AuthModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
@@ -53,15 +48,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<TelephoneModel> telephone({required params}) async {
-    var url = Uri.parse("${endpoint}auth/telephone");
-    var response = await client.post(
+    var url = "${endpoint}auth/telephone";
+    var response = await dio.post(
       url,
-      body: {"telephone": params.telephone},
+      data: {"telephone": params.telephone},
     );
-
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return TelephoneModel.fromJson(data);
+      return TelephoneModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
@@ -69,24 +62,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<VerifyOTPModel> verifyOTP({required params}) async {
-    var headers = {
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}auth/otp-login");
-    var response = await client.post(
+    var url = "${endpoint}auth/otp-login";
+    var response = await dio.post(
       url,
-      body: {
+      data: {
         "otp": params.otp,
         "uuid": params.uuid,
         "telephone": params.telephone,
         "handler": params.handler,
       },
-      headers: headers,
     );
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return VerifyOTPModel.fromJson(data);
+      return VerifyOTPModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
@@ -96,15 +84,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<LogoutModel> logout() async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}auth/logout");
-    var response = await client.get(url, headers: headers);
+
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}auth/logout";
+    var response = await dio.get(url);
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return LogoutModel.fromJson(data);
+      return LogoutModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
@@ -112,24 +97,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<AuthModel> authUser({required params}) async {
-    var headers = {
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}auth/otp-login");
-    var response = await client.post(
+    var url = "${endpoint}auth/otp-login";
+    var response = await dio.post(
       url,
-      body: {
+      data: {
         "telephone": params.telephone,
         "uuid": params.uuid,
         "otp": params.otp,
         "handler": params.handler,
       },
-      headers: headers,
     );
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return AuthModel.fromJson(data);
+      return AuthModel.fromJson(response.data);
     } else {
       throw ServerException();
     }

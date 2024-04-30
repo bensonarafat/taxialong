@@ -51,7 +51,7 @@ final List<OnBoardModel> onBoardData = [
   ),
 ];
 
-const appSliverExpandedHeightFixture = 178.0;
+const appSliverExpandedHeightFixture = 200.0;
 const double googleMapZoomLevel = 14.4746;
 const LatLng defaultLatLng = LatLng(9.0747, 7.4760);
 const CameraPosition defaultGoogleMapCameraPosition = CameraPosition(
@@ -61,3 +61,22 @@ const CameraPosition defaultGoogleMapCameraPosition = CameraPosition(
 
 const String pusherAPIKey = "0ced9f805f48a99d4f5a";
 const String pusherCluster = "eu";
+
+const List<String> carColours = [
+  "White",
+  "Black",
+  "Silver",
+  "Gray",
+  "Blue",
+  "Red",
+  "Green",
+  "Yellow",
+  "Orange",
+  "Purple",
+];
+
+const List<String> seatsArrangments = [
+  '2 front, 4 back',
+  '2 front 3 back',
+  '2 front, 4 middle, 3 back (Sienna)'
+];

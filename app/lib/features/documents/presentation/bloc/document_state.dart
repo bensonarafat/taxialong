@@ -21,19 +21,6 @@ class DriverLicenceLoadedState extends DocumentState {
   List<Object?> get props => [documentEntity];
 }
 
-class InsuranceLoadingState extends DocumentState {
-  @override
-  List<Object?> get props => [];
-}
-
-class InsuranceLoadedState extends DocumentState {
-  final DocumentEntity documentEntity;
-
-  InsuranceLoadedState({required this.documentEntity});
-  @override
-  List<Object?> get props => [documentEntity];
-}
-
 class NationalIdLoadingState extends DocumentState {
   @override
   List<Object?> get props => [];
@@ -47,15 +34,15 @@ class NationalIdLoadedState extends DocumentState {
   List<Object?> get props => [documentEntity];
 }
 
-class VehicleRegistrationLoadingState extends DocumentState {
+class UnionIDLoadingState extends DocumentState {
   @override
   List<Object?> get props => [];
 }
 
-class VehicleRegistrationLoadedState extends DocumentState {
+class UnionIDLoadedState extends DocumentState {
   final DocumentEntity documentEntity;
 
-  VehicleRegistrationLoadedState({required this.documentEntity});
+  UnionIDLoadedState({required this.documentEntity});
   @override
   List<Object?> get props => [documentEntity];
 }

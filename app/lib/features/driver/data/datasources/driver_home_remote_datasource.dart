@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
@@ -19,29 +18,27 @@ abstract class DriverHomeRemoteDataSource {
 
 class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
   final SecureStorage secureStorage;
-  final dynamic client;
+  final Dio dio;
 
   DriverHomeRemoteDataSourceImpl({
     required this.secureStorage,
-    required this.client,
-  });
+    required this.dio,
+  }) {
+    dio.options.headers["Accept"] = "application/json";
+  }
 
   @override
   Future<GoOnlineModel> goOnline() async {
     final token = await secureStorage.getToken();
 
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}driver/go-online");
-    var response = await client.get(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}driver/go-online";
+    var response = await dio.get(
       url,
-      headers: headers,
     );
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
       return GoOnlineModel.fromJson(data);
     } else {
       throw ServerException();
@@ -53,17 +50,13 @@ class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
     final token = await secureStorage.getToken();
 
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}driver");
-    var response = await client.get(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}driver";
+    var response = await dio.get(
       url,
-      headers: headers,
     );
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
       return DriverModel.fromJson(data);
     } else {
       throw ServerException();
@@ -76,17 +69,14 @@ class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
     final token = await secureStorage.getToken();
 
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}driver/update-position");
-    var response = await client.post(url, headers: headers, body: {
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}driver/update-position";
+    var response = await dio.post(url, data: {
       "latitude": params.latitude,
       "longitude": params.longitude,
     });
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return DriverLocationModel.fromJson(data);
     } else {
@@ -98,17 +88,13 @@ class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
   Future<List<TripModel>> getRecents() async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}trips/recent");
-    var response = await client.get(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}trips/recent";
+    var response = await dio.get(
       url,
-      headers: headers,
     );
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
       List<dynamic> jsonresponse = data['data'];
       List<TripModel> list =
           jsonresponse.map((item) => TripModel.fromJson(item)).toList();
@@ -122,17 +108,13 @@ class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
   Future<List<TripModel>> getRequests() async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}trips/requests");
-    var response = await client.get(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}trips/requests";
+    var response = await dio.get(
       url,
-      headers: headers,
     );
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       List<dynamic> jsonresponse = data['data'];
 

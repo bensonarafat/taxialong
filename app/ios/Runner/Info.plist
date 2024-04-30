@@ -58,5 +58,11 @@
 			<string>sms</string>
 			<string>tel</string>
 		</array>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Taxi Along need to access your photo library</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Taxi Along need to access your camera</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Taxi Along need to access your microphone</string>
 	</dict>
 </plist>

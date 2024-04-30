@@ -34,6 +34,9 @@ import 'package:taxialong/features/settings/presentation/pages/settings.dart';
 import 'package:taxialong/features/trip_history/presentation/pages/trip_history.dart';
 import 'package:taxialong/features/trips/presentation/pages/cancel_trip.dart';
 import 'package:taxialong/features/trips/presentation/pages/trip.dart';
+import 'package:taxialong/features/vehicle/presentation/pages/car_seats_info.dart';
+import 'package:taxialong/features/vehicle/presentation/pages/create_vehicle.dart';
+import 'package:taxialong/features/vehicle/presentation/pages/vehicles.dart';
 import 'package:taxialong/features/wallet/domain/entities/initialize_entity.dart';
 import 'package:taxialong/features/wallet/presentation/pages/fund.dart';
 import 'package:taxialong/features/wallet/presentation/pages/payment_webview.dart';
@@ -225,6 +228,21 @@ final GoRouter router = GoRouter(
       path: "/rating",
       name: "rating",
       builder: (context, state) => Rating(trip: state.extra as TripEntity),
+    ),
+    GoRoute(
+      path: "/vehicles",
+      name: "vehicles",
+      builder: (context, state) => const Vehicles(),
+    ),
+    GoRoute(
+      path: "/create-vehicle",
+      name: "createVehicle",
+      builder: (context, state) => const CreateVehicle(),
+    ),
+    GoRoute(
+      path: "/seat-info",
+      name: "seatInfo",
+      builder: (context, state) => const CarSeatsInfo(),
     ),
   ],
   redirect: (context, state) async {

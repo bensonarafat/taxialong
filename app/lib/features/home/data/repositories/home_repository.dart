@@ -31,13 +31,8 @@ class HomeRepositoryImpl implements HomeRepository {
         return Left(ServerFailure(message: "There is a server failure"));
       }
     } else {
-      try {
-        final localAxis = await localDataSource.getLastCacheAxis();
-        return Right(localAxis);
-      } catch (_) {
-        return Left(
-            NetworkFailure(message: 'Please check your internet connection'));
-      }
+      return Left(
+          NetworkFailure(message: 'Please check your internet connection'));
     }
   }
 

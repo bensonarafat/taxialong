@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,7 +25,6 @@ import 'package:taxialong/features/auth/domain/usecases/telephone.dart';
 import 'package:taxialong/features/auth/domain/usecases/logout.dart';
 import 'package:taxialong/features/auth/domain/usecases/verify_otp.dart';
 import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:taxialong/features/bus_stops/data/datasources/bus_stop_remote_data_source.dart';
 import 'package:taxialong/features/bus_stops/data/repositories/bus_stop_repository_impl.dart';
 import 'package:taxialong/features/bus_stops/domain/repositories/bus_stop_repository.dart';
@@ -74,6 +74,11 @@ import 'package:taxialong/features/trips/domain/usecases/get_trip_usecase.dart';
 import 'package:taxialong/features/trips/domain/usecases/update_complete_usecase.dart';
 import 'package:taxialong/features/trips/domain/usecases/update_pickup_usecase.dart';
 import 'package:taxialong/features/trips/presentation/bloc/trip_bloc.dart';
+import 'package:taxialong/features/vehicle/data/datasources/car_remote_data_source.dart';
+import 'package:taxialong/features/vehicle/data/repositories/car_repository_impl.dart';
+import 'package:taxialong/features/vehicle/domain/repositories/car_repository.dart';
+import 'package:taxialong/features/vehicle/domain/usecases/create_car_usecase.dart';
+import 'package:taxialong/features/vehicle/presentation/bloc/car_bloc.dart';
 import 'package:taxialong/features/wallet/data/datasources/wallet_remote_datasource.dart';
 import 'package:taxialong/features/wallet/data/repositories/wallet_repository_impl.dart';
 import 'package:taxialong/features/wallet/domain/repositories/wallet_repository.dart';
@@ -125,13 +130,14 @@ Future<void> setupLocator() async {
     ),
   );
 
+  //storage
+  getIt.registerLazySingleton<Dio>(() => Dio());
   //datasources
-  final client = http.Client();
   getIt.registerLazySingleton<AuthLocalDataSource>(
       () => AuthLocalDataSourceImpl());
   getIt.registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(
-            client: client,
+            dio: getIt(),
             secureStorage: getIt(),
           ));
 
@@ -176,7 +182,7 @@ Future<void> setupLocator() async {
 
   //remote data source
   getIt.registerLazySingleton<HomeRemoteDataSource>(
-    () => HomeRemoteDataSourceImp(client: client, secureStorage: getIt()),
+    () => HomeRemoteDataSourceImp(dio: getIt(), secureStorage: getIt()),
   );
 
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -205,7 +211,7 @@ Future<void> setupLocator() async {
 
   //remote data source
   getIt.registerLazySingleton<BusStopRemoteDataSource>(
-    () => BusStopRemoteDataSourceImpl(client: client, secureStorage: getIt()),
+    () => BusStopRemoteDataSourceImpl(dio: getIt(), secureStorage: getIt()),
   );
 
   // Profile ------------------------------------------------------------------
@@ -231,7 +237,7 @@ Future<void> setupLocator() async {
 
   //remote data source
   getIt.registerLazySingleton<ProfileRemoteDataSource>(
-    () => ProfileRemoteDataSourceImpl(client: client, secureStorage: getIt()),
+    () => ProfileRemoteDataSourceImpl(dio: getIt(), secureStorage: getIt()),
   );
 
   /**
@@ -264,12 +270,12 @@ Future<void> setupLocator() async {
   );
   //remote data source
   getIt.registerLazySingleton<DocumentRemoteDataSource>(
-    () => DocumentRemoteDataSourceImpl(client: client, secureStorage: getIt()),
+    () => DocumentRemoteDataSourceImpl(dio: getIt(), secureStorage: getIt()),
   );
 
   //user data source
   getIt.registerLazySingleton<UserDataSource>(
-    () => UserDataSource(client: client, secureStorage: getIt()),
+    () => UserDataSource(dio: getIt(), secureStorage: getIt()),
   );
 
   //local storage
@@ -304,7 +310,7 @@ Future<void> setupLocator() async {
   );
   //remote data source
   getIt.registerLazySingleton<SettingsRemoteDataSource>(
-    () => SettingsRemoteDataSourceImp(client: client, secureStorage: getIt()),
+    () => SettingsRemoteDataSourceImp(dio: getIt(), secureStorage: getIt()),
   );
 
   /**
@@ -345,8 +351,7 @@ Future<void> setupLocator() async {
   );
   //remote data source
   getIt.registerLazySingleton<DriverHomeRemoteDataSource>(
-    () =>
-        DriverHomeRemoteDataSourceImpl(client: client, secureStorage: getIt()),
+    () => DriverHomeRemoteDataSourceImpl(dio: getIt(), secureStorage: getIt()),
   );
 
   /**
@@ -373,7 +378,7 @@ Future<void> setupLocator() async {
   );
   //remote data source
   getIt.registerLazySingleton<RideRemoteDataSource>(
-    () => RideRemoteDataSourceImpl(client: client, secureStorage: getIt()),
+    () => RideRemoteDataSourceImpl(dio: getIt(), secureStorage: getIt()),
   );
 
   getIt.registerLazySingleton(() => Logger());
@@ -414,7 +419,7 @@ Future<void> setupLocator() async {
   //remote data source
   getIt.registerLazySingleton<WalletRemoteDataSource>(
     () => WalletRemoteDataSourceImpl(
-      client: client,
+      dio: getIt(),
       secureStorage: getIt(),
     ),
   );
@@ -466,7 +471,40 @@ Future<void> setupLocator() async {
   getIt.registerLazySingleton<TripRemoteDataSource>(
     () => TripRemoteDataSourceImpl(
       secureStorage: getIt(),
-      client: client,
+      dio: getIt(),
+    ),
+  );
+
+  /**
+ * -----------------------------------------------------------------------------------------------------------
+ */
+
+  // car instance
+  getIt.registerFactory<CarBloc>(
+    () => CarBloc(
+      createCarUsecase: getIt(),
+    ),
+  );
+
+  //usecase
+  getIt.registerLazySingleton<CreateCarUsecase>(
+    () => CreateCarUsecase(
+      carRepository: getIt(),
+    ),
+  );
+  //repository
+  getIt.registerLazySingleton<CarRepository>(
+    () => CarRepositoryImpl(
+      networkInfo: getIt(),
+      remoteDataSource: getIt(),
+    ),
+  );
+
+  // remote data source
+  getIt.registerLazySingleton<CarRemoteDataSource>(
+    () => CarRemoteDataSourceImpl(
+      secureStorage: getIt(),
+      dio: getIt(),
     ),
   );
 }

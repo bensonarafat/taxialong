@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('axis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("point_a")->constrained('terminals');
-            $table->foreignId("point_b")->constrained('terminals');
-            $table->foreignId("bus_stop_id")->constrained('bus_stops');
+            $table->foreignId("point_a")->constrained('terminals')->onDelete('cascade');
+            $table->foreignId("point_b")->constrained('terminals')->onDelete('cascade');
+            $table->foreignId("bus_stop_id")->constrained('bus_stops')->onDelete('cascade');
             $table->integer('sequence');
             $table->timestamps();
         });

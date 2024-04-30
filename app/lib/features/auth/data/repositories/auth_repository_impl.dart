@@ -38,13 +38,14 @@ class AuthRepositoryImpl implements AuthRepository {
           secureStorage.saveToken(authModel.token);
           // get data and save to device
           UserModel userModel = await userDataSource.getUserData();
+
           secureStorage.saveUserData(userModel);
         } else {
-          return Left(ServerFailure(message: 'There is a server Error!'));
+          return Left(ServerFailure(message: 'Failed! Try again'));
         }
         return Right(authModel);
       } catch (_) {
-        return Left(ServerFailure(message: 'There is a server Error!'));
+        return Left(ServerFailure(message: 'Failed! Try again'));
       }
     } else {
       return Left(
@@ -60,7 +61,7 @@ class AuthRepositoryImpl implements AuthRepository {
             await remoteDataSource.telephone(params: params);
         return Right(registerModel);
       } catch (_) {
-        return Left(ServerFailure(message: 'There is a server failure!'));
+        return Left(ServerFailure(message: 'Failed! Try again'));
       }
     } else {
       return Left(
@@ -76,7 +77,7 @@ class AuthRepositoryImpl implements AuthRepository {
             await remoteDataSource.verifyOTP(params: params);
         return Right(verifyOTPModel);
       } catch (_) {
-        return Left(ServerFailure(message: "There is a server failure!"));
+        return Left(ServerFailure(message: "Failed! Try again"));
       }
     } else {
       return Left(
@@ -95,7 +96,7 @@ class AuthRepositoryImpl implements AuthRepository {
         secureStorage.deleteUser();
         return Right(logoutModel);
       } catch (_) {
-        return Left(ServerFailure(message: "There is a server failure"));
+        return Left(ServerFailure(message: "Failed! Try again"));
       }
     } else {
       return Left(
@@ -122,7 +123,7 @@ class AuthRepositoryImpl implements AuthRepository {
         }
         return Right(authModel);
       } catch (_) {
-        return Left(ServerFailure(message: 'There is a server Error!'));
+        return Left(ServerFailure(message: 'Failed! Try again'));
       }
     } else {
       return Left(

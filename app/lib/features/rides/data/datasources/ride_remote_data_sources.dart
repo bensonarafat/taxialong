@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
@@ -15,21 +16,20 @@ abstract class RideRemoteDataSource {
 
 class RideRemoteDataSourceImpl implements RideRemoteDataSource {
   final SecureStorage secureStorage;
-  final dynamic client;
+  final Dio dio;
 
   RideRemoteDataSourceImpl({
     required this.secureStorage,
-    required this.client,
-  });
+    required this.dio,
+  }) {
+    dio.options.headers["Accept"] = "application/json";
+  }
   @override
   Future<List<RidesModel>> getAvaiableRides(RideParams params) async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}trips/available-rides");
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}trips/available-rides";
 
     Map<String, dynamic> data = {
       "pointAlatitude": params.latitude,
@@ -42,14 +42,13 @@ class RideRemoteDataSourceImpl implements RideRemoteDataSource {
     if (params.rideClass != null) {
       data['rider_class'] = jsonEncode(params.rideClass);
     }
-    final response = await client.post(
+    final response = await dio.post(
       url,
-      body: data,
-      headers: headers,
+      data: data,
     );
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
       List<dynamic> jsonresponse = data['data'];
       List<RidesModel> list =
           jsonresponse.map((item) => RidesModel.fromJson(item)).toList();
@@ -64,12 +63,9 @@ class RideRemoteDataSourceImpl implements RideRemoteDataSource {
     final token = await secureStorage.getToken();
 
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}trips/confirm-ride");
-    var response = await client.post(url, headers: headers, body: {
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}trips/confirm-ride";
+    var response = await dio.post(url, data: {
       "amount": params.amount,
       "payment_method": params.paymentMethod.toLowerCase(),
       "driver_id": params.driverId,
@@ -79,7 +75,7 @@ class RideRemoteDataSourceImpl implements RideRemoteDataSource {
       "trip_class": params.tripClass,
     });
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return ConfirmRideModel.fromJson(data);
     } else {
