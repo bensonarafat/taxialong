@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/core/error/execptions.dart';
@@ -20,27 +19,25 @@ abstract class WalletRemoteDataSource {
 }
 
 class WalletRemoteDataSourceImpl implements WalletRemoteDataSource {
-  final dynamic client;
+  final Dio dio;
   final SecureStorage secureStorage;
 
-  WalletRemoteDataSourceImpl(
-      {required this.client, required this.secureStorage});
+  WalletRemoteDataSourceImpl({required this.dio, required this.secureStorage}) {
+    dio.options.headers["Accept"] = "application/json";
+  }
   @override
   Future<List<TransactionModel>> getTransactions() async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}transactions");
-    final response = await client.get(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    dio.options.headers["Accept"] = "application/json";
+    var url = "${endpoint}transactions";
+    final response = await dio.get(
       url,
-      headers: headers,
     );
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       List<dynamic> jsonresponse = data['data'];
       List<TransactionModel> list =
@@ -55,18 +52,15 @@ class WalletRemoteDataSourceImpl implements WalletRemoteDataSource {
   Future<WalletModel> getWallet() async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}wallet");
-    var response = await client.get(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    dio.options.headers["Accept"] = "application/json";
+    var url = "${endpoint}wallet";
+    var response = await dio.get(
       url,
-      headers: headers,
     );
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return WalletModel.fromJson(data);
     } else {
@@ -81,17 +75,15 @@ class WalletRemoteDataSourceImpl implements WalletRemoteDataSource {
     // print("Token $token");
     if (token == null) throw ServerException();
 
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}wallet/update-payment-method");
-    var response = await client.post(url, headers: headers, body: {
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    dio.options.headers["Accept"] = "application/json";
+    var url = "${endpoint}wallet/update-payment-method";
+    var response = await dio.post(url, data: {
       "paymentMethod": param.paymentMethod,
     });
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return PaymentMethodModel.fromJson(data);
     } else {
@@ -103,19 +95,16 @@ class WalletRemoteDataSourceImpl implements WalletRemoteDataSource {
   Future<InitializeModel> initializePayment(params) async {
     final UserModel? userModel = await secureStorage.getUserData();
     if (userModel == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $paystackSecretKey',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse(paystackInitializeEndpoint);
-    var response = await client.post(url, headers: headers, body: {
+    dio.options.headers["Authorization"] = 'Bearer $paystackSecretKey';
+
+    var response = await dio.post(paystackInitializeEndpoint, data: {
       "email": userModel.email,
       "amount": (int.parse(params.amount) * 100).toString(),
       "callback_url": "${endpoint}paystack-callback",
     });
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return InitializeModel.fromJson(data);
     } else {
@@ -127,15 +116,12 @@ class WalletRemoteDataSourceImpl implements WalletRemoteDataSource {
   Future<VerifyPaymentModel> verifyPayment(params) async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}wallet/verify-payment/${params.reference}");
-    var response = await client.get(url, headers: headers);
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}wallet/verify-payment/${params.reference}";
+    var response = await dio.get(url);
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return VerifyPaymentModel.fromJson(data);
     } else {

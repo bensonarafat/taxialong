@@ -9,8 +9,8 @@ import 'package:taxialong/features/documents/presentation/bloc/document_bloc.dar
 import 'package:taxialong/features/documents/presentation/widgets/upload_bottom_sheet.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-class Insurance extends StatelessWidget {
-  const Insurance({
+class UnionID extends StatelessWidget {
+  const UnionID({
     super.key,
   });
 
@@ -23,8 +23,7 @@ class Insurance extends StatelessWidget {
           context: context,
           pageListBuilder: (modalSheetContext) {
             return [
-              uploadDocumentBottomSheet(
-                  modalSheetContext, context, "insurance"),
+              uploadDocumentBottomSheet(modalSheetContext, context, "union_id"),
             ];
           },
           modalTypeBuilder: (context) {
@@ -67,12 +66,12 @@ class Insurance extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Insurance',
+                    'Union ID',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Gap(4.h),
                   Text(
-                    'Upload Insurance documents',
+                    'Upload Union ID Card',
                     style: GoogleFonts.robotoFlex(
                       color: const Color(0xFFA0A2A9),
                       fontSize: 14.sp,
@@ -85,11 +84,11 @@ class Insurance extends StatelessWidget {
             Gap(34.w),
             BlocBuilder<DocumentBloc, DocumentState>(
               buildWhen: (previousState, state) {
-                return state is InsuranceLoadingState ||
-                    state is InsuranceLoadedState;
+                return state is UnionIDLoadingState ||
+                    state is UnionIDLoadedState;
               },
               builder: (context, state) {
-                if (state is InsuranceLoadingState) {
+                if (state is UnionIDLoadingState) {
                   return Container(
                     width: 40.w,
                     height: 40.h,
@@ -101,7 +100,7 @@ class Insurance extends StatelessWidget {
                     ),
                     child: const TaxiAlongLoading(),
                   );
-                } else if (state is InsuranceLoadedState) {
+                } else if (state is UnionIDLoadedState) {
                   return Container(
                     width: 40.w,
                     height: 40.h,

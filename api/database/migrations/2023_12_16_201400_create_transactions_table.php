@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("user_id")->constrained("users");
+            $table->foreignId("user_id")->constrained("users")->onDelete('cascade');
             $table->enum("type", ["credit", "debit"])->default("credit");
             $table->decimal('amount', 10, 2);
             $table->text('description')->nullable();

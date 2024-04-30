@@ -65,19 +65,6 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
               DocumentErrorState(message: mapFailureToMessage(failure)),
           (documentEntity) =>
               DriverLicenceLoadedState(documentEntity: documentEntity)));
-    } else if (event.type == "insurance") {
-      emit(InsuranceLoadingState());
-      final failureOrUploadDocument =
-          await documentUploadUseCase(DocumentParams(
-        file: event.path,
-        type: event.type,
-      ));
-
-      emit(failureOrUploadDocument.fold(
-          (failure) =>
-              DocumentErrorState(message: mapFailureToMessage(failure)),
-          (documentEntity) =>
-              InsuranceLoadedState(documentEntity: documentEntity)));
     } else if (event.type == "national_id") {
       emit(NationalIdLoadingState());
       final failureOrUploadDocument =
@@ -91,8 +78,8 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
               DocumentErrorState(message: mapFailureToMessage(failure)),
           (documentEntity) =>
               NationalIdLoadedState(documentEntity: documentEntity)));
-    } else if (event.type == "vehicle_registration") {
-      emit(VehicleRegistrationLoadingState());
+    } else if (event.type == "union_id") {
+      emit(UnionIDLoadingState());
       final failureOrUploadDocument =
           await documentUploadUseCase(DocumentParams(
         file: event.path,
@@ -103,7 +90,7 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
           (failure) =>
               DocumentErrorState(message: mapFailureToMessage(failure)),
           (documentEntity) =>
-              VehicleRegistrationLoadedState(documentEntity: documentEntity)));
+              UnionIDLoadedState(documentEntity: documentEntity)));
     }
   }
 }

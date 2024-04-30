@@ -62,6 +62,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   mapCurrentPositionEvent(event, emit) async {
     String latitude = '9.0765';
     String longitude = '7.3986';
+
     if (await serviceEnabled()) {
       Position position = await Geolocator.getCurrentPosition();
       latitude = position.latitude.toString();

@@ -48,7 +48,7 @@ class BusStopsFlexibleSpace extends StatelessWidget {
                           side: const BorderSide(
                             width: 1,
                             strokeAlign: BorderSide.strokeAlignOutside,
-                            color: Color(0xFF77787B),
+                            color: Color(0xffCECECE),
                           ),
                           borderRadius: BorderRadius.circular(8),
                         ),

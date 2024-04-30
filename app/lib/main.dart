@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,7 +55,7 @@ Future<void> main() async {
     // print('Message data: ${message.data}');
 
     if (message.notification != null) {
-      // print('Message also contained a notification: ${message.notification}');
+      // print('Message also contained a notification: ${message.notification}' );
     }
   });
 
@@ -74,6 +75,13 @@ class TaxiAlong extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      systemNavigationBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark, // status bar icons' color
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.dark,
+    ));
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(

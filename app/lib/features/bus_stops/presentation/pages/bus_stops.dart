@@ -99,9 +99,10 @@ class _BusStopState extends State<BusStop> {
                                         ? primaryColor
                                         : Theme.of(context).brightness ==
                                                 Brightness.dark
-                                            ? const Color(0x19DADADA)
-                                            : const Color.fromARGB(
-                                                24, 113, 112, 112),
+                                            ? const Color.fromARGB(
+                                                24, 101, 100, 100)
+                                            : const Color.fromRGBO(
+                                                218, 218, 218, 0.10),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.r),
                                     ),
@@ -137,7 +138,11 @@ class _BusStopState extends State<BusStop> {
                         EdgeInsets.symmetric(horizontal: 16.h, vertical: 8.w),
                     decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(width: 1.w),
+                        bottom: BorderSide.none,
+                        top: BorderSide(
+                          width: 1.w,
+                          color: const Color(0xffCECECE),
+                        ),
                       ),
                     ),
                     child: Row(
@@ -177,12 +182,6 @@ class _BusStopState extends State<BusStop> {
                       } else if (state is BusStopLoadedState) {
                         List<busstop.AxisEntity> busstops = state.busstops;
                         return Container(
-                          decoration: const BoxDecoration(
-                            border: Border(
-                                top: BorderSide(
-                              color: Color(0xff333333),
-                            )),
-                          ),
                           padding: EdgeInsets.all(
                             16.w,
                           ),

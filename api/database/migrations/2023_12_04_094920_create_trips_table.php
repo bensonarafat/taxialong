@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('trips', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("rider_id")->constrained("users");
-            $table->foreignId("driver_id")->constrained("users");
-            $table->foreignId("pointa")->constrained("bus_stops");
-            $table->foreignId("pointb")->constrained("bus_stops");
+            $table->foreignId("rider_id")->constrained("users")->onDelete('cascade');
+            $table->foreignId("driver_id")->constrained("users")->onDelete('cascade');
+            $table->foreignId("pointa")->constrained("bus_stops")->onDelete('cascade');
+            $table->foreignId("pointb")->constrained("bus_stops")->onDelete('cascade');
             $table->enum("payment_method", ["cash", "wallet"])->default("cash");
             $table->decimal('amount', 10, 2);
             $table->integer("trip_class")->default(1);
-            $table->integer("seats")->default(1);
+            $table->json("seats")->nullable();
             $table->timestamps();
         });
     }

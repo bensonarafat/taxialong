@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
@@ -15,36 +14,32 @@ abstract class DocumentRemoteDataSource {
 }
 
 class DocumentRemoteDataSourceImpl implements DocumentRemoteDataSource {
-  final dynamic client;
+  final Dio dio;
   final SecureStorage secureStorage;
 
   DocumentRemoteDataSourceImpl(
-      {required this.client, required this.secureStorage});
+      {required this.dio, required this.secureStorage}) {
+    dio.options.headers["Accept"] = "application/json";
+  }
 
   @override
   Future<DocumentModel> uploadDocument(DocumentParams params) async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    };
-    var url = Uri.parse('${endpoint}driver/document/upload');
-    var request = http.MultipartRequest(
-      'POST',
-      url,
-    );
-    request.fields.addAll(
-      {'type': params.type},
-    );
-    request.files.add(
-      await http.MultipartFile.fromPath('file', params.file),
-    );
-    request.headers.addAll(headers);
-    var response = await http.Response.fromStream(await request.send());
+    dio.options.headers["Authorization"] = 'Bearer $token';
+
+    var url = '${endpoint}driver/document/upload';
+    Future<FormData> createFormData() async {
+      return FormData.fromMap({
+        'type': params.type,
+        'file': await MultipartFile.fromFile(params.file),
+      });
+    }
+
+    var response = await dio.post(url, data: await createFormData());
+
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return DocumentModel.fromJson(data);
+      return DocumentModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
@@ -54,19 +49,14 @@ class DocumentRemoteDataSourceImpl implements DocumentRemoteDataSource {
   Future<CompleteModel> completeUploadDocument() async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}driver/document/complete");
-    var response = await client.get(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}driver/document/complete";
+    var response = await dio.get(
       url,
-      headers: headers,
     );
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      return CompleteModel.fromJson(data);
+      return CompleteModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
@@ -76,18 +66,14 @@ class DocumentRemoteDataSourceImpl implements DocumentRemoteDataSource {
   Future<List<DocumentsModel>> getDocuments() async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}driver/document");
-    var response = await client.get(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}driver/document";
+    var response = await dio.get(
       url,
-      headers: headers,
     );
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
       List<dynamic> jsonresponse = data['data'];
       List<DocumentsModel> list =
           jsonresponse.map((item) => DocumentsModel.fromJson(item)).toList();

@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
@@ -11,31 +10,29 @@ abstract class BusStopRemoteDataSource {
 }
 
 class BusStopRemoteDataSourceImpl implements BusStopRemoteDataSource {
-  final dynamic client;
+  final Dio dio;
   final SecureStorage secureStorage;
 
   BusStopRemoteDataSourceImpl(
-      {required this.client, required this.secureStorage});
+      {required this.dio, required this.secureStorage}) {
+    dio.options.headers["Accept"] = "application/json";
+  }
 
   @override
   Future<List<AxisModel>> fetchBusStop(AxisParams params) async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}terminal/bus-stops");
-    var response = await client.post(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}terminal/bus-stops";
+    var response = await dio.post(
       url,
-      headers: headers,
-      body: {
+      data: {
         'pointb': params.pointa,
         'pointa': params.pointb,
       },
     );
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
       List<dynamic> jsonresponse = data['data'];
       List<AxisModel> list =
           jsonresponse.map((item) => AxisModel.fromJson(item)).toList();

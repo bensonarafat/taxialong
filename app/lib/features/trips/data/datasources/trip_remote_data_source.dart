@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
@@ -16,23 +15,22 @@ abstract class TripRemoteDataSource {
 
 class TripRemoteDataSourceImpl implements TripRemoteDataSource {
   final SecureStorage secureStorage;
-  final dynamic client;
+  final Dio dio;
 
-  TripRemoteDataSourceImpl({required this.secureStorage, required this.client});
+  TripRemoteDataSourceImpl({required this.secureStorage, required this.dio}) {
+    dio.options.headers["Accept"] = "application/json";
+  }
 
   @override
   Future<TripModel> getTrip() async {
     final token = await secureStorage.getToken();
 
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}trips/requests");
-    var response = await client.get(url, headers: headers);
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}trips/requests";
+    var response = await dio.get(url);
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return TripModel.fromJson(data);
     } else {
@@ -45,21 +43,17 @@ class TripRemoteDataSourceImpl implements TripRemoteDataSource {
     final token = await secureStorage.getToken();
 
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}trips/cancel");
-    var response = await client.post(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}trips/cancel";
+    var response = await dio.post(
       url,
-      headers: headers,
-      body: {
+      data: {
         "tripId": params.tripId,
         "reason": params.reason,
       },
     );
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return CancelModel.fromJson(data);
     } else {
@@ -72,14 +66,11 @@ class TripRemoteDataSourceImpl implements TripRemoteDataSource {
     final token = await secureStorage.getToken();
 
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}trips/update-completed");
-    var response = await client.get(url, headers: headers);
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}trips/update-completed";
+    var response = await dio.get(url);
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return UpdateTripModel.fromJson(data);
     } else {
@@ -92,14 +83,11 @@ class TripRemoteDataSourceImpl implements TripRemoteDataSource {
     final token = await secureStorage.getToken();
 
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}trips/update-pickup");
-    var response = await client.get(url, headers: headers);
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}trips/update-pickup";
+    var response = await dio.get(url);
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return UpdateTripModel.fromJson(data);
     } else {

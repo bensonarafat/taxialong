@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\NotificationController;
@@ -80,5 +81,14 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get("/", [NotificationController::class, "notifications"]);
         Route::get("/read/{id}", [NotificationController::class, "read"]);
         Route::get("read-all", [NotificationController::class, "readAll"]);
+    });
+
+    Route::group(["prefix" => "car"], function() {
+        Route::get("{id}", [CarController::class, "car"]);
+        Route::get("cars", [CarController::class, "cars"]);
+        Route::post("create", [CarController::class, "create"]);
+        Route::delete("delete/{id}", [CarController::class, "delete"]);
+        Route::get("set-default/{id}", [CarController::class, "setDefault"]);
+
     });
 });

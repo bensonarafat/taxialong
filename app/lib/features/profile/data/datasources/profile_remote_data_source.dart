@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
@@ -14,34 +13,32 @@ abstract class ProfileRemoteDataSource {
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   final SecureStorage secureStorage;
-  final dynamic client;
+  final Dio dio;
 
   ProfileRemoteDataSourceImpl({
     required this.secureStorage,
-    required this.client,
-  });
+    required this.dio,
+  }) {
+    dio.options.headers["Accept"] = "application/json";
+  }
 
   @override
   Future<ProfileModel> updateProfile(ProfileParams params) async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    };
-    var url = Uri.parse("${endpoint}account/update-profile");
-    var response = await client.put(
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = "${endpoint}account/update-profile";
+    var response = await dio.put(
       url,
-      body: {
+      data: {
         "telephone": params.telephone,
         "firstname": params.firstname,
         "lastname": params.lastname,
         "email": params.email,
       },
-      headers: headers,
     );
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
       return ProfileModel.fromJson(data);
     } else {
       throw ServerException();
@@ -52,24 +49,19 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   Future<ProfilePhotoModel> updateProfilePhoto(params) async {
     final token = await secureStorage.getToken();
     if (token == null) throw ServerException();
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    };
-    var url = Uri.parse('${endpoint}account/upload-image');
-    var request = http.MultipartRequest(
-      'POST',
-      url,
-    );
+    dio.options.headers["Authorization"] = 'Bearer $token';
+    var url = '${endpoint}account/upload-image';
 
-    request.files.add(
-      await http.MultipartFile.fromPath('file', params.path),
-    );
-    request.headers.addAll(headers);
-    var response = await http.Response.fromStream(await request.send());
+    Future<FormData> createFormData() async {
+      return FormData.fromMap({
+        'file': await MultipartFile.fromFile(params.path),
+      });
+    }
+
+    var response = await dio.post(url, data: await createFormData());
 
     if (response.statusCode == 200) {
-      var data = json.decode(response.body);
+      var data = response.data;
 
       return ProfilePhotoModel.fromJson(data);
     } else {

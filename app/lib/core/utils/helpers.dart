@@ -80,6 +80,7 @@ showEnableLocation(BuildContext context) async {
           DialogButton(
             color: Colors.transparent,
             onPressed: () async {
+              Navigator.of(context).pop();
               Position? position = await enableGeoLocation();
 
               // subscribe to
@@ -87,8 +88,6 @@ showEnableLocation(BuildContext context) async {
                   latitude: position.latitude.toString(),
                   longitude: position.longitude.toString()));
               localStorage.setGeoLocation();
-
-              Navigator.of(context).pop();
             },
             child: Container(
               width: 305.w,
@@ -160,7 +159,8 @@ Future<Position> enableGeoLocation() async {
     toast(
         'Location permissions are permanently denied, we cannot request permissions.');
   }
-  return await Geolocator.getCurrentPosition();
+  Position position = await Geolocator.getCurrentPosition();
+  return position;
 }
 
 String formatDuration(Duration duration) {
