@@ -17,7 +17,6 @@ class Driver extends Model
         'online',
         'latitude',
         'longitude',
-        'seats',
     ];
 
     public function settings () : HasOne {
@@ -34,5 +33,13 @@ class Driver extends Model
     public function earnings() : HasMany
     {
         return $this->hasMany(Earning::class, "user_id", "user_id");
+    }
+
+    public function car(): HasOne {
+        return $this->hasOne(Car::class)->where("default", 1);
+    }
+
+    public function user() : HasOne {
+        return $this->hasOne(User::class, 'id');
     }
 }

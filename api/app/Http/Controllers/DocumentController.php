@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Trait\Driver;
 use App\Models\Document;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class DocumentController extends Controller
@@ -48,7 +49,7 @@ class DocumentController extends Controller
 
     public function complete(){
         $count = Document::where("user_id", auth()->user()->id)->count();
-        if($count == 4){
+        if($count == 3){
             User::whereId(auth()->user()->id)->update([
                 "role" => "driver",
             ]);

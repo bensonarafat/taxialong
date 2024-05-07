@@ -44,69 +44,73 @@ class TripController extends Controller
         $payment_method = $usersettings->payment_method ?? "cash";
 
         $drivers = Driver::where(["online" => 1])
-                    ->select('latitude', 'longitude', 'id', 'seats')
+                    ->select('latitude', 'longitude', 'id')
                     ->selectRaw(
                         '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
                         [$startlatitude, $startlongitude, $startlatitude]
                     )
-                    ->with(["settings"])
+                    ->with(["settings", "car", "user"])
                     ->orderBy('distance')
                     ->skip(($page - 1) * $perPage)
                     ->take($perPage)
                     ->get();
 
-        $drivers = $drivers->map(function ( $driver ) use($payment_method, $seat, $riderClass){
-            $ride_class = json_decode($driver->settings->ride_class, true);
+        // $drivers = $drivers->map(function ( $driver ) use($payment_method, $seat, $riderClass){
+        //     $ride_class = json_decode($driver->settings->ride_class, true);
 
-            $filteredClasses = array_filter($ride_class, function( $class ) use ($riderClass){
-                return $riderClass === null || in_array($class['class'], $riderClass) || count($riderClass) == 0;
-            });
+        //     $filteredClasses = array_filter($ride_class, function( $class ) use ($riderClass){
+        //         return $riderClass === null || in_array($class['class'], $riderClass) || count($riderClass) == 0;
+        //     });
 
-            $driver->ride_class = $filteredClasses;
+        //     $driver->ride_class = $filteredClasses;
 
-            return $driver;
-        })->reject(function ($driver) use ($payment_method, $seat) {
-            return ($payment_method !== null && $driver->settings->payment_method !== $payment_method ) ||
-            ($seat !== null && $this->numberOfAvailableSeats(json_decode($driver->seats, true)) < $seat );
-        });
+        //     return $driver;
+        // })->reject(function ($driver) use ($payment_method, $seat) {
+        //     return ($payment_method !== null && $driver->settings->payment_method !== $payment_method ) ||
+        //     ($seat !== null && $this->numberOfAvailableSeats(json_decode($driver->seats, true)) < $seat );
+        // });
 
-        $avaiable_rides = $drivers->flatMap(function ( $driver ) use ($pointa, $startlatitude, $startlongitude, $pointb, $endlatitude, $endlongitude) {
-            $rideClasses = $driver->ride_class;
-            return array_map(function($class) use ($driver, $pointa, $startlatitude, $startlongitude, $pointb, $endlatitude, $endlongitude){
-                $amount = $this->calculatePrice(
-                    $class['class'],
-                    [
-                        "busstop" => $pointa->id,
-                        "latitude" => $startlatitude,
-                        "longitude" => $startlongitude,
-                    ],
-                    [
-                        "busstop" => $pointb->id,
-                        "latitude" => $endlatitude,
-                        "longitude" => $endlongitude,
-                    ]
-                );
 
-                if($amount !== false){
-                    return [
-                        "class"  => $class["class"],
-                        "distance" => $driver->distance,
-                        "payment_method" => $driver->settings->payment_method,
-                        "amount" => $amount,
-                        "driver" => User::find($driver->settings->user_id),
-                        "seats" => json_decode($driver->seats),
-                        "pointa" => $pointa->id,
-                        "pointb" => $pointb->id,
-                    ];
-                }
 
-            }, $rideClasses);
-        });
+        // $avaiable_rides = $drivers->flatMap(function ( $driver ) use ($pointa, $startlatitude, $startlongitude, $pointb, $endlatitude, $endlongitude) {
+        //     $rideClasses = $driver->ride_class;
+        //     return array_map(function($class) use ($driver, $pointa, $startlatitude, $startlongitude, $pointb, $endlatitude, $endlongitude){
+        //         $amount = $this->calculatePrice(
+        //             $class['class'],
+        //             [
+        //                 "busstop" => $pointa->id,
+        //                 "latitude" => $startlatitude,
+        //                 "longitude" => $startlongitude,
+        //             ],
+        //             [
+        //                 "busstop" => $pointb->id,
+        //                 "latitude" => $endlatitude,
+        //                 "longitude" => $endlongitude,
+        //             ]
+        //         );
+
+        //         if($amount !== false){
+        //             return [
+        //                 "class"  => $class["class"],
+        //                 "distance" => $driver->distance,
+        //                 "payment_method" => $driver->settings->payment_method,
+        //                 "amount" => $amount,
+        //                 "driver" => User::find($driver->settings->user_id),
+        //                 "seats" => json_decode($driver->seats),
+        //                 "pointa" => $pointa->id,
+        //                 "pointb" => $pointb->id,
+        //             ];
+        //         }
+
+        //     }, $rideClasses);
+        // });
+
+
 
         return response()->json([
             "status" => true,
             "message" => "Available Rides fetched",
-            "data" => $avaiable_rides->filter()->values(),
+            "data" => $drivers,
         ]);
     }
 

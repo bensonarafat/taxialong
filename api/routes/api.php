@@ -6,6 +6,7 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SeatController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TripController;
@@ -84,11 +85,19 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::group(["prefix" => "car"], function() {
-        Route::get("{id}", [CarController::class, "car"]);
+        Route::get("get/{id}", [CarController::class, "car"]);
         Route::get("cars", [CarController::class, "cars"]);
         Route::post("create", [CarController::class, "create"]);
+        Route::put("update/{id}", [CarController::class, "update"]);
         Route::delete("delete/{id}", [CarController::class, "delete"]);
         Route::get("set-default/{id}", [CarController::class, "setDefault"]);
-
     });
+});
+
+//seats
+Route::group(["prefix" => "seat"], function() {
+    Route::get("", [SeatController::class, "seats"]);
+    Route::get('{id}', [SeatController::class, "seat"]);
+    Route::post("create", [SeatController::class, "create"]);
+    Route::put("update/{id}", [SeatController::class, "update"]);
 });
