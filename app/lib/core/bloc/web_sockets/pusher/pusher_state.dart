@@ -14,8 +14,8 @@ class PusherTripUpdateState extends PusherState {
 }
 
 class PusherUpdateLocationState extends PusherState {
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
 
   PusherUpdateLocationState({required this.latitude, required this.longitude});
 

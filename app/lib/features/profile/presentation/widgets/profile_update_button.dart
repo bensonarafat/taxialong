@@ -48,7 +48,7 @@ class UpdateProfileButton extends StatelessWidget {
           height: 52.h,
           child: TextButton(
             style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                   side: const BorderSide(
@@ -56,7 +56,7 @@ class UpdateProfileButton extends StatelessWidget {
                   ),
                 ),
               ),
-              backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+              backgroundColor: WidgetStateProperty.all<Color>(primaryColor),
             ),
             child: state is ProfileLoadingState
                 ? const TaxiAlongLoading()

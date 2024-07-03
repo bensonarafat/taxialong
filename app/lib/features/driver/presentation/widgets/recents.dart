@@ -6,9 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_error_widget.dart';
 import 'package:taxialong/core/widgets/taxi_along_loading.dart';
-import 'package:taxialong/features/driver/domain/entities/trip_entity.dart';
-import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/recent/recent_bloc.dart';
 import 'package:taxialong/features/driver/presentation/widgets/ride_widget.dart';
+import 'package:taxialong/features/trips/domain/entities/trip_entity.dart';
 
 class Recents extends StatelessWidget {
   const Recents({super.key});
@@ -68,7 +68,7 @@ class Recents extends StatelessWidget {
           ),
         ),
         Gap(16.h),
-        BlocBuilder<DriverHomeBloc, DriverHomeState>(
+        BlocBuilder<RecentBloc, RecentState>(
           buildWhen: (pre, state) {
             return state is RecentLoading ||
                 state is RecentLoaded ||

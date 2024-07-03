@@ -5,8 +5,8 @@ class RiderEntity {
   final String email;
   final String telephone;
   final String avatar;
-  final String rating;
-  final String verified;
+  final int rating;
+  final int verified;
 
   RiderEntity({
     required this.id,

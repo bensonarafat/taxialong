@@ -1,9 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
@@ -86,14 +85,11 @@ class HomeFlexibleSpace extends StatelessWidget {
                               margin: EdgeInsets.only(
                                 right: 16.w,
                               ),
-                              child: SvgPicture.asset(
-                                notificationSVG,
-                                colorFilter: ColorFilter.mode(
-                                  Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? white
-                                      : dark,
-                                  BlendMode.srcIn,
+                              child: IconTheme(
+                                data: Theme.of(context).iconTheme,
+                                child: const Icon(
+                                  CupertinoIcons.bell,
+                                  size: 30,
                                 ),
                               ),
                             ),
@@ -108,19 +104,11 @@ class HomeFlexibleSpace extends StatelessWidget {
                       left: 16.w,
                     ),
                     alignment: Alignment.centerLeft,
-                    child: GestureDetector(
-                      onTap: () {
-                        context.read<MapBloc>().add(
-                              MapUpdateCurrentPostionEvent(
-                                  latitude: "9.0765", longitude: "7.3986"),
-                            );
-                      },
-                      child: Text(
-                        "Terminals",
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                      ),
+                    child: Text(
+                      "Terminals",
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ),
                 ],

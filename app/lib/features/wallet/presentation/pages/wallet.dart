@@ -1,13 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/widgets/taxi_along_search_container.dart';
+import 'package:taxialong/features/notification/presentation/pages/notification.dart';
 import 'package:taxialong/features/wallet/presentation/bloc/wallet_bloc.dart';
 import 'package:taxialong/core/widgets/taxi_along_wallet_payment_method.dart';
 import 'package:taxialong/features/wallet/presentation/widgets/transactions.dart';
@@ -31,25 +34,29 @@ class _WalletState extends State<Wallet> {
         appBar: AppBar(
           title: const SearchContainer(),
           actions: [
-            Padding(
-              padding: EdgeInsets.only(right: 16.w),
-              child: SvgPicture.asset(
-                notificationSVG,
-                colorFilter: ColorFilter.mode(
-                  Theme.of(context).brightness == Brightness.dark
-                      ? white
-                      : dark,
-                  BlendMode.srcIn,
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const TaxiAlongNotification()));
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 16.w),
+                child: IconTheme(
+                  data: Theme.of(context).iconTheme,
+                  child: const Icon(
+                    CupertinoIcons.bell,
+                    size: 30,
+                  ),
                 ),
               ),
             ),
           ],
-          leading: Padding(
-            padding: EdgeInsets.only(left: 16.w, right: 16.w),
-            child: GestureDetector(
-              onTap: () {
-                // Scaffold.of(context).openDrawer();
-              },
+          leading: GestureDetector(
+            onTap: () {
+              Scaffold.of(context).openDrawer();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
               child: SvgPicture.asset(
                 menu,
                 width: 24.w,
@@ -94,13 +101,16 @@ class _WalletState extends State<Wallet> {
                       ),
                     ),
                     Expanded(
-                      child: Text(
-                        "See All",
-                        textAlign: TextAlign.end,
-                        style: GoogleFonts.robotoFlex(
-                          color: primaryColor,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
+                      child: GestureDetector(
+                        onTap: () => context.push("/transactions"),
+                        child: Text(
+                          "See All",
+                          textAlign: TextAlign.end,
+                          style: GoogleFonts.robotoFlex(
+                            color: primaryColor,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),

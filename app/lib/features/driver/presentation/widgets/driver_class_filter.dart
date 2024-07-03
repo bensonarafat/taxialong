@@ -5,11 +5,9 @@ import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 
 class TaxiAlongDriverClassFilter extends StatefulWidget {
-  final List<Map<String, dynamic>>? rideClass;
   final Function callback;
   const TaxiAlongDriverClassFilter({
     super.key,
-    required this.rideClass,
     required this.callback,
   });
 
@@ -20,7 +18,7 @@ class TaxiAlongDriverClassFilter extends StatefulWidget {
 
 class _TaxiAlongDriverClassFilterState
     extends State<TaxiAlongDriverClassFilter> {
-  List<Map<String, dynamic>>? rideClass;
+  List<dynamic>? rideClass;
   bool class1 = false;
   bool class2 = false;
   bool class3 = false;
@@ -29,7 +27,6 @@ class _TaxiAlongDriverClassFilterState
 
   @override
   void initState() {
-    rideClass = widget.rideClass;
     if (rideClass != null) {
       if (rideClass!.any((item) => item['class'] == 1)) class1 = true;
       if (rideClass!.any((item) => item['class'] == 2)) class2 = true;
@@ -202,7 +199,7 @@ class _TClassState extends State<TClass> {
               width: 18.w,
               height: 18.h,
               decoration: const ShapeDecoration(
-                color: Color(0xFFFEDA15),
+                color: ratingColor,
                 shape: OvalBorder(),
               ),
             ),

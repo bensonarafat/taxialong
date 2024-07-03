@@ -17,31 +17,32 @@ class ConfirmRideUseCase
 }
 
 class ConfirmRideParams extends Equatable {
-  final String amount;
-  final String paymentMethod;
-  final String driverId;
   final List<int> seats;
-  final String pointa;
-  final String pointb;
-  final String tripClass;
+  final Map<String, dynamic> rideClass;
+  final int driverId;
+  final int pointa;
+  final int pointb;
+  final String paymentMethod;
+  final int carId;
 
-  const ConfirmRideParams(
-      {required this.amount,
-      required this.paymentMethod,
-      required this.driverId,
-      required this.seats,
-      required this.pointa,
-      required this.pointb,
-      required this.tripClass});
+  const ConfirmRideParams({
+    required this.seats,
+    required this.rideClass,
+    required this.driverId,
+    required this.pointa,
+    required this.pointb,
+    required this.paymentMethod,
+    required this.carId,
+  });
 
   @override
   List<Object?> get props => [
-        amount,
-        paymentMethod,
-        driverId,
         seats,
+        rideClass,
+        driverId,
         pointa,
         pointb,
-        tripClass,
+        paymentMethod,
+        carId,
       ];
 }

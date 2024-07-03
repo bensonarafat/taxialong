@@ -2,12 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:label_marker/label_marker.dart';
 import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/bloc/web_sockets/pusher/pusher_bloc.dart';
 import 'package:taxialong/core/constants/constants.dart';
+import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
-import 'package:taxialong/features/rides/domain/entities/trip_entity.dart';
+import 'package:taxialong/features/bus_stops/domain/entities/bus_stop_entity.dart';
+import 'package:taxialong/features/trips/domain/entities/trip_entity.dart';
 import 'package:taxialong/features/trips/presentation/bloc/trip_bloc.dart';
 
 class TaxiAlongGoogleMap extends StatefulWidget {
@@ -26,16 +30,91 @@ class _TaxiAlongGoogleMapState extends State<TaxiAlongGoogleMap> {
       Completer<GoogleMapController>();
   late CameraPosition position;
   late BitmapDescriptor customIcon;
-  List<Marker> markers = <Marker>[];
+  late BitmapDescriptor customIconBusStop;
+  Set<Marker> markers = {};
+  late LatLng latLng;
+
+  Set<Polyline> polyLine = <Polyline>{};
+
+  List<LatLng> polylineCordinates = [];
+  late PolylinePoints polylinePoints;
   @override
   void initState() {
+    polylinePoints = PolylinePoints();
+
     initMarker();
+    initDirectionAndWayPoints();
+    if (widget.trip.location.latitude != null &&
+        widget.trip.location.longitude != null) {
+      latLng = LatLng(
+          widget.trip.location.latitude!, widget.trip.location.longitude!);
+    } else {
+      latLng = defaultLatLng;
+    }
+
     position = CameraPosition(
-      target: LatLng(double.parse(widget.trip.location.latitude),
-          double.parse(widget.trip.location.longitude)),
+      target: latLng,
       zoom: googleMapZoomLevel,
     );
+
     super.initState();
+  }
+
+  void initDirectionAndWayPoints() async {
+    customIconBusStop = await createBusStopIcon();
+    List<PolylineWayPoint> waypoints = [];
+    List<BusStopEntity> busStops = widget.trip.busStops!;
+
+    for (var i = 0; i < busStops.length; i++) {
+      if (i == 24) break;
+      double lat = busStops[i].latitude;
+      double lng = busStops[i].longitude;
+      waypoints.add(PolylineWayPoint(location: '$lat,$lng'));
+      setState(() {
+        markers.addLabelMarker(
+          LabelMarker(
+            backgroundColor: primaryColor,
+            label: busStops[i].name,
+            textStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
+                  fontSize: 50,
+                  color: white,
+                ),
+            icon: customIconBusStop,
+            infoWindow: InfoWindow(title: busStops[i].name),
+            markerId: MarkerId(busStops[i].name),
+            position: LatLng(lat, lng),
+          ),
+        );
+      });
+    }
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleAPIKey,
+      PointLatLng(
+        widget.trip.location.settings?.origin?.latitude ?? defaultLat,
+        widget.trip.location.settings?.origin?.longitude ?? defaultLng,
+      ),
+      PointLatLng(
+        widget.trip.location.settings?.destination?.latitude ?? defaultLat,
+        widget.trip.location.settings?.destination?.longitude ?? defaultLng,
+      ),
+      wayPoints: waypoints,
+    );
+    if (result.status == 'OK') {
+      for (var point in result.points) {
+        polylineCordinates.add(LatLng(point.latitude, point.longitude));
+      }
+    }
+
+    setState(() {
+      polyLine.add(Polyline(
+        jointType: JointType.round,
+        polylineId: const PolylineId("route"),
+        color: const Color(0xff02294E),
+        points: polylineCordinates,
+        width: 10,
+      ));
+    });
   }
 
   void initMarker() async {
@@ -45,8 +124,7 @@ class _TaxiAlongGoogleMapState extends State<TaxiAlongGoogleMap> {
         Marker(
           icon: customIcon,
           markerId: const MarkerId('driver'),
-          position: LatLng(double.parse(widget.trip.location.latitude),
-              double.parse(widget.trip.location.longitude)),
+          position: latLng,
         ),
       );
     });
@@ -72,12 +150,12 @@ class _TaxiAlongGoogleMapState extends State<TaxiAlongGoogleMap> {
           double? currentLatitude;
           double? currentLongitude;
           if (state is DriverLocationUpdatedState) {
-            driverLatitude = double.parse(state.latitude);
-            driverLongitude = double.parse(state.longitude);
+            driverLatitude = state.latitude;
+            driverLongitude = state.longitude;
           }
           if (state is MapCurrentPositionState) {
-            currentLatitude = double.parse(state.latitude);
-            currentLongitude = double.parse(state.longitude);
+            currentLatitude = state.latitude;
+            currentLongitude = state.longitude;
           }
 
           // Calculate distance using Haversine formula
@@ -106,8 +184,8 @@ class _TaxiAlongGoogleMapState extends State<TaxiAlongGoogleMap> {
           if (state is DriverLocationUpdatedState) {
             position = CameraPosition(
               target: LatLng(
-                double.parse(state.latitude),
-                double.parse(state.longitude),
+                state.latitude,
+                state.longitude,
               ),
               zoom: googleMapZoomLevel,
             );
@@ -116,9 +194,13 @@ class _TaxiAlongGoogleMapState extends State<TaxiAlongGoogleMap> {
           }
 
           return GoogleMap(
+            polylines: polyLine,
             markers: Set<Marker>.of(markers),
             initialCameraPosition: position,
-            zoomControlsEnabled: false,
+            zoomControlsEnabled: true,
+            zoomGesturesEnabled: true,
+            scrollGesturesEnabled: true,
+            compassEnabled: true,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },

@@ -52,10 +52,9 @@ class TripRepositoryImpl implements TripRepository {
   Future<Either<Failure, UpdateTripModel>> updateCompleteTrip() async {
     if (await networkInfo.isConnected) {
       try {
-        UpdateTripModel updateTripModel =
-            await remoteDataSource.updateComplete();
+        UpdateTripModel model = await remoteDataSource.updateComplete();
 
-        return Right(updateTripModel);
+        return Right(model);
       } on ServerException {
         return Left(ServerFailure(message: "There is a server failure"));
       }

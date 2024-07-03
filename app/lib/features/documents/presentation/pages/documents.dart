@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
+
 import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
 import 'package:taxialong/core/widgets/taxi_along_error_page.dart';
 import 'package:taxialong/core/widgets/taxi_along_loading.dart';
@@ -202,12 +203,10 @@ class _DocumentsState extends State<Documents> {
                                                   CrossAxisAlignment.center,
                                               children: [
                                                 TaxiAlongCachedNetworkImage(
-                                                  path: documentsEntity[i].file,
-                                                  width: 308,
-                                                  height: 174,
+                                                  url: documentsEntity[i].file,
+                                                  width: 308.w,
+                                                  height: 174.h,
                                                   fit: BoxFit.cover,
-                                                  shape:
-                                                      const BeveledRectangleBorder(),
                                                 ),
                                               ],
                                             ),

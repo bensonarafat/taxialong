@@ -2,6 +2,7 @@
 namespace App\Trait;
 
 use App\Models\Car;
+use Illuminate\Support\Facades\Log;
 
 trait Seats {
     public function makeSeatUnavailable(int $driverId, string $seats) : bool {
@@ -30,7 +31,7 @@ trait Seats {
     public function dropSeats($trip) : void
     {
         $seats = json_decode($trip->seats, true);
-        $car = Car::where("driver_id",$trip->driver_id)->first();
+        $car = Car::where("user_id",$trip->driver_id)->first();
         $carSeats = json_decode($car->seats,true);
         $updatedSeats =  array_map(function(array $driverSeat) use ($seats) {
             if(in_array($driverSeat['seat'], $seats)){

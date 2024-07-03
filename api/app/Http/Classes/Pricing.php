@@ -11,6 +11,7 @@ class Pricing {
         3 => ['baseFare' => 7.00, 'ratePerMeter' => 0.15],
         4 => ['baseFare' => 8.00, 'ratePerMeter' => 0.18],
         5 => ['baseFare' => 9.00, 'ratePerMeter' => 0.20],
+        6 => ['baseFare' => 10.00, 'ratePerMeter' => 0.25],
     ];
 
 

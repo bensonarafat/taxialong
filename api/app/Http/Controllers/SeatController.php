@@ -14,6 +14,7 @@ class SeatController extends Controller
         $seats = Seat::latest()->get();
         foreach ($seats as $row) {
             $row->seats = json_decode($row->seats);
+            $row->classes = json_decode($row->classes);
         }
         return response()->json($seats);
     }
@@ -21,7 +22,8 @@ class SeatController extends Controller
     public function seat($id) : JsonResponse
     {
         $seat = Seat::find($id);
-        $seat['seats'] = json_decode($seat);
+        $seat['seats'] = json_decode($seat->seats);
+        $seat['classes'] = json_decode($seat->classes);
         return response()->json($seat);
     }
 
@@ -38,12 +40,14 @@ class SeatController extends Controller
                 "name"=> $request->name,
                 "seats" => json_encode($request->seats),
                 "meta" => json_encode($meta),
+                "classes" => json_encode($request->classes),
             ]);
             return response()->json([
                 "status" => true,
                 "message" => "Created",
             ]);
         } catch (Exception $e) {
+
             return response()->json([
                 "status" => false,
                 "message" => "oops, there was an error"
@@ -56,7 +60,8 @@ class SeatController extends Controller
             Seat::whereId($id)->update([
                 "total" => $request->total,
                 "name"=> $request->name,
-                "seats" => json_encode($request->seats)
+                "seats" => json_encode($request->seats),
+                "classes" => json_encode($request->classes),
             ]);
             return response()->json([
                 "status" => true,

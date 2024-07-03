@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:taxialong/core/domain/entities/settings_entity.dart';
 import 'package:taxialong/core/domain/usecases/update_settings_usecase.dart';
 import 'package:taxialong/features/driver/presentation/widgets/dirver_select_terminals.dart';
-import 'package:taxialong/features/driver/presentation/widgets/driver_class_filter.dart';
 import 'package:taxialong/core/widgets/taxi_along_wallet_payment_method.dart';
 import 'package:taxialong/features/driver/presentation/widgets/save_settings_action_button.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -13,10 +12,9 @@ WoltModalSheetPage sortClassBottomSheet({
   required BuildContext context,
   required SettingsEntity? settings,
 }) {
-  List<Map<String, dynamic>>? rideclass = settings?.rideclass;
   String paymentMethod = "cash";
-  String? pointa;
-  String? pointb;
+  int? pointa;
+  int? pointb;
 
   if (settings != null) {
     paymentMethod = settings.paymentMethod;
@@ -26,25 +24,21 @@ WoltModalSheetPage sortClassBottomSheet({
   }
 
   SettingsParams settingsParams = SettingsParams(
-    selectedClass: rideclass,
     paymentMethod: paymentMethod,
     pointa: pointa,
     pointb: pointb,
   );
-  classesCallback(data) {
-    settingsParams.selectedClass = data;
-  }
 
   paymentCallback(data) {
     settingsParams.paymentMethod = data;
   }
 
   pointaCallback(data) {
-    settingsParams.pointa = data.toString();
+    settingsParams.pointa = data;
   }
 
   pointbCallback(data) {
-    settingsParams.pointb = data.toString();
+    settingsParams.pointb = data;
   }
 
   return WoltModalSheetPage.withSingleChild(
@@ -66,10 +60,9 @@ WoltModalSheetPage sortClassBottomSheet({
       ),
       child: Column(
         children: [
-          TaxiAlongDriverClassFilter(
-            rideClass: rideclass,
-            callback: classesCallback,
-          ),
+          // TaxiAlongDriverClassFilter(
+          //   callback: classesCallback,
+          // ),
           WalletPaymentMethod(
             paymentMethod: paymentMethod,
             callback: paymentCallback,

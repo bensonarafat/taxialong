@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
-import 'package:taxialong/features/rides/domain/entities/trip_entity.dart';
+import 'package:taxialong/features/trips/domain/entities/trip_entity.dart';
 
 class Rating extends StatelessWidget {
   final TripEntity trip;
@@ -57,17 +57,10 @@ class Rating extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TaxiAlongCachedNetworkImage(
-                  path: trip.driver.avatar,
-                  width: 50,
-                  height: 50,
+                  url: trip.driver?.avatar,
+                  width: 50.w,
+                  height: 50.h,
                   fit: BoxFit.fill,
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(
-                      width: 1,
-                      color: primaryColor,
-                    ),
-                    borderRadius: BorderRadius.circular(100.r),
-                  ),
                 ),
                 Gap(15.h),
                 Column(
@@ -76,7 +69,7 @@ class Rating extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '${trip.driver.firstname} ${trip.driver.lastname}',
+                      '${trip.driver?.firstname} ${trip.driver?.lastname}',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),

@@ -12,3 +12,5 @@ const lightBackgroundColor = Color(0xffFAFAFA);
 const darkBackgroundColor = Color(0xff121212);
 const dark = Color(0xff121212);
 const successColor = Color(0xff008000);
+
+const ratingColor = Color(0xffFEDA15);

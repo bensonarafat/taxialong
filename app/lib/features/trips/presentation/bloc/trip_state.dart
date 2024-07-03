@@ -13,15 +13,6 @@ class TripLoadingState extends TripState {
   List<Object?> get props => [];
 }
 
-class TripLoadedState extends TripState {
-  final TripEntity tripEntity;
-
-  TripLoadedState({required this.tripEntity});
-
-  @override
-  List<Object?> get props => [tripEntity];
-}
-
 class TripErrorState extends TripState {
   final String message;
 
@@ -31,20 +22,13 @@ class TripErrorState extends TripState {
   List<Object?> get props => [message];
 }
 
-class TripCancelState extends TripState {
-  final CancelEntity cancelEntity;
-  TripCancelState({required this.cancelEntity});
-  @override
-  List<Object?> get props => [cancelEntity];
-}
-
 class UpdateCompleteState extends TripState {
-  final UpdateTripEntity updateTripEntity;
+  final UpdateTripEntity tripEntity;
 
-  UpdateCompleteState({required this.updateTripEntity});
+  UpdateCompleteState({required this.tripEntity});
 
   @override
-  List<Object?> get props => [updateTripEntity];
+  List<Object?> get props => [tripEntity];
 }
 
 class UpdatePickUpState extends TripState {
@@ -54,4 +38,13 @@ class UpdatePickUpState extends TripState {
 
   @override
   List<Object?> get props => [updateTripEntity];
+}
+
+class CurrentTripState extends TripState {
+  final TripEntity trip;
+
+  CurrentTripState({required this.trip});
+
+  @override
+  List<Object?> get props => [trip];
 }

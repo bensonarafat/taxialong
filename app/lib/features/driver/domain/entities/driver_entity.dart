@@ -1,14 +1,14 @@
 class DriverEntity {
   final String message;
   final bool status;
-  final String userId;
-  final String online;
-  final String? latitude;
-  final String? longitude;
-  final String earningsCount;
-  final String totalRidesCount;
-  final String todayRideCount;
-  final String? earningSumAmount;
+  final int userId;
+  final int online;
+  final double? latitude;
+  final double? longitude;
+  final int earningsCount;
+  final int totalRidesCount;
+  final int todayRideCount;
+  final double? earningSumAmount;
 
   DriverEntity({
     required this.message,

@@ -1,8 +1,8 @@
 import 'package:taxialong/core/domain/entities/terminal_entity.dart';
 
 class AxisEntity {
-  final String pointa;
-  final String pointb;
+  final int pointa;
+  final int pointb;
   final TerminalEntity terminala;
   final TerminalEntity terminalb;
 

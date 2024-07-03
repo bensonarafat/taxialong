@@ -2,7 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxialong/core/domain/entities/account_switch_entity.dart';
+import 'package:taxialong/core/domain/entities/seats_entity.dart';
 import 'package:taxialong/core/domain/entities/settings_update_entity.dart';
+import 'package:taxialong/core/domain/usecases/get_seats_usecase.dart';
 import 'package:taxialong/core/domain/usecases/get_terminals_usecase.dart';
 import 'package:taxialong/core/domain/usecases/switch_account_usecase.dart';
 import 'package:taxialong/core/domain/usecases/update_settings_usecase.dart';
@@ -16,18 +18,30 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final SwitchAccountUseCase switchAccountUseCase;
   GetTermainalUseCase getTermainalUseCase;
   UpdateSettingsUseCase updateSettingsUseCase;
+  GetSeatsUseCase getSeatsUseCase;
   SettingsBloc({
     required this.switchAccountUseCase,
     required this.getTermainalUseCase,
     required this.updateSettingsUseCase,
+    required this.getSeatsUseCase,
   }) : super(SettingInitial()) {
-    on<RideFilterEvent>((event, emit) =>
-        emit(FilterRideState(rideClass: event.rideClass, seat: event.seat)));
+    on<RideFilterEvent>(
+        (event, emit) => emit(FilterRideState(rideClass: event.rideClass)));
     on<UpdateSettingsEvent>((event, emit) => updateSettingsEvent(event, emit));
     on<SettingsGetTerminalsEvent>(
         (event, emit) => settingsGetTerminalsEvent(event, emit));
     on<SettingsSwitchAccountEvent>(
         (event, emit) => settingsSwitchAccountEvent(event, emit));
+
+    on<GetSeatsEvent>((event, emit) => getSeatsEvent(event, emit));
+  }
+
+  getSeatsEvent(event, emit) async {
+    emit(SeatsLoadingState());
+    final failureOrGet = await getSeatsUseCase({});
+    emit(failureOrGet.fold(
+        (failure) => SeatsErrorState(message: mapFailureToMessage(failure)),
+        (seatsEntity) => SeatsLoadedState(seats: seatsEntity)));
   }
 
   settingsSwitchAccountEvent(event, emit) async {
@@ -55,7 +69,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
     var failureOrSettingsData = await updateSettingsUseCase(
       SettingsParams(
-        selectedClass: event.selectedClass,
         paymentMethod: event.paymentMethod,
         pointa: event.pointa,
         pointb: event.pointb,

@@ -6,18 +6,28 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/constants/constants.dart';
+import 'package:taxialong/core/domain/entities/seats_entity.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_button.dart';
 import 'package:taxialong/core/widgets/taxi_along_drop_down.dart';
+import 'package:taxialong/core/widgets/taxi_along_error_widget.dart';
 import 'package:taxialong/core/widgets/taxi_along_input_field.dart';
+import 'package:taxialong/core/widgets/taxi_along_loading.dart';
+import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:taxialong/features/vehicle/presentation/bloc/car_bloc.dart';
+import 'package:taxialong/features/vehicle/presentation/widgets/vehicle_class.dart';
 
 class CreateVehicle extends StatefulWidget {
-  const CreateVehicle({super.key});
+  final String? redirect;
+  const CreateVehicle({
+    super.key,
+    this.redirect,
+  });
 
   @override
   State<CreateVehicle> createState() => _CreateVehicleState();
@@ -27,7 +37,19 @@ class _CreateVehicleState extends State<CreateVehicle> {
   String model = "";
   String plateNumber = "";
   String? color = carColours.first;
-  String? seat = seatsArrangments.first;
+  int? seatId;
+  String? seat;
+  List<dynamic> classes = [];
+  List<dynamic> classSelected = [];
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<SettingsBloc>().add(GetSeatsEvent());
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CarBloc>(
@@ -39,7 +61,7 @@ class _CreateVehicleState extends State<CreateVehicle> {
           ),
           leading: GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              context.replace("/vehicles");
             },
             child: IconTheme(
               data: Theme.of(context).iconTheme,
@@ -82,21 +104,65 @@ class _CreateVehicleState extends State<CreateVehicle> {
                 },
               ),
               Gap(16.h),
-              TaxiAlongDropDown(
-                items: seatsArrangments,
-                label: 'Car Seat',
-                onChange: (String? input) {
-                  setState(() {
-                    seat = input;
-                  });
+              BlocBuilder<SettingsBloc, SettingsState>(
+                buildWhen: (pre, state) =>
+                    state is SeatsLoadingState ||
+                    state is SeatsLoadedState ||
+                    state is SeatsErrorState,
+                builder: (context, state) {
+                  if (state is SeatsLoadingState) {
+                    return TaxiAlongLoading(
+                        color: Brightness.dark == Theme.of(context).brightness
+                            ? white
+                            : dark);
+                  } else if (state is SeatsLoadedState) {
+                    List<SeatsEntity> seats = state.seats;
+                    seatId = seats.first.id;
+                    seat = seats.first.name;
+                    classes = seats.first.classes ?? [];
+
+                    return Column(
+                      children: [
+                        TaxiAlongDropDown.buildSeatsDropDown(
+                          context: context,
+                          items: seats,
+                          label: 'Car Seat',
+                          onChange: (SeatsEntity? input) {
+                            setState(() {
+                              seat = input?.name;
+                              seatId = input?.id;
+                              classes = input?.classes ?? [];
+                            });
+                          },
+                          moreInfo: GestureDetector(
+                            onTap: () => context.push("/seats-info"),
+                            child: Icon(
+                              Icons.info_outline_rounded,
+                              size: 17.r,
+                            ),
+                          ),
+                        ),
+
+                        Gap(16.h),
+                        // check box with classes
+                        VehicleClass(
+                          classes: classes,
+                          callback: (dynamic selected, bool? isCheck) {
+                            if (isCheck != null) {
+                              if (isCheck) {
+                                classSelected.add(selected);
+                              } else {
+                                classSelected.remove(selected);
+                              }
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  } else {
+                    return const TaxiAlongErrorWidget();
+                  }
                 },
-                moreInfo: GestureDetector(
-                  onTap: () => context.push("/seats-info"),
-                  child: Icon(
-                    Icons.info_outline_rounded,
-                    size: 17.r,
-                  ),
-                ),
               ),
               Gap(16.h),
               BlocConsumer<CarBloc, CarState>(
@@ -106,7 +172,12 @@ class _CreateVehicleState extends State<CreateVehicle> {
                   }
                   if (state is CreatedCarState) {
                     if (state.carEntity.status) {
-                      documentAlert(context).show();
+                      if (widget.redirect != null) {
+                        documentAlert(context).show();
+                      } else {
+                        toast("New Vehicle Created");
+                        context.replace("/vehicles");
+                      }
                     } else {
                       toast(state.carEntity.message);
                     }
@@ -130,14 +201,17 @@ class _CreateVehicleState extends State<CreateVehicle> {
                         } else if (color == null) {
                           toast("Colour is required");
                         } else if (seat == null) {
-                          toast("Seat Arrangment is required");
+                          toast("Car Seat is required");
+                        } else if (classSelected.isEmpty) {
+                          toast("You must select atleast one class");
                         } else {
                           context.read<CarBloc>().add(
                                 CreateCarEvent(
                                   model: model,
                                   plateNumber: plateNumber,
                                   color: color!,
-                                  seats: seat!,
+                                  seatId: seatId!,
+                                  classes: classSelected,
                                 ),
                               );
                         }
@@ -183,7 +257,8 @@ class _CreateVehicleState extends State<CreateVehicle> {
             color: Colors.transparent,
             onPressed: () {
               Navigator.of(context).pop();
-              context.push("/create-vehicle");
+              context.read<AuthBloc>().add(AuthLoginEvent());
+              context.pushReplacement("/driver-home");
             },
             child: Container(
               width: 254.w,

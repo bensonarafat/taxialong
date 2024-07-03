@@ -37,7 +37,6 @@ class DocumentRemoteDataSourceImpl implements DocumentRemoteDataSource {
     }
 
     var response = await dio.post(url, data: await createFormData());
-
     if (response.statusCode == 200) {
       return DocumentModel.fromJson(response.data);
     } else {

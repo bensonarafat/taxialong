@@ -4,7 +4,7 @@ import 'package:taxialong/core/utils/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FliterActionButton extends StatelessWidget {
-  final String pointb;
+  final int pointb;
   const FliterActionButton({
     super.key,
     required this.pointb,

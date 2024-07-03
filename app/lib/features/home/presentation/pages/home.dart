@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taxialong/core/services/get_it_services.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_error_page.dart';
@@ -21,97 +19,82 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final GlobalKey contentKey = GlobalKey();
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      showEnableLocation(context);
+      context.read<HomeBloc>().add(
+            UpdateTerminalEvent(
+              latitude: defaultLat,
+              longitude: defaultLng,
+            ),
+          );
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<HomeBloc>(
-          create: (BuildContext context) => getIt<HomeBloc>(),
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          scrolledUnderElevation: 0,
+          shadowColor: Theme.of(context).shadowColor,
+          surfaceTintColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          pinned: true,
+          floating: true,
+          expandedHeight: appSliverExpandedHeightFixture,
+          forceElevated: true,
+          flexibleSpace: const HomeFlexibleSpace(),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              BlocConsumer<HomeBloc, HomeState>(
+                listener: (context, state) {
+                  if (state is HomeErrorState) {
+                    toast(state.message);
+                  }
+                },
+                builder: (context, state) {
+                  if (state is HomeLoadingState) {
+                    return TaxiAlongLoading(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? white
+                          : dark,
+                    );
+                  } else if (state is HomeErrorState) {
+                    return const TaxiAlongErrorPage();
+                  } else if (state is HomeLoadedState) {
+                    List<AxisEntity> terminals = state.axisEntity;
+                    return Container(
+                      padding: EdgeInsets.all(
+                        16.w,
+                      ),
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: terminals.length,
+                        itemBuilder: (_, index) {
+                          return HomeTerminals(
+                            terminals: terminals,
+                            index: index,
+                          );
+                        },
+                      ),
+                    );
+                  } else {
+                    return const TaxiAlongErrorPage();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ],
-      child: BlocListener<MapBloc, MapState>(
-        listener: (context, state) {
-          if (state is MapCurrentPositionState) {
-            context.read<HomeBloc>().add(
-                  UpdateTerminalEvent(
-                    latitude: state.latitude,
-                    longitude: state.longitude,
-                  ),
-                );
-          }
-        },
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              scrolledUnderElevation: 0,
-              shadowColor: Theme.of(context).shadowColor,
-              surfaceTintColor: Theme.of(context).colorScheme.background,
-              backgroundColor: Theme.of(context).colorScheme.background,
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              pinned: true,
-              floating: true,
-              expandedHeight: appSliverExpandedHeightFixture,
-              forceElevated: true,
-              flexibleSpace: const HomeFlexibleSpace(),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  BlocConsumer<HomeBloc, HomeState>(
-                    listener: (context, state) {
-                      if (state is HomeErrorState) {
-                        toast(state.message);
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is HomeLoadingState) {
-                        return TaxiAlongLoading(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? white
-                              : dark,
-                        );
-                      } else if (state is HomeErrorState) {
-                        return const TaxiAlongErrorPage();
-                      } else if (state is HomeLoadedState) {
-                        List<AxisEntity> terminals = state.axisEntity;
-                        return Container(
-                          padding: EdgeInsets.all(
-                            16.w,
-                          ),
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: terminals.length,
-                            itemBuilder: (_, index) {
-                              return HomeTerminals(
-                                terminals: terminals,
-                                index: index,
-                              );
-                            },
-                          ),
-                        );
-                      } else {
-                        return const TaxiAlongErrorPage();
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

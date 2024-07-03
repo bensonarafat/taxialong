@@ -28,3 +28,26 @@ class CreatedCarState extends CarState {
   @override
   List<Object?> get props => [carEntity];
 }
+
+class FetchCarsState extends CarState {
+  final CarsEntity carsEntity;
+
+  FetchCarsState({required this.carsEntity});
+
+  @override
+  List<Object?> get props => [carsEntity];
+}
+
+class FetchCarState extends CarState {
+  final CarEntity carEntity;
+
+  FetchCarState({required this.carEntity});
+
+  @override
+  List<Object?> get props => [carEntity];
+}
+
+class LoadingDefaultCarState extends CarState {
+  @override
+  List<Object?> get props => [];
+}

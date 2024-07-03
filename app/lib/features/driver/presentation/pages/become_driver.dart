@@ -1,14 +1,13 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:taxialong/core/bloc/settings/settings_bloc.dart';
+
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/core/utils/helpers.dart';
 
 class BecomeDriver extends StatefulWidget {
   const BecomeDriver({super.key});
@@ -93,54 +92,54 @@ class _BecomeDriverState extends State<BecomeDriver> {
                       ),
                     ),
                   ),
-                  Gap(32.w),
-                  Expanded(
-                    child: BlocListener<SettingsBloc, SettingsState>(
-                      listener: (context, state) {
-                        if (state is SettingErrorState) {
-                          toast(state.message);
-                        }
-                        if (state is SettingsSwitchLoadingState) {
-                          cancel = BotToast.showLoading();
-                        }
-                        if (state is SettingsSwitchedState) {
-                          cancel();
-                          context.go("/driver-home");
-                        }
-                      },
-                      child: GestureDetector(
-                        onTap: () => context
-                            .read<SettingsBloc>()
-                            .add(SettingsSwitchAccountEvent()),
-                        child: Container(
-                          height: 42.h,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 4.h),
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(width: 1.w, color: primaryColor),
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Not Now',
-                                style: GoogleFonts.robotoFlex(
-                                  color: primaryColor,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Gap(32.w),
+                  // Expanded(
+                  //   child: BlocListener<SettingsBloc, SettingsState>(
+                  //     listener: (context, state) {
+                  //       if (state is SettingErrorState) {
+                  //         toast(state.message);
+                  //       }
+                  //       if (state is SettingsSwitchLoadingState) {
+                  //         cancel = BotToast.showLoading();
+                  //       }
+                  //       if (state is SettingsSwitchedState) {
+                  //         cancel();
+                  //         context.go("/driver-home");
+                  //       }
+                  //     },
+                  //     child: GestureDetector(
+                  //       onTap: () => context
+                  //           .read<SettingsBloc>()
+                  //           .add(SettingsSwitchAccountEvent()),
+                  //       child: Container(
+                  //         height: 42.h,
+                  //         padding: EdgeInsets.symmetric(
+                  //             horizontal: 16.w, vertical: 4.h),
+                  //         decoration: ShapeDecoration(
+                  //           shape: RoundedRectangleBorder(
+                  //             side: BorderSide(width: 1.w, color: primaryColor),
+                  //             borderRadius: BorderRadius.circular(8.r),
+                  //           ),
+                  //         ),
+                  //         child: Row(
+                  //           mainAxisSize: MainAxisSize.min,
+                  //           mainAxisAlignment: MainAxisAlignment.center,
+                  //           crossAxisAlignment: CrossAxisAlignment.center,
+                  //           children: [
+                  //             Text(
+                  //               'Not Now',
+                  //               style: GoogleFonts.robotoFlex(
+                  //                 color: primaryColor,
+                  //                 fontSize: 14.sp,
+                  //                 fontWeight: FontWeight.w600,
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               )
             ],

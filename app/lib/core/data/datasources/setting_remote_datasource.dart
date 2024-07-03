@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/data/models/account_switch_model.dart';
+import 'package:taxialong/core/data/models/seats_model.dart';
 import 'package:taxialong/core/data/models/settings_update_model.dart';
 import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/core/domain/usecases/update_settings_usecase.dart';
@@ -14,6 +13,7 @@ abstract class SettingsRemoteDataSource {
   Future<AccountSwitchModel> switchAccount();
   Future<List<TerminalModel>> getTerminals();
   Future<SettingsUpdateModel> updateSettings(SettingsParams params);
+  Future<List<SeatsModel>> getSeats();
 }
 
 class SettingsRemoteDataSourceImp implements SettingsRemoteDataSource {
@@ -89,13 +89,29 @@ class SettingsRemoteDataSourceImp implements SettingsRemoteDataSource {
         "pointa": params.pointa,
         "pointb": params.pointb,
         "payment_method": params.paymentMethod,
-        "ride_class": jsonEncode(params.selectedClass),
       },
     );
 
     if (response.statusCode == 200) {
       var data = response.data;
       return SettingsUpdateModel.fromJson(data);
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<SeatsModel>> getSeats() async {
+    var url = "${endpoint}seat";
+    var response = await dio.get(
+      url,
+    );
+    if (response.statusCode == 200) {
+      var data = response.data;
+      List<dynamic> jsonresponse = data;
+      List<SeatsModel> list =
+          jsonresponse.map((item) => SeatsModel.fromJson(item)).toList();
+      return list;
     } else {
       throw ServerException();
     }

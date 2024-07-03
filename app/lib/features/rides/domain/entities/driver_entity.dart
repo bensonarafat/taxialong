@@ -5,8 +5,8 @@ class DriverEntity {
   final String email;
   final String telephone;
   final String avatar;
-  final String rating;
-  final String verified;
+  final int rating;
+  final int verified;
 
   DriverEntity({
     required this.id,

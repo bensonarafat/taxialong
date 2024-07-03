@@ -4,8 +4,8 @@ part of 'pusher_bloc.dart';
 abstract class PusherEvent extends Equatable {}
 
 class PusherUpdateLocationEvent extends PusherEvent {
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
 
   PusherUpdateLocationEvent({required this.latitude, required this.longitude});
   @override
@@ -13,7 +13,7 @@ class PusherUpdateLocationEvent extends PusherEvent {
 }
 
 class SubscribeToDriverChannel extends PusherEvent {
-  final String driverId;
+  final int driverId;
 
   SubscribeToDriverChannel({required this.driverId});
 

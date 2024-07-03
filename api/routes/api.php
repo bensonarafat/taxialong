@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DriverController;
@@ -29,6 +30,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('logout', [AuthController::class, "logout"]);
         Route::get('refresh', [AuthController::class, "refresh"]);
         Route::get('me', [AuthController::class, "me"]);
+        Route::get("verify-auth", [AuthController::class, "verifyAuth"]);
     });
 
     Route::group(["prefix" => "account"], function() {
@@ -60,6 +62,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::group(["prefix" => "trips"], function() {
         Route::post("/available-rides", [TripController::class, "availableRides"]);
         Route::post("/confirm-ride", [TripController::class, "confirmRide"]);
+        Route::post("class-price", [TripController::class, "tripPrice"]);
         Route::get("/recent", [TripController::class, "recent"]);
         Route::get("/requests", [TripController::class, "requests"]);
         Route::post("/cancel", [TripController::class, "cancel"]);
@@ -91,6 +94,12 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::put("update/{id}", [CarController::class, "update"]);
         Route::delete("delete/{id}", [CarController::class, "delete"]);
         Route::get("set-default/{id}", [CarController::class, "setDefault"]);
+    });
+
+    Route::group(["prefix" => "bank"], function() {
+        Route::get("/", [BankController::class, "get"]);
+        Route::post("/create", [BankController::class, "create"]);
+        Route::put('updatae/{id}', [BankController::class, "update"]);
     });
 });
 

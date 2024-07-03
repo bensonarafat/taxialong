@@ -13,6 +13,7 @@ class Seat extends Model
         'seats',
         'name',
         'total',
-        'meta'
+        'meta',
+        'classes',
     ];
 }

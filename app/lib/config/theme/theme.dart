@@ -18,7 +18,7 @@ class AppTheme {
       textTheme: AppTextTheme.lightTextTheme(),
       appBarTheme: AppAppBarTheme.lightAppBarTheme(),
       checkboxTheme: CheckboxThemeData(
-        checkColor: MaterialStateProperty.all<Color>(white),
+        checkColor: WidgetStateProperty.all<Color>(white),
         side: BorderSide(color: primaryColor, width: 2.w),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.r),
@@ -66,10 +66,10 @@ class AppTheme {
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         brightness: Brightness.light,
-        background: white,
+        surface: white,
       ),
       radioTheme: RadioThemeData(
-        fillColor: MaterialStateProperty.all<Color>(dark),
+        fillColor: WidgetStateProperty.all<Color>(dark),
       ),
       cardTheme: const CardTheme(
         color: white,
@@ -90,7 +90,7 @@ class AppTheme {
         color: white,
       ),
       checkboxTheme: CheckboxThemeData(
-        checkColor: MaterialStateProperty.all<Color>(dark),
+        checkColor: WidgetStateProperty.all<Color>(dark),
         side: BorderSide(color: primaryColor, width: 2.w),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.r),
@@ -137,11 +137,11 @@ class AppTheme {
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         brightness: Brightness.dark,
-        background: dark,
+        surface: dark,
       ),
 
       radioTheme: RadioThemeData(
-        fillColor: MaterialStateProperty.all<Color>(white),
+        fillColor: WidgetStateProperty.all<Color>(white),
       ),
       cardTheme: const CardTheme(
         color: dark,

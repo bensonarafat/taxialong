@@ -16,7 +16,7 @@ class BusStopBloc extends Bloc<BusStopEvent, BusStopState> {
     on<BusStopFetchEvent>((event, emit) => busStopFetchEvent(event, emit));
   }
 
-  busStopFetchEvent(event, emit) async {
+  busStopFetchEvent(BusStopFetchEvent event, emit) async {
     emit(BusStopLoadingState());
     final failureOrFetchAxisEvent = await busStopUseCase(
       AxisParams(

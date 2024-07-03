@@ -5,8 +5,8 @@ import 'package:taxialong/core/services/secure_storage.dart';
 import 'package:taxialong/features/driver/data/models/driver_location_model.dart';
 import 'package:taxialong/features/driver/data/models/driver_model.dart';
 import 'package:taxialong/features/driver/data/models/go_online_model.dart';
-import 'package:taxialong/features/driver/data/models/trip_model.dart';
 import 'package:taxialong/features/driver/domain/usecases/update_driver_location_usecase.dart';
+import 'package:taxialong/features/trips/data/models/trip_model.dart';
 
 abstract class DriverHomeRemoteDataSource {
   Future<GoOnlineModel> goOnline();
@@ -113,6 +113,7 @@ class DriverHomeRemoteDataSourceImpl implements DriverHomeRemoteDataSource {
     var response = await dio.get(
       url,
     );
+
     if (response.statusCode == 200) {
       var data = response.data;
 

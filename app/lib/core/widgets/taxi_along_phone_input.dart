@@ -39,6 +39,7 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
       ),
       width: 358.w,
       child: InternationalPhoneNumberInput(
+        keyboardType: TextInputType.number,
         inputDecoration: InputDecoration(
           hintText: "",
           focusedBorder: InputBorder.none,
@@ -59,10 +60,6 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
         selectorTextStyle: Theme.of(context).textTheme.bodyLarge,
         initialValue: number,
         formatInput: true,
-        keyboardType: const TextInputType.numberWithOptions(
-          signed: true,
-          decimal: true,
-        ),
         inputBorder: InputBorder.none,
         onSaved: (PhoneNumber number) {},
       ),

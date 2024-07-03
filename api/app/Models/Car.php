@@ -19,5 +19,7 @@ class Car extends Model
         'default',
         'driver_id',
         'seats',
+        'total',
+        'classes',
     ];
 }

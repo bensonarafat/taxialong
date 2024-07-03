@@ -15,8 +15,8 @@ class GetBusStopUseCase implements UseCase<List<AxisEntity>, AxisParams> {
 }
 
 class AxisParams extends Equatable {
-  final String pointa;
-  final String pointb;
+  final int pointa;
+  final int pointb;
 
   const AxisParams({required this.pointa, required this.pointb});
   @override

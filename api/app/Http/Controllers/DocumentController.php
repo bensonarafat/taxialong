@@ -43,6 +43,7 @@ class DocumentController extends Controller
 
             return response()->json(["status" => true, "message" => "Document Uploaded", "data" => $document ]);
         } catch (Exception $e) {
+
             return response()->json(["status" => false, "message" => "Oops, there was an error"]);
         }
     }

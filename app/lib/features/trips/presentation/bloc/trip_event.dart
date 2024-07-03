@@ -8,6 +8,11 @@ class GetTripEvent extends TripEvent {
   List<Object?> get props => [];
 }
 
+class FetchCurrentTripEvent extends TripEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 class CancelTripEvent extends TripEvent {
   final String tripId;
   final String reason;

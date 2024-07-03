@@ -8,10 +8,10 @@ class UserEntity {
   final String email;
   final String telephone;
   final String avatar;
-  final String rating;
-  final String verified;
+  final int rating;
+  final int verified;
   final String role;
-  final String? documentCount;
+  final int? documentCount;
   final SettingsEntity? settings;
   final DriverEntity? driver;
 

@@ -10,8 +10,10 @@ import 'package:taxialong/features/documents/presentation/widgets/upload_bottom_
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class DriversLicence extends StatelessWidget {
+  final Function? callback;
   const DriversLicence({
     super.key,
+    this.callback,
   });
 
   @override
@@ -86,7 +88,8 @@ class DriversLicence extends StatelessWidget {
             BlocBuilder<DocumentBloc, DocumentState>(
               buildWhen: (previousState, state) {
                 return state is DriverLicenceLoadingState ||
-                    state is DriverLicenceLoadedState;
+                    state is DriverLicenceLoadedState ||
+                    state is DocumentErrorState;
               },
               builder: (context, state) {
                 if (state is DriverLicenceLoadingState) {
@@ -102,6 +105,7 @@ class DriversLicence extends StatelessWidget {
                     child: const TaxiAlongLoading(),
                   );
                 } else if (state is DriverLicenceLoadedState) {
+                  callback!();
                   return Container(
                     width: 40.w,
                     height: 40.h,

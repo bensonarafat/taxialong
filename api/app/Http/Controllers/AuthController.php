@@ -10,6 +10,7 @@ use App\Trait\RideSettings;
 use Illuminate\Http\Request;
 use App\Trait\TaxiAlongWallet;
 use App\Http\Controllers\Controller;
+use App\Models\Trip;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
@@ -136,8 +137,26 @@ class AuthController extends Controller
     public function me()
     {
         $user = User::whereId(auth()->user()->id)->with(["settings", "driver"])->withCount(["documents"])->first();
-        $user->settings->ride_class = json_decode($user->settings->ride_class);
         return response()->json($user);
+    }
+
+    public function verifyAuth(){
+
+        $isDriver = false;
+        $isTrip = false;
+        $status = true;
+        // check if trip
+        if(auth()->user()->role == "driver"){
+            $isDriver = true;
+        }else{
+            // check if they is any current trip
+            $trip = Trip::where(["rider_id" => auth()->user()->id])->whereIn('status', ['requested', 'pickedup'])->first();
+            if($trip != null){
+                $isTrip = true;
+            }
+        }
+
+        return response()->json([ "status" => $status, "message" => "",  "is_trip" => $isTrip,  "is_driver" => $isDriver ]);
     }
 
 
@@ -168,6 +187,7 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'message'=> "Login",
+            "role" => auth()->user()->role,
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }

@@ -10,8 +10,8 @@ class FetchHomeTerminalsEvent extends HomeEvent {
 }
 
 class UpdateTerminalEvent extends HomeEvent {
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
 
   UpdateTerminalEvent({required this.latitude, required this.longitude});
 

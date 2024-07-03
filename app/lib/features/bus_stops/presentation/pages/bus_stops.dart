@@ -56,8 +56,8 @@ class _BusStopState extends State<BusStop> {
             SliverAppBar(
               scrolledUnderElevation: 0,
               shadowColor: Theme.of(context).shadowColor,
-              surfaceTintColor: Theme.of(context).colorScheme.background,
-              backgroundColor: Theme.of(context).colorScheme.background,
+              surfaceTintColor: Theme.of(context).colorScheme.surface,
+              backgroundColor: Theme.of(context).colorScheme.surface,
               automaticallyImplyLeading: false,
               pinned: true,
               expandedHeight: 74,

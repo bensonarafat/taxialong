@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Car;
-use App\Models\Driver;
-use App\Models\Seat;
 use Exception;
+use App\Models\Car;
+use App\Models\Seat;
+use App\Models\Driver;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
@@ -21,6 +21,8 @@ class CarController extends Controller
                 "model" => $request->model,
                 "user_id" => auth()->user()->id,
                 "seats" => $seat->meta,
+                "classes" => json_encode($request->classes),
+                "total" => $seat->total,
                 "driver_id" => Driver::where("user_id", auth()->user()->id)->first()->id, // driver id
             ]);
             $count = Car::where("user_id", auth()->user()->id)->count();
@@ -36,7 +38,6 @@ class CarController extends Controller
                 "message" => "Oops, there was an error"
             ]);
         }
-
     }
 
     public function update(Request $request, int $id){
@@ -49,6 +50,8 @@ class CarController extends Controller
                 "model" => $request->model,
                 "user_id" => auth()->user()->id,
                 "seats" => $seat->meta,
+                "classes" => json_encode($request->classes),
+                "total" => $seat->total,
             ]);
             return response()->json([
                 "status" => true,
