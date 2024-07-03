@@ -17,7 +17,7 @@ class OnboardSignUpButton extends StatelessWidget {
       height: 42.h,
       child: TextButton(
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
               side: BorderSide(
@@ -26,7 +26,7 @@ class OnboardSignUpButton extends StatelessWidget {
               ),
             ),
           ),
-          backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+          backgroundColor: WidgetStateProperty.all<Color>(primaryColor),
         ),
         child: Text(
           "Signup",

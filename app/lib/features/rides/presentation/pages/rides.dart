@@ -19,8 +19,7 @@ import 'package:taxialong/features/home/domain/entities/axis_entity.dart'
 import 'package:taxialong/features/rides/domain/entities/rides_entity.dart';
 import 'package:taxialong/features/rides/presentation/bloc/ride_bloc.dart';
 import 'package:taxialong/features/rides/presentation/widgets/class_ride.dart';
-import 'package:taxialong/features/rides/presentation/widgets/sort_bottom_sheet.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:taxialong/features/rides/presentation/widgets/filter_rides_wolt_modal_sheet.dart';
 
 class Rides extends StatefulWidget {
   final Map<String, dynamic> extra;
@@ -72,7 +71,6 @@ class _RidesState extends State<Rides> {
                   FetchRideEvent(
                     pointb: busstops.pointb,
                     rideClass: state.rideClass,
-                    seat: state.seat,
                   ),
                 );
           }
@@ -106,26 +104,8 @@ class _RidesState extends State<Rides> {
                           ),
                         ),
                         child: GestureDetector(
-                          onTap: () {
-                            WoltModalSheet.show<void>(
-                              enableDrag: true,
-                              context: context,
-                              pageListBuilder: (context) {
-                                return [
-                                  sortBottomSheet(
-                                    context: context,
-                                    pointb: busstops.pointb,
-                                  ),
-                                ];
-                              },
-                              modalTypeBuilder: (context) {
-                                return WoltModalType.bottomSheet;
-                              },
-                              maxDialogWidth: 560.w,
-                              minDialogWidth: 400.w,
-                              minPageHeight: 0.0,
-                            );
-                          },
+                          onTap: () =>
+                              filterRidesWoltModelSheet(context, busstops),
                           child: Center(
                             child: SvgPicture.asset(
                               sortSVG,
@@ -194,18 +174,35 @@ class _RidesState extends State<Rides> {
                         );
                       } else if (state is RideLoadedState) {
                         List<RidesEntity> rideEntity = state.ridesEntity;
-                        return ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: rideEntity.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (BuildContext context, int index) {
-                            return ClassRide(
-                              rides: rideEntity[index],
-                              paymentMethod: paymentMethod,
-                            );
-                          },
-                        );
+                        if (rideEntity.isEmpty) {
+                          return Container(
+                            margin: EdgeInsets.only(top: 40.h),
+                            child: Center(
+                              child: Text(
+                                "No Available ride",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(
+                                      fontSize: 20.sp,
+                                    ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount: rideEntity.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return ClassRide(
+                                rides: rideEntity[index],
+                                paymentMethod: paymentMethod,
+                              );
+                            },
+                          );
+                        }
                       } else {
                         return const TaxiAlongErrorPage();
                       }

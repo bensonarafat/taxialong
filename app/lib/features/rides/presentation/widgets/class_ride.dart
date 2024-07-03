@@ -1,19 +1,20 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:taxialong/core/constants/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/extensions.dart';
 import 'package:taxialong/core/utils/helpers.dart';
+import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
 import 'package:taxialong/features/rides/domain/entities/confirm_ride_entity.dart';
 import 'package:taxialong/features/rides/domain/entities/rides_entity.dart';
 import 'package:taxialong/features/rides/presentation/bloc/ride_bloc.dart';
 import 'package:taxialong/features/rides/presentation/widgets/seat_preference.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:collection/collection.dart';
 
 class ClassRide extends StatefulWidget {
   final RidesEntity rides;
@@ -30,10 +31,17 @@ class ClassRide extends StatefulWidget {
 
 class _ClassRideState extends State<ClassRide> {
   List<int> selectedSeats = [];
-  late CancelFunc cancel;
-  void tripSeats(seat) {
-    selectedSeats = seat;
+  Map<String, dynamic>? selectedClass;
+  Map<dynamic, dynamic> seats = {};
+  @override
+  void initState() {
+    List<dynamic>? joinedSeats = joinDriver(widget.rides.car.seats);
+    seats = groupBy(joinedSeats ?? [], (element) => element['row']);
+
+    super.initState();
   }
+
+  late CancelFunc cancel;
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +64,7 @@ class _ClassRideState extends State<ClassRide> {
           ConfirmRideEntity confirmRideEntity = state.confirmRideEntity;
           cancel();
           if (confirmRideEntity.status) {
-            context.go(
-              "/trip",
-              extra: confirmRideEntity,
-            );
+            context.go("/trip");
           } else {
             toast(confirmRideEntity.message);
           }
@@ -85,10 +90,53 @@ class _ClassRideState extends State<ClassRide> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    car,
-                    width: 65.w,
-                    height: 40.h,
+                  Stack(
+                    children: [
+                      TaxiAlongCachedNetworkImage(
+                        url: widget.rides.user.avatar,
+                        width: 65.w,
+                        height: 65.h,
+                        fit: BoxFit.contain,
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: 65.w,
+                            decoration: const BoxDecoration(
+                              color: dark,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(25),
+                                bottomRight: Radius.circular(25),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  CupertinoIcons.star_fill,
+                                  color: ratingColor,
+                                  size: 12,
+                                ),
+                                Gap(2.w),
+                                Text(
+                                  "${widget.rides.user.rating}.0",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall
+                                      ?.copyWith(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: white,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Gap(18.w),
                   Expanded(
@@ -108,7 +156,7 @@ class _ClassRideState extends State<ClassRide> {
                                 SizedBox(
                                   width: double.infinity,
                                   child: Text(
-                                    'Class ${widget.rides.rideClass}',
+                                    widget.rides.car.plateNumber.toUpperCase(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleSmall!
@@ -122,7 +170,7 @@ class _ClassRideState extends State<ClassRide> {
                                 SizedBox(
                                   width: double.infinity,
                                   child: Text(
-                                    '₦ ${numberFormat(widget.rides.amount)}',
+                                    widget.rides.car.model,
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleSmall!
@@ -134,7 +182,7 @@ class _ClassRideState extends State<ClassRide> {
                                 ),
                                 Gap(4.h),
                                 Text(
-                                  widget.rides.paymentMethod.inCaps,
+                                  'Colour: ${widget.rides.car.color}',
                                   textAlign: TextAlign.right,
                                   style: Theme.of(context)
                                       .textTheme
@@ -170,49 +218,57 @@ class _ClassRideState extends State<ClassRide> {
                         ),
                       ),
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           selectedSeats.clear();
+                          selectedClass?.clear();
+
                           if (widget.paymentMethod.toLowerCase() ==
-                              widget.rides.paymentMethod.toLowerCase()) {
-                            WoltModalSheet.show<void>(
-                              enableDrag: true,
-                              context: context,
-                              pageListBuilder: (context) {
-                                return [
-                                  selectSeatPreference(
-                                    context: context,
-                                    seats: widget.rides.seats,
-                                    paymentMethod: widget.paymentMethod,
-                                    callback: tripSeats,
-                                  ),
-                                ];
-                              },
-                              modalTypeBuilder: (context) {
-                                return WoltModalType.bottomSheet;
-                              },
-                              maxDialogWidth: 560.w,
-                              minDialogWidth: 400.w,
-                              minPageHeight: 0.0,
-                            ).then((value) {
-                              if (selectedSeats.isNotEmpty) {
-                                context.read<RideBloc>().add(
-                                      RideBookEvent(
-                                        seats: selectedSeats,
-                                        amount: widget.rides.amount.toString(),
-                                        driverId:
-                                            widget.rides.driver.id.toString(),
-                                        pointa: widget.rides.pointa.toString(),
-                                        pointb: widget.rides.pointb.toString(),
-                                        tripClass:
-                                            widget.rides.rideClass.toString(),
-                                        paymentMethod: widget.paymentMethod,
-                                      ),
-                                    );
-                              }
-                            });
+                              widget.rides.settings.paymentMethod
+                                  .toLowerCase()) {
+                            showSeatPreference(
+                                context: context,
+                                seats: seats,
+                                classes: widget.rides.classes,
+                                paymentMethod: widget.paymentMethod,
+                                onSelect: (int id) {
+                                  bool isContain = selectedSeats.contains(id);
+                                  if (isContain) {
+                                    selectedSeats.remove(id);
+                                  } else {
+                                    selectedSeats.add(id);
+                                  }
+                                },
+                                classOnSelect:
+                                    (Map<String, dynamic>? classDetails) {
+                                  selectedClass = classDetails;
+                                },
+                                onClosed: () {
+                                  if (selectedSeats.isNotEmpty) {
+                                    if (selectedClass != null) {
+                                      context.read<RideBloc>().add(
+                                            RideBookEvent(
+                                              seats: selectedSeats,
+                                              rideClass: selectedClass!,
+                                              driverId:
+                                                  widget.rides.car.driverId!,
+                                              pointa: widget.rides.pointa,
+                                              pointb: widget.rides.pointb,
+                                              paymentMethod:
+                                                  widget.paymentMethod,
+                                              carId: widget.rides.car.id,
+                                            ),
+                                          );
+                                    } else {
+                                      toast("You need to select a ride class");
+                                    }
+                                  } else {
+                                    toast(
+                                        "You need to select one or more seats");
+                                  }
+                                });
                           } else {
                             toast(
-                              "You can book this class because the driver only accept ${widget.rides.paymentMethod.inCaps} payment",
+                              "You can book this class because the driver only accept ${widget.rides.settings.paymentMethod.inCaps} payment",
                             );
                           }
                         },
@@ -222,7 +278,7 @@ class _ClassRideState extends State<ClassRide> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              'Book Ride',
+                              'Select Ride',
                               style: GoogleFonts.robotoFlex(
                                 color: white,
                                 fontSize: 14.sp,

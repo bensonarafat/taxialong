@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
 import 'package:taxialong/features/rides/domain/entities/driver_entity.dart';
 import 'package:taxialong/features/rides/domain/entities/review_entity.dart';
@@ -220,17 +219,10 @@ class DriverWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           TaxiAlongCachedNetworkImage(
-            path: driver.avatar,
-            width: 50,
-            height: 50,
+            url: driver.avatar,
+            width: 50.w,
+            height: 50.h,
             fit: BoxFit.fill,
-            shape: RoundedRectangleBorder(
-              side: const BorderSide(
-                width: 1,
-                color: primaryColor,
-              ),
-              borderRadius: BorderRadius.circular(100.r),
-            ),
           ),
           Gap(12.w),
           Expanded(
@@ -268,7 +260,7 @@ class DriverWidget extends StatelessWidget {
                             SizedBox(
                               width: 32.w,
                               child: Text(
-                                driver.rating,
+                                driver.rating.toString(),
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),

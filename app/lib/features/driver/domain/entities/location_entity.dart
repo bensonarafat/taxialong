@@ -1,9 +1,9 @@
 class LocationEntity {
   final int id;
-  final String userId;
-  final String online;
-  final String latitude;
-  final String longitude;
+  final int userId;
+  final int online;
+  final double latitude;
+  final double longitude;
 
   LocationEntity({
     required this.id,

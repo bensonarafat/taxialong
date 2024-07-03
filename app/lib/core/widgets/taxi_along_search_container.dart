@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,7 +23,7 @@ class SearchContainer extends StatelessWidget {
           IconTheme(
             data: Theme.of(context).iconTheme,
             child: Icon(
-              Icons.search,
+              CupertinoIcons.search,
               size: 29.sp,
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:taxialong/core/connection/network_info.dart';
 import 'package:taxialong/core/data/datasources/remote_user_data_source.dart';
+import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/core/error/execptions.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/core/services/secure_storage.dart';
@@ -8,8 +9,8 @@ import 'package:taxialong/features/driver/data/datasources/driver_home_remote_da
 import 'package:taxialong/features/driver/data/models/driver_location_model.dart';
 import 'package:taxialong/features/driver/data/models/driver_model.dart';
 import 'package:taxialong/features/driver/data/models/go_online_model.dart';
-import 'package:taxialong/features/driver/data/models/trip_model.dart';
 import 'package:taxialong/features/driver/domain/repositories/driver_home_repository.dart';
+import 'package:taxialong/features/trips/data/models/trip_model.dart';
 
 class DriverHomeRepositoryImpl implements DriverHomeRepository {
   DriverHomeRemoteDataSource remoteDataSource;
@@ -27,9 +28,12 @@ class DriverHomeRepositoryImpl implements DriverHomeRepository {
   Future<Either<Failure, GoOnlineModel>> goOnline() async {
     if (await networkInfo.isConnected) {
       try {
-        GoOnlineModel goOnlineModel = await remoteDataSource.goOnline();
+        GoOnlineModel model = await remoteDataSource.goOnline();
+        // get user data
+        UserModel user = await userDataSource.getUserData();
 
-        return Right(goOnlineModel);
+        secureStorage.saveUserData(user);
+        return Right(model);
       } on ServerException {
         return Left(ServerFailure(message: "There is a server failure"));
       }

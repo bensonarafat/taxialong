@@ -23,12 +23,7 @@ class GoRouterRefereshStream extends ChangeNotifier {
           (event) => notifyListeners(),
         );
   }
-
-  void checkAuth() {
-    getIt.get<AuthBloc>().add(CheckLoginEvent());
-  }
-
-  bool isSignedIn() => getIt.get<AuthBloc>().state.isLogin;
+  AuthenticationStatus isSignedIn() => getIt.get<AuthBloc>().state.status;
 
   @override
   void dispose() {

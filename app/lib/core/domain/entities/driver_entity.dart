@@ -1,8 +1,8 @@
 class DriverEntity {
-  final String userId;
-  final String online;
-  final String? latitude;
-  final String? longitude;
+  final int userId;
+  final int online;
+  final double? latitude;
+  final double? longitude;
   DriverEntity({
     required this.online,
     required this.userId,

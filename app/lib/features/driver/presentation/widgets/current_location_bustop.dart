@@ -5,10 +5,10 @@ import 'package:gap/gap.dart';
 class CurrentLocationBustop extends StatelessWidget {
   const CurrentLocationBustop({
     super.key,
-    required this.status,
+    required this.online,
   });
 
-  final bool status;
+  final int online;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,8 @@ class CurrentLocationBustop extends StatelessWidget {
         Icon(
           Icons.circle,
           size: 8.w,
-          color: status ? const Color(0xff18C161) : const Color(0xffA0A2A9),
+          color:
+              online == 1 ? const Color(0xff18C161) : const Color(0xffA0A2A9),
         ),
         Gap(8.w),
         Text(

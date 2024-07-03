@@ -8,11 +8,14 @@ class TaxiAlongButton extends StatelessWidget {
   final Function() onPressed;
   final String buttonText;
   final bool loading;
-  const TaxiAlongButton(
-      {super.key,
-      required this.onPressed,
-      required this.buttonText,
-      this.loading = false});
+  final Color? color;
+  const TaxiAlongButton({
+    super.key,
+    required this.onPressed,
+    required this.buttonText,
+    this.loading = false,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +24,16 @@ class TaxiAlongButton extends StatelessWidget {
       height: 60.h,
       child: TextButton(
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.r),
-              side: const BorderSide(
-                color: primaryColor,
+              side: BorderSide(
+                color: color ?? primaryColor,
               ),
             ),
           ),
-          backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+          backgroundColor:
+              WidgetStateProperty.all<Color>(color ?? primaryColor),
         ),
         onPressed: onPressed,
         child: loading

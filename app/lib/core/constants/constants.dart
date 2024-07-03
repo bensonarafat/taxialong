@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:onboarding_slider_flutter/onboarding_slider_flutter.dart';
@@ -7,7 +9,11 @@ import 'package:taxialong/core/constants/assets.dart';
 /// App Constants
 ///
 
-const endpoint = "http://taxialong.com/api/";
+// const endpoint = "http://taxialong.com/api/";
+
+String endpoint = Platform.isAndroid
+    ? "http://10.0.2.2:8000/api/"
+    : "http://127.0.0.1:8000/api/";
 
 const paystackInitializeEndpoint =
     "https://api.paystack.co/transaction/initialize";
@@ -51,9 +57,11 @@ final List<OnBoardModel> onBoardData = [
   ),
 ];
 
-const appSliverExpandedHeightFixture = 200.0;
+const double defaultLat = 9.0747;
+const double defaultLng = 7.4760;
+double appSliverExpandedHeightFixture = Platform.isAndroid ? 200.0 : 200.0;
 const double googleMapZoomLevel = 14.4746;
-const LatLng defaultLatLng = LatLng(9.0747, 7.4760);
+const LatLng defaultLatLng = LatLng(defaultLat, defaultLng);
 const CameraPosition defaultGoogleMapCameraPosition = CameraPosition(
   target: defaultLatLng,
   zoom: googleMapZoomLevel,
@@ -75,8 +83,47 @@ const List<String> carColours = [
   "Purple",
 ];
 
-const List<String> seatsArrangments = [
-  '2 front, 4 back',
-  '2 front 3 back',
-  '2 front, 4 middle, 3 back (Sienna)'
+const List<Map<String, dynamic>> seatsArrangments = [
+  {'id': 1, 'name': '2 front, 4 back'},
+  {'id': 2, 'name': '2 front 3 back'},
+  {'id': 3, 'name': '2 front, 4 middle, 3 back (Sienna)'}
+];
+
+const String googleAPIKey = "AIzaSyC0jYPOwHBOu_NXoCaKD37XriOK8LL2bog";
+
+const List<String> authPages = [
+  "/getstarted",
+  "/login",
+  "/sign-up",
+  "/create-account",
+  "/verify-otp",
+];
+const List<String> allowedPages = [
+  "/profile",
+  "/wallet",
+  "/bus-stop",
+  "/rides",
+  "/ride-history",
+  "/notification",
+  "/referral",
+  "/documents",
+  "/become-driver",
+  "/help-center",
+  "/settings",
+  "/about",
+  "/upload-document",
+  "/enable-location",
+  "/trip",
+  "/cancel-trip",
+  "/withdraw-fund",
+  "/fund-wallet",
+  "/payment-webview",
+  "/verify-payment",
+  "/chat",
+  "/rating",
+  "/vehicles",
+  "/create-vehicle",
+  "/seat-info",
+  "/edit-vehicle",
+  "/transactions",
 ];

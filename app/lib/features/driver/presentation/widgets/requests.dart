@@ -7,9 +7,9 @@ import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/widgets/taxi_along_error_widget.dart';
 import 'package:taxialong/core/widgets/taxi_along_loading.dart';
 import 'package:taxialong/core/widgets/taxi_along_route.dart';
-import 'package:taxialong/features/driver/domain/entities/trip_entity.dart';
-import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/request/request_bloc.dart';
 import 'package:taxialong/features/driver/presentation/widgets/ride_widget.dart';
+import 'package:taxialong/features/trips/domain/entities/trip_entity.dart';
 
 class Requests extends StatelessWidget {
   const Requests({super.key});
@@ -73,7 +73,7 @@ class Requests extends StatelessWidget {
           ),
         ),
         Gap(16.h),
-        BlocBuilder<DriverHomeBloc, DriverHomeState>(
+        BlocBuilder<RequestBloc, RequestState>(
           buildWhen: (pre, state) {
             return state is RequestLoading ||
                 state is RequestLoaded ||

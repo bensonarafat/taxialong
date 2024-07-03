@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -7,15 +8,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
-import 'package:taxialong/features/driver/domain/entities/driver_entity.dart';
-import 'package:taxialong/features/driver/domain/entities/go_online_entity.dart';
-import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/online/online_bloc.dart';
 
 class DriverFlexibleSpace extends StatefulWidget {
-  final Function action;
+  final ValueChanged<bool> onChange;
+  final int online;
   const DriverFlexibleSpace({
     super.key,
-    required this.action,
+    required this.onChange,
+    required this.online,
   });
 
   @override
@@ -23,12 +24,17 @@ class DriverFlexibleSpace extends StatefulWidget {
 }
 
 class _DriverFlexibleSpaceState extends State<DriverFlexibleSpace> {
-  bool status = false;
+  bool selected = false;
 
-  void toggleStatus() {
-    widget.action();
+  @override
+  void initState() {
+    setSelected();
+    super.initState();
+  }
+
+  setSelected() {
     setState(() {
-      status = !status;
+      selected = widget.online == 1 ? true : false;
     });
   }
 
@@ -71,88 +77,69 @@ class _DriverFlexibleSpaceState extends State<DriverFlexibleSpace> {
                       ),
                     ),
                     Gap(278.w),
-                    BlocConsumer<DriverHomeBloc, DriverHomeState>(
-                      listener: (context, state) {
-                        if (state is DriverHomeErrorState) {
-                          toast(state.message);
-                        }
-                        if (state is DriverHomeOnlineUpdated) {
-                          GoOnlineEntity goOnlineEntity = state.goOnlineEntity;
-                          if (!goOnlineEntity.status) {
-                            toast(goOnlineEntity.message);
-                          } else {
-                            toggleStatus();
-                          }
-                        }
-                      },
-                      builder: (context, state) {
-                        if (state is DriverHomeFetchState) {
-                          DriverEntity driverEntity = state.driverEntity;
-                          status = driverEntity.online == "1" ? true : false;
-                        }
-                        return Expanded(
-                          child: Column(
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              context.read<OnlineBloc>().add(GoOnlineEvent());
+                              setState(() {
+                                selected = !selected;
+                              });
+                              widget.onChange(selected);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 2.w,
+                                vertical: 10.h,
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              decoration: const BoxDecoration(),
+                              child: selected
+                                  ? SvgPicture.asset(
+                                      toggleOn,
+                                      width: 36.67.w,
+                                      height: 20.h,
+                                    )
+                                  : SvgPicture.asset(
+                                      toggleOff,
+                                      width: 36.67.w,
+                                      height: 20.h,
+                                    ),
+                            ),
+                          ),
+                          Row(
                             mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  context
-                                      .read<DriverHomeBloc>()
-                                      .add(DriverHomeGoOnlineEvent());
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 2.w,
-                                    vertical: 10.h,
-                                  ),
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(),
-                                  child: status
-                                      ? SvgPicture.asset(
-                                          toggleOn,
-                                          width: 36.67.w,
-                                          height: 20.h,
-                                        )
-                                      : SvgPicture.asset(
-                                          toggleOff,
-                                          width: 36.67.w,
-                                          height: 20.h,
-                                        ),
-                                ),
+                              Icon(
+                                Icons.circle,
+                                size: 8,
+                                color: selected
+                                    ? const Color(0xff18C161)
+                                    : const Color(0xffA0A2A9),
                               ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 8,
-                                    color: status
-                                        ? const Color(0xff18C161)
-                                        : const Color(0xffA0A2A9),
-                                  ),
-                                  Gap(4.w),
-                                  Expanded(
-                                    child: SizedBox(
-                                      child: Text(
-                                        status ? 'Online' : 'Offline',
-                                        style: GoogleFonts.robotoFlex(
-                                          color: const Color(0xFFA0A2A9),
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
+                              Gap(4.w),
+                              Expanded(
+                                child: SizedBox(
+                                  child: Text(
+                                    selected ? 'Online' : 'Offline',
+                                    style: GoogleFonts.robotoFlex(
+                                      color: const Color(0xFFA0A2A9),
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             ],
                           ),
-                        );
-                      },
+                        ],
+                      ),
                     ),
                   ],
                 ),

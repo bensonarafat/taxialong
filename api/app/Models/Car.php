@@ -11,12 +11,15 @@ class Car extends Model
 
     protected $fillable = [
         'user_id',
-        'seats',
+        'seatId',
         'color',
         'plate_number',
         'model',
         'status',
         'default',
         'driver_id',
+        'seats',
+        'total',
+        'classes',
     ];
 }

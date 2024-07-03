@@ -71,7 +71,7 @@ class _ProfileState extends State<Profile> {
       lastnameController.text = lastname;
       emailController.text = email;
       telephoneController.text = extractPhoneNumber(telephone);
-      rating = usermodel == null ? 0 : int.parse(usermodel.rating);
+      rating = usermodel == null ? 0 : usermodel.rating;
     });
   }
 
@@ -130,11 +130,10 @@ class _ProfileState extends State<Profile> {
                                 ),
                               )
                             : TaxiAlongCachedNetworkImage(
-                                path: avatar,
-                                width: 129,
-                                height: 131,
+                                url: avatar,
+                                width: 129.w,
+                                height: 131.h,
                                 fit: BoxFit.fill,
-                                shape: const OvalBorder(),
                               ),
                       ),
                       Builder(builder: (context) {

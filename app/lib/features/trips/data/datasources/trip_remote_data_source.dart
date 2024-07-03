@@ -32,7 +32,7 @@ class TripRemoteDataSourceImpl implements TripRemoteDataSource {
     if (response.statusCode == 200) {
       var data = response.data;
 
-      return TripModel.fromJson(data);
+      return TripModel.fromJson(data['data']);
     } else {
       throw ServerException();
     }

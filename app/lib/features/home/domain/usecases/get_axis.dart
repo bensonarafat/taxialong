@@ -16,8 +16,8 @@ class GetAxisUseCase extends UseCase<List<AxisEntity>, PositionParams> {
 }
 
 class PositionParams extends Equatable {
-  final String? latitude;
-  final String? longitude;
+  final double? latitude;
+  final double? longitude;
   const PositionParams({
     required this.latitude,
     required this.longitude,

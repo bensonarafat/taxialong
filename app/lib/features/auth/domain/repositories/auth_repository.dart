@@ -4,6 +4,7 @@ import 'package:taxialong/features/auth/domain/entities/auth_entity.dart';
 import 'package:taxialong/features/auth/domain/entities/logout_entity.dart';
 import 'package:taxialong/features/auth/domain/entities/otp_entity.dart';
 import 'package:taxialong/features/auth/domain/entities/telephone_entity.dart';
+import 'package:taxialong/features/auth/domain/entities/verify_auth_entity.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, OTPEntity>> verifyOTP({required params});
@@ -11,4 +12,5 @@ abstract class AuthRepository {
   Future<Either<Failure, AuthEntity>> createAccount({required params});
   Future<Either<Failure, AuthEntity>> authUser({required params});
   Future<Either<Failure, LogoutEntity>> logout();
+  Future<Either<Failure, VerifyAuthEntity>> verifyAuth();
 }

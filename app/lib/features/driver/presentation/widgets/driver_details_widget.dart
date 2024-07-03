@@ -15,20 +15,25 @@ class DriverDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DriverHomeBloc, DriverHomeState>(
+      listenWhen: (prev, state) => state is DriverHomeErrorState,
+      buildWhen: (prev, state) =>
+          state is DriverHomeErrorState ||
+          state is DriverHomeLoadingState ||
+          state is DriverHomeFetchState,
       listener: (context, state) {
         if (state is DriverHomeErrorState) {
           toast(state.message);
         }
       },
       builder: (context, state) {
-        String? overallEarning;
-        String overallRides = '0';
-        String todayRides = '0';
+        double? overallEarning;
+        int overallRides = 0;
+        int todayRides = 0;
         if (state is DriverHomeErrorState) {
-          overallEarning = "---";
+          overallEarning = 0.00;
         }
         if (state is DriverHomeLoadingState) {
-          overallEarning = "--";
+          overallEarning = 0.00;
         }
         if (state is DriverHomeFetchState) {
           DriverEntity driverEntity = state.driverEntity;
@@ -37,7 +42,7 @@ class DriverDetailsWidget extends StatelessWidget {
           todayRides = driverEntity.todayRideCount;
         }
 
-        overallEarning = overallEarning ?? '0.00';
+        overallEarning = overallEarning ?? 0.00;
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           child: Row(
@@ -113,7 +118,7 @@ class DriverDetailsWidget extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: Text(
-                          overallRides,
+                          "$overallRides",
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -159,7 +164,7 @@ class DriverDetailsWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        todayRides,
+                        "$todayRides",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleLarge!.copyWith(
                               fontSize: 20.sp,

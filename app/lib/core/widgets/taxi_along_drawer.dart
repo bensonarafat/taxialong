@@ -48,11 +48,10 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
     setState(() {
       username = "${usermodel?.firstname} ${usermodel?.lastname}";
       avatar = "${usermodel?.avatar}";
-      rating = usermodel == null ? 0 : int.parse(usermodel.rating);
+      rating = usermodel == null ? 0 : usermodel.rating;
       role = usermodel == null ? 'rider' : usermodel.role;
       driverMode = role == "driver" ? true : false;
-      documentCount =
-          usermodel == null ? 0 : int.parse(usermodel.documentCount ?? '0');
+      documentCount = usermodel == null ? 0 : usermodel.documentCount ?? 0;
     });
   }
 
@@ -99,17 +98,10 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         TaxiAlongCachedNetworkImage(
-                          path: avatar,
+                          url: avatar,
                           width: 52,
                           fit: BoxFit.fill,
                           height: 52,
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              width: 1.w,
-                              color: const Color(0xFFA0A2A9),
-                            ),
-                            borderRadius: BorderRadius.circular(100.r),
-                          ),
                         ),
                         Gap(8.h),
                         Column(
@@ -135,7 +127,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                               children: [
                                 Icon(
                                   Icons.star,
-                                  color: const Color(0xffFEDA15),
+                                  color: ratingColor,
                                   size: 24.w,
                                 ),
                                 Gap(8.h),
@@ -175,7 +167,8 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                       style: Theme.of(context).listTileTheme.titleTextStyle,
                     ),
                     leading: SvgPicture.asset(
-                      carSVG,
+                      historyClockSVG,
+                      width: 26.w,
                       colorFilter: ColorFilter.mode(
                         Theme.of(context).brightness == Brightness.dark
                             ? white
@@ -226,7 +219,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                             ),
                           ),
                         )
-                      : Container(),
+                      : const SizedBox.shrink(),
 
                   driverMode
                       ? ListTile(
@@ -249,7 +242,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                             ),
                           ),
                         )
-                      : Container(),
+                      : const SizedBox.shrink(),
 
                   ListTile(
                     onTap: () async {
@@ -270,7 +263,28 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                       ),
                     ),
                   ),
-
+                  driverMode
+                      ? ListTile(
+                          onTap: () async {
+                            await context.push("/vehicles");
+                            drawerAction();
+                          },
+                          title: Text(
+                            "Manage Vehicles",
+                            style:
+                                Theme.of(context).listTileTheme.titleTextStyle,
+                          ),
+                          leading: SvgPicture.asset(
+                            carSVG,
+                            colorFilter: ColorFilter.mode(
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? white
+                                  : dark,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
                   driverMode
                       ? ListTile(
                           onTap: () async {
@@ -292,7 +306,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                             ),
                           ),
                         )
-                      : Container(),
+                      : const SizedBox.shrink(),
                   // if the document count is 4, that means they have complete their driver registration
                   // NOTE:: on the loading and switching to user type
                   documentCount == 4
@@ -345,7 +359,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                             );
                           }),
                         )
-                      : Container(),
+                      : const SizedBox.shrink(),
                   role == 'rider' && documentCount != 4
                       ? ListTile(
                           onTap: () async {
@@ -367,7 +381,7 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                             ),
                           ),
                         )
-                      : Container(),
+                      : const SizedBox.shrink(),
 
                   ListTile(
                     onTap: () async {
@@ -426,32 +440,20 @@ class _TaxiAlongDrawerState extends State<TaxiAlongDrawer> {
                     ),
                   ),
 
-                  BlocListener<AuthBloc, AuthState>(
-                    listener: (context, state) {
-                      if (state is AuthenticatedState) {
-                        if (!state.isLogin) {
-                          context.go("/getstarted");
-                        }
-                      }
-                      //error
-                      if (state is ErrorAuthState) {
-                        toast(state.message);
-                      }
+                  ListTile(
+                    onTap: () {
+                      context.read<AuthBloc>().add(AuthLogoutEvent());
+                      context.go("/");
                     },
-                    child: ListTile(
-                      onTap: () {
-                        context.read<AuthBloc>().add(LogoutEvent());
-                      },
-                      title: Text(
-                        'Logout',
-                        style: GoogleFonts.robotoFlex(
-                          color: primaryColor,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    title: Text(
+                      'Logout',
+                      style: GoogleFonts.robotoFlex(
+                        color: primaryColor,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500,
                       ),
-                      leading: SvgPicture.asset(logoutSVG),
                     ),
+                    leading: SvgPicture.asset(logoutSVG),
                   ),
                 ],
               )

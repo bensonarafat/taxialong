@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 
 class ProfileLogout extends StatelessWidget {
@@ -15,52 +14,42 @@ class ProfileLogout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthenticatedState) {
-          if (!state.isLogin) {
-            context.go("/getstarted");
-          }
-        }
-        //error
-        if (state is ErrorAuthState) {
-          toast(state.message);
-        }
+    return GestureDetector(
+      onTap: () {
+        context.read<AuthBloc>().add(AuthLogoutEvent());
+        context.go("/");
       },
-      child: GestureDetector(
-        onTap: () => context.read<AuthBloc>().add(LogoutEvent()),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              logoutSVG,
-              colorFilter: ColorFilter.mode(
-                Theme.of(context).brightness == Brightness.dark ? white : dark,
-                BlendMode.srcIn,
-              ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            logoutSVG,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).brightness == Brightness.dark ? white : dark,
+              BlendMode.srcIn,
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Sign Out',
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Sign Out',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

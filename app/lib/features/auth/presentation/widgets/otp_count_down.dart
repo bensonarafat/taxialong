@@ -5,8 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
-import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:taxialong/features/auth/presentation/bloc/countdown/countdown_cubit.dart';
+import 'package:taxialong/features/auth/presentation/bloc/login/login_bloc.dart';
 
 class OTPCountDown extends StatelessWidget {
   final String? telephone;
@@ -38,7 +38,7 @@ class OTPCountDown extends StatelessWidget {
             context.read<CountDownCubit>().restartCountDown();
             // resend the otp again
             context
-                .read<AuthBloc>()
+                .read<LoginBloc>()
                 .add(PhoneNumberEvent(telephone: telephone!));
           },
           child: Row(

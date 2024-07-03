@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Car;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Trip extends Model
 {
@@ -14,11 +15,12 @@ class Trip extends Model
     protected $fillable = [
         'rider_id',
         'driver_id',
+        'car_id',
         'pointa',
         'pointb',
         'payment_method',
         'amount',
-        'trip_class',
+        'ride_class',
         'seats',
         'reason',
     ];
@@ -27,6 +29,12 @@ class Trip extends Model
     public function driver() : HasOne
     {
         return $this->hasOne(User::class, 'id', "driver_id");
+    }
+
+
+    public function tripDriver() : HasOne
+    {
+        return $this->hasOne(Driver::class, 'user_id', "driver_id");
     }
 
     public function rider() : HasOne
@@ -51,5 +59,10 @@ class Trip extends Model
     public function pointb() : HasOne
     {
         return $this->hasOne(BusStop::class, "id", "pointb");
+    }
+
+    public function car() : HasOne
+    {
+        return $this->hasOne(Car::class, "id", "car_id");
     }
 }

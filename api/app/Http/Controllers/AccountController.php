@@ -120,7 +120,6 @@ class AccountController extends Controller
                     "pointa" => $request->pointa,
                     "pointb" => $request->pointb,
                     "payment_method" => $request->payment_method,
-                    "ride_class" => $request->ride_class,
                 ]);
                 return response()->json(["status" => true,  "message" => "Setting updated"]);
             } catch (Exception $e) {
@@ -134,7 +133,6 @@ class AccountController extends Controller
 
         public function getSettings(){
             $settings = RideSettings::where("user_id", auth()->user()->id)->first();
-            $settings->ride_class = json_decode($settings->ride_class);
             return response()->json(
                 [
                     "status" => true,

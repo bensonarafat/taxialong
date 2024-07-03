@@ -13,8 +13,8 @@ import 'package:taxialong/core/widgets/taxi_along_error_widget.dart';
 import 'package:taxialong/core/widgets/taxi_along_loading.dart';
 
 class DriverSelectTerminals extends StatefulWidget {
-  final String? pointa;
-  final String? pointb;
+  final int? pointa;
+  final int? pointb;
   final Function callbacka;
   final Function callbackb;
   const DriverSelectTerminals({
@@ -67,7 +67,7 @@ class _DriverSelectTerminalsState extends State<DriverSelectTerminals> {
       if (terminals != null) {
         if (widget.pointa != null) {
           final terminalEntity = terminals!.firstWhere(
-            (e) => e.id == int.parse(widget.pointa!),
+            (e) => e.id == widget.pointa,
             // orElse: () => terminals!.first,
           );
           setState(() {
@@ -81,7 +81,7 @@ class _DriverSelectTerminalsState extends State<DriverSelectTerminals> {
 
         if (widget.pointb != null) {
           final terminalEntity = terminals!.firstWhere(
-            (e) => e.id == int.parse(widget.pointb!),
+            (e) => e.id == widget.pointb,
             // orElse: () => terminals!.last,
           );
 

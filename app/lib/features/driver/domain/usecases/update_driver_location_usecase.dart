@@ -18,8 +18,8 @@ class UpdateDriverLocationUseCase
 }
 
 class LocationParams extends Equatable {
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
 
   const LocationParams({required this.latitude, required this.longitude});
   @override

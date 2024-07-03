@@ -21,6 +21,7 @@ class _RiderClassFilterState extends State<RiderClassFilter> {
   bool class3 = false;
   bool class4 = false;
   bool class5 = false;
+  bool class6 = false;
 
   selected(action, value) {
     if (!action) {
@@ -120,6 +121,13 @@ class _RiderClassFilterState extends State<RiderClassFilter> {
                         v: class5,
                         callback: selected,
                       ),
+                      Gap(8.w),
+                      TClass(
+                        nm: "6",
+                        name: "Class 6",
+                        v: class4,
+                        callback: selected,
+                      ),
                     ],
                   ),
                 ),
@@ -186,7 +194,7 @@ class _TClassState extends State<TClass> {
               width: 18.w,
               height: 18.h,
               decoration: const ShapeDecoration(
-                color: Color(0xFFFEDA15),
+                color: ratingColor,
                 shape: OvalBorder(),
               ),
             ),

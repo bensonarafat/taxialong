@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->foreignId("user_id")->constrained("users")->onDelete('cascade');
-            $table->string("seats");
+            $table->integer("seatId")->default(1);
             $table->string("color");
             $table->string("plate_number");
             $table->string("model");

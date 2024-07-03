@@ -19,8 +19,8 @@ class MapLoadedState extends MapState {
 }
 
 class MapCurrentPositionState extends MapState {
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
 
   MapCurrentPositionState({required this.latitude, required this.longitude});
   @override
@@ -28,9 +28,9 @@ class MapCurrentPositionState extends MapState {
 }
 
 class DriverLocationUpdatedState extends MapState {
-  final String latitude;
-  final String longitude;
-  final List<Marker> markers;
+  final double latitude;
+  final double longitude;
+  final Set<Marker> markers;
 
   DriverLocationUpdatedState(
       {required this.latitude, required this.longitude, required this.markers});

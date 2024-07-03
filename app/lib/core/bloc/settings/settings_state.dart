@@ -57,9 +57,29 @@ class SettingsUpdatedState extends SettingsState {
 
 class FilterRideState extends SettingsState {
   final List<dynamic>? rideClass;
-  final String? seat;
 
-  FilterRideState({required this.rideClass, required this.seat});
+  FilterRideState({required this.rideClass});
   @override
-  List<Object?> get props => [seat, rideClass];
+  List<Object?> get props => [rideClass];
+}
+
+class SeatsLoadingState extends SettingsState {
+  @override
+  List<Object?> get props => [];
+}
+
+class SeatsLoadedState extends SettingsState {
+  final List<SeatsEntity> seats;
+  SeatsLoadedState({required this.seats});
+  @override
+  List<Object?> get props => [];
+}
+
+class SeatsErrorState extends SettingsState {
+  final String message;
+
+  SeatsErrorState({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }

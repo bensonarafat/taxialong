@@ -5,17 +5,22 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/services/get_it_services.dart';
-import 'package:taxialong/core/utils/colors.dart';
 import 'package:taxialong/core/utils/helpers.dart';
-import 'package:taxialong/core/widgets/taxi_along_loading.dart';
+import 'package:taxialong/core/widgets/taxi_along_button.dart';
 import 'package:taxialong/features/documents/presentation/bloc/document_bloc.dart';
 import 'package:taxialong/features/documents/presentation/widgets/driver_licence.dart';
 import 'package:taxialong/features/documents/presentation/widgets/national_id.dart';
 import 'package:taxialong/features/documents/presentation/widgets/union_id.dart';
 
-class UploadDocuments extends StatelessWidget {
+class UploadDocuments extends StatefulWidget {
   const UploadDocuments({super.key});
 
+  @override
+  State<UploadDocuments> createState() => _UploadDocumentsState();
+}
+
+class _UploadDocumentsState extends State<UploadDocuments> {
+  int uploadedCount = 0;
   @override
   Widget build(BuildContext context) {
     return BlocProvider<DocumentBloc>(
@@ -23,7 +28,7 @@ class UploadDocuments extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            'My Document',
+            'Upload Document',
           ),
           leading: GestureDetector(
             onTap: () {
@@ -45,11 +50,23 @@ class UploadDocuments extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Column(
                   children: [
-                    const DriversLicence(),
+                    DriversLicence(
+                      callback: () {
+                        uploadedCount++;
+                      },
+                    ),
                     Gap(16.h),
-                    const NationalId(),
+                    NationalId(
+                      callback: () {
+                        uploadedCount++;
+                      },
+                    ),
                     Gap(16.h),
-                    const UnionID(),
+                    UnionID(
+                      callback: () {
+                        uploadedCount++;
+                      },
+                    ),
                     Gap(16.h),
                     Align(
                       alignment: Alignment.topLeft,
@@ -67,56 +84,46 @@ class UploadDocuments extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: BlocConsumer<DocumentBloc, DocumentState>(
-                  listener: (context, state) {
-                    if (state is DocumentErrorState) {
-                      toast(state.message);
-                    }
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 16.h),
+                  child: BlocConsumer<DocumentBloc, DocumentState>(
+                    listener: (context, state) {
+                      if (state is DocumentErrorState) {
+                        toast(state.message);
+                      }
 
-                    if (state is DocumentUploadedState) {
-                      context.push("/create-vehicle");
-                    }
-                  },
-                  builder: (context, state) {
-                    return GestureDetector(
-                      onTap: () {
-                        context
-                            .read<DocumentBloc>()
-                            .add(DocumentUploadCompleteEvent());
-                      },
-                      child: Container(
-                        width: 254.w,
-                        height: 42.h,
-                        margin: EdgeInsets.only(bottom: 34.h),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 4.h),
-                        decoration: ShapeDecoration(
-                          color: primaryColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            state is DocumentLoadingState
-                                ? const TaxiAlongLoading()
-                                : Text(
-                                    'Next',
-                                    style: GoogleFonts.robotoFlex(
-                                      color: white,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                      if (state is DocumentUploadedState) {
+                        context.push(
+                          "/create-vehicle",
+                          extra: "home",
+                        ); // redirect to home
+                      }
+                    },
+                    builder: (context, state) {
+                      bool isLoading = false;
+                      if (state is DocumentLoadingState) {
+                        isLoading = true;
+                      } else {
+                        isLoading = false;
+                      }
+
+                      return TaxiAlongButton(
+                        loading: isLoading,
+                        onPressed: () {
+                          if (uploadedCount >= 3) {
+                            context
+                                .read<DocumentBloc>()
+                                .add(DocumentUploadCompleteEvent());
+                          } else {
+                            toast("You need to upload all three documents");
+                          }
+                        },
+                        buttonText: "Next",
+                      );
+                    },
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),

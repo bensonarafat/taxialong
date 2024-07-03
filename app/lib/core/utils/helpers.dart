@@ -16,6 +16,8 @@ import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/error/failure.dart';
 import 'package:taxialong/core/services/local_storage.dart';
 import 'package:taxialong/core/utils/colors.dart';
+import 'package:taxialong/features/auth/domain/entities/verify_auth_entity.dart';
+import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 double getCollapseOpacity(context) {
@@ -42,11 +44,11 @@ showEnableLocation(BuildContext context) async {
   if (islocationSet == true) {
     Position position = await enableGeoLocation();
     // subscribe to
-
     context.read<MapBloc>().add(
           MapUpdateCurrentPostionEvent(
-              latitude: position.latitude.toString(),
-              longitude: position.longitude.toString()),
+            latitude: position.latitude,
+            longitude: position.longitude,
+          ),
         );
     localStorage.setGeoLocation();
   } else {
@@ -85,8 +87,7 @@ showEnableLocation(BuildContext context) async {
 
               // subscribe to
               context.read<MapBloc>().add(MapUpdateCurrentPostionEvent(
-                  latitude: position.latitude.toString(),
-                  longitude: position.longitude.toString()));
+                  latitude: position.latitude, longitude: position.longitude));
               localStorage.setGeoLocation();
             },
             child: Container(
@@ -196,14 +197,27 @@ String extractPhoneNumber(String fullNumber) {
   }
 }
 
+AuthenticationStatus mapAuthType(VerifyAuthEntity verifyAuthEntity) {
+  if (verifyAuthEntity.status) {
+    if (verifyAuthEntity.isDriver != null &&
+        verifyAuthEntity.isDriver == true) {
+      return AuthenticationStatus.authenticatedDriver;
+    }
+    if (verifyAuthEntity.isTrip != null && verifyAuthEntity.isTrip == true) {
+      return AuthenticationStatus.authenticatedTrip;
+    }
+    return AuthenticationStatus.authenticated;
+  } else {
+    return AuthenticationStatus.unauthenticated;
+  }
+}
+
 String mapFailureToMessage(Failure failure) {
   switch (failure.runtimeType) {
     case ServerFailure:
-      return 'There was a server error!';
     case CacheFailure:
-      return 'Cache Failure';
     case NetworkFailure:
-      return 'Network error, check your internet connection';
+      return failure.message;
     default:
       return "Unexpected Error , Please try again later .";
   }
@@ -216,8 +230,15 @@ Future<BitmapDescriptor> createMarkerIcon() async {
   return customMarker;
 }
 
-List<Map<String, dynamic>> addToClass({
-  required List<Map<String, dynamic>>? rideClass,
+Future<BitmapDescriptor> createBusStopIcon() async {
+  // make sure to initialize before map loading
+  BitmapDescriptor customMarker = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(82, 82)), busStopMarker);
+  return customMarker;
+}
+
+List<dynamic> addToClass({
+  required List<dynamic>? rideClass,
   required String value,
 }) {
   if (rideClass != null) {
@@ -250,8 +271,8 @@ List<Map<String, dynamic>> addToClass({
   return rideClass;
 }
 
-List<Map<String, dynamic>> removeToClass({
-  required List<Map<String, dynamic>>? rideClass,
+List<dynamic> removeToClass({
+  required List<dynamic>? rideClass,
   required String value,
 }) {
   if (rideClass == null) {
@@ -316,4 +337,13 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 
 double _toRadians(double degrees) {
   return degrees * pi / 180;
+}
+
+List<dynamic>? joinDriver(List<dynamic>? seats) {
+  // add driver seat
+  Map<String, dynamic> driver = {"seat": 0, "row": 1, "status": "unavailable"};
+  if (seats != null) {
+    seats.insert(0, driver);
+  }
+  return seats;
 }

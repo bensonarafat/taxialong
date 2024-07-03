@@ -25,8 +25,6 @@ class SaveSettingsActionButton extends StatelessWidget {
           toast("Your starting location is required");
         } else if (params.pointb == null) {
           toast("Your ending location is required");
-        } else if (params.selectedClass == null) {
-          toast("You need to select at least one class type");
         } else if (params.paymentMethod.isEmpty) {
           toast("Oops, there must be an error");
         } else {
@@ -34,7 +32,6 @@ class SaveSettingsActionButton extends StatelessWidget {
                 UpdateSettingsEvent(
                   pointa: params.pointa,
                   pointb: params.pointb,
-                  selectedClass: params.selectedClass,
                   paymentMethod: params.paymentMethod,
                 ),
               );

@@ -1,9 +1,12 @@
+import 'package:taxialong/core/domain/entities/settings_entity.dart';
+
 class LocationEntity {
   final int id;
-  final String userId;
-  final String online;
-  final String latitude;
-  final String longitude;
+  final int userId;
+  final int online;
+  final double? latitude;
+  final double? longitude;
+  final SettingsEntity? settings;
 
   LocationEntity({
     required this.id,
@@ -11,5 +14,6 @@ class LocationEntity {
     required this.online,
     required this.latitude,
     required this.longitude,
+    required this.settings,
   });
 }

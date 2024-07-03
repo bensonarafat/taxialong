@@ -88,12 +88,12 @@ class _WalletAvailableBalanceState extends State<WalletAvailableBalance> {
             ),
             child: TextButton(
               style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
-                backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+                backgroundColor: WidgetStateProperty.all<Color>(primaryColor),
               ),
               onPressed: () => context
                   .push("/fund-wallet")

@@ -10,8 +10,10 @@ import 'package:taxialong/features/documents/presentation/widgets/upload_bottom_
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class UnionID extends StatelessWidget {
+  final Function? callback;
   const UnionID({
     super.key,
+    this.callback,
   });
 
   @override
@@ -85,7 +87,8 @@ class UnionID extends StatelessWidget {
             BlocBuilder<DocumentBloc, DocumentState>(
               buildWhen: (previousState, state) {
                 return state is UnionIDLoadingState ||
-                    state is UnionIDLoadedState;
+                    state is UnionIDLoadedState ||
+                    state is DocumentErrorState;
               },
               builder: (context, state) {
                 if (state is UnionIDLoadingState) {
@@ -101,6 +104,7 @@ class UnionID extends StatelessWidget {
                     child: const TaxiAlongLoading(),
                   );
                 } else if (state is UnionIDLoadedState) {
+                  callback!();
                   return Container(
                     width: 40.w,
                     height: 40.h,

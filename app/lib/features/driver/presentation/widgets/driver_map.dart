@@ -7,8 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxialong/core/bloc/map/map_bloc.dart';
 import 'package:taxialong/core/constants/constants.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/core/widgets/taxi_along_loading.dart';
-import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
+
+import 'package:taxialong/features/driver/presentation/bloc/location/location_bloc.dart';
 
 class DriverMap extends StatefulWidget {
   const DriverMap({
@@ -45,58 +45,48 @@ class _DriverMapState extends State<DriverMap> {
       ),
       child: Stack(
         children: [
-          BlocBuilder<DriverHomeBloc, DriverHomeState>(
+          BlocBuilder<LocationBloc, LocationState>(
             buildWhen: (previous, state) {
-              return state is DriverHomePositionUpdatedState ||
-                  state is DriverHomeLoadingState;
+              return state is LocationPositionUpdatedState ||
+                  state is LocationLoadingState;
             },
             builder: (context, state) {
-              if (state is DriverHomePositionUpdatedState) {
-                CameraPosition position = CameraPosition(
+              late CameraPosition cameraPosition;
+              Set<Marker> markers = const <Marker>{};
+              if (state is LocationPositionUpdatedState) {
+                markers = Set<Marker>.of(state.markers);
+                cameraPosition = CameraPosition(
                   target: LatLng(
-                    double.parse(state.latitude),
-                    double.parse(state.longitude),
+                    state.latitude,
+                    state.longitude,
                   ),
                   zoom: googleMapZoomLevel,
                 );
-
-                return GoogleMap(
-                  markers: Set<Marker>.of(state.markers),
-                  initialCameraPosition: position,
-                  zoomControlsEnabled: false,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                );
-              } else if (state is DriverHomeLoadingState) {
-                return Center(
-                  child: TaxiAlongLoading(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? white
-                        : dark,
-                  ),
-                );
               } else {
-                CameraPosition position = const CameraPosition(
+                cameraPosition = const CameraPosition(
                   target: defaultLatLng,
                   zoom: googleMapZoomLevel,
                 );
-                return GoogleMap(
-                  initialCameraPosition: position,
-                  zoomControlsEnabled: false,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                );
               }
+
+              goToLocation(cameraPosition);
+              return GoogleMap(
+                markers: markers,
+                initialCameraPosition: cameraPosition,
+                zoomControlsEnabled: false,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              );
             },
           ),
           Positioned(
             bottom: 0,
             right: 0,
             child: GestureDetector(
-              onTap: () =>
-                  context.read<MapBloc>().add(MapCurrentPositionEvent()),
+              onTap: () {
+                context.read<MapBloc>().add(MapCurrentPositionEvent());
+              },
               child: Container(
                 margin: EdgeInsets.only(
                   right: 11.w,
@@ -118,5 +108,11 @@ class _DriverMapState extends State<DriverMap> {
         ],
       ),
     );
+  }
+
+  Future<void> goToLocation(CameraPosition cameraPosition) async {
+    final GoogleMapController controller = await _controller.future;
+    await controller
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 }

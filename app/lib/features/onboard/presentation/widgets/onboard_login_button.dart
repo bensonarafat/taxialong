@@ -17,7 +17,7 @@ class OnBoardLoginButton extends StatelessWidget {
       height: 42.h,
       child: TextButton(
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
               side: BorderSide(

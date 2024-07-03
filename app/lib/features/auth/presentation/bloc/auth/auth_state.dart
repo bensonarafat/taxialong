@@ -1,70 +1,10 @@
 part of 'auth_bloc.dart';
 
 @immutable
-abstract class AuthState extends Equatable {
-  final bool isLogin;
-  const AuthState(this.isLogin);
+class AuthState extends Equatable {
+  final AuthenticationStatus status;
+
+  const AuthState(this.status);
   @override
-  List<Object> get props => [];
-}
-
-class AuthInitial extends AuthState {
-  const AuthInitial() : super(false);
-}
-
-class AuthLoadingState extends AuthState {
-  const AuthLoadingState() : super(false);
-}
-
-class LoginState extends AuthState {
-  final AuthEntity authEntity;
-  const LoginState({
-    required this.authEntity,
-  }) : super(false);
-
-  @override
-  List<Object> get props => [authEntity];
-}
-
-class PhoneNumberState extends AuthState {
-  final TelephoneEntity telephoneEntity;
-
-  const PhoneNumberState({
-    required this.telephoneEntity,
-  }) : super(false);
-
-  @override
-  List<Object> get props => [telephoneEntity];
-}
-
-class VerifyOTPState extends AuthState {
-  final OTPEntity otpEntity;
-
-  const VerifyOTPState({required this.otpEntity}) : super(false);
-
-  @override
-  List<Object> get props => [otpEntity];
-}
-
-class CreateAccountState extends AuthState {
-  final AuthEntity authEntity;
-
-  const CreateAccountState({required this.authEntity}) : super(false);
-  @override
-  List<Object> get props => [authEntity];
-}
-
-class LogoutState extends AuthState {
-  const LogoutState(super.isLogin);
-}
-
-class ErrorAuthState extends AuthState {
-  final String message;
-  const ErrorAuthState({required this.message}) : super(false);
-  @override
-  List<Object> get props => [message];
-}
-
-class AuthenticatedState extends AuthState {
-  const AuthenticatedState(bool isLogin) : super(isLogin);
+  List<Object> get props => [status];
 }

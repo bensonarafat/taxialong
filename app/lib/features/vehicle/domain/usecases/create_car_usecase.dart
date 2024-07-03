@@ -20,13 +20,16 @@ class CarParams extends Equatable {
   final String model;
   final String plateNumber;
   final String color;
-  final String seats;
+  final int seatId;
+  final List<dynamic> classes;
 
-  const CarParams(
-      {required this.model,
-      required this.plateNumber,
-      required this.color,
-      required this.seats});
+  const CarParams({
+    required this.model,
+    required this.plateNumber,
+    required this.color,
+    required this.seatId,
+    required this.classes,
+  });
   @override
-  List<Object?> get props => [model, plateNumber, color, seats];
+  List<Object?> get props => [model, plateNumber, color, seatId, classes];
 }

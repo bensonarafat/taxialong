@@ -56,7 +56,7 @@ class TaxiAlongPaymentSuccessPage extends StatelessWidget {
               height: 60.h,
               child: TextButton(
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.r),
                         side: const BorderSide(
@@ -65,7 +65,7 @@ class TaxiAlongPaymentSuccessPage extends StatelessWidget {
                       ),
                     ),
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(primaryColor),
+                        WidgetStateProperty.all<Color>(primaryColor),
                   ),
                   child: Text(
                     "Go to Wallet",

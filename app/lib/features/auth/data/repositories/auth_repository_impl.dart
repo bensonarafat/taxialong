@@ -9,6 +9,7 @@ import 'package:taxialong/features/auth/data/models/auth_model.dart';
 import 'package:taxialong/features/auth/data/models/logout_model.dart';
 import 'package:taxialong/features/auth/data/models/telephone_model.dart';
 import 'package:taxialong/core/data/models/user_model.dart';
+import 'package:taxialong/features/auth/data/models/verify_auth_model.dart';
 import 'package:taxialong/features/auth/data/models/verify_otp_model.dart';
 import 'package:taxialong/features/auth/domain/repositories/auth_repository.dart';
 
@@ -33,12 +34,10 @@ class AuthRepositoryImpl implements AuthRepository {
         AuthModel authModel =
             await remoteDataSource.createAccount(params: params);
         // if status true store Bear token
-
         if (authModel.status) {
-          secureStorage.saveToken(authModel.token);
+          await secureStorage.saveToken(authModel.token);
           // get data and save to device
           UserModel userModel = await userDataSource.getUserData();
-
           secureStorage.saveUserData(userModel);
         } else {
           return Left(ServerFailure(message: 'Failed! Try again'));
@@ -109,25 +108,41 @@ class AuthRepositoryImpl implements AuthRepository {
     if (await networkInfo.isConnected) {
       try {
         AuthModel authModel = await remoteDataSource.authUser(params: params);
+
         // if status true store Bear token
         if (authModel.status) {
-          secureStorage.saveToken(authModel.token);
+          await secureStorage.saveToken(authModel.token);
           // get data and save to device
 
           UserModel userModel = await userDataSource.getUserData();
-
-          secureStorage.saveUserData(userModel);
+          await secureStorage.saveUserData(userModel);
         } else {
           return Left(
               ServerFailure(message: "Sorry, you cant't login at the moment"));
         }
         return Right(authModel);
       } catch (_) {
-        return Left(ServerFailure(message: 'Failed! Try again'));
+        return Left(
+            ServerFailure(message: 'Failed! Try again ${_.toString()}'));
       }
     } else {
       return Left(
           NetworkFailure(message: 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, VerifyAuthModel>> verifyAuth() async {
+    if (await networkInfo.isConnected) {
+      try {
+        VerifyAuthModel logoutModel = await remoteDataSource.verifyAuthModel();
+        return Right(logoutModel);
+      } catch (_) {
+        return Left(ServerFailure(message: "Failed! Try again"));
+      }
+    } else {
+      return Left(
+          NetworkFailure(message: "Please check your internect connection"));
     }
   }
 }

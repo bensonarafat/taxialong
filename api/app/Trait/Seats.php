@@ -1,22 +1,23 @@
 <?php
 namespace App\Trait;
 
-use App\Models\Driver;
+use App\Models\Car;
+use Illuminate\Support\Facades\Log;
 
 trait Seats {
     public function makeSeatUnavailable(int $driverId, string $seats) : bool {
-        $driver = Driver::where("user_id",$driverId)->first();
-        $driverSeats = json_decode($driver->seats, true);
+        $car = Car::where("driver_id",$driverId)->first();
+        $carSeats = json_decode($car->seats, true);
         $selectedSeats = json_decode($seats, true);
-        if($this->numberOfAvailableSeats($driverSeats) == 0) return false;
+        if($this->numberOfAvailableSeats($carSeats) == 0) return false;
         $updatedSeats = array_map(function (array $seat) use ($selectedSeats) {
             if(in_array($seat['seat'], $selectedSeats)){
                 $seat['status'] = "unavailable";
             }
             return $seat;
-        }, $driverSeats );
-        $driver->seats = $updatedSeats;
-        $driver->save();
+        }, $carSeats );
+        $car->seats = $updatedSeats;
+        $car->save();
         return true;
     }
 
@@ -30,16 +31,16 @@ trait Seats {
     public function dropSeats($trip) : void
     {
         $seats = json_decode($trip->seats, true);
-        $driver = Driver::where("user_id",$trip->driver_id)->first();
-        $driverSeats = json_decode($driver->seats,true);
+        $car = Car::where("user_id",$trip->driver_id)->first();
+        $carSeats = json_decode($car->seats,true);
         $updatedSeats =  array_map(function(array $driverSeat) use ($seats) {
             if(in_array($driverSeat['seat'], $seats)){
                 $driverSeat['status'] = "available";
             }
             return $driverSeat;
-        }, $driverSeats);
-        $driver->seats = json_encode($updatedSeats);
-        $driver->save();
+        }, $carSeats);
+        $car->seats = json_encode($updatedSeats);
+        $car->save();
     }
 }
 ?>

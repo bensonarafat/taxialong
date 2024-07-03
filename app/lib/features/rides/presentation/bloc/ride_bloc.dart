@@ -26,11 +26,10 @@ class RideBloc extends Bloc<RideEvent, RideState> {
           Position position = await Geolocator.getCurrentPosition();
           final failureOrRideEvent = await getRidesUseCase(
             RideParams(
-              latitude: position.latitude.toString(),
-              longitude: position.longitude.toString(),
+              latitude: position.latitude,
+              longitude: position.longitude,
               pointb: event.pointb,
               rideClass: event.rideClass,
-              seat: event.seat,
             ),
           );
 
@@ -45,13 +44,13 @@ class RideBloc extends Bloc<RideEvent, RideState> {
         emit(RideBookLoadingState());
         final failureOrRideEvent = await confirmRideUseCase(
           ConfirmRideParams(
-            amount: event.amount,
-            paymentMethod: event.paymentMethod,
-            driverId: event.driverId,
             seats: event.seats,
+            rideClass: event.rideClass,
+            driverId: event.driverId,
             pointa: event.pointa,
             pointb: event.pointb,
-            tripClass: event.tripClass,
+            paymentMethod: event.paymentMethod,
+            carId: event.carId,
           ),
         );
 

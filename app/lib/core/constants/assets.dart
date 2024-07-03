@@ -68,6 +68,8 @@ const darkModeIcon = "assets/images/dark_mode.png";
 
 const carSVG = "assets/images/svg/car.svg";
 
+const historyClockSVG = "assets/images/svg/history-clock.svg";
+
 const profileSVG = "assets/images/svg/profile.svg";
 
 const paymentSVG = "assets/images/svg/payment.svg";
@@ -133,5 +135,7 @@ const sortSVG = "assets/images/svg/sort.svg";
 const rideSettings = "assets/images/svg/ride-settings.svg";
 
 const driverLocation = "assets/images/marker.png";
+
+const busStopMarker = "assets/images/bus-stops.png";
 
 const personMode = "assets/images/svg/person_mode.svg";

@@ -1,11 +1,14 @@
+import 'package:taxialong/features/rides/domain/entities/point_entity.dart';
+
 class SettingsEntity {
   final int id;
-  final String userId;
-  final String? driverId;
-  final String? pointa;
-  final String? pointb;
-  final List<Map<String, dynamic>>? rideclass;
+  final int userId;
+  final int? driverId;
+  final int? pointa;
+  final int? pointb;
   final String paymentMethod;
+  final PointEntity? origin;
+  final PointEntity? destination;
 
   SettingsEntity({
     required this.id,
@@ -13,7 +16,8 @@ class SettingsEntity {
     required this.driverId,
     required this.pointa,
     required this.pointb,
-    required this.rideclass,
     required this.paymentMethod,
+    required this.destination,
+    required this.origin,
   });
 }

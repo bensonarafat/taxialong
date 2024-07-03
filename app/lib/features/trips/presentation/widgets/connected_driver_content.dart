@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -9,19 +10,19 @@ import 'package:taxialong/core/utils/extensions.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
 import 'package:taxialong/core/widgets/taxi_along_route.dart';
-import 'package:taxialong/features/rides/domain/entities/confirm_ride_entity.dart';
+
 import 'package:taxialong/features/rides/domain/entities/driver_entity.dart';
-import 'package:taxialong/features/rides/domain/entities/trip_entity.dart';
+import 'package:taxialong/features/trips/domain/entities/trip_entity.dart';
 import 'package:taxialong/features/trips/presentation/widgets/custom_dragging_handle.dart';
 import 'package:taxialong/features/trips/presentation/widgets/driver_details.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ConnectedDriverContent extends StatefulWidget {
-  final ConfirmRideEntity ridedetails;
+  final TripEntity trip;
   final MapState state;
   const ConnectedDriverContent({
     super.key,
-    required this.ridedetails,
+    required this.trip,
     required this.state,
   });
 
@@ -34,8 +35,9 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
   late TripEntity trip;
   @override
   void initState() {
-    driver = widget.ridedetails.trip!.driver;
-    trip = widget.ridedetails.trip!;
+    trip = widget.trip;
+    driver = trip.driver!;
+
     super.initState();
   }
 
@@ -51,8 +53,8 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
           150.0.h,
         ),
         child: DriverDetails(
-          driver: widget.ridedetails.trip!.driver,
-          reviews: widget.ridedetails.trip!.reviews,
+          driver: trip.driver!,
+          reviews: trip.reviews!,
         ),
       ),
     );
@@ -87,7 +89,7 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                     child: Text(
                       widget.state is TripOnGoingState
                           ? 'Ongoing.....'
-                          : 'You have been connected to your driver',
+                          : 'Your seat(s) has been reservered',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
@@ -108,7 +110,7 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'ABC12345',
+                          trip.car.plateNumber,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
@@ -153,20 +155,56 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          TaxiAlongCachedNetworkImage(
-                            path: driver.avatar,
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.fill,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                width: 1,
-                                color: primaryColor,
+                          Stack(
+                            children: [
+                              TaxiAlongCachedNetworkImage(
+                                url: driver.avatar,
+                                width: 65.w,
+                                height: 65.h,
+                                fit: BoxFit.contain,
                               ),
-                              borderRadius: BorderRadius.circular(100.r),
-                            ),
+                              Positioned(
+                                bottom: 0,
+                                child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    width: 65.w,
+                                    decoration: const BoxDecoration(
+                                      color: dark,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(25),
+                                        bottomRight: Radius.circular(25),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          CupertinoIcons.star_fill,
+                                          color: ratingColor,
+                                          size: 12,
+                                        ),
+                                        Gap(2.w),
+                                        Text(
+                                          "${driver.rating}.0",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall
+                                              ?.copyWith(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: white,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Gap(35.w),
+                          Gap(5.w),
                           Expanded(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -177,51 +215,55 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                                   child: Text(
                                     '${driver.firstname} ${driver.lastname}',
                                     maxLines: 1,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                                 ),
-                                Gap(3.h),
                                 Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    const Icon(
-                                      Icons.star,
-                                      color: Color(0xffFFC700),
+                                    Text(
+                                      "Car",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                     ),
                                     Gap(4.w),
-                                    SizedBox(
-                                      width: 32.w,
-                                      child: Text(
-                                        driver.rating,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium,
-                                      ),
+                                    Text(
+                                      trip.car.model,
+                                      maxLines: 1,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ),
-                          Gap(32.w),
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '10 min. away',
-                                  maxLines: 1,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
                                 Gap(4.h),
-                                Text(
-                                  '2, 5km',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Colour:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    Gap(4.w),
+                                    Text(
+                                      trip.car.color,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -254,9 +296,8 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                         ),
                         Gap(10.w),
                         GestureDetector(
-                          onTap: () {
-                            context.push("/chat");
-                          },
+                          onTap: () async =>
+                              uriLauncher('sms:${driver.telephone}'),
                           child: Container(
                             width: 36.w,
                             height: 36.h,
@@ -360,7 +401,7 @@ class _ConnectedDriverContentState extends State<ConnectedDriverContent> {
                           onTap: () {
                             context.push(
                               "/cancel-trip",
-                              extra: widget.ridedetails.trip,
+                              extra: trip,
                             );
                           },
                           child: Container(

@@ -38,8 +38,8 @@ class PusherBloc extends Bloc<PusherEvent, PusherState> {
           Map<String, dynamic> location = jsonDecode(locationString);
 
           add(PusherUpdateLocationEvent(
-            latitude: location['latitude'].toString(),
-            longitude: location['longitude'].toString(),
+            latitude: location['latitude'],
+            longitude: location['longitude'],
           ));
         },
         channelName: "driver-locations${event.driverId}");

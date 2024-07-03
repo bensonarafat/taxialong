@@ -11,6 +11,7 @@ import 'package:taxialong/core/data/datasources/remote_user_data_source.dart';
 import 'package:taxialong/core/data/datasources/setting_remote_datasource.dart';
 import 'package:taxialong/core/data/repositories/settings_repository_impl.dart';
 import 'package:taxialong/core/domain/repositories/settings_repository.dart';
+import 'package:taxialong/core/domain/usecases/get_seats_usecase.dart';
 import 'package:taxialong/core/domain/usecases/switch_account_usecase.dart';
 import 'package:taxialong/core/domain/usecases/update_settings_usecase.dart';
 import 'package:taxialong/core/services/local_storage.dart';
@@ -23,8 +24,10 @@ import 'package:taxialong/features/auth/domain/usecases/auth.dart';
 import 'package:taxialong/features/auth/domain/usecases/create_account.dart';
 import 'package:taxialong/features/auth/domain/usecases/telephone.dart';
 import 'package:taxialong/features/auth/domain/usecases/logout.dart';
+import 'package:taxialong/features/auth/domain/usecases/verify_auth.dart';
 import 'package:taxialong/features/auth/domain/usecases/verify_otp.dart';
 import 'package:taxialong/features/auth/presentation/bloc/auth/auth_bloc.dart';
+import 'package:taxialong/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:taxialong/features/bus_stops/data/datasources/bus_stop_remote_data_source.dart';
 import 'package:taxialong/features/bus_stops/data/repositories/bus_stop_repository_impl.dart';
 import 'package:taxialong/features/bus_stops/domain/repositories/bus_stop_repository.dart';
@@ -47,6 +50,10 @@ import 'package:taxialong/features/driver/domain/usecases/get_request_usecase.da
 import 'package:taxialong/features/driver/domain/usecases/go_online_usecase.dart';
 import 'package:taxialong/features/driver/domain/usecases/update_driver_location_usecase.dart';
 import 'package:taxialong/features/driver/presentation/bloc/home/driver_home_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/location/location_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/online/online_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/recent/recent_bloc.dart';
+import 'package:taxialong/features/driver/presentation/bloc/request/request_bloc.dart';
 import 'package:taxialong/features/home/data/datasources/home_local_data_source.dart';
 import 'package:taxialong/features/home/data/datasources/home_remote_data_source.dart';
 import 'package:taxialong/features/home/data/repositories/home_repository.dart';
@@ -73,11 +80,17 @@ import 'package:taxialong/features/trips/domain/usecases/cancel_trip_usecase.dar
 import 'package:taxialong/features/trips/domain/usecases/get_trip_usecase.dart';
 import 'package:taxialong/features/trips/domain/usecases/update_complete_usecase.dart';
 import 'package:taxialong/features/trips/domain/usecases/update_pickup_usecase.dart';
+import 'package:taxialong/features/trips/presentation/bloc/cancel_trip/cancel_bloc.dart';
 import 'package:taxialong/features/trips/presentation/bloc/trip_bloc.dart';
 import 'package:taxialong/features/vehicle/data/datasources/car_remote_data_source.dart';
 import 'package:taxialong/features/vehicle/data/repositories/car_repository_impl.dart';
 import 'package:taxialong/features/vehicle/domain/repositories/car_repository.dart';
 import 'package:taxialong/features/vehicle/domain/usecases/create_car_usecase.dart';
+import 'package:taxialong/features/vehicle/domain/usecases/delete_car_usecase.dart';
+import 'package:taxialong/features/vehicle/domain/usecases/edit_car_usecase.dart';
+import 'package:taxialong/features/vehicle/domain/usecases/fetch_vehicle_usecase.dart';
+import 'package:taxialong/features/vehicle/domain/usecases/fetch_vehicles_usecase.dart';
+import 'package:taxialong/features/vehicle/domain/usecases/update_default_usecase.dart';
 import 'package:taxialong/features/vehicle/presentation/bloc/car_bloc.dart';
 import 'package:taxialong/features/wallet/data/datasources/wallet_remote_datasource.dart';
 import 'package:taxialong/features/wallet/data/repositories/wallet_repository_impl.dart';
@@ -97,8 +110,21 @@ Future<void> setupLocator() async {
  */
 
   //auth
+
   getIt.registerFactory<AuthBloc>(
     () => AuthBloc(
+      verifyAuthUseCase: getIt(),
+      logoutUseCase: getIt(),
+    ),
+  );
+
+  // usescases
+  getIt.registerLazySingleton<VerifyAuthUseCase>(
+      () => VerifyAuthUseCase(repository: getIt()));
+
+  //login
+  getIt.registerFactory<LoginBloc>(
+    () => LoginBloc(
       createAccountUserCase: getIt(),
       telephoneUseCase: getIt(),
       verifyOTPUserCase: getIt(),
@@ -289,6 +315,7 @@ Future<void> setupLocator() async {
         switchAccountUseCase: getIt(),
         getTermainalUseCase: getIt(),
         updateSettingsUseCase: getIt(),
+        getSeatsUseCase: getIt(),
       ));
 
   //usecase
@@ -298,6 +325,9 @@ Future<void> setupLocator() async {
       () => GetTermainalUseCase(repository: getIt()));
   getIt.registerLazySingleton<UpdateSettingsUseCase>(
       () => UpdateSettingsUseCase(repository: getIt()));
+
+  getIt.registerLazySingleton<GetSeatsUseCase>(
+      () => GetSeatsUseCase(repository: getIt()));
 
   //repository
   getIt.registerLazySingleton<SettingsRepository>(
@@ -318,13 +348,21 @@ Future<void> setupLocator() async {
  */
   // driver instance
   getIt.registerFactory<DriverHomeBloc>(() => DriverHomeBloc(
-        goOnlineUseCase: getIt(),
         getDriverDataUseCase: getIt(),
-        updateDriverLocationUseCase: getIt(),
+      ));
+  getIt.registerFactory<LocationBloc>(
+      () => LocationBloc(updateDriverLocationUseCase: getIt()));
+
+  getIt.registerFactory<RecentBloc>(() => RecentBloc(
         getRecentUseCase: getIt(),
+      ));
+
+  getIt.registerFactory<RequestBloc>(() => RequestBloc(
         getRequestUseCase: getIt(),
       ));
 
+  //online
+  getIt.registerFactory<OnlineBloc>(() => OnlineBloc(goOnlineUseCase: getIt()));
   //usecase
   getIt.registerLazySingleton<GoOnlineUseCase>(
       () => GoOnlineUseCase(repository: getIt()));
@@ -432,9 +470,14 @@ Future<void> setupLocator() async {
   getIt.registerFactory<TripBloc>(
     () => TripBloc(
       getTripUseCase: getIt(),
-      cancelTripUseCase: getIt(),
       updateCompleteUseCase: getIt(),
       updatePickUpUseCase: getIt(),
+    ),
+  );
+
+  getIt.registerFactory<CancelBloc>(
+    () => CancelBloc(
+      cancelTripUseCase: getIt(),
     ),
   );
 
@@ -483,12 +526,42 @@ Future<void> setupLocator() async {
   getIt.registerFactory<CarBloc>(
     () => CarBloc(
       createCarUsecase: getIt(),
+      fetchVehiclesUseCase: getIt(),
+      deleteCarUseCase: getIt(),
+      editCarUseCase: getIt(),
+      fetchVehicleUseCase: getIt(),
+      updateDefaultCarUseCase: getIt(),
     ),
   );
 
   //usecase
+  getIt.registerLazySingleton<UpdateDefaultCarUseCase>(
+    () => UpdateDefaultCarUseCase(
+      carRepository: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<FetchVehicleUseCase>(
+    () => FetchVehicleUseCase(
+      carRepository: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<EditCarUseCase>(
+    () => EditCarUseCase(
+      carRepository: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<DeleteCarUseCase>(
+    () => DeleteCarUseCase(
+      carRepository: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<CreateCarUsecase>(
     () => CreateCarUsecase(
+      carRepository: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<FetchVehiclesUseCase>(
+    () => FetchVehiclesUseCase(
       carRepository: getIt(),
     ),
   );

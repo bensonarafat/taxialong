@@ -44,8 +44,7 @@ class _SettingsState extends State<Settings> {
       } else {
         role = "Driver";
       }
-      documentCount =
-          usermodel == null ? 0 : int.parse(usermodel.documentCount ?? '0');
+      documentCount = usermodel == null ? 0 : usermodel.documentCount ?? 0;
     });
   }
 

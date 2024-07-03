@@ -36,9 +36,7 @@ class RideRemoteDataSourceImpl implements RideRemoteDataSource {
       "pointAlongitude": params.longitude,
       "pointb": params.pointb,
     };
-    if (params.seat != null) {
-      data['seat'] = params.seat;
-    }
+
     if (params.rideClass != null) {
       data['rider_class'] = jsonEncode(params.rideClass);
     }
@@ -49,6 +47,7 @@ class RideRemoteDataSourceImpl implements RideRemoteDataSource {
 
     if (response.statusCode == 200) {
       var data = response.data;
+
       List<dynamic> jsonresponse = data['data'];
       List<RidesModel> list =
           jsonresponse.map((item) => RidesModel.fromJson(item)).toList();
@@ -65,15 +64,17 @@ class RideRemoteDataSourceImpl implements RideRemoteDataSource {
     if (token == null) throw ServerException();
     dio.options.headers["Authorization"] = 'Bearer $token';
     var url = "${endpoint}trips/confirm-ride";
+
     var response = await dio.post(url, data: {
-      "amount": params.amount,
+      "seats": jsonEncode(params.seats),
       "payment_method": params.paymentMethod.toLowerCase(),
       "driver_id": params.driverId,
-      "seats": jsonEncode(params.seats),
       "pointa": params.pointa,
       "pointb": params.pointb,
-      "trip_class": params.tripClass,
+      "ride_class": jsonEncode(params.rideClass),
+      "car_id": params.carId,
     });
+
     if (response.statusCode == 200) {
       var data = response.data;
 

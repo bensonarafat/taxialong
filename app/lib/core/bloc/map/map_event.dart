@@ -9,8 +9,8 @@ class MapCurrentPositionEvent extends MapEvent {
 }
 
 class MapUpdateCurrentPostionEvent extends MapEvent {
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
 
   MapUpdateCurrentPostionEvent(
       {required this.latitude, required this.longitude});
@@ -24,8 +24,8 @@ class UpdatePickUpMapEvent extends MapEvent {
 }
 
 class DriverUpdateLocationEvent extends MapEvent {
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
 
   DriverUpdateLocationEvent({required this.latitude, required this.longitude});
   @override

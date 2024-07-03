@@ -3,6 +3,7 @@ import 'package:taxialong/core/connection/network_info.dart';
 import 'package:taxialong/core/data/datasources/remote_user_data_source.dart';
 import 'package:taxialong/core/data/datasources/setting_remote_datasource.dart';
 import 'package:taxialong/core/data/models/account_switch_model.dart';
+import 'package:taxialong/core/data/models/seats_model.dart';
 import 'package:taxialong/core/data/models/settings_update_model.dart';
 import 'package:taxialong/core/data/models/user_model.dart';
 import 'package:taxialong/core/domain/repositories/settings_repository.dart';
@@ -71,6 +72,23 @@ class SettingRepositoryImpl implements SettingsRepository {
         return Right(settingsUpdateModel);
       } catch (_) {
         return Left(ServerFailure(message: 'There is a server Error!'));
+      }
+    } else {
+      return Left(
+          NetworkFailure(message: 'Please check your internet connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<SeatsModel>>> getSeats() async {
+    if (await networkInfo.isConnected) {
+      try {
+        List<SeatsModel> model = await remoteDataSource.getSeats();
+
+        return Right(model);
+      } catch (_) {
+        return Left(
+            ServerFailure(message: 'There was an issue! try again later'));
       }
     } else {
       return Left(

@@ -6,10 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxialong/core/constants/assets.dart';
 import 'package:taxialong/core/utils/colors.dart';
-import 'package:taxialong/core/utils/extensions.dart';
 import 'package:taxialong/core/utils/helpers.dart';
 import 'package:taxialong/core/widgets/taxi_along_cache_network_image.dart';
-import 'package:taxialong/features/driver/domain/entities/trip_entity.dart';
+import 'package:taxialong/features/trips/domain/entities/trip_entity.dart';
 
 class RideWidget extends StatefulWidget {
   final TripEntity trip;
@@ -64,22 +63,17 @@ class _RideWidgetState extends State<RideWidget> {
                     child: Row(
                       children: [
                         TaxiAlongCachedNetworkImage(
-                          path: widget.trip.rider.avatar,
-                          width: 52,
-                          height: 52,
+                          url: null,
+                          width: 52.w,
+                          height: 52.h,
                           fit: BoxFit.fill,
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                width: 1.w, color: const Color(0xFFA0A2A9)),
-                            borderRadius: BorderRadius.circular(100),
-                          ),
                         ),
                         Gap(12.w),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${widget.trip.rider.firstname} ${widget.trip.rider.lastname}',
+                              '---',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -99,7 +93,7 @@ class _RideWidgetState extends State<RideWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Class ${widget.trip.tripClass}',
+                                      'Class --',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium,
@@ -111,7 +105,7 @@ class _RideWidgetState extends State<RideWidget> {
                                   width: 17.h,
                                   height: 12.w,
                                   decoration: ShapeDecoration(
-                                    color: const Color(0xFFFEDA15),
+                                    color: ratingColor,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(4.r)),
@@ -149,8 +143,7 @@ class _RideWidgetState extends State<RideWidget> {
                     flex: 1,
                     child: Row(children: [
                       GestureDetector(
-                        onTap: () async =>
-                            uriLauncher('tel:${widget.trip.rider.telephone}'),
+                        onTap: () async => uriLauncher('tel: --'),
                         child: SvgPicture.asset(phoneSVG),
                       ),
                       Gap(10.w),
@@ -211,7 +204,7 @@ class _RideWidgetState extends State<RideWidget> {
                       SvgPicture.asset(cashSVG),
                       Gap(4.w),
                       Text(
-                        widget.trip.paymentMethod.inCaps,
+                        widget.trip.paymentMethod,
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ],

@@ -14,15 +14,13 @@ class SettingsGetTerminalsEvent extends SettingsEvent {
 }
 
 class UpdateSettingsEvent extends SettingsEvent {
-  final String? pointa;
-  final String? pointb;
-  final List<Map<String, dynamic>>? selectedClass;
+  final int? pointa;
+  final int? pointb;
   final String paymentMethod;
 
   UpdateSettingsEvent({
     required this.pointa,
     required this.pointb,
-    required this.selectedClass,
     required this.paymentMethod,
   });
   @override
@@ -31,10 +29,14 @@ class UpdateSettingsEvent extends SettingsEvent {
 
 class RideFilterEvent extends SettingsEvent {
   final List<dynamic>? rideClass;
-  final String? seat;
 
-  RideFilterEvent({this.rideClass, this.seat});
+  RideFilterEvent({this.rideClass});
 
   @override
-  List<Object?> get props => [rideClass, seat];
+  List<Object?> get props => [rideClass];
+}
+
+class GetSeatsEvent extends SettingsEvent {
+  @override
+  List<Object?> get props => [];
 }

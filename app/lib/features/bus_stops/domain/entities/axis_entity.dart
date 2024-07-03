@@ -2,8 +2,8 @@ import 'package:taxialong/features/bus_stops/domain/entities/bus_stop_entity.dar
 
 class AxisEntity {
   final int id;
-  final String pointa;
-  final String pointb;
+  final int pointa;
+  final int pointb;
   final BusStopEntity busStop;
 
   AxisEntity({

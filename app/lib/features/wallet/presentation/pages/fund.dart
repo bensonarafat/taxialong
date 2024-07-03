@@ -97,6 +97,15 @@ class _FundState extends State<Fund> {
             Align(
               alignment: Alignment.bottomCenter,
               child: BlocConsumer<WalletBloc, WalletState>(
+                listenWhen: (pre, state) {
+                  return state is WalletErrorState ||
+                      state is InitializePaymentLoaded;
+                },
+                buildWhen: (pre, state) {
+                  return state is InitializePaymentLoading ||
+                      state is WalletErrorState ||
+                      state is InitializePaymentLoaded;
+                },
                 listener: (context, state) {
                   if (state is WalletErrorState) {
                     toast(state.message);
@@ -113,6 +122,15 @@ class _FundState extends State<Fund> {
                   } else if (state is WalletErrorState) {
                     subBtn = Text(
                       "Fund Wallet (Try Again)",
+                      style: GoogleFonts.robotoFlex(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: white,
+                      ),
+                    );
+                  } else if (state is InitializePaymentLoaded) {
+                    subBtn = Text(
+                      "Fund Wallet",
                       style: GoogleFonts.robotoFlex(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
@@ -138,8 +156,7 @@ class _FundState extends State<Fund> {
                     height: 60.h,
                     child: TextButton(
                       style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.r),
                             side: const BorderSide(
@@ -148,7 +165,7 @@ class _FundState extends State<Fund> {
                           ),
                         ),
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(primaryColor),
+                            WidgetStateProperty.all<Color>(primaryColor),
                       ),
                       child: subBtn,
                       onPressed: () =>
