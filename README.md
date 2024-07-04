@@ -12,7 +12,7 @@ TaxiAlong is a mobile application that allows passengers to share taxi rides wit
 - Backend: PHP/Laravel 
 
 Screenshots:  
-
+<div style="display:table">
 <img src="screenshots/1.png" width="200"/>
 <img src="screenshots/2.png" width="200"/>
 <img src="screenshots/3.png" width="200"/>
@@ -30,11 +30,4 @@ Screenshots:
 <img src="screenshots/15.png" width="200"/>
 <img src="screenshots/16.png" width="200"/>
 <img src="screenshots/17.png" width="200"/>
-
-
-
-
-
-
-
-
+</div>
