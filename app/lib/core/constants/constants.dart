@@ -18,7 +18,7 @@ String endpoint = Platform.isAndroid
 const paystackInitializeEndpoint =
     "https://api.paystack.co/transaction/initialize";
 
-const paystackSecretKey = "sk_test_8e6cf8a8d90cd1bd6e29d5616ef7daf1a30b0c21";
+const paystackSecretKey = "PAYSTACK KEY HERE";
 
 const imageplaceholder =
     "https://res.cloudinary.com/dxlgnxlzt/image/upload/v1701358353/default/y3uwlifaijlubtpvzeso.png";
@@ -67,7 +67,7 @@ const CameraPosition defaultGoogleMapCameraPosition = CameraPosition(
   zoom: googleMapZoomLevel,
 );
 
-const String pusherAPIKey = "0ced9f805f48a99d4f5a";
+const String pusherAPIKey = "PUHSER KEY HERE";
 const String pusherCluster = "eu";
 
 const List<String> carColours = [
@@ -89,7 +89,7 @@ const List<Map<String, dynamic>> seatsArrangments = [
   {'id': 3, 'name': '2 front, 4 middle, 3 back (Sienna)'}
 ];
 
-const String googleAPIKey = "AIzaSyC0jYPOwHBOu_NXoCaKD37XriOK8LL2bog";
+const String googleAPIKey = "GOOGLE API KEY HERE";
 
 const List<String> authPages = [
   "/getstarted",
