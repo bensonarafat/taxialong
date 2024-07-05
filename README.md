@@ -5,7 +5,10 @@ TaxiAlong is a mobile application that allows passengers to share taxi rides wit
 ## Features: 
 - Shared taxi rides: Reduce costs and environmental impact by sharing a taxi with others going in the same direction.
 - Seating preferences: Indicate your preferred seating location (e.g., window seat, front seat) during booking.
-- (Add any other significant features here)
+- Fund your wallet, also rider can payment with cash or from their wallet 
+- Driver can submmit as much car as they want to submit
+- Rider and Driver and track their ride trip with Google map 
+- Driver can set their own Ride Class 
 
 ## Tech Stack: 
 - Frontend: Flutter/Dart
